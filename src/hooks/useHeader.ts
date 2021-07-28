@@ -1,5 +1,5 @@
 function useHeader() {
-  const teamName = 'MIC-TEAM'
+  const teamName = '🐶 MIC-TEAM'
 
   return { teamName }
 }
