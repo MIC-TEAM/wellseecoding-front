@@ -7,19 +7,19 @@ const Fnb = () => {
       <div css={footerNavWrap}>
         <Link href="/">
           <a>
-            <img src="/images/footerNav/menu01.svg" alt="홈" />
+            <img src="/images/footerMenu/menu01.svg" alt="홈" />
           </a>
         </Link>
 
         <Link href="/">
           <a>
-            <img src="/images/footerNav/menu02.svg" alt="함께해요" />
+            <img src="/images/footerMenu/menu02.svg" alt="함께해요" />
           </a>
         </Link>
 
         <Link href="/">
           <a>
-            <img src="/images/footerNav/menu03.svg" alt="마이페이지" />
+            <img src="/images/footerMenu/menu03.svg" alt="마이페이지" />
           </a>
         </Link>
       </div>

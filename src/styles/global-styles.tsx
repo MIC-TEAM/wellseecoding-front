@@ -28,7 +28,7 @@ export const GlobalStyles = (
 
       html {
         font-family: sans-serif;
-        font-size: 16px;
+        font-size: 10px;
         /* Prevent font scaling in landscape */
         -webkit-text-size-adjust: none; /*Chrome, Safari, newer versions of Opera*/
         -moz-text-size-adjust: none; /*Firefox*/
