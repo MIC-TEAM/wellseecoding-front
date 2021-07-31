@@ -1,6 +1,7 @@
 import React from 'react'
 import { css } from '@emotion/react'
-import Header from '../components/Header'
+import Header from '../components/Header/back'
+import Fnb from '../components/Fnb'
 
 function Home() {
   return (
@@ -8,8 +9,9 @@ function Home() {
       <Header />
       <div css={container}>
         <h1>👋 mic-team Boilerplate</h1>
-        <img css={bi} src="/assets/common/mic_team.png" alt="mic team logo" />
+        <img css={bi} src="/images/common/mic_team.png" alt="mic team logo" />
       </div>
+      <Fnb />
     </>
   )
 }
