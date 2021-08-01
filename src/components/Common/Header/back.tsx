@@ -2,7 +2,7 @@ import React from 'react'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 
-function BackBtn() {
+function Back() {
   const router = useRouter()
 
   return (
@@ -14,7 +14,7 @@ function BackBtn() {
   )
 }
 
-export default BackBtn
+export default Back
 
 const backHeader = css`
   width: 100%;
