@@ -24,12 +24,11 @@ export const GlobalStyles = (
         box-sizing: border-box;
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
-        font-smoothing: antialiased;
       }
 
       html {
         font-family: sans-serif;
-        font-size: 16px;
+        font-size: 10px;
         /* Prevent font scaling in landscape */
         -webkit-text-size-adjust: none; /*Chrome, Safari, newer versions of Opera*/
         -moz-text-size-adjust: none; /*Firefox*/
@@ -38,12 +37,19 @@ export const GlobalStyles = (
       }
       body {
         letter-spacing: -0.025em;
+        min-width: 375px;
+        margin: 0 auto;
+        height: 100vh;
+        width: 100%;
+        max-width: 1024px;
+        min-height: 100%;
+        box-sizing: border-box;
       }
       html,
       body,
       #__next {
+        height: 100vh;
         width: 100%;
-        height: 100%;
       }
       a {
         color: inherit;
@@ -51,8 +57,15 @@ export const GlobalStyles = (
       }
       input,
       button {
-        font: inherit;
+        cursor: pointer;
         box-shadow: none;
+        background: none;
+        border: 0;
+        color: inherit;
+        line-height: normal;
+        overflow: visible;
+        padding: 0;
+        -webkit-appearance: button; /* for input */
         &:focus,
         &:active {
           outline: none;
