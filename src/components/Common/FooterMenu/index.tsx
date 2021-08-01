@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import Link from 'next/link'
 
-const Fnb = () => {
+const FooterMenu = () => {
   return (
     <nav css={footerNav}>
       <div css={footerNavWrap}>
@@ -27,7 +27,7 @@ const Fnb = () => {
   )
 }
 
-export default Fnb
+export default FooterMenu
 
 const footerNav = css`
   position: fixed;
