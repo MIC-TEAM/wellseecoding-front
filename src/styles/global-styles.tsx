@@ -29,6 +29,7 @@ export const GlobalStyles = (
       html {
         font-family: sans-serif;
         font-size: 10px;
+        background-color: #f9f9f9;
         /* Prevent font scaling in landscape */
         -webkit-text-size-adjust: none; /*Chrome, Safari, newer versions of Opera*/
         -moz-text-size-adjust: none; /*Firefox*/
@@ -41,9 +42,10 @@ export const GlobalStyles = (
         margin: 0 auto;
         height: 100vh;
         width: 100%;
-        max-width: 1024px;
+        max-width: 600px;
         min-height: 100%;
         box-sizing: border-box;
+        background: #fff;
       }
       html,
       body,

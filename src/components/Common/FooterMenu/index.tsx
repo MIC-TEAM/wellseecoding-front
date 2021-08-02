@@ -41,7 +41,7 @@ const footerNav = css`
   padding: 1em 0;
 `
 const footerNavWrap = css`
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
   width: 100%;
   display: flex;
