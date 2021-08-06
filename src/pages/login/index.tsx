@@ -1,13 +1,35 @@
+import Back from '../../components/Common/Header/back'
 import Button from '../../components/Common/Button'
+import PasswordField from '../../components/Common/PasswordField'
+import { TextField } from '@material-ui/core'
+import BigTitle from '../../components/Login/BigTitle'
+import { css } from '@emotion/react'
 
 const Login = () => {
   return (
     <>
-      <h2>자, 이제 프로필을 만들어봐요~!</h2>
-      <img src="/images/login/character.svg" alt="프로필" />
-      <Button firstText="아 귀찮아요. 나중에 할래요." secondText="다음" className1="whiteBtn" />
+      <Back />
+
+      <div css={loginTitleWrap}>
+        <BigTitle title="이메일로 로그인" />
+      </div>
+
+      <div css={loginFrom}>
+        <TextField label="이메일" type="email" />
+        <PasswordField />
+      </div>
+
+      <Button firstText="다음" className="oneBtn" secondText="" />
     </>
   )
 }
 
 export default Login
+
+const loginFrom = css`
+  margin-top: 1.7em;
+`
+
+const loginTitleWrap = css`
+  margin-top: 3.7em;
+`

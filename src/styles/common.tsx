@@ -1,7 +1,7 @@
 export const Common = {
   // 🎨  숫자가 작을 수록 채도가 진한 색상
   colors: {
-    orange: '#ff6e35',
+    orange: '',
     orange01: '#ff966c',
     orange02: '#ffb89b',
     orange03: '#ffdacb',

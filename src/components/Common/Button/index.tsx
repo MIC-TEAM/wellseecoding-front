@@ -36,7 +36,7 @@ const footBtn = css`
   display: block;
   &.oneBtn {
     button {
-      &:nth-of-type(1) {
+      &:nth-of-type(2) {
         display: none;
       }
     }
