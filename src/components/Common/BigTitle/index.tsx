@@ -1,6 +1,6 @@
 import React from 'react'
 import { css } from '@emotion/react'
-import { Common } from '../../styles/common'
+import { Common } from '../../../styles/common'
 
 type Props = {
   title: string
