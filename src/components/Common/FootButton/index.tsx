@@ -10,7 +10,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   className2?: string
 }
 
-function Button({ firstText, secondText, className, className1, className2 }: Props) {
+function FootButton({ firstText, secondText, className, className1, className2 }: Props) {
   return (
     <div css={footBtn} className={className}>
       <div className="footBtnWrap">
@@ -26,7 +26,7 @@ function Button({ firstText, secondText, className, className1, className2 }: Pr
   )
 }
 
-export default Button
+export default FootButton
 
 const footBtn = css`
   width: 100%;

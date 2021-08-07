@@ -5,6 +5,6 @@ type Props = {
   text: string
 }
 
-export default function BasicTextFields({ text }: Props) {
+export default function TextFields({ text }: Props) {
   return <TextField label={text} />
 }

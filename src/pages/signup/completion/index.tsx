@@ -3,11 +3,11 @@ import Back from '../../../components/Common/Header/back'
 import { css } from '@emotion/react'
 import { Common } from '../../../styles/common'
 
-const Login = () => {
+const SignUpCompletion = () => {
   return (
     <>
       <Back />
-      <div css={profileStart}>
+      <div css={profileCompletion}>
         <h2>
           프로필을 모두
           <br /> 완성했어요~!
@@ -19,9 +19,9 @@ const Login = () => {
   )
 }
 
-export default Login
+export default SignUpCompletion
 
-const profileStart = css`
+const profileCompletion = css`
   text-align: center;
   margin-top: 16vh;
   h2 {

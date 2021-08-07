@@ -3,7 +3,7 @@ import Back from '../../../components/Common/Header/back'
 import { css } from '@emotion/react'
 import { Common } from '../../../styles/common'
 
-const Login = () => {
+const SignUpProfileStart = () => {
   return (
     <>
       <Back />
@@ -24,7 +24,7 @@ const Login = () => {
   )
 }
 
-export default Login
+export default SignUpProfileStart
 
 const profileStart = css`
   text-align: center;

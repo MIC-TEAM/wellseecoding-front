@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { Common } from '../../styles/common'
 import Link from 'next/link'
 
-export default function AuthLoginButton() {
+export default function AuthLogin() {
   return (
     <div css={authLoginButton}>
       <button type="button" className="kakao">

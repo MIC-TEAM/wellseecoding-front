@@ -3,7 +3,7 @@ import Back from '../../../components/Common/Header/back'
 import Title from '../../../components/Common/Title'
 import { css } from '@emotion/react'
 
-const ProfileUpload = () => {
+const SignUpProfileUpload = () => {
   return (
     <>
       <Back />
@@ -17,7 +17,7 @@ const ProfileUpload = () => {
   )
 }
 
-export default ProfileUpload
+export default SignUpProfileUpload
 
 const profileUpload = css`
   margin-top: 1.7em;

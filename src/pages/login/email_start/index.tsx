@@ -6,7 +6,7 @@ import { css } from '@emotion/react'
 import { Common } from '../../../styles/common'
 import Link from 'next/link'
 
-const Login = () => {
+const EmailLogin = () => {
   return (
     <>
       <Back />
@@ -34,7 +34,7 @@ const Login = () => {
   )
 }
 
-export default Login
+export default EmailLogin
 
 const loginFrom = css`
   margin-top: 1.7em;

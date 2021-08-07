@@ -19,7 +19,7 @@ type Props = {
   title: string
 }
 
-export default function PasswordInput({ title }: Props) {
+export default function PasswordField({ title }: Props) {
   const [values, setValues] = React.useState<State>({
     amount: '',
     password: '',

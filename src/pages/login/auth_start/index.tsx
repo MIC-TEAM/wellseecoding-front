@@ -3,7 +3,7 @@ import AuthLoginButton from '../../../components/AuthLogin'
 import { css } from '@emotion/react'
 import { Common } from '../../../styles/common'
 
-const AuthLogin = () => {
+const AuthLoginStart = () => {
   return (
     <>
       <Back />
@@ -21,7 +21,7 @@ const AuthLogin = () => {
   )
 }
 
-export default AuthLogin
+export default AuthLoginStart
 
 const authLoginTitleWrap = css`
   margin-top: 11em;
