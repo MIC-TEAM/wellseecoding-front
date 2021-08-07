@@ -52,11 +52,11 @@ const footBtn = css`
       background: ${Common.colors.gray04};
       font-size: ${Common.fontSize.fs18};
       &.orangeBtn {
-        background: ${Common.colors.orange};
+        background: #ff6e35;
       }
       &.whiteBtn {
         background: #ffffff;
-        border: 1px solid ${Common.colors.orange};
+        border: 1px solid #ff6e35;
         color: ${Common.colors.black};
       }
       &:nth-of-type(1) {

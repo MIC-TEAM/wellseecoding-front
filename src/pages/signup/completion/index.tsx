@@ -9,12 +9,12 @@ const Login = () => {
       <Back />
       <div css={profileStart}>
         <h2>
-          자, 이제 프로필을
-          <br /> 만들어봐요~!
+          프로필을 모두
+          <br /> 완성했어요~!
         </h2>
-        <img src="/images/signup/character.svg" alt="프로필 시작 페이지 캐릭터" />
+        <img src="/images/signup/character_com.svg" alt="프로필 완성 페이지 캐릭터" />
       </div>
-      <Button firstText="아 귀찮아요. 나중에 할래요." secondText="네~" className1="whiteBtn" className2="orangeBtn" />
+      <Button firstText="시작하기" secondText="" className1="orangeBtn" className="oneBtn" />
     </>
   )
 }
