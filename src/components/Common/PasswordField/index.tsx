@@ -15,7 +15,11 @@ interface State {
   showPassword: boolean
 }
 
-export default function InputAdornments() {
+type Props = {
+  title: string
+}
+
+export default function PasswordInput({ title }: Props) {
   const [values, setValues] = React.useState<State>({
     amount: '',
     password: '',
@@ -37,27 +41,25 @@ export default function InputAdornments() {
   }
 
   return (
-    <div>
-      <FormControl>
-        <InputLabel htmlFor="standard-adornment-password">비밀번호</InputLabel>
-        <Input
-          id="standard-adornment-password"
-          type={values.showPassword ? 'text' : 'password'}
-          value={values.password}
-          onChange={handleChange('password')}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-              >
-                {values.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
-    </div>
+    <FormControl>
+      <InputLabel htmlFor="standard-adornment-password">{title}</InputLabel>
+      <Input
+        id="standard-adornment-password"
+        type={values.showPassword ? 'text' : 'password'}
+        value={values.password}
+        onChange={handleChange('password')}
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+            >
+              {values.showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+    </FormControl>
   )
 }

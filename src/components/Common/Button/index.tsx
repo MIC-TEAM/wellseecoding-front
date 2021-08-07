@@ -1,7 +1,8 @@
 import { css } from '@emotion/react'
+import { ButtonHTMLAttributes } from 'react'
 import { Common } from '../../../styles/common'
 
-type Props = {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   firstText: string
   secondText: string
   className?: string
@@ -11,7 +12,7 @@ type Props = {
 
 function Button({ firstText, secondText, className, className1, className2 }: Props) {
   return (
-    <footer css={footBtn} className={className}>
+    <div css={footBtn} className={className}>
       <div className="footBtnWrap">
         <button type="button" className={className1}>
           {firstText}
@@ -21,7 +22,7 @@ function Button({ firstText, secondText, className, className1, className2 }: Pr
           {secondText}
         </button>
       </div>
-    </footer>
+    </div>
   )
 }
 

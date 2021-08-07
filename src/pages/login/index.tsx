@@ -1,9 +1,10 @@
 import Back from '../../components/Common/Header/back'
-import Button from '../../components/Common/Button'
 import PasswordField from '../../components/Common/PasswordField'
 import { TextField } from '@material-ui/core'
 import BigTitle from '../../components/Login/BigTitle'
 import { css } from '@emotion/react'
+import { Common } from '../../styles/common'
+import Link from 'next/link'
 
 const Login = () => {
   return (
@@ -14,12 +15,21 @@ const Login = () => {
         <BigTitle title="이메일로 로그인" />
       </div>
 
-      <div css={loginFrom}>
+      <form css={loginFrom}>
         <TextField label="이메일" type="email" />
-        <PasswordField />
-      </div>
+        <PasswordField title="비밀번호" />
+      </form>
 
-      <Button firstText="다음" className="oneBtn" secondText="" />
+      <button type="button" css={footBtn}>
+        다음
+      </button>
+
+      <p css={passwordFind}>
+        기억이 안나세요?
+        <Link href="">
+          <a>비밀번호 찾기</a>
+        </Link>
+      </p>
     </>
   )
 }
@@ -32,4 +42,28 @@ const loginFrom = css`
 
 const loginTitleWrap = css`
   margin-top: 3.7em;
+`
+
+const footBtn = css`
+  margin-top: 48px;
+  width: 100%;
+  border-radius: 16px;
+  padding: 16px 0;
+  color: #ffffff;
+  background: ${Common.colors.gray04};
+  font-size: ${Common.fontSize.fs18};
+  &.orangeBtn {
+    background: ${Common.colors.orange};
+  }
+`
+
+const passwordFind = css`
+  text-align: center;
+  font-size: ${Common.fontSize.fs16};
+  margin-top: 26px;
+  a {
+    margin-left: 4px;
+    color: #ff6e35;
+    text-decoration-line: underline;
+  }
 `
