@@ -1,6 +1,6 @@
 import Back from '../../../components/Common/Header/back'
 import { TextField } from '@material-ui/core'
-import Button from '../../../components/Common/Button'
+import FootButton from '../../../components/Common/FootButton'
 import Title from '../../../components/Common/Title'
 import { css } from '@emotion/react'
 
@@ -19,7 +19,7 @@ const PasswordEmailSubmit = () => {
         <TextField label="인증번호" type="number" />
       </form>
 
-      <Button firstText="다음" className="oneBtn" secondText="" />
+      <FootButton firstText="다음" className="oneBtn" secondText="" />
     </>
   )
 }

@@ -1,5 +1,5 @@
 import Back from '../../../components/Common/Header/back'
-import Button from '../../../components/Common/Button'
+import FootButton from '../../../components/Common/FootButton'
 import PasswordField from '../../../components/Common/PasswordField'
 import Title from '../../../components/Common/Title'
 import { css } from '@emotion/react'
@@ -18,7 +18,7 @@ const PasswordReset = () => {
         <PasswordField title="비밀번호 확인" />
       </form>
 
-      <Button firstText="다음" className="oneBtn" secondText="" />
+      <FootButton firstText="다음" className="oneBtn" secondText="" />
     </>
   )
 }

@@ -1,4 +1,4 @@
-import Button from '../../../components/Common/Button'
+import FootButton from '../../../components/Common/FootButton'
 import Back from '../../../components/Common/Header/back'
 import { css } from '@emotion/react'
 import { Common } from '../../../styles/common'
@@ -14,7 +14,12 @@ const Login = () => {
         </h2>
         <img src="/images/signup/character.svg" alt="프로필 시작 페이지 캐릭터" />
       </div>
-      <Button firstText="아 귀찮아요. 나중에 할래요." secondText="네~" className1="whiteBtn" className2="orangeBtn" />
+      <FootButton
+        firstText="아 귀찮아요. 나중에 할래요."
+        secondText="네~"
+        className1="whiteBtn"
+        className2="orangeBtn"
+      />
     </>
   )
 }
