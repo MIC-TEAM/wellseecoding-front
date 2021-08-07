@@ -67,7 +67,7 @@ export const GlobalStyles = (
         line-height: normal;
         overflow: visible;
         padding: 0;
-        -webkit-appearance: button; /* for input */
+        -webkit-appearance: none; /* for input */
         &:focus,
         &:active {
           outline: none;
@@ -103,6 +103,11 @@ export const GlobalStyles = (
         .MuiSvgIcon-root {
           font-size: 2.2rem;
         }
+      }
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
       }
     `}
   />
