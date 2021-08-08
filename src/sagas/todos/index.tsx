@@ -8,10 +8,10 @@ import {
   FETCHING_TODOS_REQUEST,
   FETCHING_TODOS_SUCCESS,
 } from 'reducers/todos'
-import { todoType } from 'types'
+import { TodoType } from 'types'
 
 type resultType = {
-  result: todoType[]
+  result: TodoType[]
 }
 
 async function fetchTodosAPI(data: { first: number; last: number }) {

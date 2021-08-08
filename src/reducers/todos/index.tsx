@@ -1,9 +1,9 @@
 import produce from 'immer'
-import { todoType } from 'types'
+import { TodoType } from 'types'
 
 // initialState 타입 정의
-export interface todosIntialState {
-  todos: todoType[]
+export interface TodosIntialState {
+  todos: TodoType[]
 
   fetchTodosLoading: boolean
   fetchTodosSuccess: boolean
@@ -11,7 +11,7 @@ export interface todosIntialState {
 }
 
 // initialState 정의
-export const initialState: todosIntialState = {
+export const initialState: TodosIntialState = {
   todos: [],
 
   fetchTodosLoading: false,
@@ -35,7 +35,7 @@ export interface FetchingTodosRequest {
 
 export interface FetchingTodosSuccess {
   type: typeof FETCHING_TODOS_SUCCESS
-  todos: todoType
+  todos: TodoType
   data: []
 }
 
@@ -51,7 +51,7 @@ export const fetchingToddsRequest = (data: { first: number; last: number }): Fet
   data,
 })
 
-export const fetchingToddsSuccess = (todos: todoType, data: []): FetchingTodosSuccess => ({
+export const fetchingToddsSuccess = (todos: TodoType, data: []): FetchingTodosSuccess => ({
   type: FETCHING_TODOS_SUCCESS,
   todos,
   data,
@@ -67,7 +67,7 @@ export type FetchingTodos =
   | ReturnType<typeof fetchingToddsSuccess>
   | ReturnType<typeof fetchingToddsFailure>
 
-const todos = (state: todosIntialState = initialState, action: FetchingTodos) =>
+const todos = (state: TodosIntialState = initialState, action: FetchingTodos) =>
   produce(state, (draft) => {
     switch (action.type) {
       case FETCHING_TODOS_REQUEST: {

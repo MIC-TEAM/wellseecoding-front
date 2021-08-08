@@ -1,9 +1,9 @@
 import React from 'react'
-import { todoType } from 'types'
+import { TodoType } from 'types'
 import { MainContent } from './style'
 
 type Props = {
-  datas: todoType[] | undefined
+  datas: TodoType[] | undefined
 }
 
 function DataForm(props: Props) {

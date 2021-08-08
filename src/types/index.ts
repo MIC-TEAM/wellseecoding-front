@@ -8,7 +8,7 @@ result.data에 들어 있는 객체의 타입
 }
 */
 
-export type todoType = {
+export type TodoType = {
   completed: boolean
   id: number
   title: string
