@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app'
-import { GlobalStyles } from '../styles/global-styles'
+import wrapper from 'store'
+import { GlobalStyles } from 'styles/global-styles'
 
 function App({ Component, pageProps }: AppProps) {
   return (
@@ -10,4 +11,4 @@ function App({ Component, pageProps }: AppProps) {
   )
 }
 
-export default App
+export default wrapper.withRedux(App)

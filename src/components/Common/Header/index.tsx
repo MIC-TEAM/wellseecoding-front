@@ -1,5 +1,5 @@
 import React from 'react'
-import useHeader from '../../hooks/useHeader'
+import useHeader from 'hooks/useHeader'
 import { container } from './styles'
 
 function Header() {
