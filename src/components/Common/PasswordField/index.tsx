@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -20,7 +20,7 @@ type Props = {
 }
 
 export default function PasswordField({ title }: Props) {
-  const [values, setValues] = React.useState<State>({
+  const [values, setValues] = useState<State>({
     amount: '',
     password: '',
     weight: '',

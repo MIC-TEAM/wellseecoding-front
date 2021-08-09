@@ -6,9 +6,9 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <>
       {GlobalStyles}
-      <main css={mainWrap}>
+      <div css={mainWrap}>
         <Component {...pageProps} />
-      </main>
+      </div>
     </>
   )
 }
