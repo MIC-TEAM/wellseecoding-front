@@ -16,7 +16,7 @@ const PasswordReset = () => {
         <PasswordField title="비밀번호 확인" />
       </form>
 
-      <FootButton firstText="다음" className="oneBtn" secondText="" />
+      {/* <FootButton firstText="다음" className="oneBtn" secondText="" /> */}
     </>
   )
 }

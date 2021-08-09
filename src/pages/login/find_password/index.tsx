@@ -1,8 +1,8 @@
 import Back from '../../../components/Common/Header/back'
 import { TextField } from '@material-ui/core'
-import FootButton from '../../../components/Common/FootButton'
+import FootButton, { FootButtonType } from '../../../components/Common/FootButton'
 import Title from '../../../components/Common/Title'
-import { passwordResetForm } from './styles'
+import { footButtonWrapper, passwordResetForm } from './style'
 
 const PasswordEmailSubmit = () => {
   return (
@@ -15,9 +15,11 @@ const PasswordEmailSubmit = () => {
         <TextField label="이름" type="text" />
         <TextField label="이메일" type="email" />
         <TextField label="인증번호" type="number" />
-      </form>
 
-      <FootButton firstText="다음" className="oneBtn" secondText="" />
+        <div css={footButtonWrapper}>
+          <FootButton buttonType={FootButtonType.DISABLE}>다음</FootButton>
+        </div>
+      </form>
     </>
   )
 }
