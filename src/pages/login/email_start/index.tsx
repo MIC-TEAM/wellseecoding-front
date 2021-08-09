@@ -2,7 +2,7 @@ import TextField from '../../../components/Common/TextField'
 import Back from '../../../components/Common/Header/back'
 import PasswordField from '../../../components/Common/PasswordField'
 import BigTitle from '../../../components/Common/BigTitle'
-import { loginTitleWrap, loginFrom, loginButton, passwordFind } from './styled'
+import { loginTitleWrap, loginFrom, loginButton, passwordFind } from './style'
 import Link from 'next/link'
 
 const EmailLogin = () => {

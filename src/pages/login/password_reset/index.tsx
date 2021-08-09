@@ -2,7 +2,7 @@ import Back from '../../../components/Common/Header/back'
 import FootButton from '../../../components/Common/FootButton'
 import PasswordField from '../../../components/Common/PasswordField'
 import Title from '../../../components/Common/Title'
-import { passwordForm } from './styled'
+import { passwordForm } from './style'
 
 const PasswordReset = () => {
   return (

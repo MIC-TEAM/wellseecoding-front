@@ -1,4 +1,4 @@
-import { titleStyle } from './styled'
+import { titleStyle } from './style'
 
 type Props = {
   title: string

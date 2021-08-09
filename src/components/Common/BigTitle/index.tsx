@@ -1,4 +1,4 @@
-import { bigTitleStyle } from './styled'
+import { bigTitleStyle } from './style'
 
 type Props = {
   title: string

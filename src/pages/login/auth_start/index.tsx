@@ -1,6 +1,6 @@
 import Back from '../../../components/Common/Header/back'
 import AuthLoginButton from '../../../components/AuthLogin'
-import { authLoginTitleWrap, bigTitle } from './styled'
+import { authLoginTitleWrap, bigTitle } from './style'
 
 const AuthLoginStart = () => {
   return (

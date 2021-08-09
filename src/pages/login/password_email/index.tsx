@@ -2,7 +2,7 @@ import Back from '../../../components/Common/Header/back'
 import { TextField } from '@material-ui/core'
 import FootButton from '../../../components/Common/FootButton'
 import Title from '../../../components/Common/Title'
-import { passwordResetForm } from './styled'
+import { passwordResetForm } from './styles'
 
 const PasswordEmailSubmit = () => {
   return (

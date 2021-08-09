@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { footerNav, footerNavWrap } from './styled'
+import { footerNav, footerNavWrap } from './style'
 
 const FooterMenu = () => {
   return (

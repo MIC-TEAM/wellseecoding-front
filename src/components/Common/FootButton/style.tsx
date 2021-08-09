@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import { Common } from '../../../styles/common'
 
-export const footBtn = css`
+export const container = css`
   width: 100%;
   position: fixed;
   bottom: 4.4em;
