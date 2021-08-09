@@ -1,8 +1,8 @@
+import FootButton, { FootButtonType } from '../../../components/Common/FootButton'
 import Back from '../../../components/Common/Header/back'
-import FootButton from '../../../components/Common/FootButton'
 import PasswordField from '../../../components/Common/PasswordField'
 import Title from '../../../components/Common/Title'
-import { passwordForm } from './style'
+import { footButtonWrapper, passwordForm } from './style'
 
 const PasswordReset = () => {
   return (
@@ -14,9 +14,13 @@ const PasswordReset = () => {
       <form css={passwordForm}>
         <PasswordField title="비밀번호" />
         <PasswordField title="비밀번호 확인" />
-      </form>
 
-      {/* <FootButton firstText="다음" className="oneBtn" secondText="" /> */}
+        <div css={footButtonWrapper}>
+          <FootButton type="submit" footButtonType={FootButtonType.DISABLE}>
+            다음
+          </FootButton>
+        </div>
+      </form>
     </>
   )
 }

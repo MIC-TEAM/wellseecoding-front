@@ -17,7 +17,9 @@ const PasswordEmailSubmit = () => {
         <TextField label="인증번호" type="number" />
 
         <div css={footButtonWrapper}>
-          <FootButton buttonType={FootButtonType.DISABLE}>다음</FootButton>
+          <FootButton type="submit" footButtonType={FootButtonType.DISABLE}>
+            다음
+          </FootButton>
         </div>
       </form>
     </>

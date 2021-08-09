@@ -9,17 +9,8 @@ export const loginTitleWrap = css`
   margin-top: 3.7em;
 `
 
-export const loginButton = css`
-  margin-top: 48px;
-  width: 100%;
-  border-radius: 16px;
-  padding: 16px 0;
-  color: #ffffff;
-  background: ${Common.colors.gray04};
-  font-size: ${Common.fontSize.fs18};
-  &.orangeBtn {
-    background: ${Common.colors.orange};
-  }
+export const footButtonWrapper = css`
+  margin-top: 68px;
 `
 
 export const passwordFind = css`
