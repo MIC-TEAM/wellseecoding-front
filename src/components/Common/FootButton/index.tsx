@@ -1,27 +1,27 @@
 import { ButtonHTMLAttributes } from 'react'
-import { footBtn } from './styled'
+import { container } from './style'
 
-interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  firstText: string
-  secondText: string
-  className?: string
-  className1?: string
-  className2?: string
+export enum FootButtonType {
+  DISABLE = 'disable',
+  ACTIVATION = 'activation',
+  SKIP = 'skip',
 }
 
-function FootButton({ firstText, secondText, className, className1, className2 }: Props) {
-  return (
-    <div css={footBtn} className={className}>
-      <div className="footBtnWrap">
-        <button type="button" className={className1}>
-          {firstText}
-        </button>
+interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  footButtonType: FootButtonType
+}
 
-        <button type="button" className={className2}>
-          {secondText}
-        </button>
-      </div>
-    </div>
+function FootButton({ children, type, footButtonType, ...props }: IProps) {
+  return (
+    <button
+      type={type}
+      css={container}
+      className={footButtonType}
+      disabled={footButtonType === FootButtonType.DISABLE}
+      {...props}
+    >
+      {children}
+    </button>
   )
 }
 

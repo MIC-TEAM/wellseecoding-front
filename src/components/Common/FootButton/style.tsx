@@ -3,38 +3,29 @@ import { Common } from '../../../styles/common'
 
 export const container = css`
   width: 100%;
-  position: fixed;
-  bottom: 4.4em;
-  left: 0;
-  right: 0;
+  height: 52px;
   display: block;
-  &.oneBtn {
-    button {
-      &:nth-of-type(2) {
-        display: none;
-      }
-    }
+  font-size: ${Common.fontSize.fs18};
+  border-radius: 16px;
+  padding: 16px 0;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  color: #ffffff;
+  background: ${Common.colors.gray04};
+
+  &:disabled {
+    background: ${Common.colors.gray04};
+    cursor: default;
   }
-  .footBtnWrap {
-    padding: 0 20px;
-    button {
-      width: 100%;
-      border-radius: 16px;
-      padding: 16px 0;
-      color: #ffffff;
-      background: ${Common.colors.gray04};
-      font-size: ${Common.fontSize.fs18};
-      &.orangeBtn {
-        background: #ff6e35;
-      }
-      &.whiteBtn {
-        background: #ffffff;
-        border: 1px solid #ff6e35;
-        color: ${Common.colors.black};
-      }
-      &:nth-of-type(1) {
-        margin-bottom: 12px;
-      }
-    }
+
+  &.activation {
+    background: #ff6e35;
+  }
+
+  &.skip {
+    background: #ffffff;
+    border: 1px solid #ff6e35;
+    color: ${Common.colors.black};
   }
 `

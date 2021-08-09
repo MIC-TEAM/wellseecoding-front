@@ -1,6 +1,7 @@
 import Back from '../../../components/Common/Header/back'
 import { css } from '@emotion/react'
 import { Common } from '../../../styles/common'
+import FootButton, { FootButtonType } from '../../../components/Common/FootButton'
 
 const SignUpCompletion = () => {
   return (
@@ -13,7 +14,11 @@ const SignUpCompletion = () => {
         </h2>
         <img src="/images/signup/character_com.svg" alt="프로필 완성 페이지 캐릭터" />
       </div>
-      {/* <FootButton firstText="시작하기" secondText="" className1="orangeBtn" className="oneBtn" /> */}
+      <div css={footButtonWrapper}>
+        <FootButton type="button" footButtonType={FootButtonType.ACTIVATION}>
+          시작하기
+        </FootButton>
+      </div>
     </>
   )
 }
@@ -30,4 +35,12 @@ const profileCompletion = css`
   img {
     margin-top: 4.2em;
   }
+`
+
+export const footButtonWrapper = css`
+  position: fixed;
+  bottom: 4.4em;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
 `
