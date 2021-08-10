@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { Common } from '../../../styles/common'
+import { Common } from 'styles/common'
 
 export const container = css`
   width: 100%;

@@ -1,10 +1,10 @@
-import TextField from '../../../components/Common/TextField'
-import Back from '../../../components/Common/Header/back'
-import PasswordField from '../../../components/Common/PasswordField'
-import BigTitle from '../../../components/Common/BigTitle'
+import TextField from 'components/Common/TextField'
+import PasswordField from 'components/Common/PasswordField'
+import BigTitle from 'components/Common/BigTitle'
 import { loginTitleWrap, loginFrom, passwordFind, footButtonWrapper } from './style'
 import Link from 'next/link'
-import FootButton, { FootButtonType } from '../../../components/Common/FootButton'
+import FootButton, { FootButtonType } from 'components/Common/FootButton'
+import Back from 'components/Common/Header/Back'
 
 const EmailLogin = () => {
   return (

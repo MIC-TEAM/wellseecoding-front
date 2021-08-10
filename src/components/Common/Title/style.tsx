@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { Common } from '../../../styles/common'
+import { Common } from 'styles/common'
 
 export const titleStyle = css`
   font-size: ${Common.fontSize.title};

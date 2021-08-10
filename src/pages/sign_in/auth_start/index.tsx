@@ -1,5 +1,5 @@
-import Back from '../../../components/Common/Header/back'
-import AuthLoginButton from '../../../components/AuthLogin'
+import AuthLogin from 'components/AuthLogin'
+import Back from 'components/Common/Header/Back'
 import { authLoginTitleWrap, bigTitle } from './style'
 
 const AuthLoginStart = () => {
@@ -16,7 +16,7 @@ const AuthLoginStart = () => {
         </h1>
       </div>
 
-      <AuthLoginButton />
+      <AuthLogin />
     </>
   )
 }

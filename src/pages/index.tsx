@@ -1,8 +1,8 @@
 import React from 'react'
 import { css } from '@emotion/react'
-import Back from '../components/Common/Header/back'
-import FooterMenu from '../components/Common/FooterMenu'
-import { Common } from '../styles/common'
+import FooterMenu from 'components/Common/FooterMenu'
+import { Common } from 'styles/common'
+import Back from 'components/Common/Header/Back'
 function Home() {
   return (
     <>

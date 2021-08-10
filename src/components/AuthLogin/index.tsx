@@ -1,7 +1,7 @@
 import React from 'react'
 import { css } from '@emotion/react'
-import { Common } from '../../styles/common'
 import Link from 'next/link'
+import { Common } from 'styles/common'
 
 export default function AuthLogin() {
   return (
@@ -21,7 +21,7 @@ export default function AuthLogin() {
 
       <p css={passwordFind}>
         웰시가 처음이신가요?
-        <Link href="/signup">
+        <Link href="/sign_up">
           <a>회원가입</a>
         </Link>
       </p>

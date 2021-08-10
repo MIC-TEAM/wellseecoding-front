@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
-import FootButton, { FootButtonType } from '../../../components/Common/FootButton'
-import Back from '../../../components/Common/Header/back'
-import Title from '../../../components/Common/Title'
+import FootButton, { FootButtonType } from 'components/Common/FootButton'
+import Back from 'components/Common/Header/Back'
+import Title from 'components/Common/Title'
 
 const SignUpProfileUpload = () => {
   return (

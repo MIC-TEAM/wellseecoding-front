@@ -1,7 +1,7 @@
-import FootButton, { FootButtonType } from '../../../components/Common/FootButton'
-import Back from '../../../components/Common/Header/back'
-import PasswordField from '../../../components/Common/PasswordField'
-import Title from '../../../components/Common/Title'
+import FootButton, { FootButtonType } from 'components/Common/FootButton'
+import Back from 'components/Common/Header/Back'
+import PasswordField from 'components/Common/PasswordField'
+import Title from 'components/Common/Title'
 import { footButtonWrapper, passwordForm } from './style'
 
 const PasswordReset = () => {

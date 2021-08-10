@@ -1,7 +1,7 @@
-import Back from '../../../components/Common/Header/back'
+import Back from 'components/Common/Header/Back'
 import { css } from '@emotion/react'
-import { Common } from '../../../styles/common'
-import FootButton, { FootButtonType } from '../../../components/Common/FootButton'
+import { Common } from 'styles/common'
+import FootButton, { FootButtonType } from 'components/Common/FootButton'
 
 const SignUpCompletion = () => {
   return (

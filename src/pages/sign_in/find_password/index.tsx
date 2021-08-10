@@ -1,7 +1,7 @@
-import Back from '../../../components/Common/Header/back'
+import Back from 'components/Common/Header/Back'
 import { TextField } from '@material-ui/core'
-import FootButton, { FootButtonType } from '../../../components/Common/FootButton'
-import Title from '../../../components/Common/Title'
+import FootButton, { FootButtonType } from 'components/Common/FootButton'
+import Title from 'components/Common/Title'
 import { footButtonWrapper, passwordResetForm } from './style'
 
 const PasswordEmailSubmit = () => {
