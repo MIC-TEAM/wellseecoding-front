@@ -1,6 +1,7 @@
 import emotionReset from 'emotion-reset'
 import { Global, css } from '@emotion/react'
 import React from 'react'
+import { Common } from './common'
 
 export const textEllipsis = css`
   text-overflow: ellipsis;
@@ -44,6 +45,7 @@ export const GlobalStyles = (
         max-width: 1024px;
         min-height: 100%;
         box-sizing: border-box;
+        background: #fff;
       }
       html,
       body,
@@ -65,11 +67,47 @@ export const GlobalStyles = (
         line-height: normal;
         overflow: visible;
         padding: 0;
-        -webkit-appearance: button; /* for input */
+        -webkit-appearance: none; /* for input */
         &:focus,
         &:active {
           outline: none;
         }
+      }
+
+      // common input material UI
+      .MuiFormControl-root {
+        width: 100%;
+        margin-bottom: 22px !important;
+        label {
+          font-size: ${Common.fontSize.fs20};
+          color: ${Common.colors.gray04};
+        }
+        label[data-shrink='true'] {
+          font-size: ${Common.fontSize.fs14};
+          color: #ff6e35;
+        }
+        input {
+          font-size: ${Common.fontSize.fs20};
+        }
+        .MuiInput-underline {
+          &::before {
+            border-bottom: 1px solid ${Common.colors.gray04};
+          }
+          &::after {
+            border-bottom: 1.6px solid #ff6e35;
+          }
+          &:hover:not(.Mui-disabled)::before {
+            border-bottom: 1.6px solid #ff6e35;
+          }
+        }
+        .MuiSvgIcon-root {
+          font-size: 2.2rem;
+        }
+      }
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
       }
     `}
   />

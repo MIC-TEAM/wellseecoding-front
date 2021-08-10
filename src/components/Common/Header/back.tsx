@@ -6,11 +6,11 @@ function Back() {
   const router = useRouter()
 
   return (
-    <div css={backHeader}>
+    <header css={backHeader}>
       <button type="button" onClick={() => router.back()}>
         <img src="/images/header/back.svg" alt="뒤로가기" />
       </button>
-    </div>
+    </header>
   )
 }
 
