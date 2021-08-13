@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 import React from 'react'
 import Link from 'next/link'
 
@@ -5,13 +6,44 @@ import { authLoginButton, email, kakao, naver } from './styled'
 import { passwordFind } from 'pages/sign_in/email_start/style'
 import { useCallback } from 'react'
 
+declare global {
+  interface Window {
+    Kakao: any
+  }
+}
+
 export default function AuthLogin() {
-  const KAKAO_CALLBACK_URL = 'localhost://????'
+  if (typeof window !== 'undefined') {
+    // 코드 작성
+    var { Kakao } = window
+  }
+
+  // const KAKAO_CALLBACK_URL = 'localhost://????'
   const NAVER_CALLBACK_URL = 'localhost://????'
 
-  const kakaoLogin = useCallback(() => {
-    location.href = `${KAKAO_CALLBACK_URL}`
-  }, [])
+  const kakaoLogin = () => {
+    Kakao.init(`${process.env.NEXT_PUBLIC_KAKAO_KEY}`)
+
+    // process.env.NEXT_PUBLIC_PUBLISHABLE_KEY
+    Kakao.Auth.login({
+      scope: 'profile_nickname,  account_email',
+
+      success: function (authObj: any) {
+        console.log('authObj: ', authObj)
+        // Kakao.Auth.setAccessToken(authObj.access_token)
+        // localStorage.setItem('token', authObj.access_token);
+        if (authObj.access_token) {
+          Kakao.cleanup()
+          console.log('Kakao.cleanup!-login')
+        }
+      },
+      fail: function (err: Error) {
+        console.log('에러', err)
+        alert('로그인실패!')
+        return
+      },
+    })
+  }
 
   const naverLogin = useCallback(() => {
     location.href = `${NAVER_CALLBACK_URL}`
