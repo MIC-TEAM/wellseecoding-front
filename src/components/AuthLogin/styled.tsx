@@ -22,12 +22,12 @@ export const authLoginButton = css`
   }
 `
 
-export const kakao = css`
+export const kakaoStyle = css`
   background: #fee500;
   color: #262626;
 `
 
-export const naver = css`
+export const naverStyle = css`
   color: #ffffff;
   background: #03c75a;
 `

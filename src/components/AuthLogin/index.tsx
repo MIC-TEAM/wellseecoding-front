@@ -2,24 +2,23 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { authLoginButton, email, kakao, naver } from './styled'
+import { authLoginButton, email, kakaoStyle, naverStyle } from './styled'
 import { passwordFind } from 'pages/sign_in/email_start/style'
-import { useCallback } from 'react'
 
 declare global {
   interface Window {
     Kakao: any
+    naver: any
   }
 }
+
+export const KAKAO_CALLBACK = 'http://localhost:3000/'
 
 export default function AuthLogin() {
   if (typeof window !== 'undefined') {
     // 코드 작성
     var { Kakao } = window
   }
-
-  // const KAKAO_CALLBACK_URL = 'localhost://????'
-  const NAVER_CALLBACK_URL = 'localhost://????'
 
   const kakaoLogin = () => {
     Kakao.init(`${process.env.NEXT_PUBLIC_KAKAO_KEY}`)
@@ -45,17 +44,32 @@ export default function AuthLogin() {
     })
   }
 
-  const naverLogin = useCallback(() => {
-    location.href = `${NAVER_CALLBACK_URL}`
-  }, [])
+  const naverLogin = () => {
+    var url =
+      'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' +
+      process.env.NEXT_PUBLIC_NAVER_KEY +
+      '&redirect_uri=' +
+      KAKAO_CALLBACK +
+      '&state=1234'
+    window.location.replace(url)
+  }
+
+  /*
+  naverlogin(){
+    var url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id='+this.client_id+'&redirect_uri='+this.callbackUrl+'&state=1234';
+    window.location.replace(url);
+  }
+  */
+
+  //https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=Jg4DHcWgOrDk1i7p3edO&redirect_uri=http://localhost:3000/sign_in/auth_start&state=1234
 
   return (
     <div css={authLoginButton}>
-      <button type="button" css={kakao} onClick={kakaoLogin}>
+      <button type="button" css={kakaoStyle} onClick={kakaoLogin}>
         <img src="/images/login/kakao.svg" alt="카카오 로그인" />
         카카오톡으로 시작하기
       </button>
-      <button type="button" css={naver} onClick={naverLogin}>
+      <button type="button" css={naverStyle} onClick={naverLogin}>
         <img src="/images/login/naver.svg" alt="네이버 로그인" />
         네이버로 시작하기
       </button>
@@ -63,7 +77,6 @@ export default function AuthLogin() {
         <img src="/images/login/email.svg" alt="이메일로 로그인" />
         이메일로 시작하기
       </button>
-
       <p css={passwordFind}>
         웰시가 처음이신가요?
         <Link href="/sign_up">
