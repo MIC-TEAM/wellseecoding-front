@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-export const KAKAO_CALLBACK = 'http://localhost:3000/'
+export const KAKAO_CALLBACK = 'http://localhost:3000/sign_in/auth_start'
 
 export default function AuthLogin() {
   if (typeof window !== 'undefined') {
@@ -44,6 +44,11 @@ export default function AuthLogin() {
     })
   }
 
+  /* 
+  https://developers.naver.com/docs/login/web/web.md 1.2 네이버 아이디로 로그인 인증 요청문 생성
+  https://nid.naver.com/oauth2.0/authorize?client_id={클라이언트 아이디}&response_type=code&redirect_uri={개발자 센터에 등록한 콜백 URL(URL 인코딩)}&state={상태 토큰}
+  */
+
   const naverLogin = () => {
     var url =
       'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' +
@@ -53,15 +58,6 @@ export default function AuthLogin() {
       '&state=1234'
     window.location.replace(url)
   }
-
-  /*
-  naverlogin(){
-    var url = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id='+this.client_id+'&redirect_uri='+this.callbackUrl+'&state=1234';
-    window.location.replace(url);
-  }
-  */
-
-  //https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=Jg4DHcWgOrDk1i7p3edO&redirect_uri=http://localhost:3000/sign_in/auth_start&state=1234
 
   return (
     <div css={authLoginButton}>
