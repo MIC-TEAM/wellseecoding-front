@@ -1,7 +1,7 @@
-import { css } from '@emotion/react'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
 import Title from 'components/Common/Title'
+import { footButtonWrapper } from './style'
 
 const SignUpProfileUpload = () => {
   return (
@@ -23,15 +23,3 @@ const SignUpProfileUpload = () => {
 }
 
 export default SignUpProfileUpload
-
-const footButtonWrapper = css`
-  position: fixed;
-  bottom: 4.4em;
-  left: 0;
-  right: 0;
-  padding: 0 20px;
-
-  & > button:nth-of-type(1) {
-    margin-bottom: 11px;
-  }
-`
