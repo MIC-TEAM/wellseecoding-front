@@ -114,6 +114,7 @@ export const GlobalStyles = (
       }
       .MuiSvgIcon-root {
         fill: #ff6e35 !important;
+        font-size: 2rem !important;
       }
     `}
   />

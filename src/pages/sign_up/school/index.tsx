@@ -18,7 +18,7 @@ const SelfIntroduction = () => {
         <TextField text="학위" type="text" />
         <TextField text="전공" type="text" />
 
-        <RadioGroup row aria-label="school" name="school" defaultValue="top">
+        <RadioGroup row aria-label="school" name="school" defaultValue="top" style={{ marginTop: '2em' }}>
           <FormControlLabel value="school-ing" control={<Radio color="primary" />} label="재학 중" />
           <FormControlLabel value="school-end" control={<Radio color="primary" />} label="졸업" />
         </RadioGroup>
