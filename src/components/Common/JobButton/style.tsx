@@ -6,7 +6,7 @@ export const hashTag = css`
   color: #d3cfcc;
   border-radius: 60px;
   display: inline-block;
-  padding: 10px 14px 14px;
+  padding: 10px 14px;
   margin-top: 14px;
   margin-right: 8px;
   &:focus {

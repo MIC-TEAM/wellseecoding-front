@@ -10,6 +10,8 @@ const SignUpProfileUpload = () => {
 
       <Title title="프로필 사진을 올려주세요!" className="loginMt" />
 
+      <input type="file" accept="image/*" />
+
       <div css={footButtonWrapper}>
         <FootButton type="button" footButtonType={FootButtonType.SKIP}>
           올리기 싫어요

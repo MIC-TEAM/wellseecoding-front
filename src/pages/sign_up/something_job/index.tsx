@@ -1,7 +1,7 @@
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
 import Title from 'components/Common/Title'
-import { footButtonWrapper } from './style'
+import { footButtonWrapper, job } from './style'
 
 const SomethingJob = () => {
   return (
@@ -10,11 +10,7 @@ const SomethingJob = () => {
 
       <Title title="어떤 일을 하고 계세요?" className="loginMt" />
 
-      <div>
-        <button type="button">
-          <img src="/images/signup/job01.svg" alt="학생" />
-          <p>학생</p>
-        </button>
+      <div css={job}>
         <button type="button">
           <img src="/images/signup/job02.svg" alt="취준생" />
           <p>취준생</p>
