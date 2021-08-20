@@ -15,6 +15,7 @@ export const footButtonWrapper = css`
 
 export const selfWrap = css`
   margin-top: 1.7em;
+  margin-bottom: 20vh;
 `
 
 export const jobList = css`
