@@ -1,6 +1,7 @@
 import FooterMenu from 'components/Common/FooterMenu'
-import TogetherHeader from 'components/Common/Together/Header'
-import StudyBox from 'components/Common/Together/StudySection'
+import TogetherHeader from 'components/Together/Header'
+import StudyBox from 'components/Together/StudySection'
+import WriteButton from 'components/Together/WriteButton'
 import { togetherBoard } from './style'
 
 const Write = () => {
@@ -13,7 +14,7 @@ const Write = () => {
         <StudyBox title="스터디" />
         <StudyBox title="토이 프로젝트" />
       </main>
-
+      <WriteButton />
       <FooterMenu />
     </>
   )
