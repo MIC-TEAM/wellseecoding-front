@@ -25,9 +25,6 @@ export const footerNavWrap = css`
       path {
         fill: #ff6e35;
       }
-      p {
-        color: #ff6e35;
-      }
     }
   }
   p {
