@@ -19,4 +19,6 @@ export default Back
 const backHeader = css`
   width: 100%;
   text-align: left;
+  position: sticky;
+  top: 0;
 `

@@ -109,6 +109,13 @@ export const GlobalStyles = (
         -webkit-appearance: none;
         margin: 0;
       }
+      .MuiTypography-body1 {
+        font-size: 2rem !important;
+      }
+      .MuiSvgIcon-root {
+        fill: #ff6e35 !important;
+        font-size: 2rem !important;
+      }
     `}
   />
 )
