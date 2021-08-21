@@ -8,6 +8,11 @@ export const togetherBoard = css`
   background: #ffeee7;
   height: 100vh;
   margin-top: 18px;
+  section {
+    &:last-of-type {
+      padding-bottom: 10em;
+    }
+  }
   h2 {
     font-size: ${Common.fontSize.fs22};
     color: ${Common.colors.black};

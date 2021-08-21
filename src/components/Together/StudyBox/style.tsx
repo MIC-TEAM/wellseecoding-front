@@ -10,7 +10,9 @@ export const studyContentBox = css`
   margin-bottom: 35px;
   flex: 0 0 auto;
   margin-left: 16px;
-
+  &:last-of-type {
+    margin-right: 16px;
+  }
   h2 {
     font-weight: 500;
     font-size: ${Common.fontSize.fs22};

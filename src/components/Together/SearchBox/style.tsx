@@ -8,6 +8,9 @@ export const studyContentBox = css`
   padding: 16px;
   width: 100%;
   margin-bottom: 16px;
+  &:last-of-type {
+    margin-bottom: 5em;
+  }
   h2 {
     font-weight: 500;
     font-size: ${Common.fontSize.fs22};

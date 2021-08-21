@@ -26,7 +26,6 @@ export const WriteButton = css`
     display: grid;
     justify-items: end;
     width: 100%;
-    max-width: 600px;
     margin: 0 auto;
     padding: 0 20px;
   }

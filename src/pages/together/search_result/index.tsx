@@ -5,6 +5,34 @@ import { searchWord } from './style'
 const Search = () => {
   const word = '자바스크립트'
 
+  const dummySearchBox = [
+    {
+      id: 1,
+      comment: '[서울] 취업용 프로젝트 같이 하실 분 모집합니다!',
+      hashTag: 'JavaScript',
+    },
+    {
+      id: 2,
+      comment: '[광주] 스프링 책 한권 같이 끝내실 분 구합니다!',
+      hashTag: 'Spring',
+    },
+    {
+      id: 3,
+      comment: '[남양주] 포폴용 프로젝트 같이 하실 분 모집합니다!',
+      hashTag: 'Python',
+    },
+    {
+      id: 4,
+      comment: '[부산] 취업 면접 준비 같이 하실 분 모집합니다!',
+      hashTag: 'Django',
+    },
+    {
+      id: 5,
+      comment: '[서울대입구] 코테 준비 같이 하실 분 ?!',
+      hashTag: 'Django',
+    },
+  ]
+
   return (
     <>
       <TogetherSearchBar />
@@ -17,12 +45,9 @@ const Search = () => {
       </div>
 
       <section>
-        <SearchBox listTitle="[서울] 취업용 프로젝트 같이하실 분  모집합니다." hashTag="Spring" />
-        <SearchBox listTitle="[서울] 취업용 프로젝트 같이하실 분  모집합니다." hashTag="Javascript" />
-        <SearchBox listTitle="[서울] 취업용 프로젝트 같이하실 분  모집합니다." hashTag="Spring" />
-        <SearchBox listTitle="[서울] 취업용 프로젝트 같이하실 분  모집합니다." hashTag="Javascript" />
-        <SearchBox listTitle="[서울] 취업용 프로젝트 같이하실 분  모집합니다." hashTag="Spring" />
-        <SearchBox listTitle="[서울] 취업용 프로젝트 같이하실 분  모집합니다." hashTag="Javascript" />
+        {dummySearchBox.map((item) => (
+          <SearchBox key={item.id} listTitle={item.comment} hashTag={item.hashTag} />
+        ))}
       </section>
     </>
   )

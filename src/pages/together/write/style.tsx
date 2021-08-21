@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import { Common } from 'styles/common'
 
 export const footButtonWrapper = css`
   position: fixed;
@@ -23,11 +24,11 @@ export const writeForm = css`
     text-align: justify;
     letter-spacing: -0.6px;
     color: #444241;
-    border-bottom: 1.6px solid #d3cfcc;
+    border-bottom: 1.6px solid ${Common.colors.gray04};
     margin-top: 24px;
     padding-bottom: 8px;
     &::placeholder {
-      color: #d3cfcc;
+      color: ${Common.colors.gray04};
     }
   }
   textarea {
@@ -44,7 +45,7 @@ export const writeForm = css`
     border: none;
     resize: none;
     &::placeholder {
-      color: #d3cfcc;
+      color: ${Common.colors.gray04};
     }
     &::after {
       content: '';
