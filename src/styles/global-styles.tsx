@@ -73,7 +73,11 @@ export const GlobalStyles = (
           outline: none;
         }
       }
-
+      ol,
+      ul,
+      li {
+        list-style: none;
+      }
       // common input material UI
       .MuiFormControl-root {
         width: 100%;

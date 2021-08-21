@@ -19,4 +19,23 @@ export const footerNavWrap = css`
   height: 50px;
   align-items: center;
   justify-content: space-around;
+  li {
+    text-align: center;
+    &.active {
+      path {
+        fill: #ff6e35;
+      }
+      p {
+        color: #ff6e35;
+      }
+    }
+  }
+  p {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #b6b2b0;
+    font-weight: 500;
+    line-height: 1.5rem;
+    margin-top: 0.5em;
+  }
 `
