@@ -9,7 +9,7 @@ import { togetherBoard } from './style'
 const Post = () => {
   return (
     <>
-      <BackOptional title="" />
+      <BackOptional title="" optional={true} />
       <main css={togetherBoard}>
         {dummyUser &&
           dummyUser.map((d) => (

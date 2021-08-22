@@ -6,9 +6,10 @@ import { useRouter } from 'next/router'
 
 type Props = {
   title: string | null
+  optional: boolean
 }
 
-function BackOptional({ title }: Props) {
+function BackOptional({ title, optional }: Props) {
   const router = useRouter()
 
   return (
@@ -17,14 +18,16 @@ function BackOptional({ title }: Props) {
         <img src="/images/header/back.svg" alt="뒤로가기" />
       </button>
       <span>{title ? title : ''}</span>
-      <div>
-        <button>
-          <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
-        </button>
-        <button>
-          <img src="/images/header/setting.svg" alt="환경설정" onClick={() => alert('환경설정')} />
-        </button>
-      </div>
+      {optional && (
+        <div>
+          <button>
+            <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
+          </button>
+          <button>
+            <img src="/images/header/setting.svg" alt="환경설정" onClick={() => alert('환경설정')} />
+          </button>
+        </div>
+      )}
     </header>
   )
 }

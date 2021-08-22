@@ -1,11 +1,27 @@
 import BackOptional from 'components/Common/Header/BackOptional'
 import React from 'react'
+import { useCallback } from 'react'
+import { useState } from 'react'
 import { commentFooter, CommentMain, CommentMainWrap, MainWrapBottom, MainWrapHead, MainWrapMain } from './style'
 
 function Comment() {
+  const [value, setValue] = useState('')
+
+  const onChange = useCallback((e) => {
+    setValue(e.target.value)
+  }, [])
+
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault()
+      alert(value)
+      setValue('')
+    },
+    [value]
+  )
   return (
     <>
-      <BackOptional title="댓글" />
+      <BackOptional title="댓글" optional={false} />
 
       {/* 메인 게시글 부분 래퍼 */}
       <CommentMain>
@@ -51,9 +67,9 @@ function Comment() {
       </CommentMain>
 
       {/* 푸터 댓글 달기  */}
-      <div css={commentFooter}>
-        <input type="text" placeholder="댓글 달기" />
-        <div>
+      <form onSubmit={onSubmit} css={commentFooter}>
+        <input type="text" value={value} onChange={onChange} placeholder="댓글 달기" />
+        <button>
           <svg width="49" height="48" viewBox="0 0 49 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="49" height="48" rx="16" fill="#FF6E35" />
             <path
@@ -61,8 +77,8 @@ function Comment() {
               fill="white"
             />
           </svg>
-        </div>
-      </div>
+        </button>
+      </form>
     </>
   )
 }
