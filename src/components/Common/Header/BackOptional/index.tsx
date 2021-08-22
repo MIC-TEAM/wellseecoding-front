@@ -4,7 +4,11 @@ import React from 'react'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 
-function BackOptional() {
+type Props = {
+  title: string | null
+}
+
+function BackOptional({ title }: Props) {
   const router = useRouter()
 
   return (
@@ -12,6 +16,7 @@ function BackOptional() {
       <button type="button" onClick={() => router.back()}>
         <img src="/images/header/back.svg" alt="뒤로가기" />
       </button>
+      <span>{title ? title : ''}</span>
       <div>
         <button>
           <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
@@ -36,6 +41,19 @@ const backHeader = css`
   background: #fff;
   align-items: center;
   z-index: 9999;
+  border-bottom: 1px solid #d3cfcc;
+
+  & span {
+    position: relative;
+    left: -20px;
+    font-family: 'Spoqa Han Sans Neo';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: -0.4000000059604645px;
+    text-align: justify;
+  }
 
   & div {
     display: flex;
