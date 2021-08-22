@@ -63,9 +63,14 @@ export const togetherBoard = css`
     margin-bottom: 9px;
 
     & h3 {
+      font-family: 'Spoqa Han Sans Neo';
       font-size: 18px;
+      font-style: normal;
       font-weight: 500;
-      margin-bottom: 4px;
+      line-height: 26px;
+      letter-spacing: -0.6000000238418579px;
+      text-align: justify;
+      margin-bottom: 14px;
     }
 
     & p {

@@ -7,7 +7,7 @@ type Props = {
 }
 
 function HashWrap({ content }: Props) {
-  return <div css={hashWrap}>{content}</div>
+  return <div css={hashWrap}>#{content}</div>
 }
 
 const hashWrap = css`

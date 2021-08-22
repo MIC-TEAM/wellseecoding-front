@@ -17,6 +17,7 @@ function Back() {
 export default Back
 
 const backHeader = css`
+  padding: 0 20px;
   width: 100%;
   text-align: left;
   position: sticky;

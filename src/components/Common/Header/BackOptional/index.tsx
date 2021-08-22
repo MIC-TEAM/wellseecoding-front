@@ -27,6 +27,7 @@ function BackOptional() {
 export default BackOptional
 
 const backHeader = css`
+  padding: 0 20px;
   width: 100%;
   text-align: left;
   position: sticky;
@@ -34,6 +35,7 @@ const backHeader = css`
   top: 0;
   background: #fff;
   align-items: center;
+  z-index: 9999;
 
   & div {
     display: flex;
