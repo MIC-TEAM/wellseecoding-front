@@ -1,6 +1,5 @@
-import React from 'react'
 import useHeader from 'hooks/useHeader'
-import { container } from './styles'
+import { css } from '@emotion/react'
 
 function Header() {
   const { teamName } = useHeader()
@@ -9,3 +8,9 @@ function Header() {
 }
 
 export default Header
+
+const container = css`
+  margin: 15px 0;
+  text-align: center;
+  font-size: 20px;
+`

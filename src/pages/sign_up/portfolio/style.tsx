@@ -1,4 +1,3 @@
-import { Common } from 'styles/common'
 import { css } from '@emotion/react'
 
 export const footButtonWrapper = css`

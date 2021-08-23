@@ -1,4 +1,3 @@
-import React from 'react'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 
@@ -9,6 +8,8 @@ type Props = {
 function HashWrap({ content }: Props) {
   return <div css={hashWrap}>#{content}</div>
 }
+
+export default HashWrap
 
 const hashWrap = css`
   background: #ffeee7;
@@ -21,5 +22,3 @@ const hashWrap = css`
   line-height: 20px;
   margin-right: 4px;
 `
-
-export default HashWrap

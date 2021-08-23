@@ -15,6 +15,8 @@ function FlatBox({ name, contents }: Props) {
   )
 }
 
+export default FlatBox
+
 const FlatWrap = css`
   background-color: white;
   padding: 21px;
@@ -33,5 +35,3 @@ const FlatWrap = css`
     letter-spacing: -0.6px;
   }
 `
-
-export default FlatBox
