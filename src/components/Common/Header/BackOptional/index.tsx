@@ -18,7 +18,7 @@ function BackOptional({ title, optional }: Props) {
       <button type="button" onClick={() => router.back()}>
         <img src="/images/header/back.svg" alt="뒤로가기" />
       </button>
-      <span>{title ? title : ''}</span>
+      <h1>{title ? title : ''}</h1>
       {optional && (
         <div>
           <button type="button">
@@ -36,7 +36,6 @@ function BackOptional({ title, optional }: Props) {
 export default BackOptional
 
 const backHeader = css`
-  padding: 0 20px;
   width: 100%;
   text-align: left;
   position: sticky;
@@ -47,7 +46,7 @@ const backHeader = css`
   z-index: 9999;
   border-bottom: 1px solid #d3cfcc;
 
-  & span {
+  & h1 {
     font-size: ${Common.fontSize.fs20};
     letter-spacing: -0.4px; // 폰트 자간 너비
     font-weight: 500; // 폰트 굵기

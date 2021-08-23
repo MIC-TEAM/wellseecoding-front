@@ -12,31 +12,24 @@ export const footerNav = css`
   padding: 1em 0;
 `
 export const footerNavWrap = css`
-  max-width: 600px;
   margin: 0 auto;
   width: 100%;
   display: flex;
   height: 50px;
   align-items: center;
   justify-content: space-around;
+
   li {
     text-align: center;
     align-items: center;
 
-    & a {
+    a {
       display: flex;
       align-items: center;
     }
-    & svg {
+    /* 벡터 이미지 오른쪽 숫자를 위한 마진 */
+    svg {
       margin-right: 9px;
-    }
-    &.active {
-      path {
-        fill: #ff6e35;
-      }
-      p {
-        color: #ff6e35;
-      }
     }
     span {
       font-size: 18px;
@@ -54,8 +47,9 @@ export const footerNavWrap = css`
   & button {
     background-color: #ff6e35;
     border-radius: 16px;
+    /* width: 59.2% */
     width: 222px;
-    height: 52px;
+    padding: 16px;
 
     color: white;
     text-align: center;
@@ -63,8 +57,5 @@ export const footerNavWrap = css`
     font-family: 'Spoqa Han Sans Neo';
     font-size: 18px;
     font-style: normal;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: -0.30000001192092896px;
   }
 `

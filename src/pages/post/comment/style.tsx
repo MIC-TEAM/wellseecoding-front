@@ -44,15 +44,17 @@ export const MainWrapBottom = styled.div`
 
 export const commentFooter = css`
   position: fixed;
-  width: 100%;
-  bottom: 0;
-  padding: 20px;
+  width: 95%;
+  bottom: 20px;
   display: flex;
-  justify-content: space-between;
   background-color: white;
   z-index: 9999;
 
-  & input {
+  svg {
+    margin-right: 20px;
+  }
+
+  input {
     background: #f5f5f5;
     border: 1px solid #d3cfcc;
     width: 100%;

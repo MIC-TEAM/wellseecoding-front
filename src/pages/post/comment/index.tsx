@@ -65,7 +65,6 @@ function Comment() {
           </MainWrapBottom>
         </div>
       </CommentMain>
-
       {/* 푸터 댓글 달기  */}
       <form onSubmit={onSubmit} css={commentFooter}>
         <input type="text" value={value} onChange={onChange} placeholder="댓글 달기" />
