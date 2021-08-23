@@ -1,5 +1,5 @@
-import React from 'react'
 import { css } from '@emotion/react'
+import { Common } from 'styles/common'
 
 type Props = {
   name: string
@@ -17,23 +17,20 @@ function FlatBox({ name, contents }: Props) {
 
 const FlatWrap = css`
   background-color: white;
-  padding: 21px 22px;
+  padding: 21px;
   margin-bottom: 9px;
 
-  & h3 {
-    font-size: 18px;
+  h3 {
+    font-size: ${Common.fontSize.fs18};
     font-weight: 500;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
-  & p {
-    font-family: 'Spoqa Han Sans Neo';
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
+  p {
+    font-size: ${Common.fontSize.fs16};
+    font-weight: 500;
     line-height: 22px;
-    letter-spacing: -0.6000000238418579px;
-    text-align: justify;
+    letter-spacing: -0.6px;
   }
 `
 

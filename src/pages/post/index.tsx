@@ -2,8 +2,6 @@ import FlatBox from 'components/Common/FlatBox'
 import HashWrap from 'components/Common/HashWrap'
 import BackOptional from 'components/Common/Header/BackOptional'
 import PostFooter from 'components/Post/PostFooter'
-
-import React from 'react'
 import { togetherBoard } from './style'
 
 const Post = () => {
