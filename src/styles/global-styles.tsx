@@ -73,7 +73,11 @@ export const GlobalStyles = (
           outline: none;
         }
       }
-
+      ol,
+      ul,
+      li {
+        list-style: none;
+      }
       // common input material UI
       .MuiFormControl-root {
         width: 100%;
@@ -108,6 +112,13 @@ export const GlobalStyles = (
       input::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
+      }
+      .MuiTypography-body1 {
+        font-size: 2rem !important;
+      }
+      .MuiSvgIcon-root {
+        fill: #ff6e35 !important;
+        font-size: 2rem !important;
       }
     `}
   />
