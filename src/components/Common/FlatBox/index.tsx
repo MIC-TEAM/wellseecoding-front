@@ -1,5 +1,6 @@
 import React from 'react'
 import { css } from '@emotion/react'
+import { Common } from 'styles/common'
 
 type Props = {
   name: string
@@ -28,11 +29,9 @@ const FlatWrap = css`
 
   & p {
     font-family: 'Spoqa Han Sans Neo';
-    font-size: 16px;
-    font-style: normal;
+    font-size: ${Common.fontSize.fs16};
     font-weight: 700;
-    line-height: 22px;
-    letter-spacing: -0.6000000238418579px;
+    letter-spacing: -0.6px;
     text-align: justify;
   }
 `

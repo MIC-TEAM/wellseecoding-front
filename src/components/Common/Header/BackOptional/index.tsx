@@ -3,6 +3,7 @@
 import React from 'react'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
+import { Common } from 'styles/common'
 
 type Props = {
   title: string | null
@@ -20,10 +21,10 @@ function BackOptional({ title, optional }: Props) {
       <span>{title ? title : ''}</span>
       {optional && (
         <div>
-          <button>
+          <button type="button">
             <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
           </button>
-          <button>
+          <button type="button">
             <img src="/images/header/setting.svg" alt="환경설정" onClick={() => alert('환경설정')} />
           </button>
         </div>
@@ -47,15 +48,11 @@ const backHeader = css`
   border-bottom: 1px solid #d3cfcc;
 
   & span {
-    position: relative;
-    left: -20px;
-    font-family: 'Spoqa Han Sans Neo';
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 28px;
-    letter-spacing: -0.4000000059604645px;
-    text-align: justify;
+    font-size: ${Common.fontSize.fs20};
+    letter-spacing: -0.4px; // 폰트 자간 너비
+    font-weight: 500; // 폰트 굵기
+    line-height: 28px; // 폰트 높이 너비
+    margin-left: -20px; //  position: relative; & left: -20px; 대체값
   }
 
   & div {

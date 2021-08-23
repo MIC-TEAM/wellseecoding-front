@@ -33,7 +33,9 @@ function PostFooter() {
             </a>
           </Link>
         </li>
-        <button onClick={() => alert('가입하기!')}>가입하기</button>
+        <li>
+          <button onClick={() => alert('가입하기!')}>가입하기</button>
+        </li>
       </ul>
     </nav>
   )

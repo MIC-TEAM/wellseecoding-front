@@ -26,8 +26,8 @@ function App({ Component, pageProps }: AppProps) {
 export default wrapper.withRedux(App)
 
 const mainWrap = css`
-  /* padding: 0 20px; */
+  padding: 0 20px;
   height: 100vh;
   width: 100%;
-  /* overflow: scroll; */
+  overflow: scroll;
 `
