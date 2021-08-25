@@ -21,4 +21,5 @@ const backHeader = css`
   position: sticky;
   top: 0;
   background: #fff;
+  padding: 0 20px;
 `
