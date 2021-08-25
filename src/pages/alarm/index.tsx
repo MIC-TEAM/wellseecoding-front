@@ -1,4 +1,3 @@
-import { css } from '@emotion/react'
 import AlarmList from 'components/Alarm/List'
 import AlarmTitle from 'components/Alarm/Title'
 import Back from 'components/Common/Header/Back'

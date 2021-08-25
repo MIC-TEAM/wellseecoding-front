@@ -1,12 +1,12 @@
 import { footButtonWrapper } from './style'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import TogetherBack from 'components/Together/Header/Back'
+import TogetherBack from 'components/Common/Header/Back'
 import { writeForm, writeWrap } from './style'
 
 const TogetherWrite = () => {
   return (
     <main css={writeWrap}>
-      <TogetherBack />
+      <TogetherBack text="모임 글쓰기" />
 
       <form css={writeForm}>
         <input type="text" placeholder="[모임지역]모임명" />
