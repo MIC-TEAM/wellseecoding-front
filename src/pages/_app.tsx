@@ -29,5 +29,4 @@ const mainWrap = css`
   height: 100vh;
   width: 100%;
   overflow: scroll;
-  padding: 0 20px;
 `

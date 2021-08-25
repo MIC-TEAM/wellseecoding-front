@@ -1,9 +1,9 @@
 import TogetherSearchBar from 'components/Together/Header/Search'
-import { searchList, searchRecord } from './style'
+import { searchList, searchRecord, searchWrap } from './style'
 
 const Search = () => {
   return (
-    <>
+    <div css={searchWrap}>
       <TogetherSearchBar />
 
       <div css={searchRecord}>
@@ -31,7 +31,7 @@ const Search = () => {
           </button>
         </li>
       </ul>
-    </>
+    </div>
   )
 }
 

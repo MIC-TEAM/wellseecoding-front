@@ -1,14 +1,14 @@
-import StudySlider from '../StudySlider'
+import StudySlider from '../../Together/StudySlider'
 import { css } from '@emotion/react'
 
 type Props = {
   title: string
 }
-function StudySection({ title }: Props) {
+function StudyTitle({ title }: Props) {
   return (
     <section>
       <h2 css={titleStyle} className="together__title">
-        #{title} 모임이에요!
+        {title}
       </h2>
 
       <StudySlider />
@@ -16,7 +16,7 @@ function StudySection({ title }: Props) {
   )
 }
 
-export default StudySection
+export default StudyTitle
 
 const titleStyle = css`
   font-size: 2.2rem;

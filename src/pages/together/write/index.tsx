@@ -1,11 +1,11 @@
 import { footButtonWrapper } from './style'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import TogetherBack from 'components/Together/Header/Back'
-import { writeForm } from './style'
+import { writeForm, writeWrap } from './style'
 
 const TogetherWrite = () => {
   return (
-    <>
+    <main css={writeWrap}>
       <TogetherBack />
 
       <form css={writeForm}>
@@ -37,7 +37,7 @@ ex) 프론트 n명, 백 n명
           다음
         </FootButton>
       </div>
-    </>
+    </main>
   )
 }
 

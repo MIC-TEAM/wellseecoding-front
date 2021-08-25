@@ -56,3 +56,7 @@ export const writeForm = css`
     }
   }
 `
+
+export const writeWrap = css`
+  padding: 0 20px;
+`

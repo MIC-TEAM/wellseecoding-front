@@ -43,3 +43,6 @@ export const searchList = css`
     }
   }
 `
+export const searchWrap = css`
+  padding: 0 20px;
+`

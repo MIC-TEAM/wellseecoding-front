@@ -89,7 +89,7 @@ export const togetherBoard = css`
   .mainContents {
     background-color: #ffeee7;
     height: 100vh;
-
+    margin-bottom: 80px;
     select {
       margin: 18px 20px;
       padding: 8px 10px;

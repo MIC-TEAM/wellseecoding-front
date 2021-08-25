@@ -36,9 +36,9 @@ export default BackOptional
 
 const backHeader = css`
   width: 100%;
-  text-align: left; 
-   position: fixed;
-   left: 0;
+  text-align: left;
+  position: fixed;
+  left: 0;
   display: flex;
   top: 0;
   background: #fff;
@@ -48,12 +48,12 @@ const backHeader = css`
   .back {
     padding-left: 20px;
   }
-h1 {
+  h1 {
     font-size: ${Common.fontSize.fs20};
-    letter-spacing: -0.4px
-    font-weight: 500; 
-    line-height: 28px; 
-    margin-left: -20px; 
+    letter-spacing: -0.4px;
+    font-weight: 500;
+    line-height: 28px;
+    margin-left: -20px;
   }
 
   div {
@@ -61,10 +61,11 @@ h1 {
     align-items: center;
     position: absolute;
     right: 0;
-     button {
+    button {
       align-items: center;
-       img {
+      img {
         margin-right: 20px;
       }
     }
-  } `
+  }
+`

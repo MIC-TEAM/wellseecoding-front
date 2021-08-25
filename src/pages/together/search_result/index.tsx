@@ -1,6 +1,6 @@
 import TogetherSearchBar from 'components/Together/Header/Search'
 import SearchBox from 'components/Together/SearchBox'
-import { searchWord } from './style'
+import { searchWord, searchWrap } from './style'
 
 const Search = () => {
   const word = '자바스크립트'
@@ -31,10 +31,20 @@ const Search = () => {
       comment: '[서울대입구] 코테 준비 같이 하실 분 ?!',
       hashTag: 'Django',
     },
+    {
+      id: 6,
+      comment: '[부산] 취업 면접 준비 같이 하실 분 모집합니다!',
+      hashTag: 'Django',
+    },
+    {
+      id: 7,
+      comment: '[서울대입구] 코테 준비 같이 하실 분 ?!',
+      hashTag: 'Django',
+    },
   ]
 
   return (
-    <>
+    <div css={searchWrap}>
       <TogetherSearchBar />
 
       <div css={searchWord}>
@@ -49,7 +59,7 @@ const Search = () => {
           <SearchBox key={item.id} listTitle={item.comment} hashTag={item.hashTag} />
         ))}
       </section>
-    </>
+    </div>
   )
 }
 

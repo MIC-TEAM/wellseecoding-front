@@ -1,6 +1,6 @@
 import FooterMenu from 'components/Common/FooterMenu'
 import TogetherHeader from 'components/Together/Header'
-import StudyBox from 'components/Together/StudySection'
+import StudySection from 'components/Together/StudySection'
 import WriteButton from 'components/Together/WriteButton'
 import { togetherBoard } from './style'
 
@@ -10,9 +10,9 @@ const Write = () => {
       <TogetherHeader />
 
       <main css={togetherBoard}>
-        <StudyBox title="모각코" />
-        <StudyBox title="스터디" />
-        <StudyBox title="토이 프로젝트" />
+        <StudySection title="모각코" />
+        <StudySection title="스터디" />
+        <StudySection title="토이 프로젝트" />
       </main>
       <WriteButton />
       <FooterMenu />

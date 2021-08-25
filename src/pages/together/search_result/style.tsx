@@ -15,3 +15,7 @@ export const searchWord = css`
     font-weight: 700;
   }
 `
+
+export const searchWrap = css`
+  padding: 0 20px;
+`
