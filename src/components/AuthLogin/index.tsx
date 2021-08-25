@@ -1,13 +1,9 @@
-/* eslint-disable no-var */
-import React from 'react'
 import Link from 'next/link'
-
-import { authLoginButton, email, kakaoStyle, naverStyle } from './styled'
-import { passwordFind } from 'pages/sign_in/email_start/style'
+import { css } from '@emotion/react'
+import { Common } from 'styles/common'
 
 export default function AuthLogin() {
   const kakaoLogin = () => (location.href = 'https://wellseecoding.com/oauth2/authorization/kakao')
-
   const naverLogin = () => (location.href = 'https://wellseecoding.com/oauth2/authorization/naver')
 
   return (
@@ -33,3 +29,52 @@ export default function AuthLogin() {
     </div>
   )
 }
+
+const authLoginButton = css`
+  width: 100%;
+  display: block;
+  margin-top: 11em;
+  button {
+    margin-top: 9px;
+    width: 100%;
+    border-radius: 16px;
+    padding: 16px 0;
+    font-weight: 500;
+    font-size: ${Common.fontSize.fs18};
+    position: relative;
+    img {
+      position: absolute;
+      left: 21px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+`
+
+const kakaoStyle = css`
+  background: #fee500;
+  color: #262626;
+`
+
+const naverStyle = css`
+  color: #ffffff;
+  background: #03c75a;
+`
+
+const email = css`
+  color: #ffffff;
+  background: #ff6e35;
+`
+
+const passwordFind = css`
+  text-align: center;
+  font-size: ${Common.fontSize.fs16};
+  margin-top: 26px;
+  color: #8f8c8b;
+  a {
+    margin-left: 4px;
+    color: #ff6e35;
+    font-weight: 500;
+    text-decoration-line: underline;
+  }
+`
