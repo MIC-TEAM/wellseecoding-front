@@ -2,7 +2,7 @@ import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
 import PasswordField from 'components/Common/PasswordField'
 import Title from 'components/Common/Title'
-import { footButtonWrapper, passwordForm } from './style'
+import { css } from '@emotion/react'
 
 const PasswordReset = () => {
   return (
@@ -26,3 +26,16 @@ const PasswordReset = () => {
 }
 
 export default PasswordReset
+
+const passwordForm = css`
+  margin-top: 1.7em;
+  padding: 0 20px;
+`
+
+const footButtonWrapper = css`
+  position: fixed;
+  bottom: 4.4em;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+`

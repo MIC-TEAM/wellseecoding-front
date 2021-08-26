@@ -1,5 +1,5 @@
-import JoinHeader from 'components/Common/Header/Back'
 import { css } from '@emotion/react'
+import JoinHeader from 'components/Common/Header/Back'
 
 const ClassJoinList = () => {
   return (
@@ -49,7 +49,7 @@ const ClassJoinList = () => {
 
 export default ClassJoinList
 
-export const Classjoin = css`
+const Classjoin = css`
   li {
     padding: 15px 20px;
     display: grid;

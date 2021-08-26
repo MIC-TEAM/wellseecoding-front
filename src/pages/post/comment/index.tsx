@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
-import BackOptional from 'components/Common/Header/BackOptional'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
+
+import BackOptional from 'components/Common/Header/BackOptional'
 
 function Comment() {
   const [value, setValue] = useState('')

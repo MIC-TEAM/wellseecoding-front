@@ -2,7 +2,7 @@ import Back from 'components/Common/Header/Back'
 import { TextField } from '@material-ui/core'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Title from 'components/Common/Title'
-import { footButtonWrapper, passwordResetForm } from './style'
+import { css } from '@emotion/react'
 
 const PasswordEmailSubmit = () => {
   return (
@@ -27,3 +27,16 @@ const PasswordEmailSubmit = () => {
 }
 
 export default PasswordEmailSubmit
+
+const passwordResetForm = css`
+  margin-top: 1.7em;
+  padding: 0 20px;
+`
+
+const footButtonWrapper = css`
+  position: fixed;
+  bottom: 4.4em;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+`

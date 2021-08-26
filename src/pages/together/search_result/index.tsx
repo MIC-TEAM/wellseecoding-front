@@ -1,6 +1,6 @@
 import TogetherSearchBar from 'components/Together/Header/Search'
 import SearchBox from 'components/Together/SearchBox'
-import { searchWord, searchWrap } from './style'
+import { css } from '@emotion/react'
 
 const Search = () => {
   const word = '자바스크립트'
@@ -64,3 +64,23 @@ const Search = () => {
 }
 
 export default Search
+
+const searchWord = css`
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -1px;
+  font-size: 1.6rem;
+  color: #262626;
+  margin-top: 34px;
+  h2 {
+    margin-bottom: 20px;
+  }
+  strong {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+`
+
+const searchWrap = css`
+  padding: 0 20px;
+`

@@ -1,6 +1,7 @@
 import Back from 'components/Common/Header/Back'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import { profileCompletion, footButtonWrapper } from './style'
+import { css } from '@emotion/react'
+import { Common } from 'styles/common'
 
 const SignUpCompletion = () => {
   return (
@@ -23,3 +24,23 @@ const SignUpCompletion = () => {
 }
 
 export default SignUpCompletion
+
+const profileCompletion = css`
+  text-align: center;
+  margin-top: 16vh;
+  h2 {
+    font-size: ${Common.fontSize.title};
+    line-height: 31px;
+  }
+  img {
+    margin-top: 4.2em;
+  }
+`
+
+const footButtonWrapper = css`
+  position: fixed;
+  bottom: 4.4em;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+`

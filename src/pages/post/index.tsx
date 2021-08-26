@@ -1,10 +1,10 @@
+import { css } from '@emotion/react'
+import { Common } from 'styles/common'
+
 import FlatBox from 'components/Common/FlatBox'
 import HashWrap from 'components/Common/HashWrap'
 import BackOptional from 'components/Common/Header/BackOptional'
 import PostFooter from 'components/Post/PostFooter'
-import { css } from '@emotion/react'
-import { Common } from 'styles/common'
-import React from 'react'
 
 const Post = () => {
   return (
@@ -49,15 +49,21 @@ const Post = () => {
     </>
   )
 }
-export const flatBox = css`
+
+const flatBox = css`
   background-color: #fff8f5;
 `
 
-export const togetherBoard = css`
+const togetherBoard = css`
   position: absolute;
   width: 100%;
   left: 0;
   height: auto;
+
+  .myInfoWrap {
+    background-color: #fff8f5;
+  }
+
   @media (min-width: 400px) and (max-width: 600px) {
     .myInfoWrap {
       padding-bottom: 50px;
@@ -71,9 +77,6 @@ export const togetherBoard = css`
     }
   }
 
-  .myInfoWrap {
-    background-color: #fff8f5;
-  }
   h1 {
     padding: 9px 21px;
     line-height: 28px;

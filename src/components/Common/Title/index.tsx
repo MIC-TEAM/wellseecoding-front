@@ -19,6 +19,7 @@ const titleStyle = css`
   font-weight: 500;
   color: ${Common.colors.black};
   margin-top: 3.3em;
+  padding-left: 20px;
   .loginMt {
     margin-top: 3.7em;
   }

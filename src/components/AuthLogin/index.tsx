@@ -34,6 +34,7 @@ const authLoginButton = css`
   width: 100%;
   display: block;
   margin-top: 11em;
+  padding: 0 20px;
   button {
     margin-top: 9px;
     width: 100%;
