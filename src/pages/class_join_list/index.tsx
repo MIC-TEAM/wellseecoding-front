@@ -53,10 +53,13 @@ export const Classjoin = css`
   li {
     padding: 15px 20px;
     display: grid;
-    grid-template-columns: 0.8fr 5fr 0.7fr;
+    grid-template-columns: 1.3fr 5fr 1fr;
     align-items: center;
     &:nth-of-type(1) {
       margin-top: 10px;
+    }
+    div {
+      margin-left: 1em;
     }
     button {
       padding: 6px 16px;
@@ -66,6 +69,7 @@ export const Classjoin = css`
       line-height: 20px;
       letter-spacing: -0.4px;
       color: #444241;
+      width: 63px;
     }
     h4 {
       font-weight: 500;

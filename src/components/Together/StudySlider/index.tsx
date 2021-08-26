@@ -1,4 +1,4 @@
-import StudyBox from '../StudyBox'
+import StudyBox from 'components/Together/StudyBox'
 import { studyContentList, studyContentListWrap } from './style'
 
 function StudySlider() {

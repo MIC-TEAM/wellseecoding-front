@@ -1,4 +1,4 @@
-import StudySlider from '../../Together/StudySlider'
+import StudySlider from 'components/Together/StudySlider'
 import { css } from '@emotion/react'
 
 type Props = {

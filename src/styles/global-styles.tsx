@@ -42,7 +42,7 @@ export const GlobalStyles = (
         margin: 0 auto;
         height: 100vh;
         width: 100%;
-        /* max-width: 1024px; */
+        max-width: 600px;
         min-height: 100%;
         box-sizing: border-box;
         background: #fff;
