@@ -18,7 +18,7 @@ function FlatBox({ name, contents }: Props) {
 export default FlatBox
 
 const FlatWrap = css`
-  background-color: white;
+  background-color: #fff;
   padding: 21px;
   margin-bottom: 9px;
 

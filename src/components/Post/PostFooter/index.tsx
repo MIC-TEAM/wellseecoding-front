@@ -13,9 +13,7 @@ function PostFooter() {
           </a>
         </Link>
 
-        <Link href="/post/comment">
-          <a className="joinButton">가입하기</a>
-        </Link>
+        <button className="joinButton">가입하기</button>
       </div>
     </nav>
   )

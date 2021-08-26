@@ -1,6 +1,7 @@
 import AuthLogin from 'components/AuthLogin'
 import Back from 'components/Common/Header/Back'
-import { authLoginTitleWrap, bigTitle } from './style'
+import { css } from '@emotion/react'
+import { Common } from 'styles/common'
 
 const AuthLoginStart = () => {
   return (
@@ -22,3 +23,15 @@ const AuthLoginStart = () => {
 }
 
 export default AuthLoginStart
+
+const authLoginTitleWrap = css`
+  margin-top: 11em;
+  padding: 0 20px;
+`
+const bigTitle = css`
+  font-size: ${Common.fontSize.bigTitle};
+  font-weight: 500;
+  color: ${Common.colors.black};
+  margin-top: 27px;
+  line-height: 52px;
+`

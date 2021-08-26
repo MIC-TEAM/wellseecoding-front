@@ -5,7 +5,7 @@ import TextField from 'components/Common/TextField'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import { selfWrap, footButtonWrapper } from './style'
+import { css } from '@emotion/react'
 
 const SelfIntroduction = () => {
   return (
@@ -36,3 +36,20 @@ const SelfIntroduction = () => {
 }
 
 export default SelfIntroduction
+
+const footButtonWrapper = css`
+  position: fixed;
+  bottom: 4.4em;
+  left: 0;
+  right: 0;
+  padding: 0 20px;
+
+  & > button:nth-of-type(1) {
+    margin-bottom: 11px;
+  }
+`
+
+const selfWrap = css`
+  margin-top: 1.7em;
+  padding: 0 20px;
+`

@@ -1,10 +1,10 @@
+import { css } from '@emotion/react'
+import { Common } from 'styles/common'
+
 import FlatBox from 'components/Common/FlatBox'
 import HashWrap from 'components/Common/HashWrap'
 import BackOptional from 'components/Common/Header/BackOptional'
 import PostFooter from 'components/Post/PostFooter'
-import { css } from '@emotion/react'
-import { Common } from 'styles/common'
-import React from 'react'
 
 const Post = () => {
   return (
@@ -13,7 +13,7 @@ const Post = () => {
       <main css={togetherBoard} style={{ marginTop: '48px' }}>
         {dummyUser &&
           dummyUser.map((d) => (
-            <div key={d.id}>
+            <div key={d.id} className="myInfoWrap">
               <h1>{d.title}</h1>
               <div className="myInfo">
                 <div></div>
@@ -23,10 +23,13 @@ const Post = () => {
                 </div>
               </div>
               <div className="mainContents">
-                <select>
-                  <option value="모집중">모집중</option>
-                  <option value="모집중">기간종료</option>
-                </select>
+                <div css={flatBox}>
+                  <select>
+                    <option value="모집중">모집중</option>
+                    <option value="모집중">기간종료</option>
+                  </select>
+                </div>
+
                 <FlatBox name="작업기간" contents={d.term} />
                 <FlatBox name="일정/위치" contents={d.loc} />
                 <FlatBox name="자격요건" contents={d.want} />
@@ -47,24 +50,46 @@ const Post = () => {
   )
 }
 
-export const togetherBoard = css`
+const flatBox = css`
+  background-color: #fff8f5;
+`
+
+const togetherBoard = css`
   position: absolute;
   width: 100%;
   left: 0;
   height: auto;
 
+  .myInfoWrap {
+    background-color: #fff8f5;
+  }
+
+  @media (min-width: 400px) and (max-width: 600px) {
+    .myInfoWrap {
+      padding-bottom: 50px;
+      background-color: #fff8f5;
+    }
+  }
+
+  @media (min-width: 200px) and (max-width: 375px) {
+    .myInfoWrap {
+      padding-bottom: 150px;
+    }
+  }
+
   h1 {
     padding: 9px 21px;
     line-height: 28px;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 2rem;
+    background: #fff;
   }
 
   .myInfo {
     padding: 9px 21px;
     display: flex;
     align-items: center;
-
+    background: #fff;
     div:first-of-type {
       margin-right: 13px;
       background-color: ${Common.colors.gray03};
@@ -74,22 +99,22 @@ export const togetherBoard = css`
     }
 
     h3 {
-      font-size: 16px;
+      font-size: 1.6rem;
       font-weight: 500;
       margin-bottom: 4px;
     }
 
     p {
-      font-size: 14px;
+      font-size: 1.4rem;
       font-weight: 400;
       color: ${Common.colors.gray03};
     }
   }
 
   .mainContents {
-    background-color: #ffeee7;
+    background-color: #fff8f5;
     height: 100vh;
-
+    margin-bottom: 80px;
     select {
       margin: 18px 20px;
       padding: 8px 10px;
@@ -107,7 +132,7 @@ export const togetherBoard = css`
 
     h3 {
       font-family: 'Spoqa Han Sans Neo';
-      font-size: 18px;
+      font-size: 1.8rem;
       font-style: normal;
       font-weight: 500;
       line-height: 26px;
@@ -117,7 +142,7 @@ export const togetherBoard = css`
     }
 
     p {
-      font-size: 16px;
+      font-size: 1.6rem;
       font-weight: 700;
     }
   }
