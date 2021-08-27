@@ -61,6 +61,9 @@ const togetherBoard = css`
   width: 100%;
   height: 100vh;
   background-color: #fff8f5;
+  .mainContents {
+    background-color: #fff8f5;
+  }
   .wrap {
     padding-bottom: 100px;
   }
