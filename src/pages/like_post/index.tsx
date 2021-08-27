@@ -26,7 +26,7 @@ export default LikePost
 const likePostListBox = css`
   padding: 0 20px;
   h1 {
-    font-weight: 500;
+    font-weight: bold;
     font-size: 2rem;
     line-height: 24px;
     letter-spacing: -1px;

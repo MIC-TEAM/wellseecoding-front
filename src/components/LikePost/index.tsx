@@ -1,5 +1,4 @@
 import { css } from '@emotion/react'
-
 interface Props {
   title: string
   name: string
