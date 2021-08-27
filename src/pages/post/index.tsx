@@ -59,7 +59,6 @@ const flatBox = css`
 
 const togetherBoard = css`
   width: 100%;
-  margin-top: 48px;
   height: 100vh;
   background-color: #fff8f5;
   .wrap {

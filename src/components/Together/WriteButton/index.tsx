@@ -25,7 +25,7 @@ export const WriteButton = css`
   .writeWrap {
     display: grid;
     justify-items: end;
-    width: 100%;
+    width: 600px;
     margin: 0 auto;
     padding: 0 20px;
   }

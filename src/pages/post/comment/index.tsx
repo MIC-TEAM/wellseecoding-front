@@ -116,9 +116,7 @@ export default Comment
 const CommentMain = css`
   height: 100vh;
   background: #f5f5f5;
-  position: absolute;
   width: 100%;
-  left: 0;
   & > div {
     padding: 20px;
     background: #fff;

@@ -48,6 +48,7 @@ export const GlobalStyles = (
         min-height: 100%;
         box-sizing: border-box;
         background: #fff;
+        border: 1px solid #f5f5f5;
       }
       html,
       body,
