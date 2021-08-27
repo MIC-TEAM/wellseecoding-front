@@ -22,7 +22,7 @@ const AlarmTitle = ({ num }: Props) => {
 
         <div>
           <button type="button">전체 읽음</button>
-          <button type="button" onClick={toggleModal}>
+          <button type="button" onClick={toggleModal} className="allDelete">
             전체 삭제
           </button>
         </div>
@@ -45,10 +45,8 @@ const alarmTitWrap = css`
     letter-spacing: -1px;
     color: #222222;
   }
-  button {
-    &:nth-of-type(1) {
-      margin-right: 1.6em;
-    }
+  .allDelete {
+    margin-right: 1.6em;
   }
   .desc {
     font-weight: 500;
