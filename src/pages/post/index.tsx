@@ -10,40 +10,43 @@ const Post = () => {
   return (
     <>
       <BackOptional title="" optional={true} />
-      <main css={togetherBoard} style={{ marginTop: '48px' }}>
-        {dummyUser &&
-          dummyUser.map((d) => (
-            <div key={d.id} className="myInfoWrap">
-              <h1>{d.title}</h1>
-              <div className="myInfo">
-                <div></div>
-                <div>
-                  <h3>{d.name}</h3>
-                  <p>{d.job}</p>
-                </div>
-              </div>
-              <div className="mainContents">
-                <div css={flatBox}>
-                  <select>
-                    <option value="모집중">모집중</option>
-                    <option value="모집중">기간종료</option>
-                  </select>
+      <main css={togetherBoard}>
+        <div className="wrap">
+          {dummyUser &&
+            dummyUser.map((d) => (
+              <div key={d.id}>
+                <h1>{d.title}</h1>
+                <div className="myInfo">
+                  <div></div>
+                  <div>
+                    <h3>{d.name}</h3>
+                    <p>{d.job}</p>
+                  </div>
                 </div>
 
-                <FlatBox name="작업기간" contents={d.term} />
-                <FlatBox name="일정/위치" contents={d.loc} />
-                <FlatBox name="자격요건" contents={d.want} />
-                <FlatBox name="스터디 설명" contents={d.summary} />
-                <FlatBox name="모집인원" contents={d.limit} />
-                <div className="flatBox">
-                  <h3>해시태그</h3>
-                  {d.hashTags.map((h, i) => (
-                    <HashWrap key={i} content={h}></HashWrap>
-                  ))}
+                <div className="mainContents">
+                  <div css={flatBox}>
+                    <select>
+                      <option value="모집중">모집중</option>
+                      <option value="모집중">기간종료</option>
+                    </select>
+                  </div>
+
+                  <FlatBox name="작업기간" contents={d.term} />
+                  <FlatBox name="일정/위치" contents={d.loc} />
+                  <FlatBox name="자격요건" contents={d.want} />
+                  <FlatBox name="스터디 설명" contents={d.summary} />
+                  <FlatBox name="모집인원" contents={d.limit} />
+                  <div className="flatBox">
+                    <h3>해시태그</h3>
+                    {d.hashTags.map((h, i) => (
+                      <HashWrap key={i} content={h}></HashWrap>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </main>
       <PostFooter />
     </>
@@ -55,28 +58,15 @@ const flatBox = css`
 `
 
 const togetherBoard = css`
-  position: absolute;
   width: 100%;
-  left: 0;
-  height: auto;
-
-  .myInfoWrap {
+  height: 100vh;
+  background-color: #fff8f5;
+  .mainContents {
     background-color: #fff8f5;
   }
-
-  @media (min-width: 400px) and (max-width: 600px) {
-    .myInfoWrap {
-      padding-bottom: 50px;
-      background-color: #fff8f5;
-    }
+  .wrap {
+    padding-bottom: 100px;
   }
-
-  @media (min-width: 200px) and (max-width: 375px) {
-    .myInfoWrap {
-      padding-bottom: 150px;
-    }
-  }
-
   h1 {
     padding: 9px 21px;
     line-height: 28px;
@@ -110,19 +100,13 @@ const togetherBoard = css`
       color: ${Common.colors.gray03};
     }
   }
-
-  .mainContents {
-    background-color: #fff8f5;
-    height: 100vh;
-    margin-bottom: 80px;
-    select {
-      margin: 18px 20px;
-      padding: 8px 10px;
-      border: none;
-      font-size: ${Common.fontSize.fs18};
-      letter-spacing: -0.4px;
-      background: #fff;
-    }
+  select {
+    margin: 18px 20px;
+    padding: 8px 10px;
+    border: none;
+    font-size: ${Common.fontSize.fs18};
+    letter-spacing: -0.4px;
+    background: #fff;
   }
 
   .flatBox {

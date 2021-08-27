@@ -21,6 +21,7 @@ export const GlobalStyles = (
   <Global
     styles={css`
       ${emotionReset}
+
       *, *::after, *::before {
         box-sizing: border-box;
         -moz-osx-font-smoothing: grayscale;
@@ -35,6 +36,7 @@ export const GlobalStyles = (
         -moz-text-size-adjust: none; /*Firefox*/
         -ms-text-size-adjust: none; /*Ie*/
         -o-text-size-adjust: none; /*old versions of Opera*/
+        -ms-overflow-style: none;
       }
       body {
         letter-spacing: -0.025em;
@@ -46,6 +48,7 @@ export const GlobalStyles = (
         min-height: 100%;
         box-sizing: border-box;
         background: #fff;
+        border: 1px solid #f5f5f5;
       }
       html,
       body,

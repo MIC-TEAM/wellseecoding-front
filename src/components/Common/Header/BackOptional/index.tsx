@@ -37,7 +37,7 @@ export default BackOptional
 const backHeader = css`
   width: 100%;
   text-align: left;
-  position: fixed;
+  position: sticky;
   left: 0;
   display: flex;
   top: 0;

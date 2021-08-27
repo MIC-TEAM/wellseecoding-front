@@ -1,10 +1,17 @@
+import React, { useState, useCallback } from 'react'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
+import Modal from 'components/Modal'
 
 type Props = {
   num: number
 }
 const AlarmTitle = ({ num }: Props) => {
+  const [isShowing, setIsShowing] = useState(false)
+
+  const toggleModal = useCallback(() => {
+    setIsShowing((prevState) => !prevState)
+  }, [])
   return (
     <section css={alarmTitWrap}>
       <h1>알림</h1>
@@ -15,9 +22,13 @@ const AlarmTitle = ({ num }: Props) => {
 
         <div>
           <button type="button">전체 읽음</button>
-          <button type="button">전체 삭제</button>
+          <button type="button" onClick={toggleModal} className="allDelete">
+            전체 삭제
+          </button>
         </div>
       </div>
+
+      {isShowing && <Modal onClose={toggleModal} />}
     </section>
   )
 }
@@ -34,10 +45,8 @@ const alarmTitWrap = css`
     letter-spacing: -1px;
     color: #222222;
   }
-  button {
-    &:nth-of-type(1) {
-      margin-right: 1.6em;
-    }
+  .allDelete {
+    margin-left: 1.6em;
   }
   .desc {
     font-weight: 500;

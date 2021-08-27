@@ -29,6 +29,9 @@ export const homeMainWrap = css`
   display: flex;
   justify-content: center;
   margin-top: 1em;
+  img {
+    z-index: -100;
+  }
   div {
     margin-top: 1em;
     margin-left: 1em;
