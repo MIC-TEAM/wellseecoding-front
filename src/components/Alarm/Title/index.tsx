@@ -46,7 +46,7 @@ const alarmTitWrap = css`
     color: #222222;
   }
   .allDelete {
-    margin-right: 1.6em;
+    margin-left: 1.6em;
   }
   .desc {
     font-weight: 500;

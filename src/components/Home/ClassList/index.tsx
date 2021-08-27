@@ -14,13 +14,11 @@ function ClassList() {
 export default ClassList
 
 export const ClassListWrap = css`
-  position: absolute;
   width: 100%;
-  left: 0;
   background: #ffeee7;
   height: 100vh;
-  margin-top: 18px;
-  top: 150px;
+  margin-top: -45px;
+  z-index: 100;
 `
 
 export const studyContentListWrap = css`

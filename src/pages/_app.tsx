@@ -29,4 +29,8 @@ const mainWrap = css`
   height: 100vh;
   width: 100%;
   overflow: scroll;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `

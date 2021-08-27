@@ -4,7 +4,7 @@ export const TogetherHeaderInput = css`
   display: flex;
   justify-content: space-around;
   height: 40px;
-  margin-top: 20px;
+  margin: 20px 0;
   input {
     width: 80%;
     border-bottom: 1.6px solid #ff6e35;

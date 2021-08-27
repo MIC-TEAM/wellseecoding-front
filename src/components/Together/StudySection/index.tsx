@@ -6,7 +6,7 @@ type Props = {
 }
 function StudySection({ title }: Props) {
   return (
-    <section>
+    <section style={{ paddingTop: '16px' }}>
       <h2 css={titleStyle} className="together__title">
         #{title} 모임이에요!
       </h2>

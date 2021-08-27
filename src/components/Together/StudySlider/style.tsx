@@ -12,4 +12,7 @@ export const studyContentList = css`
   margin-right: 0;
   flex-wrap: nowrap;
   display: flex;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
