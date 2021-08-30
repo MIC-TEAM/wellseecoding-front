@@ -72,10 +72,16 @@ const TogetherWrite = () => {
       setHashtag('')
 
       if (process.browser) {
+        // const $HashWrapParent = document.querySelector('.HashWrap')
         const $HashWrap = document.querySelector('.HashWrapInner')
         // HashWrap 노드의 자식 노드를 모두 삭제한다
         $HashWrap?.remove()
+        // while ($HashWrap?.hasChildNodes()) {
+        //   $HashWrap.remove()
+        // }
+        console.log('자식이 있나요?', $HashWrap?.hasChildNodes())
       }
+      setReady(false)
     },
     [title, period, schedule, qualification, peopleNum, hashArr]
   )
@@ -87,6 +93,7 @@ const TogetherWrite = () => {
         const $HashWrapParent = document.querySelector('.HashWrap')
         // 해시태그가 될 div
         const $HashWrap = document.createElement('div')
+        // HashWrapInner에 대한 스타일은 사전에 emotion을 통해 지정한다
         $HashWrap.className = 'HashWrapInner'
         /* 클릭시 부모 div에서 해당 요소 삭제*/
         $HashWrap.addEventListener('click', () => $HashWrapParent?.removeChild($HashWrap))
@@ -94,7 +101,7 @@ const TogetherWrite = () => {
         /* enter 키 코드 :13 */
         if (e.keyCode === 13 && e.target.value.trim() !== '') {
           console.log('Enter Key 입력됨!', e.target.value)
-          $HashWrap.innerHTML = e.target.value
+          $HashWrap.innerHTML = '#' + e.target.value
           $HashWrapParent?.insertBefore($HashWrap, $HashWrapParent.firstChild)
           setHashArr((hashArr) => [...hashArr, hashtag])
           setHashtag('')
