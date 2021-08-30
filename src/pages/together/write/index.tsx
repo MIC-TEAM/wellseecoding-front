@@ -3,7 +3,6 @@ import TogetherBack from 'components/Common/Header/Back'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useCallback } from 'react'
-
 import { useState } from 'react'
 import { useEffect } from 'react'
 
@@ -17,20 +16,16 @@ const TogetherWrite = () => {
 
   const [ready, setReady] = useState(false)
 
+  const dataArr = [title, period, schedule, qualification, peopleNum, hashtag]
+
   useEffect(() => {
-    if (
-      title.length &&
-      period.length &&
-      schedule.length &&
-      qualification.length &&
-      peopleNum.length &&
-      hashtag.length
-    ) {
-      setReady(true)
-    } else {
-      setReady(false)
-    }
-  }, [title, period, schedule, qualification, peopleNum, hashtag])
+    checkDataLength()
+  }, [dataArr])
+
+  /* dataArr의 문자열이 존재한다면 > 버튼을 활성화 */
+  const checkDataLength = useCallback(() => {
+    if (dataArr.every((data) => data?.length > 5) === true) setReady(true)
+  }, [dataArr])
 
   const onChangeTitle = useCallback((e) => {
     setTitle(e.target.value)
@@ -72,6 +67,24 @@ const TogetherWrite = () => {
     [title, period, schedule, qualification, peopleNum, hashtag]
   )
 
+  const onKeyUp = useCallback((e) => {
+    if (process.browser) {
+      // 부모 div
+      const $HashWrapParent = document.querySelector('.HashWrap')
+      // 해시태그가 될 div
+      const $HashWrap = document.createElement('div')
+      $HashWrap.className = 'HashWrapInner'
+
+      /* enter 키 코드 :13 */
+      if (e.keyCode === 13 && e.target.value.trim() !== '') {
+        console.log('Enter Key 입력됨!', e.target.value)
+        $HashWrap.innerHTML = e.target.value
+        $HashWrapParent?.insertBefore($HashWrap, $HashWrapParent.firstChild)
+        e.target.value = ''
+      }
+    }
+  }, [])
+
   return (
     <>
       <TogetherBack text="모임 글쓰기" />
@@ -105,8 +118,16 @@ const TogetherWrite = () => {
 ex) 프론트 n명, 백 n명
 기획자나 디자이너가 있을 경우 명시"
           />
-
-          <input type="text" value={hashtag} onChange={onChangeHashtag} placeholder="해시태그 입력" />
+          <div style={{ display: 'flex' }} className="HashWrap">
+            <input
+              className="HashInput"
+              type="text"
+              value={hashtag}
+              onChange={onChangeHashtag}
+              onKeyUp={onKeyUp}
+              placeholder="해시태그 입력"
+            />
+          </div>
         </form>
 
         <div css={footButtonWrapper}>
@@ -178,6 +199,17 @@ const writeForm = css`
       border-bottom: 1px solid #bcbcbc;
       margin: 20px 0px;
     }
+  }
+
+  .HashWrapInner {
+    background: #ffeee7;
+    border-radius: 56px;
+    padding: 8px 12px;
+    color: #ff6e35;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1.4rem;
+    line-height: 20px;
   }
 `
 
