@@ -118,7 +118,7 @@ const TogetherWrite = () => {
 ex) 프론트 n명, 백 n명
 기획자나 디자이너가 있을 경우 명시"
           />
-          <div style={{ display: 'flex' }} className="HashWrap">
+          <div className="HashWrap" css={hashDivrap}>
             <input
               className="HashInput"
               type="text"
@@ -200,16 +200,44 @@ const writeForm = css`
       margin: 20px 0px;
     }
   }
+`
+
+const hashDivrap = css`
+  margin-top: 24px;
+  color: rgb(52, 58, 64);
+  font-size: 1.125rem;
+  display: flex;
+  flex-wrap: wrap;
+  letter-spacing: -0.6px;
+  color: #444241;
+  border-bottom: 1.6px solid ${Common.colors.gray04};
+  padding: 2px 2px 8px 2px;
 
   .HashWrapInner {
+    margin-top: 5px;
     background: #ffeee7;
     border-radius: 56px;
     padding: 8px 12px;
     color: #ff6e35;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: bold;
     font-size: 1.4rem;
     line-height: 20px;
+    margin-right: 5px;
+  }
+
+  .HashInput {
+    width: auto;
+    margin: 10px;
+    display: inline-flex;
+    outline: none;
+    cursor: text;
+    line-height: 2rem;
+    margin-bottom: 0.75rem;
+    min-width: 8rem;
+    border: none;
   }
 `
 
