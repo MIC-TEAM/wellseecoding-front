@@ -13,18 +13,24 @@ const TogetherWrite = () => {
   const [qualification, setQualification] = useState<string | ''>('')
   const [peopleNum, setPeopleNum] = useState<string | ''>('')
   const [hashtag, setHashtag] = useState<string | ''>('')
+  // 해시태그를 담을 배열
+  const [hashArr, setHashArr] = useState<string[] | []>([])
 
   const [ready, setReady] = useState(false)
 
-  const dataArr = [title, period, schedule, qualification, peopleNum, hashtag]
+  const dataArr = [title, period, schedule, qualification, peopleNum, hashArr]
 
   useEffect(() => {
     checkDataLength()
   }, [dataArr])
 
+  useEffect(() => {
+    hashArr.length ? console.log(hashArr) : console.log('x')
+  }, [hashArr])
+
   /* dataArr의 문자열이 존재한다면 > 버튼을 활성화 */
   const checkDataLength = useCallback(() => {
-    if (dataArr.every((data) => data?.length > 5) === true) setReady(true)
+    if (dataArr.every((data) => data?.length) === true) setReady(true)
   }, [dataArr])
 
   const onChangeTitle = useCallback((e) => {
@@ -55,35 +61,48 @@ const TogetherWrite = () => {
     (e) => {
       e.preventDefault()
       alert(
-        `모임지역:${title}\n작업기간:${period}\n일정:${schedule}\n자격요건:${qualification}\n모집인원:${peopleNum}\n해시태그:${hashtag}`
+        `모임지역:${title}\n작업기간:${period}\n일정:${schedule}\n자격요건:${qualification}\n모집인원:${peopleNum}\n해시태그:${hashArr}`
       )
       setTitle('')
       setPeriod('')
       setSchedule('')
       setQualification('')
       setPeopleNum('')
+      setHashArr([])
       setHashtag('')
+
+      if (process.browser) {
+        const $HashWrap = document.querySelector('.HashWrapInner')
+        // HashWrap 노드의 자식 노드를 모두 삭제한다
+        $HashWrap?.remove()
+      }
     },
-    [title, period, schedule, qualification, peopleNum, hashtag]
+    [title, period, schedule, qualification, peopleNum, hashArr]
   )
 
-  const onKeyUp = useCallback((e) => {
-    if (process.browser) {
-      // 부모 div
-      const $HashWrapParent = document.querySelector('.HashWrap')
-      // 해시태그가 될 div
-      const $HashWrap = document.createElement('div')
-      $HashWrap.className = 'HashWrapInner'
+  const onKeyUp = useCallback(
+    (e) => {
+      if (process.browser) {
+        // 부모 div
+        const $HashWrapParent = document.querySelector('.HashWrap')
+        // 해시태그가 될 div
+        const $HashWrap = document.createElement('div')
+        $HashWrap.className = 'HashWrapInner'
+        /* 클릭시 부모 div에서 해당 요소 삭제*/
+        $HashWrap.addEventListener('click', () => $HashWrapParent?.removeChild($HashWrap))
 
-      /* enter 키 코드 :13 */
-      if (e.keyCode === 13 && e.target.value.trim() !== '') {
-        console.log('Enter Key 입력됨!', e.target.value)
-        $HashWrap.innerHTML = e.target.value
-        $HashWrapParent?.insertBefore($HashWrap, $HashWrapParent.firstChild)
-        e.target.value = ''
+        /* enter 키 코드 :13 */
+        if (e.keyCode === 13 && e.target.value.trim() !== '') {
+          console.log('Enter Key 입력됨!', e.target.value)
+          $HashWrap.innerHTML = e.target.value
+          $HashWrapParent?.insertBefore($HashWrap, $HashWrapParent.firstChild)
+          setHashArr((hashArr) => [...hashArr, hashtag])
+          setHashtag('')
+        }
       }
-    }
-  }, [])
+    },
+    [hashtag]
+  )
 
   return (
     <>
@@ -226,6 +245,7 @@ const hashDivrap = css`
     font-size: 1.4rem;
     line-height: 20px;
     margin-right: 5px;
+    cursor: pointer;
   }
 
   .HashInput {
