@@ -73,13 +73,11 @@ const TogetherWrite = () => {
 
       if (process.browser) {
         // const $HashWrapParent = document.querySelector('.HashWrap')
-        const $HashWrap = document.querySelector('.HashWrapInner')
+        const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+        // const $HashWrap = document.querySelector('.HashWrapInner')
         // HashWrap 노드의 자식 노드를 모두 삭제한다
-        $HashWrap?.remove()
-        // while ($HashWrap?.hasChildNodes()) {
-        //   $HashWrap.remove()
-        // }
-        console.log('자식이 있나요?', $HashWrap?.hasChildNodes())
+        $HashWrapOuter?.remove()
+        console.log('자식이 있나요?', $HashWrapOuter?.hasChildNodes())
       }
       setReady(false)
     },
@@ -88,21 +86,26 @@ const TogetherWrite = () => {
 
   const onKeyUp = useCallback(
     (e) => {
+      // SSR 시에 브라우저의 document가 로드되기 전에 동작되므로
+      // process.browser 라는 코드를 통해 브라우저가 정상 로드된 이후 코드를 사용할 수 있도록 만든다
       if (process.browser) {
-        // 부모 div
-        const $HashWrapParent = document.querySelector('.HashWrap')
         // 해시태그가 될 div
-        const $HashWrap = document.createElement('div')
-        // HashWrapInner에 대한 스타일은 사전에 emotion을 통해 지정한다
-        $HashWrap.className = 'HashWrapInner'
+        const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+        const $HashWrapInner = document.createElement('div')
+        $HashWrapInner.className = 'HashWrapInner'
         /* 클릭시 부모 div에서 해당 요소 삭제*/
-        $HashWrap.addEventListener('click', () => $HashWrapParent?.removeChild($HashWrap))
+        $HashWrapInner.addEventListener('click', () => {
+          $HashWrapOuter?.removeChild($HashWrapInner)
+          console.log($HashWrapInner.innerHTML)
+          /*  hashArr state 배열에서 해당 hashTag를 삭제 */
+          setHashArr(hashArr.filter((hashtag) => hashtag))
+        })
 
         /* enter 키 코드 :13 */
         if (e.keyCode === 13 && e.target.value.trim() !== '') {
           console.log('Enter Key 입력됨!', e.target.value)
-          $HashWrap.innerHTML = '#' + e.target.value
-          $HashWrapParent?.insertBefore($HashWrap, $HashWrapParent.firstChild)
+          $HashWrapInner.innerHTML = '#' + e.target.value
+          $HashWrapOuter?.appendChild($HashWrapInner)
           setHashArr((hashArr) => [...hashArr, hashtag])
           setHashtag('')
         }
@@ -145,6 +148,7 @@ ex) 프론트 n명, 백 n명
 기획자나 디자이너가 있을 경우 명시"
           />
           <div className="HashWrap" css={hashDivrap}>
+            <div className="HashWrapOuter"></div>
             <input
               className="HashInput"
               type="text"
@@ -238,6 +242,11 @@ const hashDivrap = css`
   color: #444241;
   border-bottom: 1.6px solid ${Common.colors.gray04};
   padding: 2px 2px 8px 2px;
+
+  .HashWrapOuter {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
   .HashWrapInner {
     margin-top: 5px;
