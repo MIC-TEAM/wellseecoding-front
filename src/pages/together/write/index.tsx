@@ -25,7 +25,7 @@ const TogetherWrite = () => {
   }, [dataArr])
 
   useEffect(() => {
-    hashArr.length ? console.log(hashArr) : console.log('x')
+    hashArr.length && console.log(hashArr)
   }, [hashArr])
 
   /* dataArr의 문자열이 존재한다면 > 버튼을 활성화 */
@@ -72,12 +72,9 @@ const TogetherWrite = () => {
       setHashtag('')
 
       if (process.browser) {
-        // const $HashWrapParent = document.querySelector('.HashWrap')
         const $HashWrapOuter = document.querySelector('.HashWrapOuter')
-        // const $HashWrap = document.querySelector('.HashWrapInner')
         // HashWrap 노드의 자식 노드를 모두 삭제한다
         $HashWrapOuter?.remove()
-        console.log('자식이 있나요?', $HashWrapOuter?.hasChildNodes())
       }
       setReady(false)
     },
@@ -96,14 +93,12 @@ const TogetherWrite = () => {
         /* 클릭시 부모 div에서 해당 요소 삭제*/
         $HashWrapInner.addEventListener('click', () => {
           $HashWrapOuter?.removeChild($HashWrapInner)
-          console.log($HashWrapInner.innerHTML)
           /*  hashArr state 배열에서 해당 hashTag를 삭제 */
           setHashArr(hashArr.filter((hashtag) => hashtag))
         })
 
         /* enter 키 코드 :13 */
         if (e.keyCode === 13 && e.target.value.trim() !== '') {
-          console.log('Enter Key 입력됨!', e.target.value)
           $HashWrapInner.innerHTML = '#' + e.target.value
           $HashWrapOuter?.appendChild($HashWrapInner)
           setHashArr((hashArr) => [...hashArr, hashtag])
@@ -111,7 +106,7 @@ const TogetherWrite = () => {
         }
       }
     },
-    [hashtag]
+    [hashtag, hashArr]
   )
 
   return (
