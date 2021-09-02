@@ -3,8 +3,8 @@ import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 
 export default function AuthLogin() {
-  const kakaoLogin = () => (location.href = 'https://wellseecoding.com/oauth2/authorization/kakao')
-  const naverLogin = () => (location.href = 'https://wellseecoding.com/oauth2/authorization/naver')
+  const kakaoLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/kakao')
+  const naverLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/naver')
 
   return (
     <div css={authLoginButton}>
