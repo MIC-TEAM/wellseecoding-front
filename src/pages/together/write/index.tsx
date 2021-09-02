@@ -2,9 +2,7 @@ import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import TogetherBack from 'components/Common/Header/Back'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
-import { useCallback } from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const TogetherWrite = () => {
   const [title, setTitle] = useState<string | ''>('')
