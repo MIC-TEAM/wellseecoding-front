@@ -2,17 +2,20 @@ import Link from 'next/link'
 import { studyContentBox } from './style'
 
 type Props = {
+  key: number
   listTitle: string
-  hashTag: string
+  hashtagArr: string[]
 }
-function StudyBox({ listTitle, hashTag }: Props) {
+function StudyBox({ listTitle, hashtagArr }: Props) {
   return (
     <li css={studyContentBox}>
       <Link href="/">
         <a>
           <article>
             <h3>{listTitle}</h3>
-            <p>#{hashTag}</p>
+            {hashtagArr.map((v, i) => (
+              <p key={i}>#{v}</p>
+            ))}
           </article>
         </a>
       </Link>
