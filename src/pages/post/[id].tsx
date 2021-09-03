@@ -42,7 +42,7 @@ function Post() {
     <>
       <BackOptional title="" optional={true} />
       <div>
-        <h1>{id}번 게시물</h1>
+        <h1 style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', margin: '20px 0' }}>🌟 {id}번 게시물 🌟</h1>
       </div>
       <main css={togetherBoard}>
         <div className="wrap">
@@ -167,19 +167,3 @@ const togetherBoard = css`
 `
 
 export default Post
-
-// const dummyUser = [
-//   {
-//     id: 1,
-//     title: '[서울] 오프라인 IOS 개발 스터디 합정이나 홍대 근처 스터디룸',
-//     name: faker.name.firstName(),
-//     job: faker.name.jobTitle(),
-
-//     term: faker.lorem.sentence(),
-//     loc: faker.lorem.sentence(),
-//     want: faker.lorem.sentence(),
-//     summary: faker.lorem.sentence(),
-//     limit: faker.lorem.sentence(),
-//     hashTags: [faker.random.word(), faker.random.word(), faker.random.word(), faker.random.word()],
-//   },
-// ]

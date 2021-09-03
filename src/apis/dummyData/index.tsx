@@ -6,11 +6,11 @@ export const studyArr1 = [
     qualification: '주 2회 / 온라인',
     summary: 'Swift UI가 아니라  UIkit 기반의 ...',
     peopleNum: '코로나 때문에 4명 전후로 모집할 예정입니다',
-    hashtagArr: ['UI-KIT', 'IOS', '오프라인'],
+    hashtagArr: ['UI-KIT', 'IOS', '오프라인', '모여라'],
   },
   {
     id: 2,
-    title: '[경기] 스터디 구해요!',
+    title: '[24/7] 모각코 하실분!',
     schedule: '올해 하반기까지 끝내는 것이 목표',
     qualification: '주 2회 / 온라인',
     summary: 'Swift UI가 아니라  UIkit 기반의 ...',
@@ -22,7 +22,7 @@ export const studyArr1 = [
 export const studyArr2 = [
   {
     id: 3,
-    title: '[경기] 스터디 구해요!',
+    title: '[경기/안양] 스터디 구해요!',
     schedule: '올해 하반기까지 끝내는 것이 목표',
     qualification: '주 2회 / 온라인',
     summary: 'Swift UI가 아니라  UIkit 기반의 ...',
@@ -36,7 +36,7 @@ export const studyArr2 = [
     qualification: '주 2회 / 오프라인',
     summary: 'Swift UI가 아니라  UIkit 기반의 ...',
     peopleNum: '코로나 때문에 4명 전후로 모집할 예정입니다',
-    hashtagArr: ['UIKIT', 'IOS', '오프라인', '스터디'],
+    hashtagArr: ['백엔드', '노드', '익스프레스', 'MYSQL'],
   },
 ]
 
@@ -57,17 +57,15 @@ export const studyArr3 = [
     qualification: '주 2회 / 오프라인',
     summary: 'Swift UI가 아니라  UIkit 기반의 ...',
     peopleNum: '코로나 때문에 4명 전후로 모집할 예정입니다',
-    hashtagArr: ['UIKIT', 'IOS', '오프라인', '스터디'],
+    hashtagArr: ['토이프로젝트', '역삼역', '오프라인'],
+  },
+  {
+    id: 7,
+    title: '[서울] 모각코 할 사람!',
+    schedule: '올해 하반기까지 끝내는 것이 목표',
+    qualification: '주 2회 / 온라인',
+    summary: 'Swift UI가 아니라  UIkit 기반의 ...',
+    peopleNum: '코로나 때문에 4명 전후로 모집할 예정입니다',
+    hashtagArr: ['UI-KIT', 'IOS', '오프라인', '모여라'],
   },
 ]
-
-/*
-const [title, setTitle] = useState<string | ''>('')
-  const [period, setPeriod] = useState<string | ''>('')
-  const [schedule, setSchedule] = useState<string | ''>('')
-  const [qualification, setQualification] = useState<string | ''>('')
-  const [peopleNum, setPeopleNum] = useState<string | ''>('')
-  const [hashtag, setHashtag] = useState<string | ''>('')
-  // 해시태그를 담을 배열
-  const [hashArr, setHashArr] = useState<string[] | []>([])
-*/
