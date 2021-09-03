@@ -20,7 +20,7 @@ function StudySlider({ data }: Props) {
     <div css={studyContentListWrap}>
       <ul css={studyContentList}>
         {data?.map((s) => (
-          <StudyBox key={s.id} listTitle={s.title} hashtagArr={s.hashtagArr} />
+          <StudyBox key={s.id} uniq={s.id} listTitle={s.title} hashtagArr={s.hashtagArr} />
         ))}
       </ul>
     </div>
