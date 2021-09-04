@@ -27,8 +27,10 @@ export default Write
 const togetherBoard = css`
   width: 100%;
   height: 100vh;
+
   .wrap {
     padding-bottom: 100px;
     background: #ffeee7;
+    height: 100%;
   }
 `
