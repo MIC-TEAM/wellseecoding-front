@@ -1,12 +1,13 @@
 import { css } from '@emotion/react'
+import { studyArr1, studyArr2, studyArr3 } from 'apis/dummyData'
 import StudySection from 'components/Home/StudySection'
 
 function ClassList() {
   return (
     <main css={ClassListWrap}>
-      <StudySection title="내가 개설한 모임" />
-      <StudySection title="가입 신청한 모임" />
-      <StudySection title="가입 승인된 모임" />
+      <StudySection title="내가 개설한 모임" data={studyArr1} />
+      <StudySection title="가입 신청한 모임" data={studyArr2} />
+      <StudySection title="가입 승인된 모임" data={studyArr3} />
     </main>
   )
 }

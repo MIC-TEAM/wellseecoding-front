@@ -9,6 +9,7 @@ const TogetherWrite = () => {
   const [period, setPeriod] = useState<string | ''>('')
   const [schedule, setSchedule] = useState<string | ''>('')
   const [qualification, setQualification] = useState<string | ''>('')
+  const [summary, setSummary] = useState<string | ''>('')
   const [peopleNum, setPeopleNum] = useState<string | ''>('')
   const [hashtag, setHashtag] = useState<string | ''>('')
   // 해시태그를 담을 배열
@@ -16,7 +17,7 @@ const TogetherWrite = () => {
 
   const [ready, setReady] = useState(false)
 
-  const dataArr = [title, period, schedule, qualification, peopleNum, hashArr]
+  const dataArr = [title, period, schedule, qualification, summary, peopleNum, hashArr]
 
   useEffect(() => {
     checkDataLength()
@@ -47,6 +48,10 @@ const TogetherWrite = () => {
     setQualification(e.target.value)
   }, [])
 
+  const onChangeSummary = useCallback((e) => {
+    setSummary(e.target.value)
+  }, [])
+
   const onChangePeopleNum = useCallback((e) => {
     setPeopleNum(e.target.value)
   }, [])
@@ -59,12 +64,13 @@ const TogetherWrite = () => {
     (e) => {
       e.preventDefault()
       alert(
-        `모임지역:${title}\n작업기간:${period}\n일정:${schedule}\n자격요건:${qualification}\n모집인원:${peopleNum}\n해시태그:${hashArr}`
+        `모임지역:${title}\n작업기간:${period}\n일정:${schedule}\n자격요건:${qualification}\n스터디설명:${summary}\n모집인원:${peopleNum}\n해시태그:${hashArr}`
       )
       setTitle('')
       setPeriod('')
       setSchedule('')
       setQualification('')
+      setSummary('')
       setPeopleNum('')
       setHashArr([])
       setHashtag('')
@@ -76,7 +82,7 @@ const TogetherWrite = () => {
       }
       setReady(false)
     },
-    [title, period, schedule, qualification, peopleNum, hashArr]
+    [title, period, schedule, qualification, summary, peopleNum, hashArr]
   )
 
   const onKeyUp = useCallback(
@@ -125,10 +131,18 @@ const TogetherWrite = () => {
             cols={5}
             value={qualification}
             onChange={onChangeQualification}
-            placeholder="자격요건(취준/경력, 사용언어 등등)
-          ex) 같은 취준생 / 경력 2년 이상
-          프로젝트 경험 n번 이상
-          해당 기술 스텍 사용 경험이 있는 사람"
+            placeholder="자격요건(취준/경력, 사용언어 등등) 
+ex) 같은 취준생 / 경력 2년 이상 
+프로젝트 경험 n번 이상 해당 기술 스텍 사용 경험이 있는 사람"
+          />
+
+          <textarea
+            rows={5}
+            cols={5}
+            value={summary}
+            onChange={onChangeSummary}
+            placeholder="스터디 설명
+스터디에 대한 목적 및 간단한 설명 입력"
           />
 
           <textarea
