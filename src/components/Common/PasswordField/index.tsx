@@ -17,9 +17,12 @@ interface State {
 
 type Props = {
   title: string
+  passwordText: string
+  typeTitle: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function PasswordField({ title }: Props) {
+export default function PasswordField({ title, passwordText, typeTitle }: Props) {
   const [values, setValues] = useState<State>({
     amount: '',
     password: '',
@@ -45,9 +48,11 @@ export default function PasswordField({ title }: Props) {
       <InputLabel htmlFor="standard-adornment-password">{title}</InputLabel>
       <Input
         id="standard-adornment-password"
-        type={values.showPassword ? 'text' : 'password'}
+        type="password"
         value={values.password}
         onChange={handleChange('password')}
+        placeholder={passwordText}
+        name={typeTitle}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
