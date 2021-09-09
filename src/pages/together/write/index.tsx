@@ -4,8 +4,8 @@ import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useCallback, useEffect, useState } from 'react'
 import Alert from '@material-ui/lab/Alert'
-import axios from 'axios'
-import { WRITE_POST_URL } from 'apis'
+import { useDispatch } from 'react-redux'
+import { WRITE_POST_REQUEST } from 'reducers/posts'
 
 const TogetherWrite = () => {
   const [title, setTitle] = useState<string | ''>('')
@@ -23,14 +23,7 @@ const TogetherWrite = () => {
 
   const dataArr = [title, period, schedule, qualification, summary, peopleNum, hashArr]
 
-  const myToken = process.env.NEXT_PUBLIC_TOKEN
-
-  const myConfig = {
-    withCredentials: true,
-    headers: {
-      Authorization: `Bearer ${myToken}`,
-    },
-  }
+  const dispatch = useDispatch()
 
   useEffect(() => {
     checkDataLength()
@@ -78,24 +71,18 @@ const TogetherWrite = () => {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      try {
-        axios
-          .post(
-            WRITE_POST_URL,
-            {
-              name: title,
-              deadline: period,
-              schedule: schedule,
-              summary: summary,
-              qualification: qualification,
-              size: peopleNum,
-            },
-            myConfig
-          )
-          .then((res) => console.log(res.status, res.statusText))
-      } catch (err) {
-        console.log(err)
-      }
+      dispatch({
+        type: WRITE_POST_REQUEST,
+        data: {
+          name: title,
+          deadline: period,
+          schedule: schedule,
+          summary: summary,
+          qualification: qualification,
+          size: peopleNum,
+        },
+      })
+
       setTitle('')
       setPeriod('')
       setSchedule('')
@@ -111,8 +98,6 @@ const TogetherWrite = () => {
         $HashWrapOuter?.remove()
       }
       setReady(false)
-
-      location.href = 'http://localhost:3000/immsi'
     },
     [title, period, schedule, qualification, summary, peopleNum, hashArr]
   )
