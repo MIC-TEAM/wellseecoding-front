@@ -1,3 +1,4 @@
+import { GET_POSTS_URL } from 'apis'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { PostType } from 'types'
@@ -9,8 +10,7 @@ const Immsi = () => {
     posts.length && console.log(posts)
   }, [posts])
 
-  const myToken =
-    'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLndlbGxzZWVjb2RpbmcuY29tIiwic3ViIjoiMTkiLCJleHAiOjE2MzM2MTIwODB9.ShFlmnPmU5Lq30dpTCqzoD9Cqtgueiuy2KfKAsVDXQ8'
+  const myToken = process.env.NEXT_PUBLIC_TOKEN
 
   const myConfig = {
     withCredentials: true,
@@ -21,7 +21,7 @@ const Immsi = () => {
 
   const loadUser = async () => {
     try {
-      await axios.get('https://api.wellseecoding.com/api/v1/posts', myConfig).then((res) => setPosts(res.data))
+      await axios.get(GET_POSTS_URL, myConfig).then((res) => setPosts(res.data))
     } catch (err) {
       console.log(err)
     }

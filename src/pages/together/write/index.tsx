@@ -4,6 +4,8 @@ import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useCallback, useEffect, useState } from 'react'
 import Alert from '@material-ui/lab/Alert'
+import axios from 'axios'
+import { WRITE_POST_URL } from 'apis'
 
 const TogetherWrite = () => {
   const [title, setTitle] = useState<string | ''>('')
@@ -20,6 +22,15 @@ const TogetherWrite = () => {
   const [ready, setReady] = useState(false)
 
   const dataArr = [title, period, schedule, qualification, summary, peopleNum, hashArr]
+
+  const myToken = process.env.NEXT_PUBLIC_TOKEN
+
+  const myConfig = {
+    withCredentials: true,
+    headers: {
+      Authorization: `Bearer ${myToken}`,
+    },
+  }
 
   useEffect(() => {
     checkDataLength()
@@ -67,9 +78,24 @@ const TogetherWrite = () => {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      alert(
-        `모임지역:${title}\n작업기간:${period}\n일정:${schedule}\n자격요건:${qualification}\n스터디설명:${summary}\n모집인원:${peopleNum}\n해시태그:${hashArr}`
-      )
+      try {
+        axios
+          .post(
+            WRITE_POST_URL,
+            {
+              name: title,
+              deadline: period,
+              schedule: schedule,
+              summary: summary,
+              qualification: qualification,
+              size: peopleNum,
+            },
+            myConfig
+          )
+          .then((res) => console.log(res.status, res.statusText))
+      } catch (err) {
+        console.log(err)
+      }
       setTitle('')
       setPeriod('')
       setSchedule('')
@@ -85,6 +111,8 @@ const TogetherWrite = () => {
         $HashWrapOuter?.remove()
       }
       setReady(false)
+
+      location.href = 'http://localhost:3000/immsi'
     },
     [title, period, schedule, qualification, summary, peopleNum, hashArr]
   )
