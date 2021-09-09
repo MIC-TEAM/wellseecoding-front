@@ -1,30 +1,21 @@
-import { GET_POSTS_URL } from 'apis'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { PostType } from 'types'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'reducers'
+import { FETCHING_POSTS_REQUEST } from 'reducers/posts'
 
 const Immsi = () => {
-  const [posts, setPosts] = useState<PostType[]>([])
+  const { posts } = useSelector((state: RootState) => state.posts)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    posts.length && console.log(posts)
+    posts.length && console.log('posts:', posts)
   }, [posts])
 
-  const myToken = process.env.NEXT_PUBLIC_TOKEN
-
-  const myConfig = {
-    withCredentials: true,
-    headers: {
-      Authorization: `Bearer ${myToken}`,
-    },
-  }
-
-  const loadUser = async () => {
-    try {
-      await axios.get(GET_POSTS_URL, myConfig).then((res) => setPosts(res.data))
-    } catch (err) {
-      console.log(err)
-    }
+  const loadUser = () => {
+    console.log('start')
+    dispatch({
+      type: FETCHING_POSTS_REQUEST,
+    })
   }
 
   return (
