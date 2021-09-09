@@ -14,3 +14,14 @@ export type TodoType = {
   title: string
   userId: number
 }
+
+export type PostType = {
+  id: number
+  userId: number
+  name: string | ''
+  deadline: string | ''
+  schedule: string | ''
+  summary: string | ''
+  qualification: string | ''
+  size: string | ''
+}
