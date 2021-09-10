@@ -38,7 +38,7 @@ function* fetchTodos(action: FetchingTodosRequest) {
     console.error(err)
     yield put({
       type: FETCHING_TODOS_FAILURE,
-      console: err.response,
+      data: err,
     })
   }
 }
