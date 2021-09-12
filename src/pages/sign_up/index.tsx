@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
 import Title from 'components/Common/Title'
@@ -13,37 +13,98 @@ interface SingUp {
 }
 
 const SingUp = () => {
-  const [email, setEmail] = useState('')
-  const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value)
-  }, [])
+  //이름, 이메일, 비밀번호, 비밀번호 확인
+  const [name, setName] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [passwordConfirm, setPasswordConfirm] = useState<string>('')
 
-  const [name, setName] = useState('')
-  const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
-    setName(e.target.value)
-  }, [])
+  console.log(name, email, password, passwordConfirm)
 
-  const [password, setPassword] = useState('')
-  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value)
-  }, [])
+  //유효성 검사
+  // const [isValid, setIsValid] = useState<boolean>(false)
 
-  const [passwordCheck, setPasswordCheck] = useState('')
-  const [passwordError, setPasswordError] = useState(false)
-  const onChangePasswordCheck = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPasswordCheck(e.target.value)
-      setPasswordError(e.target.value !== password)
-    },
-    [password]
-  )
+  //오류메시지 상태저장
+  const [nameMessage, setNameMessage] = useState<string>('')
+  const [emailMessage, setEmailMessage] = useState<string>('')
+  const [passwordMessage, setPasswordMessage] = useState<string>('')
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState<string>('')
 
-  const onSubmit = useCallback(() => {
-    if (password !== passwordCheck) {
-      return setPasswordError(true)
+  // 유효성 검사 마친 상태들
+  const [isName, setIsName] = useState<boolean>(false)
+  const [isEmail, setIsEmail] = useState<boolean>(false)
+  const [isPassword, setIsPassword] = useState<boolean>(false)
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false)
+
+  console.log(emailMessage)
+
+  const onSubmit = () => {
+    console.log('onSubmit')
+  }
+
+  // 이름
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nameCurrent = e.target.value
+    setName(nameCurrent)
+
+    if (nameCurrent.length < 2 || nameCurrent.length > 5) {
+      setNameMessage('2글자 이상 5글자 미만으로 입력해주세요.')
+      setIsName(false)
+    } else {
+      setNameMessage('올바른 이름 형식입니다 :)')
+      setIsName(true)
     }
-    console.log(email, name)
-  }, [password, passwordCheck])
+
+    console.log(nameCurrent)
+  }
+
+  // 이메일
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
+    const emailCurrent = e.target.value
+    setEmail(emailCurrent)
+
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage('이메일 형식이 틀렸어요! 다시 확인해주세요 ㅜ ㅜ')
+      setIsEmail(false)
+    } else {
+      setEmailMessage('올바른 이메일 형식이에요 : )')
+      setIsEmail(true)
+    }
+  }
+
+  // 비밀번호
+  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
+    const passwordCurrent = e.target.value
+    setPassword(passwordCurrent)
+
+    if (!passwordRegex.test(passwordCurrent)) {
+      setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!')
+      setIsPassword(false)
+    } else {
+      setPasswordMessage('안전한 비밀번호에요 : )')
+      setIsPassword(true)
+    }
+    console.log('onChangePassword')
+  }
+
+  // 비밀번호 확인
+  const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordConfirmCurrent = e.target.value
+    setPasswordConfirm(passwordConfirmCurrent)
+
+    if (password === passwordConfirmCurrent) {
+      setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요 : )')
+      setIsPasswordConfirm(true)
+    } else {
+      setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요 ㅜ ㅜ')
+      setIsPasswordConfirm(false)
+    }
+
+    console.log('onChangePasswordConfirm')
+  }
 
   return (
     <>
@@ -54,12 +115,12 @@ const SingUp = () => {
       <form css={selfWrap} onSubmit={onSubmit}>
         <div className="formbox">
           <TextField text="이름" type="text" typeName="name" onChange={onChangeName} />
-          {passwordError && <span>비밀번호</span>}
+          {name.length > 0 && <span className={`message ${isName ? 'success' : 'error'}`}>{nameMessage}</span>}
         </div>
 
         <div className="formbox">
           <TextField text="이메일" type="email" typeName="email" onChange={onChangeEmail} />
-          {passwordError && <span>비밀번호</span>}
+          {email.length > 0 && <span className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>}
         </div>
 
         {/* 비밀번호 입력창
@@ -72,7 +133,9 @@ const SingUp = () => {
             title="비밀번호"
             typeTitle="password"
           />
-          {passwordError && <span>비밀번호</span>}
+          {password.length > 0 && (
+            <span className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>
+          )}
         </div>
 
         {/* 비밀번호 재확인 입력창 
@@ -80,12 +143,14 @@ const SingUp = () => {
         */}
         <div className="formbox">
           <PasswordField
-            onChange={onChangePasswordCheck}
+            onChange={onChangePasswordConfirm}
             passwordText=" "
             title="비밀번호 확인"
-            typeTitle="password_confirm"
+            typeTitle="passwordConfirm"
           />
-          {passwordError && <span>비밀번호</span>}
+          {passwordConfirm.length > 0 && (
+            <span className={`message ${isPasswordConfirm ? 'success' : 'error'}`}>{passwordConfirmMessage}</span>
+          )}
         </div>
 
         <div css={footButtonWrapper}>
@@ -125,15 +190,20 @@ const selfWrap = css`
   .formbox {
     position: relative;
     margin-bottom: 20px;
-    .error {
+    .message {
       font-weight: 500;
       font-size: 1.6rem;
       line-height: 24px;
       letter-spacing: -1px;
-      color: #ff2727;
       position: absolute;
       bottom: -10px;
       left: 0;
+      &.success {
+        color: #8f8c8b;
+      }
+      &.error {
+        color: #ff2727;
+      }
     }
   }
 `

@@ -22,7 +22,7 @@ type Props = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function PasswordField({ title, passwordText, typeTitle }: Props) {
+export default function PasswordField({ title, passwordText, typeTitle, onChange }: Props) {
   const [values, setValues] = useState<State>({
     amount: '',
     password: '',
@@ -31,8 +31,9 @@ export default function PasswordField({ title, passwordText, typeTitle }: Props)
     showPassword: false,
   })
 
-  const handleChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
+  const handleChange = (key: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [key]: event.target.value })
+    onChange(event)
   }
 
   const handleClickShowPassword = () => {

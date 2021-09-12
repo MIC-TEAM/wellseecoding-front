@@ -7,6 +7,6 @@ type Props = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function TextFields({ text, typeName, type }: Props) {
-  return <TextField label={text} name={typeName} type={type} />
+export default function TextFields({ text, typeName, type, onChange }: Props) {
+  return <TextField label={text} name={typeName} type={type} onChange={onChange} />
 }
