@@ -211,7 +211,7 @@ ex) 프론트 n명, 백 n명
 export default TogetherWrite
 
 const footButtonWrapper = css`
-  position: fixed;
+  position: absolute;
   bottom: 4.4em;
   left: 0;
   right: 0;

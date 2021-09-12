@@ -138,10 +138,10 @@ const FooterMenu = () => {
 export default FooterMenu
 
 const footerNav = css`
-  position: fixed;
+  position: absolute;
   width: 100%;
   left: 0;
-  bottom: 0;
+  bottom: -1px;
   z-index: 10;
   background: #fff;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.04);

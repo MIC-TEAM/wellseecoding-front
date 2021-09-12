@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
-import IconButton from '@material-ui/core/IconButton'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import FormControl from '@material-ui/core/FormControl'
-import Visibility from '@material-ui/icons/Visibility'
-import VisibilityOff from '@material-ui/icons/VisibilityOff'
 
 interface State {
   amount: string
@@ -17,9 +13,12 @@ interface State {
 
 type Props = {
   title: string
+  passwordText: string
+  typeTitle: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function PasswordField({ title }: Props) {
+export default function PasswordField({ title, passwordText, typeTitle, onChange }: Props) {
   const [values, setValues] = useState<State>({
     amount: '',
     password: '',
@@ -28,16 +27,9 @@ export default function PasswordField({ title }: Props) {
     showPassword: false,
   })
 
-  const handleChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+  const handleChange = (key: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [key]: event.target.value })
+    onChange(event)
   }
 
   return (
@@ -45,20 +37,11 @@ export default function PasswordField({ title }: Props) {
       <InputLabel htmlFor="standard-adornment-password">{title}</InputLabel>
       <Input
         id="standard-adornment-password"
-        type={values.showPassword ? 'text' : 'password'}
+        type="password"
         value={values.password}
         onChange={handleChange('password')}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
-            >
-              {values.showPassword ? <Visibility /> : <VisibilityOff />}
-            </IconButton>
-          </InputAdornment>
-        }
+        placeholder={passwordText}
+        name={typeTitle}
       />
     </FormControl>
   )

@@ -169,9 +169,9 @@ const MainWrapBottom = css`
 `
 
 const commentFooter = css`
-  position: fixed;
+  position: absolute;
   width: 100%;
-  bottom: 0;
+  bottom: -1px;
   left: 0;
   padding: 20px;
   display: flex;

@@ -49,6 +49,7 @@ export const GlobalStyles = (
         box-sizing: border-box;
         background: #fff;
         border: 1px solid #f5f5f5;
+        position: relative;
       }
       html,
       body,
