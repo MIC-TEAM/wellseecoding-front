@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
 import Title from 'components/Common/Title'
 import TextField from 'components/Common/TextField'
 import PasswordField from 'components/Common/PasswordField'
 import { css } from '@emotion/react'
+import { REGISTER_USERS_URL } from 'apis'
+import axios from 'axios'
 
 interface SingUp {
   password: string
@@ -19,8 +21,6 @@ const SingUp = () => {
   const [password, setPassword] = useState<string>('')
   const [passwordConfirm, setPasswordConfirm] = useState<string>('')
 
-  console.log(name, email, password, passwordConfirm)
-
   //오류메시지 상태저장
   const [nameMessage, setNameMessage] = useState<string>('')
   const [emailMessage, setEmailMessage] = useState<string>('')
@@ -33,28 +33,35 @@ const SingUp = () => {
   const [isPassword, setIsPassword] = useState<boolean>(false)
   const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false)
 
-  const onSubmit = () => {
-    console.log('onSubmit')
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+      await axios
+        .post(REGISTER_USERS_URL, {
+          username: name,
+          password: password,
+          email: email,
+        })
+        .then((res) => console.log(res.data))
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   // 이름
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const nameCurrent = e.target.value
-    setName(nameCurrent)
-
-    if (nameCurrent.length < 2 || nameCurrent.length > 5) {
+  const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value)
+    if (e.target.value.length < 2 || e.target.value.length > 5) {
       setNameMessage('2글자 이상 5글자 미만으로 입력해주세요.')
       setIsName(false)
     } else {
       setNameMessage('올바른 이름 형식입니다 :)')
       setIsName(true)
     }
-
-    console.log(nameCurrent)
-  }
+  }, [])
 
   // 이메일
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const emailRegex =
       /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
     const emailCurrent = e.target.value
@@ -67,10 +74,10 @@ const SingUp = () => {
       setEmailMessage('올바른 이메일 형식이에요 : )')
       setIsEmail(true)
     }
-  }
+  }, [])
 
   // 비밀번호
-  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
     const passwordCurrent = e.target.value
     setPassword(passwordCurrent)
@@ -82,24 +89,24 @@ const SingUp = () => {
       setPasswordMessage('안전한 비밀번호에요 : )')
       setIsPassword(true)
     }
-    console.log('onChangePassword')
-  }
+  }, [])
 
   // 비밀번호 확인
-  const onChangePasswordConfirm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const passwordConfirmCurrent = e.target.value
-    setPasswordConfirm(passwordConfirmCurrent)
+  const onChangePasswordConfirm = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const passwordConfirmCurrent = e.target.value
+      setPasswordConfirm(passwordConfirmCurrent)
 
-    if (password === passwordConfirmCurrent) {
-      setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요 : )')
-      setIsPasswordConfirm(true)
-    } else {
-      setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요 ㅜ ㅜ')
-      setIsPasswordConfirm(false)
-    }
-
-    console.log('onChangePasswordConfirm')
-  }
+      if (password === passwordConfirmCurrent) {
+        setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요 : )')
+        setIsPasswordConfirm(true)
+      } else {
+        setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요 ㅜ ㅜ')
+        setIsPasswordConfirm(false)
+      }
+    },
+    [password]
+  )
 
   return (
     <>
