@@ -21,22 +21,17 @@ const SingUp = () => {
 
   console.log(name, email, password, passwordConfirm)
 
-  //유효성 검사
-  // const [isValid, setIsValid] = useState<boolean>(false)
-
   //오류메시지 상태저장
   const [nameMessage, setNameMessage] = useState<string>('')
   const [emailMessage, setEmailMessage] = useState<string>('')
   const [passwordMessage, setPasswordMessage] = useState<string>('')
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState<string>('')
 
-  // 유효성 검사 마친 상태들
+  // 유효성 검사
   const [isName, setIsName] = useState<boolean>(false)
   const [isEmail, setIsEmail] = useState<boolean>(false)
   const [isPassword, setIsPassword] = useState<boolean>(false)
   const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false)
-
-  console.log(emailMessage)
 
   const onSubmit = () => {
     console.log('onSubmit')
@@ -155,7 +150,11 @@ const SingUp = () => {
 
         <div css={footButtonWrapper}>
           <section>
-            <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION}>
+            <FootButton
+              type="submit"
+              footButtonType={FootButtonType.ACTIVATION}
+              disabled={!(isName && isEmail && isPassword && isPasswordConfirm)}
+            >
               다음
             </FootButton>
           </section>
@@ -173,6 +172,11 @@ const footButtonWrapper = css`
   left: 0;
   right: 0;
   padding: 0 20px;
+  button:disabled,
+  button[disabled] {
+    background-color: #d3cfcc;
+    color: #ffffff;
+  }
 
   section {
     max-width: 500px;
