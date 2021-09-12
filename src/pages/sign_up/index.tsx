@@ -118,9 +118,6 @@ const SingUp = () => {
           {email.length > 0 && <span className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>}
         </div>
 
-        {/* 비밀번호 입력창
-        (조건) 8글자 이상에 12글자 이하에 특수문자가 포함되어야 한다.
-        */}
         <div className="formbox">
           <PasswordField
             onChange={onChangePassword}
@@ -133,9 +130,6 @@ const SingUp = () => {
           )}
         </div>
 
-        {/* 비밀번호 재확인 입력창 
-        (조건) 처음에 입력했던 비밀번호와 === 같아야한다.
-        */}
         <div className="formbox">
           <PasswordField
             onChange={onChangePasswordConfirm}
@@ -148,6 +142,7 @@ const SingUp = () => {
           )}
         </div>
 
+        {/* 이름, 이메일, 패스워드, 패스워드 확인이 다 맞다면 주황버튼으로 */}
         <div css={footButtonWrapper}>
           <section>
             <FootButton
