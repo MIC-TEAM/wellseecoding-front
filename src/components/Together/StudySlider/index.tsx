@@ -1,13 +1,27 @@
 import StudyBox from 'components/Together/StudyBox'
 import { studyContentList, studyContentListWrap } from './style'
 
-function StudySlider() {
+type dataProps = {
+  id: number
+  title: string
+  schedule: string
+  qualification: string
+  summary: string
+  peopleNum: string
+  hashtagArr: string[]
+}
+
+type Props = {
+  data: dataProps[]
+}
+
+function StudySlider({ data }: Props) {
   return (
     <div css={studyContentListWrap}>
       <ul css={studyContentList}>
-        <StudyBox listTitle="[서울] 같이 모각코 할 사람" hashTag="Spring" />
-        <StudyBox listTitle="[서울] 같이 모각코 할 사람" hashTag="Spring" />
-        <StudyBox listTitle="[서울] 같이 모각코 할 사람" hashTag="Spring" />
+        {data?.map((s) => (
+          <StudyBox key={s.id} uniq={s.id} listTitle={s.title} hashtagArr={s.hashtagArr} />
+        ))}
       </ul>
     </div>
   )

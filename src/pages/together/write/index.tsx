@@ -3,20 +3,27 @@ import TogetherBack from 'components/Common/Header/Back'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useCallback, useEffect, useState } from 'react'
+import Alert from '@material-ui/lab/Alert'
+import { useDispatch } from 'react-redux'
+import { WRITE_POST_REQUEST } from 'reducers/posts'
 
 const TogetherWrite = () => {
   const [title, setTitle] = useState<string | ''>('')
   const [period, setPeriod] = useState<string | ''>('')
   const [schedule, setSchedule] = useState<string | ''>('')
   const [qualification, setQualification] = useState<string | ''>('')
+  const [summary, setSummary] = useState<string | ''>('')
   const [peopleNum, setPeopleNum] = useState<string | ''>('')
   const [hashtag, setHashtag] = useState<string | ''>('')
   // 해시태그를 담을 배열
   const [hashArr, setHashArr] = useState<string[] | []>([])
+  const [hashError, setHashError] = useState(false)
 
   const [ready, setReady] = useState(false)
 
-  const dataArr = [title, period, schedule, qualification, peopleNum, hashArr]
+  const dataArr = [title, period, schedule, qualification, summary, peopleNum, hashArr]
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     checkDataLength()
@@ -47,24 +54,40 @@ const TogetherWrite = () => {
     setQualification(e.target.value)
   }, [])
 
+  const onChangeSummary = useCallback((e) => {
+    setSummary(e.target.value)
+  }, [])
+
   const onChangePeopleNum = useCallback((e) => {
     setPeopleNum(e.target.value)
   }, [])
 
   const onChangeHashtag = useCallback((e) => {
-    setHashtag(e.target.value)
+    // space 입력시 '' 빈문자열로 변환하여 Hashtage state에 저장한다
+    const replaceStr = e.target.value.replace(/(\s*)/g, '')
+    setHashtag(replaceStr)
   }, [])
 
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      alert(
-        `모임지역:${title}\n작업기간:${period}\n일정:${schedule}\n자격요건:${qualification}\n모집인원:${peopleNum}\n해시태그:${hashArr}`
-      )
+      dispatch({
+        type: WRITE_POST_REQUEST,
+        data: {
+          name: title,
+          deadline: period,
+          schedule: schedule,
+          summary: summary,
+          qualification: qualification,
+          size: peopleNum,
+        },
+      })
+
       setTitle('')
       setPeriod('')
       setSchedule('')
       setQualification('')
+      setSummary('')
       setPeopleNum('')
       setHashArr([])
       setHashtag('')
@@ -76,7 +99,7 @@ const TogetherWrite = () => {
       }
       setReady(false)
     },
-    [title, period, schedule, qualification, peopleNum, hashArr]
+    [title, period, schedule, qualification, summary, peopleNum, hashArr]
   )
 
   const onKeyUp = useCallback(
@@ -95,9 +118,14 @@ const TogetherWrite = () => {
           setHashArr(hashArr.filter((hashtag) => hashtag))
         })
 
+        /* space bar 키 코드: 32 */
+        e.keyCode === 32 ? setHashError(true) : setHashError(false)
+
         /* enter 키 코드 :13 */
         if (e.keyCode === 13 && e.target.value.trim() !== '') {
-          $HashWrapInner.innerHTML = '#' + e.target.value
+          const replaceStr = e.target.value.replace(/(\s*)/g, '')
+          // console.log('replaceStr:', e.target.value, replaceStr)
+          $HashWrapInner.innerHTML = '#' + replaceStr
           $HashWrapOuter?.appendChild($HashWrapInner)
           setHashArr((hashArr) => [...hashArr, hashtag])
           setHashtag('')
@@ -125,10 +153,18 @@ const TogetherWrite = () => {
             cols={5}
             value={qualification}
             onChange={onChangeQualification}
-            placeholder="자격요건(취준/경력, 사용언어 등등)
-          ex) 같은 취준생 / 경력 2년 이상
-          프로젝트 경험 n번 이상
-          해당 기술 스텍 사용 경험이 있는 사람"
+            placeholder="자격요건(취준/경력, 사용언어 등등) 
+ex) 같은 취준생 / 경력 2년 이상 
+프로젝트 경험 n번 이상 해당 기술 스텍 사용 경험이 있는 사람"
+          />
+
+          <textarea
+            rows={5}
+            cols={5}
+            value={summary}
+            onChange={onChangeSummary}
+            placeholder="스터디 설명
+스터디에 대한 목적 및 간단한 설명 입력"
           />
 
           <textarea
@@ -151,6 +187,11 @@ ex) 프론트 n명, 백 n명
               placeholder="해시태그 입력"
             />
           </div>
+          {hashError && (
+            <Alert variant="outlined" severity="error" style={{ marginTop: 10 }}>
+              해시태그 등록 시에 스페이스바를 사용하실 수 없습니다.
+            </Alert>
+          )}
         </form>
 
         <div css={footButtonWrapper}>

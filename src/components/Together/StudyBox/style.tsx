@@ -38,5 +38,7 @@ export const studyContentBox = css`
     font-weight: bold;
     font-size: ${Common.fontSize.fs14};
     line-height: 20px;
+    margin-right: 5px;
+    margin-top: 5px;
   }
 `

@@ -3,6 +3,7 @@ import TogetherHeader from 'components/Together/Header'
 import StudySection from 'components/Together/StudySection'
 import WriteButton from 'components/Together/WriteButton'
 import { css } from '@emotion/react'
+import { studyArr1, studyArr2, studyArr3 } from 'apis/dummyData'
 
 const Write = () => {
   return (
@@ -11,9 +12,9 @@ const Write = () => {
 
       <main css={togetherBoard}>
         <div className="wrap">
-          <StudySection title="모각코" />
-          <StudySection title="스터디" />
-          <StudySection title="토이 프로젝트" />
+          <StudySection title="모각코" data={studyArr1} />
+          <StudySection title="스터디" data={studyArr2} />
+          <StudySection title="토이 프로젝트" data={studyArr3} />
         </div>
       </main>
       <WriteButton />

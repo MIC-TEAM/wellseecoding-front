@@ -21,4 +21,5 @@ const hashWrap = css`
   font-size: ${Common.fontSize.fs14};
   line-height: 20px;
   margin-right: 4px;
+  margin-top: 4px;
 `
