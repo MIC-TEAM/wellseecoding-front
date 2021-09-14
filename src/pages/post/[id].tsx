@@ -8,10 +8,18 @@ import React, { useCallback } from 'react'
 import { Common } from 'styles/common'
 import faker from 'faker'
 import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from 'reducers'
+import IsModal from 'components/Common/IsModal'
 
 function Post() {
   const router = useRouter()
   const { id } = router.query
+  const { isModal } = useSelector((state: RootState) => state.common)
+
+  useEffect(() => {
+    console.log(isModal)
+  }, [isModal])
 
   useEffect(() => {
     makeDummyUser()
@@ -83,6 +91,7 @@ function Post() {
         </div>
       </main>
       <PostFooter />
+      {isModal && <IsModal />}
     </>
   )
 }

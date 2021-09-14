@@ -2,6 +2,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
+import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { SET_ISMODAL } from 'reducers/common'
 import { Common } from 'styles/common'
 
 type Props = {
@@ -11,24 +14,33 @@ type Props = {
 
 function BackOptional({ title, optional }: Props) {
   const router = useRouter()
+  const dispatch = useDispatch()
+
+  const setModal = useCallback(() => {
+    dispatch({
+      type: SET_ISMODAL,
+    })
+  }, [dispatch])
 
   return (
-    <header css={backHeader}>
-      <button type="button" className="back" onClick={() => router.back()}>
-        <img src="/images/header/back.svg" alt="뒤로가기" />
-      </button>
-      <h1>{title ? title : ''}</h1>
-      {optional && (
-        <div>
-          <button type="button">
-            <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
-          </button>
-          <button type="button">
-            <img src="/images/header/setting.svg" alt="환경설정" onClick={() => alert('환경설정')} />
-          </button>
-        </div>
-      )}
-    </header>
+    <>
+      <header css={backHeader}>
+        <button type="button" className="back" onClick={() => router.back()}>
+          <img src="/images/header/back.svg" alt="뒤로가기" />
+        </button>
+        <h1>{title ? title : ''}</h1>
+        {optional && (
+          <div>
+            <button type="button">
+              <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
+            </button>
+            <button type="button" onClick={setModal}>
+              <img src="/images/header/setting.svg" alt="환경설정" />
+            </button>
+          </div>
+        )}
+      </header>
+    </>
   )
 }
 
