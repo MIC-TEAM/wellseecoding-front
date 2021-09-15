@@ -10,7 +10,7 @@ type Props = {
 function StudyBox({ uniq, listTitle }: Props) {
   return (
     <li css={studyContentBox}>
-      <Link href={`/post/${uniq}`}>
+      <Link href={`/posts/${uniq}`}>
         <a>
           <article>
             <h3>{listTitle}</h3>

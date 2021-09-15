@@ -21,15 +21,11 @@ function Post() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(isModal)
-  }, [isModal])
-
-  useEffect(() => {
     !post.length && loadPost(id)
   }, [post])
 
   useEffect(() => {
-    console.log(post)
+    post && console.log(post)
   }, [post])
 
   const loadPost = useCallback((id) => {
@@ -39,15 +35,18 @@ function Post() {
     })
   }, [])
 
+  // url로 접근했을 때 데이터를 패칭하지 않은 상태에서 렌더링하여 오류가 생김
+  // 동기적으로 끊어줬다가 success 시에 해당 정보를 렌더링하도록 설정해야 할 듯
+
   return (
     <>
-      <BackOptional title="" optional={true} />
+      <BackOptional title="" optional={true} uniqId={id} />
       <div>
         <h1 style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', margin: '20px 0' }}>🌟 {id}번 게시물 🌟</h1>
       </div>
       <main css={togetherBoard}>
         <div className="wrap">
-          {post &&
+          {post.length ? (
             post.map((d) => (
               <div key={d.id}>
                 <h1>{d.name}</h1>
@@ -81,11 +80,14 @@ function Post() {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <div> 로딩중 ...</div>
+          )}
         </div>
       </main>
       <PostFooter />
-      {isModal && <IsModal />}
+      {isModal.open && <IsModal />}
     </>
   )
 }

@@ -19,7 +19,7 @@ import { PostType, WritePostType } from 'types'
 async function fetchPostsAPI() {
   try {
     const result = await axios.get('/api/v1/posts', myConfig)
-    console.log('result:', result)
+    // console.log('result:', result)
     return result.data
   } catch (err) {
     console.error(err)
@@ -42,10 +42,10 @@ function* fetchPosts() {
   }
 }
 
-async function fetchPostAPI(data: any) {
+async function fetchPostAPI(data: number) {
   try {
     const result = await axios.get(`/api/v1/posts/${data}`, myConfig)
-    console.log('result:', result)
+    // console.log('result:', result)
     return result.data
   } catch (err) {
     console.error(err)

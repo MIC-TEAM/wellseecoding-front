@@ -10,15 +10,17 @@ import { Common } from 'styles/common'
 type Props = {
   title: string | null
   optional: boolean
+  uniqId?: string | string[] | undefined
 }
 
-function BackOptional({ title, optional }: Props) {
+function BackOptional({ title, optional, uniqId }: Props) {
   const router = useRouter()
   const dispatch = useDispatch()
 
   const setModal = useCallback(() => {
     dispatch({
       type: SET_ISMODAL,
+      data: uniqId,
     })
   }, [dispatch])
 

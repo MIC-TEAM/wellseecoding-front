@@ -1,11 +1,18 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { SET_ISMODAL } from 'reducers/common'
+import { RootState } from 'reducers'
 
 const IsModal = () => {
   const dispatch = useDispatch()
+
+  const { isModal } = useSelector((state: RootState) => state.common)
+
+  useEffect(() => {
+    isModal && console.log(isModal)
+  }, [isModal])
 
   const setModal = useCallback(
     (e) => {
@@ -22,9 +29,10 @@ const IsModal = () => {
     console.log('수정')
   }, [])
 
-  const removePost = useCallback((e) => {
+  const removePost = useCallback((e, id) => {
     e.stopPropagation()
-    console.log('삭제')
+    console.log('삭제', id)
+    // axios.delete(`/api/v1/posts/${id}`, myConfig).then((res) => console.log(res))
   }, [])
 
   return (
@@ -35,7 +43,7 @@ const IsModal = () => {
           <button type="button" onClick={updatePost}>
             수정
           </button>
-          <button type="button" onClick={removePost}>
+          <button type="button" onClick={(e) => removePost(e, isModal.uniqId)}>
             삭제
           </button>
         </div>
