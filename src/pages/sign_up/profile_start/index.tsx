@@ -2,8 +2,21 @@ import Back from 'components/Common/Header/Back'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
+import { useRouter } from 'next/router'
 
 const SignUpProfileStart = () => {
+  const router = useRouter()
+
+  const NextHome = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    router.push('/home')
+  }
+
+  const NextPage = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    router.push('/sign_up/something_job')
+  }
+
   return (
     <>
       <Back />
@@ -15,10 +28,10 @@ const SignUpProfileStart = () => {
         <img src="/images/signup/character.svg" alt="프로필 시작 페이지 캐릭터" />
       </div>
       <div css={footButtonWrapper}>
-        <FootButton type="button" footButtonType={FootButtonType.SKIP}>
+        <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextHome}>
           아 귀찮아요. 나중에 할래요
         </FootButton>
-        <FootButton type="button" footButtonType={FootButtonType.ACTIVATION}>
+        <FootButton type="button" footButtonType={FootButtonType.ACTIVATION} onClick={NextPage}>
           네~
         </FootButton>
       </div>
