@@ -64,11 +64,8 @@ const modalBtnWrap = css`
   padding: 20px 20px 28px 20px;
   display: block;
   position: absolute;
-  bottom: 8px;
-
+  bottom: 0px;
   width: 100%;
-
-  margin-top: 10px;
 
   button + button {
     margin-bottom: 10px;
@@ -94,5 +91,6 @@ const modalInner = css`
     padding: 18px;
     display: block;
     width: 100%;
+    font-size: 18px;
   }
 `

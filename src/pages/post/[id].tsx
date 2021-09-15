@@ -1,51 +1,44 @@
 import { css } from '@emotion/react'
 import FlatBox from 'components/Common/FlatBox'
-import HashWrap from 'components/Common/HashWrap'
+// import HashWrap from 'components/Common/HashWrap'
 import BackOptional from 'components/Common/Header/BackOptional'
 import PostFooter from 'components/Post/PostFooter'
 import { useRouter } from 'next/router'
 import React, { useCallback } from 'react'
 import { Common } from 'styles/common'
-import faker from 'faker'
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import IsModal from 'components/Common/IsModal'
+import { FETCHING_POST_REQUEST } from 'reducers/posts'
 
 function Post() {
   const router = useRouter()
   const { id } = router.query
   const { isModal } = useSelector((state: RootState) => state.common)
+  const { post } = useSelector((state: RootState) => state.posts)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     console.log(isModal)
   }, [isModal])
 
   useEffect(() => {
-    makeDummyUser()
-  })
+    !post.length && loadPost(id)
+  }, [post])
 
-  const makeDummyUser = useCallback(() => {
-    const dummyUser = [
-      {
-        id: 1,
-        title: faker.lorem.sentence(),
-        name: faker.name.firstName(),
-        job: faker.name.jobTitle(),
+  useEffect(() => {
+    console.log(post)
+  }, [post])
 
-        term: faker.lorem.sentence(),
-        loc: faker.lorem.sentence(),
-        want: faker.lorem.sentence(),
-        summary: faker.lorem.sentence(),
-        limit: faker.lorem.sentence(),
-        hashTags: [faker.random.word(), faker.random.word(), faker.random.word(), faker.random.word()],
-      },
-    ]
-
-    return [dummyUser]
+  const loadPost = useCallback((id) => {
+    dispatch({
+      type: FETCHING_POST_REQUEST,
+      data: id,
+    })
   }, [])
 
-  const [dummyUser] = makeDummyUser()
   return (
     <>
       <BackOptional title="" optional={true} />
@@ -54,15 +47,16 @@ function Post() {
       </div>
       <main css={togetherBoard}>
         <div className="wrap">
-          {dummyUser &&
-            dummyUser.map((d) => (
+          {post &&
+            post.map((d) => (
               <div key={d.id}>
-                <h1>{d.title}</h1>
+                <h1>{d.name}</h1>
                 <div className="myInfo">
                   <div></div>
                   <div>
-                    <h3>{d.name}</h3>
-                    <p>{d.job}</p>
+                    {/* user에 대한 정보가 들어가야 함 */}
+                    <h3>{d.name && '이준희'}</h3>
+                    <p>{d.userId && '프론트엔드 개발자'}</p>
                   </div>
                 </div>
 
@@ -74,16 +68,16 @@ function Post() {
                     </select>
                   </div>
 
-                  <FlatBox name="작업기간" contents={d.term} />
-                  <FlatBox name="일정/위치" contents={d.loc} />
-                  <FlatBox name="자격요건" contents={d.want} />
+                  <FlatBox name="작업기간" contents={d.schedule} />
+                  <FlatBox name="일정/위치" contents={d.schedule} />
+                  <FlatBox name="자격요건" contents={d.qualification} />
                   <FlatBox name="스터디 설명" contents={d.summary} />
-                  <FlatBox name="모집인원" contents={d.limit} />
+                  <FlatBox name="모집인원" contents={d.size} />
                   <div className="flatBox">
                     <h3>해시태그</h3>
-                    {d.hashTags.map((h, i) => (
+                    {/* {d.hashTags.map((h, i) => (
                       <HashWrap key={i} content={h}></HashWrap>
-                    ))}
+                    ))} */}
                   </div>
                 </div>
               </div>

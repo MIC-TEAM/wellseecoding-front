@@ -1,21 +1,12 @@
 import StudySlider from 'components/Together/StudySlider'
 import { css } from '@emotion/react'
-
-type dataProps = {
-  id: number
-  title: string
-  schedule: string
-  qualification: string
-  summary: string
-  peopleNum: string
-  hashtagArr: string[]
-}
+import { PostType } from 'types'
 
 // data는 dataProps { } 객체 형식으로 이루어진 배열이다
 
 type Props = {
   title: string
-  data: dataProps[]
+  data: PostType[]
 }
 function StudySection({ title, data }: Props) {
   return (

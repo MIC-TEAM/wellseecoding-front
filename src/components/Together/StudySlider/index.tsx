@@ -1,18 +1,9 @@
 import StudyBox from 'components/Together/StudyBox'
+import { PostType } from 'types'
 import { studyContentList, studyContentListWrap } from './style'
 
-type dataProps = {
-  id: number
-  title: string
-  schedule: string
-  qualification: string
-  summary: string
-  peopleNum: string
-  hashtagArr: string[]
-}
-
 type Props = {
-  data: dataProps[]
+  data: PostType[]
 }
 
 function StudySlider({ data }: Props) {
@@ -20,7 +11,7 @@ function StudySlider({ data }: Props) {
     <div css={studyContentListWrap}>
       <ul css={studyContentList}>
         {data?.map((s) => (
-          <StudyBox key={s.id} uniq={s.id} listTitle={s.title} hashtagArr={s.hashtagArr} />
+          <StudyBox key={s.id} uniq={s.id} listTitle={s.name} />
         ))}
       </ul>
     </div>
