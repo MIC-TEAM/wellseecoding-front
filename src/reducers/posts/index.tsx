@@ -14,9 +14,13 @@ export interface PostsIntialState {
   fetchPostSuccess: boolean
   fetchPostFailure: null | Error
 
-  writePostsLoading: boolean
-  writePostsSuccess: boolean
-  writePostsFailure: null | Error
+  writePostLoading: boolean
+  writePostSuccess: boolean
+  writePostFailure: null | Error
+
+  deletePostLoading: boolean
+  deletePostSuccess: boolean
+  deletePostFailure: null | Error
 }
 
 // initialState 정의
@@ -32,9 +36,13 @@ export const initialState: PostsIntialState = {
   fetchPostSuccess: false,
   fetchPostFailure: null,
 
-  writePostsLoading: false,
-  writePostsSuccess: false,
-  writePostsFailure: null,
+  writePostLoading: false,
+  writePostSuccess: false,
+  writePostFailure: null,
+
+  deletePostLoading: false,
+  deletePostSuccess: false,
+  deletePostFailure: null,
 }
 
 // 액션 정의
@@ -49,6 +57,10 @@ export const FETCHING_POST_FAILURE = 'FETCHING_POST_FAILURE' as const
 export const WRITE_POST_REQUEST = 'WRITE_POST_REQUEST' as const
 export const WRITE_POST_SUCCESS = 'WRITE_POST_SUCCESS' as const
 export const WRITE_POST_FAILURE = 'WRITE_POST_FAILURE' as const
+
+export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST' as const
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS' as const
+export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE' as const
 
 export const RESET_POST_LIST = 'RESET_POST_LIST' as const
 
@@ -90,12 +102,26 @@ export interface WritePostRequest {
   data: WritePostType
 }
 
-export interface WritePostSuccess {
+export interface WritePostuccess {
   type: typeof WRITE_POST_SUCCESS
 }
 
 export interface WritePostFailure {
   type: typeof WRITE_POST_FAILURE
+  error: Error
+}
+
+export interface DeletePostRequest {
+  type: typeof DELETE_POST_REQUEST
+  data: number
+}
+
+export interface DeletePostuccess {
+  type: typeof DELETE_POST_SUCCESS
+}
+
+export interface DeletePostFailure {
+  type: typeof DELETE_POST_FAILURE
   error: Error
 }
 
@@ -141,12 +167,26 @@ export const writePostRequest = (data: WritePostType): WritePostRequest => ({
   data,
 })
 
-export const writePostSuccess = (): WritePostSuccess => ({
+export const writePostuccess = (): WritePostuccess => ({
   type: WRITE_POST_SUCCESS,
 })
 
 export const writePostFailure = (error: Error): WritePostFailure => ({
   type: WRITE_POST_FAILURE,
+  error,
+})
+
+export const deletePostRequest = (data: number): DeletePostRequest => ({
+  type: DELETE_POST_REQUEST,
+  data,
+})
+
+export const deletePostuccess = (): DeletePostuccess => ({
+  type: DELETE_POST_SUCCESS,
+})
+
+export const deletePostFailure = (error: Error): DeletePostFailure => ({
+  type: DELETE_POST_FAILURE,
   error,
 })
 
@@ -162,8 +202,11 @@ export type FetchingPosts =
   | ReturnType<typeof fetchingPostSuccess>
   | ReturnType<typeof fetchingPostFailure>
   | ReturnType<typeof writePostRequest>
-  | ReturnType<typeof writePostSuccess>
+  | ReturnType<typeof writePostuccess>
   | ReturnType<typeof writePostFailure>
+  | ReturnType<typeof deletePostRequest>
+  | ReturnType<typeof deletePostuccess>
+  | ReturnType<typeof deletePostFailure>
   | ReturnType<typeof resetPostList>
 
 const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
@@ -206,18 +249,33 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
         break
       }
       case WRITE_POST_REQUEST: {
-        draft.fetchPostsLoading = true
-        draft.fetchPostsSuccess = false
+        draft.writePostLoading = true
+        draft.writePostSuccess = false
         break
       }
       case WRITE_POST_SUCCESS: {
-        draft.fetchPostsLoading = false
-        draft.fetchPostsSuccess = true
+        draft.writePostLoading = false
+        draft.writePostSuccess = true
         break
       }
       case WRITE_POST_FAILURE: {
-        draft.fetchPostsSuccess = false
-        draft.fetchPostsFailure = action.error
+        draft.writePostSuccess = false
+        draft.writePostFailure = action.error
+        break
+      }
+      case DELETE_POST_REQUEST: {
+        draft.deletePostLoading = true
+        draft.deletePostSuccess = false
+        break
+      }
+      case DELETE_POST_SUCCESS: {
+        draft.deletePostLoading = false
+        draft.deletePostSuccess = true
+        break
+      }
+      case DELETE_POST_FAILURE: {
+        draft.deletePostSuccess = false
+        draft.deletePostFailure = action.error
         break
       }
       default:

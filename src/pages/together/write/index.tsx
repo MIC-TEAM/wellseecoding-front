@@ -98,6 +98,7 @@ const TogetherWrite = () => {
         $HashWrapOuter?.remove()
       }
       setReady(false)
+      location.href = 'http://localhost:3000/together'
     },
     [title, period, schedule, qualification, summary, peopleNum, hashArr]
   )

@@ -4,8 +4,7 @@ import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SET_ISMODAL } from 'reducers/common'
 import { RootState } from 'reducers'
-import axios from 'axios'
-import { myConfig } from 'sagas'
+import { DELETE_POST_REQUEST } from 'reducers/posts'
 
 const IsModal = () => {
   const dispatch = useDispatch()
@@ -31,11 +30,19 @@ const IsModal = () => {
     console.log('수정')
   }, [])
 
-  const removePost = useCallback((e, id) => {
-    e.stopPropagation()
-    console.log('삭제', id)
-    axios.delete(`/api/v1/posts/${id}`, myConfig).then((res) => console.log(res))
-  }, [])
+  const removePost = useCallback(
+    (e, id) => {
+      e.stopPropagation()
+      console.log('삭제', id)
+      dispatch({
+        type: DELETE_POST_REQUEST,
+        data: id,
+      })
+
+      location.href = 'http://localhost:3000/together'
+    },
+    [dispatch]
+  )
 
   return (
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions

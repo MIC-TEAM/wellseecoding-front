@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { all, call, fork, takeLatest, put } from 'redux-saga/effects'
 import {
+  DeletePostRequest,
+  DELETE_POST_FAILURE,
+  DELETE_POST_REQUEST,
+  DELETE_POST_SUCCESS,
   FetchingPostRequest,
   FETCHING_POSTS_FAILURE,
   FETCHING_POSTS_REQUEST,
@@ -94,6 +98,32 @@ function* writePost(action: WritePostRequest) {
   }
 }
 
+async function deletePostAPI(data: number) {
+  try {
+    const response = await axios.delete(`/api/v1/posts/${data}`, myConfig)
+    return response.status
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* deletePost(action: DeletePostRequest) {
+  console.log('action:', action.data)
+  try {
+    const result: number = yield call(deletePostAPI, action.data)
+    console.log('success', result)
+    yield put({
+      type: DELETE_POST_SUCCESS,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: DELETE_POST_FAILURE,
+      data: err,
+    })
+  }
+}
+
 function* watchFetchPosts() {
   yield takeLatest(FETCHING_POSTS_REQUEST, fetchPosts)
 }
@@ -106,6 +136,10 @@ function* watchWritePost() {
   yield takeLatest(WRITE_POST_REQUEST, writePost)
 }
 
+function* watchDeletePost() {
+  yield takeLatest(DELETE_POST_REQUEST, deletePost)
+}
+
 export default function* postSaga() {
-  yield all([fork(watchFetchPosts), fork(watchWritePost), fork(watchFetchPost)])
+  yield all([fork(watchFetchPosts), fork(watchWritePost), fork(watchFetchPost), fork(watchDeletePost)])
 }
