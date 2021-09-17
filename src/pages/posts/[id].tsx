@@ -21,19 +21,26 @@ function Post() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    !post.length && loadPost(id)
-  }, [post])
+    console.log('router.query:', id, typeof id)
+  })
+
+  useEffect(() => {
+    !post.length && id && loadPost(id)
+  }, [post, id])
 
   useEffect(() => {
     post && console.log(post)
   }, [post])
 
-  const loadPost = useCallback((id) => {
-    dispatch({
-      type: FETCHING_POST_REQUEST,
-      data: id,
-    })
-  }, [])
+  const loadPost = useCallback(
+    (id) => {
+      dispatch({
+        type: FETCHING_POST_REQUEST,
+        data: id,
+      })
+    },
+    [dispatch]
+  )
 
   // url로 접근했을 때 데이터를 패칭하지 않은 상태에서 렌더링하여 오류가 생김
   // 동기적으로 끊어줬다가 success 시에 해당 정보를 렌더링하도록 설정해야 할 듯
@@ -55,7 +62,7 @@ function Post() {
                   <div>
                     {/* user에 대한 정보가 들어가야 함 */}
                     <h3>{d.name && '이준희'}</h3>
-                    <p>{d.userId && '프론트엔드 개발자'}</p>
+                    <p>{d.userId}</p>
                   </div>
                 </div>
 

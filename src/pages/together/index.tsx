@@ -5,7 +5,7 @@ import WriteButton from 'components/Together/WriteButton'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { FETCHING_POSTS_REQUEST, RESET_POST_LIST } from 'reducers/posts'
 
 const Write = () => {
@@ -19,24 +19,24 @@ const Write = () => {
 
   useEffect(() => {
     !posts.length && loadUser()
-  }, [posts])
+  }, [])
 
   useEffect(() => {
     post.length && resetPost()
   }, [post])
 
-  const loadUser = () => {
+  const loadUser = useCallback(() => {
     console.log('start')
     dispatch({
       type: FETCHING_POSTS_REQUEST,
     })
-  }
+  }, [dispatch])
 
-  const resetPost = () => {
+  const resetPost = useCallback(() => {
     dispatch({
       type: RESET_POST_LIST,
     })
-  }
+  }, [dispatch])
 
   return (
     <>
