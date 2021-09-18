@@ -54,7 +54,7 @@ const profileStart = css`
 `
 
 const footButtonWrapper = css`
-  position: fixed;
+  position: absolute;
   bottom: 4.4em;
   left: 0;
   right: 0;

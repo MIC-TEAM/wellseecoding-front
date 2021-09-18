@@ -4,4 +4,17 @@ export const API_URL = `https://jsonplaceholder.typicode.com/todos`
 export const GET_POSTS_URL = '/api/v1/posts'
 export const WRITE_POST_URL = '/api/v1/posts'
 
+//회원가입 이름, 아이디, 비밀번호
 export const REGISTER_USERS_URL = '/api/v1/users'
+
+// 자기소개
+export const REGISTER_ABOUT_ME_URL = '/api/v1/users/profile/preface'
+
+// 학교정보
+export const REGISTER_EDUCATION_URL = '/api/v1/users/profile/education'
+
+// 경력정보
+export const REGISTER_WORK_URL = '/api/v1/users/profile/works'
+
+// 포트폴리오
+export const REGISTER_LINK_URL = '/api/v1/users/profile/links'
