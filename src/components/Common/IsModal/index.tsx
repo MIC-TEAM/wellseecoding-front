@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { SET_ISMODAL } from 'reducers/common'
+import { SET_EDITMODE, SET_ISMODAL } from 'reducers/common'
 import { RootState } from 'reducers'
 import { DELETE_POST_REQUEST } from 'reducers/posts'
 
@@ -21,10 +21,18 @@ const IsModal = () => {
     [dispatch]
   )
 
-  const updatePost = useCallback((e) => {
-    e.stopPropagation()
-    console.log('수정')
-  }, [])
+  const updatePost = useCallback(
+    (e) => {
+      e.stopPropagation()
+      dispatch({
+        type: SET_ISMODAL,
+      })
+      dispatch({
+        type: SET_EDITMODE,
+      })
+    },
+    [dispatch]
+  )
 
   const removePost = useCallback(
     (e, id) => {
@@ -35,7 +43,7 @@ const IsModal = () => {
         data: id,
       })
 
-      location.href = 'http://localhost:3000/together'
+      location.href = '/together'
     },
     [dispatch]
   )

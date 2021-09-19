@@ -11,8 +11,9 @@ type Props = {
   title: string | null
   optional: boolean
   // 로컬 스토리지에 저장된 내 id
-  localId: number | null
-  userId: any
+  localId?: number | null
+  // post로부터 불러오는 id
+  userId?: number
   // 게시글의 고유 id
   uniqId?: string | string[] | undefined
 }

@@ -15,6 +15,7 @@ export type PostType = {
   summary: string | ''
   qualification: string | ''
   size: string | ''
+  tags: []
 }
 
 /* 내가 쓴 글 보낼 때 필요한 타입 */
@@ -25,4 +26,5 @@ export type WritePostType = {
   summary: string | ''
   qualification: string | ''
   size: string | ''
+  tags: []
 }

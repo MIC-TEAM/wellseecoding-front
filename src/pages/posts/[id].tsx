@@ -11,11 +11,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import IsModal from 'components/Common/IsModal'
 import { FETCHING_POST_REQUEST } from 'reducers/posts'
+import EditForm from 'components/EditForm'
+import HashWrap from 'components/Common/HashWrap'
 
 function Post() {
   const router = useRouter()
   const { id } = router.query
-  const { isModal } = useSelector((state: RootState) => state.common)
+  const { isModal, editMode } = useSelector((state: RootState) => state.common)
   const { post } = useSelector((state: RootState) => state.posts)
 
   const [localInfo, setLocalInfo] = useState<number | null>(null)
@@ -95,11 +97,24 @@ function Post() {
                   <FlatBox name="모집인원" contents={d.size} />
                   <div className="flatBox">
                     <h3>해시태그</h3>
-                    {/* {d.hashTags.map((h, i) => (
+                    {d.tags.map((h, i) => (
                       <HashWrap key={i} content={h}></HashWrap>
-                    ))} */}
+                    ))}
                   </div>
                 </div>
+                {editMode && (
+                  <EditForm
+                    id={d.id}
+                    userId={d.userId}
+                    name={d.name}
+                    deadline={d.deadline}
+                    schedule={d.schedule}
+                    summary={d.summary}
+                    qualification={d.qualification}
+                    size={d.size}
+                    tags={d.tags}
+                  />
+                )}
               </div>
             ))
           ) : (
