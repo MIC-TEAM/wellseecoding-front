@@ -11,10 +11,6 @@ const IsModal = () => {
 
   const { isModal } = useSelector((state: RootState) => state.common)
 
-  useEffect(() => {
-    isModal && console.log(isModal)
-  }, [isModal])
-
   const setModal = useCallback(
     (e) => {
       e.stopPropagation()

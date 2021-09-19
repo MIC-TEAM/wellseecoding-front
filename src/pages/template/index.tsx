@@ -14,15 +14,10 @@ function Template() {
   const [lastNum, setLastNum] = useState(20)
 
   useEffect(() => {
-    if (todos.length) console.log('todos', todos)
-  }, [todos])
-
-  useEffect(() => {
     console.log(firstNum, lastNum)
   }, [firstNum, lastNum])
 
   const getAPI = () => {
-    console.log('todos_request_start!')
     dispatch({
       type: FETCHING_TODOS_REQUEST,
       data: {

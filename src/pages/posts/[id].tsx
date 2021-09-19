@@ -4,7 +4,7 @@ import FlatBox from 'components/Common/FlatBox'
 import BackOptional from 'components/Common/Header/BackOptional'
 import PostFooter from 'components/Post/PostFooter'
 import { useRouter } from 'next/router'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Common } from 'styles/common'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,6 +18,8 @@ function Post() {
   const { isModal } = useSelector((state: RootState) => state.common)
   const { post } = useSelector((state: RootState) => state.posts)
 
+  const [localInfo, setLocalInfo] = useState<number | null>(null)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -25,12 +27,17 @@ function Post() {
   })
 
   useEffect(() => {
+    saveLocalInfo()
+  }, [])
+
+  useEffect(() => {
     !post.length && id && loadPost(id)
   }, [post, id])
 
-  useEffect(() => {
-    post && console.log(post)
-  }, [post])
+  const saveLocalInfo = () => {
+    const result = Number(localStorage.getItem('id'))
+    setLocalInfo(result)
+  }
 
   const loadPost = useCallback(
     (id) => {
@@ -47,7 +54,14 @@ function Post() {
 
   return (
     <>
-      <BackOptional title="" optional={true} uniqId={id} />
+      {post?.length ? (
+        post.map((d) => (
+          <BackOptional key={d.id} title="" optional={true} localId={localInfo} userId={d.userId} uniqId={id} />
+        ))
+      ) : (
+        <div></div>
+      )}
+
       <div>
         <h1 style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', margin: '20px 0' }}>🌟 {id}번 게시물 🌟</h1>
       </div>

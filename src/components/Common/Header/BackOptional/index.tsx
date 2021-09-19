@@ -10,10 +10,14 @@ import { Common } from 'styles/common'
 type Props = {
   title: string | null
   optional: boolean
+  // 로컬 스토리지에 저장된 내 id
+  localId: number | null
+  userId: any
+  // 게시글의 고유 id
   uniqId?: string | string[] | undefined
 }
 
-function BackOptional({ title, optional, uniqId }: Props) {
+function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   const router = useRouter()
   const dispatch = useDispatch()
 
@@ -33,12 +37,16 @@ function BackOptional({ title, optional, uniqId }: Props) {
         <h1>{title ? title : ''}</h1>
         {optional && (
           <div>
-            <button type="button">
-              <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
-            </button>
-            <button type="button" onClick={setModal}>
-              <img src="/images/header/setting.svg" alt="환경설정" />
-            </button>
+            {/* 옵션이 존재하면서, 로컬 스토리지에 존재하는 아이디와 게시글의 유저아이디가 같은 경우에는 환경설정 버튼이 뜨도록 조건을 준다 */}
+            {localId === userId ? (
+              <button type="button" onClick={setModal}>
+                <img src="/images/header/setting.svg" alt="환경설정" />
+              </button>
+            ) : (
+              <button type="button">
+                <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
+              </button>
+            )}
           </div>
         )}
       </header>

@@ -12,7 +12,6 @@ const Immsi = () => {
   }, [posts])
 
   const loadUser = () => {
-    console.log('start')
     dispatch({
       type: FETCHING_POSTS_REQUEST,
     })

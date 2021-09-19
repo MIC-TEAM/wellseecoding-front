@@ -12,11 +12,6 @@ const Write = () => {
   const { posts, post } = useSelector((state: RootState) => state.posts)
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   posts.length && console.log('posts:', posts)
-  //   post.length && console.log('post:', post)
-  // }, [posts, post])
-
   useEffect(() => {
     !posts.length && loadUser()
   }, [])

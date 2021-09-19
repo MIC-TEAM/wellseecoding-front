@@ -82,7 +82,6 @@ async function writePostAPI(data: WritePostType) {
 }
 
 function* writePost(action: WritePostRequest) {
-  console.log('action:', action.data)
   try {
     const result: number = yield call(writePostAPI, action.data)
     console.log('success', result)
@@ -108,7 +107,6 @@ async function deletePostAPI(data: number) {
 }
 
 function* deletePost(action: DeletePostRequest) {
-  console.log('action:', action.data)
   try {
     const result: number = yield call(deletePostAPI, action.data)
     console.log('success', result)
