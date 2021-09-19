@@ -2,7 +2,7 @@ import FooterMenu from 'components/Common/FooterMenu'
 import HomeHeader from 'components/Home/Header'
 import HomeMain from 'components/Home/Main'
 import { css } from '@emotion/react'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FETCHING_POSTS_REQUEST, RESET_POST_LIST } from 'reducers/posts'
 import { RootState } from 'reducers'
@@ -11,6 +11,11 @@ import StudySection from 'components/Together/StudySection'
 const Home = () => {
   const { posts, post } = useSelector((state: RootState) => state.posts)
   const dispatch = useDispatch()
+  const [name, setName] = useState<string | null>(null)
+
+  useEffect(() => {
+    localStorage.getItem('id') && getUserName()
+  })
 
   useEffect(() => {
     !posts.length && loadUser()
@@ -33,12 +38,17 @@ const Home = () => {
     })
   }
 
+  const getUserName = useCallback(() => {
+    const myname = localStorage.getItem('userName')
+    setName(myname)
+  }, [])
+
   return (
     <>
       <HomeHeader />
 
       <div css={wrap}>
-        <HomeMain user="칼국수" num={4} />
+        <HomeMain user={name} num={4} />
         <div className="listWrap">
           <main css={ClassListWrap}>
             <StudySection title="내가 개설한 모임" data={posts} />

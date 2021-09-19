@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 function Home() {
   const [tokenId, setTokenId] = useState(null)
   const [decodedUserId, setDecodedUserId] = useState(null)
+  const [decodedUserName, setDecodedUserName] = useState(null)
 
   // 1차적으로 복호화했을 때 아직 이름이 없어서, 해당 정보를 어떻게 저장할 지는 협의해봐야 할 것 같네요
 
@@ -21,14 +22,15 @@ function Home() {
 
   // ③ 마지막 복호화된 토큰의 userId 확인
   useEffect(() => {
-    if (decodedUserId) console.log('decodedUserId: ', decodedUserId)
-  }, [decodedUserId])
+    if (decodedUserId) localStorage.setItem('id', decodedUserId)
+    if (decodedUserName) localStorage.setItem('userName', decodedUserName)
+  }, [decodedUserId, decodedUserName])
 
   /* JWT 토큰을 디코딩(복호화)한다. */
   const parseJwt = (token: any) => {
     try {
       console.log('start!', JSON.parse(atob(token.split('.')[1])))
-      setTokenId(JSON.parse(atob(token.split('.')[1])))
+      return setTokenId(JSON.parse(atob(token.split('.')[1])))
     } catch (e) {
       return null
     }
@@ -42,6 +44,21 @@ function Home() {
         // console.log('tokenId의 키:', tokenId[key])
         setDecodedUserId(tokenId[key])
       }
+      if (key === 'uname') {
+        setDecodedUserName(tokenId[key])
+      }
+    }
+  }
+
+  setTimeout(() => {
+    checkDecode()
+  }, 2000)
+
+  /* 복호화된 토큰 정보가 없을 경우 회원가입 단으로 이동 */
+  function checkDecode() {
+    if (!localStorage.getItem('id')) {
+      alert('회원정보가 없으므로 회원가입 페이지로 이동합니다!')
+      location.href = '/sign_in/auth_start'
     }
   }
 
