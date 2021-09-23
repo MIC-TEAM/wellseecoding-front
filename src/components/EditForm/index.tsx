@@ -1,7 +1,7 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from '@emotion/react'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
 import EditBack from 'components/Common/Header/EditBack'
 import { Alert } from '@material-ui/lab'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
@@ -12,8 +12,6 @@ import { myConfig } from 'sagas'
 
 const EditForm = (props: PostType) => {
   const { id, name, deadline, schedule, summary, qualification, size, tags } = props
-
-  const { editMode } = useSelector((state: RootState) => state.common)
 
   const [editTitle, setTitle] = useState<string | ''>(name)
   const [editPeriod, setPeriod] = useState<string | ''>(deadline)
@@ -33,20 +31,12 @@ const EditForm = (props: PostType) => {
   // const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log(editMode)
-  }, [editMode])
-
-  useEffect(() => {
-    console.log(tags)
-  }, [tags])
+    console.log('editHashArr:', editHashArr)
+  }, [editHashArr, tags])
 
   useEffect(() => {
     checkDataLength()
   }, [dataArr])
-
-  useEffect(() => {
-    editHashArr.length && console.log(editHashArr)
-  }, [editHashArr])
 
   /* dataArr의 문자열이 존재한다면 > 버튼을 활성화 */
   const checkDataLength = useCallback(() => {
@@ -125,6 +115,18 @@ const EditForm = (props: PostType) => {
     [editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr]
   )
 
+  const removeHashtag = useCallback(() => {
+    if (process.browser) {
+      // 이벤트 위임을 통해 자식 요소 제거
+      const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+
+      $HashWrapOuter?.addEventListener('click', (e: any) => {
+        $HashWrapOuter?.removeChild(e.target)
+        setHashArr(editHashArr.filter((hashtag) => [...editHashArr, hashtag]))
+      })
+    }
+  }, [])
+
   const onKeyUp = useCallback(
     (e) => {
       // SSR 시에 브라우저의 document가 로드되기 전에 동작되므로
@@ -133,9 +135,11 @@ const EditForm = (props: PostType) => {
         // 해시태그가 될 div
         const $HashWrapOuter = document.querySelector('.HashWrapOuter')
         const $HashWrapInner = document.createElement('div')
+        // console.log('$HashWrapInner 1: ', $HashWrapInner)
         $HashWrapInner.className = 'HashWrapInner'
         /* 클릭시 부모 div에서 해당 요소 삭제*/
         $HashWrapInner.addEventListener('click', () => {
+          // div 태그에 대한 이벤트
           $HashWrapOuter?.removeChild($HashWrapInner)
           /*  hashArr state 배열에서 해당 hashTag를 삭제 */
           setHashArr(editHashArr.filter((hashtag) => hashtag))
@@ -203,7 +207,7 @@ ex) 프론트 n명, 백 n명
             <div className="HashWrapOuter">
               {tags &&
                 tags.map((v, i) => (
-                  <div className="HashWrapInner" key={i}>
+                  <div className="HashWrapInner" key={i} onClick={removeHashtag}>
                     {v}
                   </div>
                 ))}

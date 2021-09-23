@@ -37,7 +37,6 @@ const IsModal = () => {
   const removePost = useCallback(
     (e, id) => {
       e.stopPropagation()
-      console.log('삭제', id)
       dispatch({
         type: DELETE_POST_REQUEST,
         data: id,

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <ul class="fruits">
+    <li class="fruit">orange</li>
+    <li class="fruit">apple</li>
+    <li class="fruit">banana</li>
+    <li class="fruit">pine apple</li>
+  </ul>
+</body>
+<script>
+  const $outer = document.querySelector('.fruits')
+  const $inner = document.querySelector('.fruit')
+
+  $outer.addEventListener('click', (e) => {
+    $outer.removeChild(e.target)
+  })
+</script>
+</html>
