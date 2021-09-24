@@ -9,12 +9,18 @@ import axios from 'axios'
 import { REGISTER_EDUCATION_URL } from 'apis'
 
 const SelfIntroduction = () => {
+  // 학위, 전공, 재학 및 졸업여부
   const [degree, setDegree] = useState<string>('')
   const [major, setMajor] = useState<string>('')
   const [school, setSchool] = useState<boolean>(false)
   const [graduated, setGraduated] = useState<boolean>(false)
 
-  const [disabled, setDisabled] = useState(false)
+  // 유효성 검사
+  const [isDegree, setIsDegree] = useState<boolean>(false)
+  const [isMajor, setIsMajor] = useState<boolean>(false)
+  const [isSchool, setIsSchool] = useState<boolean>(false)
+  const [isGraduated, setIsGraduated] = useState<boolean>(false)
+
   const router = useRouter()
 
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +46,9 @@ const SelfIntroduction = () => {
     console.log(e.target.value)
 
     if (e.target.value.length > 1) {
-      setDisabled(false)
+      setIsDegree(true)
+    } else {
+      setIsDegree(false)
     }
   }, [])
 
@@ -49,18 +57,36 @@ const SelfIntroduction = () => {
     console.log(e.target.value)
 
     if (e.target.value.length > 1) {
-      setDisabled(false)
+      setIsMajor(true)
+    } else {
+      setIsMajor(false)
     }
   }, [])
 
   const onChangeSchool = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value === e.target.name ? setSchool(true) : setSchool(false)
-    setDisabled(true)
+    if (e.target.value === e.target.name) {
+      setSchool(true)
+      setGraduated(false)
+    } else {
+      setSchool(false)
+      setGraduated(true)
+    }
+    setIsSchool(true)
   }, [])
 
   const onChangeGraduated = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value === e.target.name ? setGraduated(true) : setGraduated(false)
-    setDisabled(true)
+    if (e.target.value === e.target.name) {
+      setGraduated(true)
+      setSchool(false)
+    } else {
+      setGraduated(false)
+      setSchool(true)
+    }
+    setIsGraduated(true)
+  }, [])
+
+  const NextPage = useCallback(() => {
+    router.push('/sign_up/portfolio')
   }, [])
 
   return (
@@ -70,8 +96,8 @@ const SelfIntroduction = () => {
       <Title title="학교 정보를 적어주세요!" className="loginMt" />
 
       <form css={selfWrap} onSubmit={onSubmit}>
-        <TextFieldProfile text="학위" type="text" onChange={onChangeDegree} />
-        <TextFieldProfile text="전공" type="text" onChange={onChangeMajor} />
+        <TextFieldProfile text="학교를 입력해주세요" type="text" onChange={onChangeDegree} />
+        <TextFieldProfile text="전공을 입력해주세요" type="text" onChange={onChangeMajor} />
 
         <div className="ingOrEnd">
           <label htmlFor="school-ing">
@@ -86,13 +112,13 @@ const SelfIntroduction = () => {
         </div>
 
         <div css={footButtonWrapper}>
-          <FootButton type="button" footButtonType={FootButtonType.SKIP}>
+          <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
             나중에 쓸게요~
           </FootButton>
           <FootButton
             type="submit"
             footButtonType={FootButtonType.ACTIVATION}
-            disabled={!(degree && major && school && graduated)}
+            disabled={!((isDegree && isMajor && isSchool) || isGraduated)}
           >
             다음
           </FootButton>

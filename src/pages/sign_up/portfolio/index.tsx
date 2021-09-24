@@ -3,8 +3,16 @@ import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Title from 'components/Common/Title'
 import TextFields from 'components/Common/TextField'
 import { css } from '@emotion/react'
+import { useCallback } from 'react'
+import { useRouter } from 'next/router'
 
 const Portfolio = () => {
+  const router = useRouter()
+
+  const NextPage = useCallback(() => {
+    router.push('/sign_up/profile_upload')
+  }, [])
+
   return (
     <>
       <Back />
@@ -13,9 +21,9 @@ const Portfolio = () => {
 
       <div css={infoWrap}>
         <div css={info}>
-          <TextFields type="text" text="프로젝트 이름" />
+          {/* <TextFields type="text" text="프로젝트 이름" onChange={} />
           <TextFields type="text" text="링크" />
-          <TextFields type="text" text="설명" />
+          <TextFields type="text" text="설명" /> */}
         </div>
 
         <button css={companyAdd}>
@@ -30,7 +38,7 @@ const Portfolio = () => {
       </div>
 
       <div css={footButtonWrapper}>
-        <FootButton type="button" footButtonType={FootButtonType.SKIP}>
+        <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
           나중에 쓸게요~
         </FootButton>
         <FootButton type="button" footButtonType={FootButtonType.ACTIVATION}>
