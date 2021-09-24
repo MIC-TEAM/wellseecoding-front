@@ -53,6 +53,8 @@ const SelfIntroduction = () => {
 
     if (e.target.value.length > 0) {
       setIsAboutMe(true)
+    } else {
+      setIsSkill(false)
     }
   }, [])
 
@@ -62,6 +64,8 @@ const SelfIntroduction = () => {
 
     if (e.target.value.length > 0) {
       setIsSkill(true)
+    } else {
+      setIsSkill(false)
     }
   }, [])
 
