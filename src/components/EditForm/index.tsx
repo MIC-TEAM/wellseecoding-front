@@ -32,7 +32,7 @@ const EditForm = (props: PostType) => {
 
   useEffect(() => {
     console.log('editHashArr:', editHashArr)
-  }, [editHashArr, tags])
+  }, [editHashArr])
 
   useEffect(() => {
     checkDataLength()
@@ -115,17 +115,23 @@ const EditForm = (props: PostType) => {
     [editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr]
   )
 
-  const removeHashtag = useCallback(() => {
-    if (process.browser) {
-      // 이벤트 위임을 통해 자식 요소 제거
-      const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+  if (process.browser) {
+    // 이벤트 위임을 통해 자식 요소 제거
+    const $HashWrapOuter = document.querySelector('.HashWrapOuter')
 
-      $HashWrapOuter?.addEventListener('click', (e: any) => {
-        $HashWrapOuter?.removeChild(e.target)
-        setHashArr(editHashArr.filter((hashtag) => [...editHashArr, hashtag]))
-      })
-    }
-  }, [])
+    $HashWrapOuter?.addEventListener('click', (e: any) => {
+      $HashWrapOuter.removeChild(e.target)
+      setHashArr(
+        editHashArr.filter(function (hashtag) {
+          // console.log('e.target:', e.target)
+          // 4번 눌리고 있는 상태..
+          // e.target(내가 누른 해시태그) 을 editHashArr에서 빼줘
+
+          return hashtag !== e.target.innerHTML
+        })
+      )
+    })
+  }
 
   const onKeyUp = useCallback(
     (e) => {
@@ -206,8 +212,8 @@ ex) 프론트 n명, 백 n명
           <div className="HashWrap" css={hashDivrap}>
             <div className="HashWrapOuter">
               {tags &&
-                tags.map((v, i) => (
-                  <div className="HashWrapInner" key={i} onClick={removeHashtag}>
+                tags?.map((v, i) => (
+                  <div className="HashWrapInner" key={i}>
                     {v}
                   </div>
                 ))}

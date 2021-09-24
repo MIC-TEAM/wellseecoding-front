@@ -17,6 +17,7 @@
   const $inner = document.querySelector('.fruit')
 
   $outer.addEventListener('click', (e) => {
+    console.log(e.target)
     $outer.removeChild(e.target)
   })
 </script>
