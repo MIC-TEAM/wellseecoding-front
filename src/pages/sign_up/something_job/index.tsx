@@ -4,12 +4,12 @@ import Title from 'components/Common/Title'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+// import { useState } from 'react'
 
 const SomethingJob = () => {
   const router = useRouter()
-  const [isClick, setIsClick] = useState(false)
-  const [disable, setDisable] = useState(false)
+  // const [isClick, setIsClick] = useState(false)
+  // const [disable, setDisable] = useState(false)
 
   // 버튼이 포커스가 되면 버튼 disable이 되도록
 

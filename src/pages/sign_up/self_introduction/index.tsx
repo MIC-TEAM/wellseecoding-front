@@ -12,7 +12,11 @@ const SelfIntroduction = () => {
   // 간단한 자기소개, 기술스택
   const [aboutMe, setAboutMe] = useState<string>('')
   const [skill, setSkill] = useState<string>('')
-  const [disabled, setDisabled] = useState(false)
+
+  // 유효성 검사
+  const [isAboutMe, setIsAboutMe] = useState<boolean>(false)
+  const [isSkill, setIsSkill] = useState<boolean>(false)
+
   const router = useRouter()
 
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,8 +51,8 @@ const SelfIntroduction = () => {
     setAboutMe(e.target.value)
     console.log(e.target.value)
 
-    if (e.target.value.length > 1) {
-      setDisabled(false)
+    if (e.target.value.length > 0) {
+      setIsAboutMe(true)
     }
   }, [])
 
@@ -56,8 +60,8 @@ const SelfIntroduction = () => {
     setSkill(e.target.value)
     console.log(e.target.value)
 
-    if (e.target.value.length > 1) {
-      setDisabled(true)
+    if (e.target.value.length > 0) {
+      setIsSkill(true)
     }
   }, [])
 
@@ -72,7 +76,7 @@ const SelfIntroduction = () => {
         <TextFieldProfile text="기술스택을 해시태그로 작성해주세요!" type="text" onChange={onChangeSkill} />
 
         <div css={footButtonWrapper}>
-          <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!disabled}>
+          <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!(isAboutMe && isSkill)}>
             다음
           </FootButton>
         </div>

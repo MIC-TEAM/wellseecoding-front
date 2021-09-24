@@ -86,7 +86,7 @@ const SelfIntroduction = () => {
   }, [])
 
   const NextPage = useCallback(() => {
-    router.push('/sign_up/portfolio')
+    router.push('/sign_up/profile_upload')
   }, [])
 
   return (

@@ -1,7 +1,7 @@
 import Back from 'components/Common/Header/Back'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Title from 'components/Common/Title'
-import TextFieldProfile from 'components/Common/TextField'
+import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
 
 const Experience = () => {
@@ -13,7 +13,7 @@ const Experience = () => {
 
       <div css={infoWrap}>
         <div css={info}>
-          <TextFieldProfile type="text" text="역할" />
+          <TextFieldProfile type="text" text="역할" onChange=""/>
           <TextFieldProfile type="text" text="기술스택" />
           <TextFieldProfile type="text" text="경력" />
         </div>

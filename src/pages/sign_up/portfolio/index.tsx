@@ -1,7 +1,7 @@
 import Back from 'components/Common/Header/Back'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Title from 'components/Common/Title'
-import TextFields from 'components/Common/TextField'
+import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
 import { useCallback } from 'react'
 import { useRouter } from 'next/router'
@@ -21,9 +21,9 @@ const Portfolio = () => {
 
       <div css={infoWrap}>
         <div css={info}>
-          {/* <TextFields type="text" text="프로젝트 이름" onChange={} />
-          <TextFields type="text" text="링크" />
-          <TextFields type="text" text="설명" /> */}
+          <TextFieldProfile type="text" text="프로젝트 이름" />
+          <TextFieldProfile type="text" text="링크" />
+          <TextFieldProfile type="text" text="설명" />
         </div>
 
         <button css={companyAdd}>
