@@ -85,9 +85,9 @@ const SelfIntroduction = () => {
     setIsGraduated(true)
   }, [])
 
-  // 나중에 쓸게요 버튼
+  // 나중에 쓸게요 버튼 -> 경력정보 입력 페이지로 이동
   const NextPage = useCallback(() => {
-    router.push('/sign_up/profile_upload')
+    router.push('/sign_up/experience')
   }, [])
 
   return (

@@ -3,15 +3,85 @@ import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Title from 'components/Common/Title'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
+import axios from 'axios'
+import { REGISTER_LINK_URL } from 'apis'
 
 const Portfolio = () => {
   const router = useRouter()
 
+  // 프로젝트명, 링크, 설명
+  const [project, setProject] = useState<string>('')
+  const [link, setLink] = useState<string>('')
+  const [desc, setDesc] = useState<string>('')
+
+  // 유효성 검사
+  const [isProject, setIsProject] = useState<boolean>(false)
+  const [isLink, setIsLink] = useState<boolean>(false)
+  const [isDesc, setIsDesc] = useState<boolean>(false)
+
+  // 버튼 클릭 시 컴포넌트 추가
+  // const [addBox, setAddBox] = useState(0)
+
+  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    router.push('/sign_up/profile_upload')
+    try {
+      await axios
+        .put(REGISTER_LINK_URL, {
+          name: project,
+          link: link,
+          description: desc,
+        })
+        .then((res) => {
+          console.log(res.data)
+        })
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
+
+  const onChangeProject = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setProject(e.target.value)
+    console.log(e.target.value)
+
+    if (e.target.value.length > 0) {
+      setIsProject(true)
+    } else {
+      setIsProject(false)
+    }
+  }, [])
+
+  const onChangeLink = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setLink(e.target.value)
+    console.log(e.target.value)
+
+    if (e.target.value.length > 0) {
+      setIsLink(true)
+    } else {
+      setIsLink(false)
+    }
+  }, [])
+
+  const onChangeDesc = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setDesc(e.target.value)
+    console.log(e.target.value)
+
+    if (e.target.value.length > 0) {
+      setIsDesc(true)
+    } else {
+      setIsDesc(false)
+    }
+  }, [])
+
+  // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
   const NextPage = useCallback(() => {
     router.push('/sign_up/profile_upload')
   }, [])
+
+  // 포트폴리오 추가 버튼
+  // const PortfolioAdd = useCallback(() => {}, [])
 
   return (
     <>
@@ -19,14 +89,16 @@ const Portfolio = () => {
 
       <Title title="포트폴리오를 올려주세요!" className="loginMt" />
 
-      <div css={infoWrap}>
-        <div css={info}>
-          <TextFieldProfile type="text" text="프로젝트 이름" />
-          <TextFieldProfile type="text" text="링크" />
-          <TextFieldProfile type="text" text="설명" />
-        </div>
+      <form css={infoWrap} onSubmit={onSubmit}>
+        <section>
+          <div css={info} className="portfolioInfo">
+            <TextFieldProfile type="text" text="프로젝트 이름" onChange={onChangeProject} />
+            <TextFieldProfile type="text" text="링크" onChange={onChangeLink} />
+            <TextFieldProfile type="text" text="설명" onChange={onChangeDesc} />
+          </div>
+        </section>
 
-        <button css={companyAdd}>
+        <button css={companyAdd} type="button">
           <span>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
@@ -35,16 +107,20 @@ const Portfolio = () => {
           </span>
           <span>포트폴리오 링크 추가</span>
         </button>
-      </div>
 
-      <div css={footButtonWrapper}>
-        <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
-          나중에 쓸게요~
-        </FootButton>
-        <FootButton type="button" footButtonType={FootButtonType.ACTIVATION}>
-          다음
-        </FootButton>
-      </div>
+        <div css={footButtonWrapper}>
+          <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
+            나중에 쓸게요~
+          </FootButton>
+          <FootButton
+            type="submit"
+            footButtonType={FootButtonType.ACTIVATION}
+            disabled={!(isProject && isLink && isDesc)}
+          >
+            다음
+          </FootButton>
+        </div>
+      </form>
     </>
   )
 }
@@ -57,7 +133,11 @@ const footButtonWrapper = css`
   left: 0;
   right: 0;
   padding: 0 20px;
-
+  button:disabled,
+  button[disabled] {
+    background-color: #d3cfcc;
+    color: #ffffff;
+  }
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
   }

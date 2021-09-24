@@ -3,19 +3,86 @@ import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Title from 'components/Common/Title'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
+import { useCallback, useState } from 'react'
+import { useRouter } from 'next/router'
+import axios from 'axios'
+import { REGISTER_WORK_URL } from 'apis'
 
 const Experience = () => {
+  const router = useRouter()
+
+  // 프로젝트명, 링크, 설명
+  const [role, setRole] = useState<string>('')
+  const [technology, setTechnology] = useState<string>('')
+  const [years, setYears] = useState<string>('')
+
+  // 유효성 검사
+  const [isRole, setIsRole] = useState<boolean>(false)
+  const [isTechnology, setIsTechnology] = useState<boolean>(false)
+  const [isYears, setIsYears] = useState<boolean>(false)
+
+  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    router.push('/sign_up/profile_upload')
+    try {
+      await axios
+        .put(REGISTER_WORK_URL, {
+          role: role,
+          technology: technology,
+          years: years,
+        })
+        .then((res) => {
+          console.log(res.data)
+        })
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
+
+  const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setRole(e.target.value)
+    console.log(e.target.value)
+
+    if (e.target.value.length > 0) {
+      setIsRole(true)
+    } else {
+      setIsRole(false)
+    }
+  }, [])
+
+  const onChangeTechnology = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTechnology(e.target.value)
+    console.log(e.target.value)
+
+    if (e.target.value.length > 0) {
+      setIsTechnology(true)
+    } else {
+      setIsTechnology(false)
+    }
+  }, [])
+
+  const onChangeYears = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setYears(e.target.value)
+    console.log(e.target.value)
+
+    if (e.target.value.length > 0) {
+      setIsYears(true)
+    } else {
+      setIsYears(false)
+    }
+  }, [])
+
   return (
     <>
       <Back />
 
       <Title title="경력 정보를 적어주세요!" className="loginMt" />
 
-      <div css={infoWrap}>
+      <form css={infoWrap} onSubmit={onSubmit}>
         <div css={info}>
-          <TextFieldProfile type="text" text="역할" onChange=""/>
-          <TextFieldProfile type="text" text="기술스택" />
-          <TextFieldProfile type="text" text="경력" />
+          <TextFieldProfile type="text" text="역할" onChange={onChangeRole} />
+          <TextFieldProfile type="text" text="기술스택" onChange={onChangeTechnology} />
+          <TextFieldProfile type="text" text="경력" onChange={onChangeYears} />
         </div>
 
         <button css={companyAdd}>
@@ -27,16 +94,20 @@ const Experience = () => {
           </span>
           <span>회사 추가</span>
         </button>
-      </div>
 
-      <div css={footButtonWrapper}>
-        <FootButton type="button" footButtonType={FootButtonType.SKIP}>
-          나중에 쓸게요~
-        </FootButton>
-        <FootButton type="button" footButtonType={FootButtonType.ACTIVATION}>
-          다음
-        </FootButton>
-      </div>
+        <div css={footButtonWrapper}>
+          <FootButton type="button" footButtonType={FootButtonType.SKIP}>
+            나중에 쓸게요~
+          </FootButton>
+          <FootButton
+            type="button"
+            footButtonType={FootButtonType.ACTIVATION}
+            disabled={!(isRole && isTechnology && isYears)}
+          >
+            다음
+          </FootButton>
+        </div>
+      </form>
     </>
   )
 }
@@ -49,7 +120,11 @@ const footButtonWrapper = css`
   left: 0;
   right: 0;
   padding: 0 20px;
-
+  button:disabled,
+  button[disabled] {
+    background-color: #d3cfcc;
+    color: #ffffff;
+  }
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
   }
