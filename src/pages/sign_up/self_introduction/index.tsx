@@ -54,7 +54,7 @@ const SelfIntroduction = () => {
     if (e.target.value.length > 0) {
       setIsAboutMe(true)
     } else {
-      setIsSkill(false)
+      setIsAboutMe(false)
     }
   }, [])
 

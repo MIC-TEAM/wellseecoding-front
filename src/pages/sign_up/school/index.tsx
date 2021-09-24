@@ -45,7 +45,7 @@ const SelfIntroduction = () => {
     setDegree(e.target.value)
     console.log(e.target.value)
 
-    if (e.target.value.length > 1) {
+    if (e.target.value.length > 0) {
       setIsDegree(true)
     } else {
       setIsDegree(false)
@@ -56,7 +56,7 @@ const SelfIntroduction = () => {
     setMajor(e.target.value)
     console.log(e.target.value)
 
-    if (e.target.value.length > 1) {
+    if (e.target.value.length > 0) {
       setIsMajor(true)
     } else {
       setIsMajor(false)
@@ -85,6 +85,7 @@ const SelfIntroduction = () => {
     setIsGraduated(true)
   }, [])
 
+  // 나중에 쓸게요 버튼
   const NextPage = useCallback(() => {
     router.push('/sign_up/profile_upload')
   }, [])
