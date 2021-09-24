@@ -48,7 +48,6 @@ const SelfIntroduction = () => {
     console.log(e.target.value)
 
     if (e.target.value.length > 1) {
-      setAboutMe('40글자 이내로 작성해주세요.')
       setDisabled(false)
     }
   }, [])
@@ -58,7 +57,6 @@ const SelfIntroduction = () => {
     console.log(e.target.value)
 
     if (e.target.value.length > 1) {
-      setSkill('본인의 기술 스택을 1가지 이상 입력해주세요.')
       setDisabled(true)
     }
   }, [])

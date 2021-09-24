@@ -2,9 +2,6 @@ import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
 import Title from 'components/Common/Title'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { useState, useCallback } from 'react'
@@ -14,13 +11,15 @@ import { REGISTER_EDUCATION_URL } from 'apis'
 const SelfIntroduction = () => {
   const [degree, setDegree] = useState<string>('')
   const [major, setMajor] = useState<string>('')
+  const [school, setSchool] = useState<boolean>(false)
   const [graduated, setGraduated] = useState<boolean>(false)
+
   const [disabled, setDisabled] = useState(false)
   const router = useRouter()
 
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
+    router.push('/sign_up/experience')
     try {
       await axios
         .put(REGISTER_EDUCATION_URL, {
@@ -34,19 +33,34 @@ const SelfIntroduction = () => {
     } catch (err) {
       console.error(err)
     }
-    setGraduated(true)
-    setDisabled(true)
-    router.push('/sign_up/experience')
   }, [])
 
   const onChangeDegree = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setDegree(e.target.value)
     console.log(e.target.value)
+
+    if (e.target.value.length > 1) {
+      setDisabled(false)
+    }
   }, [])
 
   const onChangeMajor = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setMajor(e.target.value)
     console.log(e.target.value)
+
+    if (e.target.value.length > 1) {
+      setDisabled(false)
+    }
+  }, [])
+
+  const onChangeSchool = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value === e.target.name ? setSchool(true) : setSchool(false)
+    setDisabled(true)
+  }, [])
+
+  const onChangeGraduated = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value === e.target.name ? setGraduated(true) : setGraduated(false)
+    setDisabled(true)
   }, [])
 
   return (
@@ -59,16 +73,27 @@ const SelfIntroduction = () => {
         <TextFieldProfile text="학위" type="text" onChange={onChangeDegree} />
         <TextFieldProfile text="전공" type="text" onChange={onChangeMajor} />
 
-        <RadioGroup row aria-label="school" name="school" defaultValue="top" style={{ marginTop: '2em' }}>
-          <FormControlLabel value="school-ing" control={<Radio color="primary" />} label="재학 중" />
-          <FormControlLabel value="school-end" control={<Radio color="primary" />} label="졸업" />
-        </RadioGroup>
+        <div className="ingOrEnd">
+          <label htmlFor="school-ing">
+            <input type="radio" value="school-ing" name="school-ing" onChange={onChangeSchool} checked={school} />
+            재학중
+          </label>
+
+          <label htmlFor="school-end">
+            <input type="radio" value="school-end" name="school-end" onChange={onChangeGraduated} checked={graduated} />
+            졸업
+          </label>
+        </div>
 
         <div css={footButtonWrapper}>
           <FootButton type="button" footButtonType={FootButtonType.SKIP}>
             나중에 쓸게요~
           </FootButton>
-          <FootButton type="button" footButtonType={FootButtonType.ACTIVATION} disabled={!disabled}>
+          <FootButton
+            type="submit"
+            footButtonType={FootButtonType.ACTIVATION}
+            disabled={!(degree && major && school && graduated)}
+          >
             다음
           </FootButton>
         </div>
@@ -85,7 +110,11 @@ const footButtonWrapper = css`
   left: 0;
   right: 0;
   padding: 0 20px;
-
+  button:disabled,
+  button[disabled] {
+    background-color: #d3cfcc;
+    color: #ffffff;
+  }
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
   }
@@ -94,4 +123,34 @@ const footButtonWrapper = css`
 const selfWrap = css`
   margin-top: 1.7em;
   padding: 0 20px;
+  .ingOrEnd {
+    font-size: 20px;
+    letter-spacing: -0.6px;
+    color: #262626;
+    display: flex;
+    label {
+      display: flex;
+      align-items: center;
+      &:nth-of-type(1) {
+        margin-right: 45px;
+      }
+      input {
+        margin: 0 8px 0 0;
+        &:after {
+          content: '';
+          display: inline-block;
+          width: 26px;
+          height: 26px;
+          border: 1px solid #8b8b8b;
+          border-radius: 100%;
+          vertical-align: middle;
+          cursor: pointer;
+        }
+        :checked:after {
+          border: 1px solid #ff6e35;
+          background: #ff6e35;
+        }
+      }
+    }
+  }
 `
