@@ -23,7 +23,7 @@ const Experience = () => {
 
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    router.push('/sign_up/profile_upload')
+    router.push('/sign_up/portfolio')
     try {
       await axios
         .put(REGISTER_WORK_URL, {
@@ -100,7 +100,7 @@ const Experience = () => {
             나중에 쓸게요~
           </FootButton>
           <FootButton
-            type="button"
+            type="submit"
             footButtonType={FootButtonType.ACTIVATION}
             disabled={!(isRole && isTechnology && isYears)}
           >
