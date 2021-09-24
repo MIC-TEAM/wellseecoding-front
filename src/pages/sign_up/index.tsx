@@ -37,7 +37,7 @@ const SingUp = () => {
 
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
+    router.push('/sign_up/profile_start')
     try {
       await axios
         .post(REGISTER_USERS_URL, {
@@ -51,7 +51,6 @@ const SingUp = () => {
     } catch (err) {
       console.error(err)
     }
-    router.push('/sign_up/profile_start')
   }, [])
 
   // 이름

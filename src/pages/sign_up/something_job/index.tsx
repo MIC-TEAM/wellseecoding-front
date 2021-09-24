@@ -4,21 +4,32 @@ import Title from 'components/Common/Title'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 const SomethingJob = () => {
   const router = useRouter()
+  const [isClick, setIsClick] = useState(false)
+  const [disable, setDisable] = useState(false)
+
+  // 버튼이 포커스가 되면 버튼 disable이 되도록
 
   const NextHome = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
     router.push('/sign_up/self_introduction')
   }
+
+  const onSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    router.push('/sign_up/self_introduction')
+  }
+
   return (
     <>
       <Back />
 
       <Title title="어떤 일을 하고 계세요?" className="loginMt" />
 
-      <form css={job}>
+      <form css={job} onSubmit={onSubmit}>
         <div>
           <button type="button" className="job">
             <img src="/images/signup/job01.svg" alt="학생" />
@@ -40,7 +51,7 @@ const SomethingJob = () => {
       </form>
 
       <div css={footButtonWrapper}>
-        <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} onClick={NextHome}>
+        <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} onClick={NextHome} disabled={!disable}>
           다음
         </FootButton>
       </div>
