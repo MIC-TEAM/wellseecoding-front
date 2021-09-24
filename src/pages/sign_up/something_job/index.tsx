@@ -4,21 +4,30 @@ import Title from 'components/Common/Title'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
-// import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 const SomethingJob = () => {
   const router = useRouter()
-  const [isClick, setIsClick] = useState(false)
+  // 학생, 취준생, 직장인
+  const [isChecked, setIsChecked] = useState<boolean>(false)
 
-  const NextHome = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault()
-    router.push('/sign_up/self_introduction')
-  }
+  const onChangeStudent = useCallback(() => {
+    const student = document.getElementsByClassName('student')
+    const worker = document.getElementsByClassName('worker')
+    const jobSeeker = document.getElementsByClassName('jobSeeker')
 
-  const onChangeJob = useCallback(() => {}, [])
+    if (student || worker || jobSeeker) {
+      setIsChecked(true)
+    }
+  }, [])
+
   const onSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    /*
+    API 구현 미완성
+    */
+
     router.push('/sign_up/self_introduction')
   }
 
@@ -30,30 +39,30 @@ const SomethingJob = () => {
 
       <form css={job} onSubmit={onSubmit}>
         <div>
-          <button type="button" className="job" onChange={onChangeJob}>
+          <button type="button" className="job student" onClick={onChangeStudent}>
             <img src="/images/signup/job01.svg" alt="학생" />
             <p>학생</p>
           </button>
         </div>
 
         <div className="row-coloum">
-          <button type="button" className="job" onChange={onChangeJob}>
+          <button type="button" className="job worker" onClick={onChangeStudent}>
             <img src="/images/signup/job03.svg" alt="직장인" />
             <p>직장인</p>
           </button>
 
-          <button type="button" className="job" onChange={onChangeJob}>
+          <button type="button" className="job jobSeeker" onClick={onChangeStudent}>
             <img src="/images/signup/job02.svg" alt="취준생" />
             <p>취준생</p>
           </button>
         </div>
-      </form>
 
-      <div css={footButtonWrapper}>
-        <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} onClick={NextHome} disabled={!disable}>
-          다음
-        </FootButton>
-      </div>
+        <div css={footButtonWrapper}>
+          <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!isChecked}>
+            다음
+          </FootButton>
+        </div>
+      </form>
     </>
   )
 }
@@ -88,7 +97,7 @@ const job = css`
     grid-gap: 10px;
     display: grid;
   }
-  button {
+  .job {
     border: 2px solid #efebe8;
     box-sizing: border-box;
     width: 163px;
