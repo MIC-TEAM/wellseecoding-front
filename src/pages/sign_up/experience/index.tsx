@@ -72,6 +72,11 @@ const Experience = () => {
     }
   }, [])
 
+  // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
+  const NextPage = useCallback(() => {
+    router.push('/sign_up/portfolio')
+  }, [])
+
   return (
     <>
       <Back />
@@ -96,7 +101,7 @@ const Experience = () => {
         </button>
 
         <div css={footButtonWrapper}>
-          <FootButton type="button" footButtonType={FootButtonType.SKIP}>
+          <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
             나중에 쓸게요~
           </FootButton>
           <FootButton
