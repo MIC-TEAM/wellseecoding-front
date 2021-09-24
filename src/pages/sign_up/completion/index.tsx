@@ -2,8 +2,16 @@ import Back from 'components/Common/Header/Back'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
+import { useRouter } from 'next/router'
 
 const SignUpCompletion = () => {
+  const router = useRouter()
+
+  const NextHome = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    router.push('/sign_up/self_introduction')
+  }
+
   return (
     <>
       <Back />
@@ -15,7 +23,7 @@ const SignUpCompletion = () => {
         <img src="/images/signup/character_com.svg" alt="프로필 완성 페이지 캐릭터" />
       </div>
       <div css={footButtonWrapper}>
-        <FootButton type="button" footButtonType={FootButtonType.ACTIVATION}>
+        <FootButton type="button" footButtonType={FootButtonType.ACTIVATION} onClick={NextHome}>
           시작하기
         </FootButton>
       </div>

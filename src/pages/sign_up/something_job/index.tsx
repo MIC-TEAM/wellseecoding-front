@@ -4,20 +4,19 @@ import Title from 'components/Common/Title'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useRouter } from 'next/router'
+import { useCallback } from 'react'
 // import { useState } from 'react'
 
 const SomethingJob = () => {
   const router = useRouter()
-  // const [isClick, setIsClick] = useState(false)
-  // const [disable, setDisable] = useState(false)
-
-  // 버튼이 포커스가 되면 버튼 disable이 되도록
+  const [isClick, setIsClick] = useState(false)
 
   const NextHome = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
     router.push('/sign_up/self_introduction')
   }
 
+  const onChangeJob = useCallback(() => {}, [])
   const onSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault()
     router.push('/sign_up/self_introduction')
@@ -31,19 +30,19 @@ const SomethingJob = () => {
 
       <form css={job} onSubmit={onSubmit}>
         <div>
-          <button type="button" className="job">
+          <button type="button" className="job" onChange={onChangeJob}>
             <img src="/images/signup/job01.svg" alt="학생" />
             <p>학생</p>
           </button>
         </div>
 
         <div className="row-coloum">
-          <button type="button" className="job">
+          <button type="button" className="job" onChange={onChangeJob}>
             <img src="/images/signup/job03.svg" alt="직장인" />
             <p>직장인</p>
           </button>
 
-          <button type="button" className="job">
+          <button type="button" className="job" onChange={onChangeJob}>
             <img src="/images/signup/job02.svg" alt="취준생" />
             <p>취준생</p>
           </button>
