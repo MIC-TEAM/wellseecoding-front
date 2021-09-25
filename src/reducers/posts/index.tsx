@@ -114,7 +114,7 @@ export interface WritePostRequest {
   data: WritePostType
 }
 
-export interface WritePostuccess {
+export interface WritePostSuccess {
   type: typeof WRITE_POST_SUCCESS
 }
 
@@ -193,7 +193,7 @@ export const writePostRequest = (data: WritePostType): WritePostRequest => ({
   data,
 })
 
-export const writePostuccess = (): WritePostuccess => ({
+export const writePostSuccess = (): WritePostSuccess => ({
   type: WRITE_POST_SUCCESS,
 })
 
@@ -242,7 +242,7 @@ export type FetchingPosts =
   | ReturnType<typeof fetchingPostSuccess>
   | ReturnType<typeof fetchingPostFailure>
   | ReturnType<typeof writePostRequest>
-  | ReturnType<typeof writePostuccess>
+  | ReturnType<typeof writePostSuccess>
   | ReturnType<typeof writePostFailure>
   | ReturnType<typeof updatePostRequest>
   | ReturnType<typeof updatePostuccess>

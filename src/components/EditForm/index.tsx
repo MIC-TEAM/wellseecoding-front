@@ -31,16 +31,11 @@ const EditForm = (props: PostType) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('editHashArr:', editHashArr)
-  }, [editHashArr])
-
-  useEffect(() => {
     checkDataLength()
   }, [dataArr])
 
   useEffect(() => {
     const handleRemove = (e: any) => {
-      // console.log(e.target.innerHTML.replace(/[#]/, ''))
       setHashArr(editHashArr.filter((v) => v !== e.target.innerHTML.replace(/[#]/, '')))
       $outer?.removeChild(e.target)
     }
@@ -120,7 +115,6 @@ const EditForm = (props: PostType) => {
         // 해시태그가 될 div
         const $HashWrapOuter = document.querySelector('.HashWrapOuter')
         const $HashWrapInner = document.createElement('div')
-        // console.log('$HashWrapInner 1: ', $HashWrapInner)
         $HashWrapInner.className = 'HashWrapInner'
         /* 클릭시 부모 div에서 해당 요소 삭제*/
         $HashWrapInner.addEventListener('click', () => {
@@ -136,7 +130,6 @@ const EditForm = (props: PostType) => {
         /* enter 키 코드 :13 */
         if (e.keyCode === 13 && e.target.value.trim() !== '') {
           const replaceStr = e.target.value.replace(/(\s*)/g, '')
-          // console.log('replaceStr:', e.target.value, replaceStr)
           $HashWrapInner.innerHTML = '#' + replaceStr
           $HashWrapOuter?.appendChild($HashWrapInner)
           setHashArr((hashArr) => [...hashArr, editHashtag])

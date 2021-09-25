@@ -35,7 +35,6 @@ function Home() {
   /* JWT 토큰을 디코딩(복호화)한다. */
   const parseJwt = (token: any) => {
     try {
-      console.log('start!', JSON.parse(atob(token.split('.')[1])))
       return setTokenId(JSON.parse(atob(token.split('.')[1])))
     } catch (e) {
       return null

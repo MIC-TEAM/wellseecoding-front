@@ -29,10 +29,6 @@ const TogetherWrite = () => {
     checkDataLength()
   }, [dataArr])
 
-  useEffect(() => {
-    hashArr.length && console.log(hashArr)
-  }, [hashArr])
-
   /* dataArr의 문자열이 존재한다면 > 버튼을 활성화 */
   const checkDataLength = useCallback(() => {
     if (dataArr.every((data) => data?.length) === true) setReady(true)
@@ -125,7 +121,6 @@ const TogetherWrite = () => {
         /* enter 키 코드 :13 */
         if (e.keyCode === 13 && e.target.value.trim() !== '') {
           const replaceStr = e.target.value.replace(/(\s*)/g, '')
-          // console.log('replaceStr:', e.target.value, replaceStr)
           $HashWrapInner.innerHTML = '#' + replaceStr
           $HashWrapOuter?.appendChild($HashWrapInner)
           setHashArr((hashArr) => [...hashArr, hashtag])

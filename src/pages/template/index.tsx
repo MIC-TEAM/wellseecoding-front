@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import DataForm from 'components/DataForm'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,10 +12,6 @@ function Template() {
   const [firstNum, setFirstNum] = useState(0)
   // 배열의 마지막 번째 인덱스
   const [lastNum, setLastNum] = useState(20)
-
-  useEffect(() => {
-    console.log(firstNum, lastNum)
-  }, [firstNum, lastNum])
 
   const getAPI = () => {
     dispatch({

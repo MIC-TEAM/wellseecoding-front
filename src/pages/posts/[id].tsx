@@ -26,10 +26,6 @@ function Post() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('router.query:', id, typeof id)
-  }, [])
-
-  useEffect(() => {
     saveLocalInfo()
   }, [])
 

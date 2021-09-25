@@ -21,7 +21,6 @@ const Write = () => {
   }, [post])
 
   const loadUser = useCallback(() => {
-    console.log('start')
     dispatch({
       type: FETCHING_POSTS_REQUEST,
     })
