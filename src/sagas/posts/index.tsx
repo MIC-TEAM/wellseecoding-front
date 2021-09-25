@@ -12,6 +12,10 @@ import {
   FETCHING_POST_FAILURE,
   FETCHING_POST_REQUEST,
   FETCHING_POST_SUCCESS,
+  UpdatePostRequest,
+  UPDATE_POST_FAILURE,
+  UPDATE_POST_REQUEST,
+  UPDATE_POST_SUCCESS,
   WritePostRequest,
   WRITE_POST_FAILURE,
   WRITE_POST_REQUEST,
@@ -97,6 +101,31 @@ function* writePost(action: WritePostRequest) {
   }
 }
 
+async function updatePostAPI(data: WritePostType) {
+  try {
+    const response = await axios.put(`/api/v1/posts/${data.id}`, data, myConfig)
+    return response.status
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* updatePost(action: UpdatePostRequest) {
+  try {
+    const result: number = yield call(updatePostAPI, action.data)
+    console.log('success', result)
+    yield put({
+      type: UPDATE_POST_SUCCESS,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: UPDATE_POST_FAILURE,
+      data: err,
+    })
+  }
+}
+
 async function deletePostAPI(data: number) {
   try {
     const response = await axios.delete(`/api/v1/posts/${data}`, myConfig)
@@ -134,10 +163,20 @@ function* watchWritePost() {
   yield takeLatest(WRITE_POST_REQUEST, writePost)
 }
 
+function* watchUpdatePost() {
+  yield takeLatest(UPDATE_POST_REQUEST, updatePost)
+}
+
 function* watchDeletePost() {
   yield takeLatest(DELETE_POST_REQUEST, deletePost)
 }
 
 export default function* postSaga() {
-  yield all([fork(watchFetchPosts), fork(watchWritePost), fork(watchFetchPost), fork(watchDeletePost)])
+  yield all([
+    fork(watchFetchPosts),
+    fork(watchWritePost),
+    fork(watchUpdatePost),
+    fork(watchFetchPost),
+    fork(watchDeletePost),
+  ])
 }

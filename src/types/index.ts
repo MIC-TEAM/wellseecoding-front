@@ -20,11 +20,12 @@ export type PostType = {
 
 /* 내가 쓴 글 보낼 때 필요한 타입 */
 export type WritePostType = {
-  name: string | ''
-  deadline: string | ''
-  schedule: string | ''
-  summary: string | ''
-  qualification: string | ''
-  size: string | ''
+  name: string
+  deadline: string
+  schedule: string
+  summary: string
+  qualification: string
+  size: string
   tags: []
+  id?: number
 }

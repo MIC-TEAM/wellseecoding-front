@@ -13,6 +13,7 @@ import IsModal from 'components/Common/IsModal'
 import { FETCHING_POST_REQUEST } from 'reducers/posts'
 import EditForm from 'components/EditForm'
 import HashWrap from 'components/Common/HashWrap'
+import Loading from 'components/Loading'
 
 function Post() {
   const router = useRouter()
@@ -114,7 +115,7 @@ function Post() {
               </div>
             ))
           ) : (
-            <div> 로딩중 ...</div>
+            <Loading />
           )}
         </div>
       </main>

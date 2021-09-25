@@ -38,7 +38,7 @@ const backHeader = css`
   text-align: left;
   position: sticky;
   background: #fff;
-  top: 0;
+  /* top: 0; */
   padding: 0 20px;
   display: flex;
   align-items: center;

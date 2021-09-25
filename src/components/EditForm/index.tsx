@@ -2,13 +2,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from '@emotion/react'
 import React, { useCallback, useEffect, useState } from 'react'
-import EditBack from 'components/Common/Header/EditBack'
+import EditBackOptional from 'components/Common/Header/EditBackOptional'
 import { Alert } from '@material-ui/lab'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import { Common } from 'styles/common'
 import { PostType } from 'types'
-import axios from 'axios'
-import { myConfig } from 'sagas'
+import { useDispatch } from 'react-redux'
+import { UPDATE_POST_REQUEST } from 'reducers/posts'
 
 const EditForm = (props: PostType) => {
   const { id, name, deadline, schedule, summary, qualification, size, tags } = props
@@ -28,7 +28,7 @@ const EditForm = (props: PostType) => {
 
   const dataArr = [editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr]
 
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     console.log('editHashArr:', editHashArr)
@@ -94,29 +94,22 @@ const EditForm = (props: PostType) => {
   const onSubmit = useCallback(
     async (e) => {
       e.preventDefault()
-      try {
-        await axios
-          .put(
-            `api/v1/posts/${id}`,
-            {
-              name: editTitle,
-              deadline: editPeriod,
-              schedule: editSchedule,
-              qualification: editQualification,
-              summary: editSummary,
-              size: editPeopleNum,
-              tags: editHashArr,
-            },
-            myConfig
-          )
-          .then((res) => console.log(res))
-        setReady(false)
-        location.replace('/together')
-      } catch (err) {
-        console.error(err)
-      }
+      dispatch({
+        type: UPDATE_POST_REQUEST,
+        data: {
+          id: id,
+          name: editTitle,
+          deadline: editPeriod,
+          schedule: editSchedule,
+          qualification: editQualification,
+          summary: editSummary,
+          size: editPeopleNum,
+          tags: editHashArr,
+        },
+      })
+      location.replace('/together')
     },
-    [editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr, id]
+    [id, editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr, dispatch]
   )
 
   const onKeyUp = useCallback(
@@ -156,7 +149,7 @@ const EditForm = (props: PostType) => {
 
   return (
     <div css={modalWrap}>
-      <EditBack text="수정하기" />
+      <EditBackOptional text="수정하기" />
       <main css={writeWrap}>
         <form css={writeForm} onSubmit={onSubmit}>
           <input type="text" value={editTitle} onChange={onChangeTitle} placeholder="[모임지역]모임명" />
@@ -247,7 +240,7 @@ const modalWrap = css`
 
 const footButtonWrapper = css`
   position: absolute;
-  bottom: 0.4em;
+  /* bottom: 0.4em; */
   left: 0;
   right: 0;
   padding: 0 20px;
@@ -263,7 +256,7 @@ const footButtonWrapper = css`
 
 const writeForm = css`
   width: 100%;
-  margin-bottom: 200px;
+  /* margin-bottom: 100px; */
   input {
     width: 100%;
     font-weight: 500;

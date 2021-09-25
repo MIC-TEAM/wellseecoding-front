@@ -18,6 +18,10 @@ export interface PostsIntialState {
   writePostSuccess: boolean
   writePostFailure: null | Error
 
+  updatePostLoading: boolean
+  updatePostSuccess: boolean
+  updatePostFailure: null | Error
+
   deletePostLoading: boolean
   deletePostSuccess: boolean
   deletePostFailure: null | Error
@@ -40,6 +44,10 @@ export const initialState: PostsIntialState = {
   writePostSuccess: false,
   writePostFailure: null,
 
+  updatePostLoading: false,
+  updatePostSuccess: false,
+  updatePostFailure: null,
+
   deletePostLoading: false,
   deletePostSuccess: false,
   deletePostFailure: null,
@@ -57,6 +65,10 @@ export const FETCHING_POST_FAILURE = 'FETCHING_POST_FAILURE' as const
 export const WRITE_POST_REQUEST = 'WRITE_POST_REQUEST' as const
 export const WRITE_POST_SUCCESS = 'WRITE_POST_SUCCESS' as const
 export const WRITE_POST_FAILURE = 'WRITE_POST_FAILURE' as const
+
+export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST' as const
+export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS' as const
+export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE' as const
 
 export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST' as const
 export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS' as const
@@ -108,6 +120,20 @@ export interface WritePostuccess {
 
 export interface WritePostFailure {
   type: typeof WRITE_POST_FAILURE
+  error: Error
+}
+
+export interface UpdatePostRequest {
+  type: typeof UPDATE_POST_REQUEST
+  data: WritePostType // write와 마찬가지로 기존 데이터를 덮어씌움
+}
+
+export interface UpdatePostuccess {
+  type: typeof UPDATE_POST_SUCCESS
+}
+
+export interface UpdatePostFailure {
+  type: typeof UPDATE_POST_FAILURE
   error: Error
 }
 
@@ -176,6 +202,20 @@ export const writePostFailure = (error: Error): WritePostFailure => ({
   error,
 })
 
+export const updatePostRequest = (data: WritePostType): UpdatePostRequest => ({
+  type: UPDATE_POST_REQUEST,
+  data,
+})
+
+export const updatePostuccess = (): UpdatePostuccess => ({
+  type: UPDATE_POST_SUCCESS,
+})
+
+export const updatePostFailure = (error: Error): UpdatePostFailure => ({
+  type: UPDATE_POST_FAILURE,
+  error,
+})
+
 export const deletePostRequest = (data: number): DeletePostRequest => ({
   type: DELETE_POST_REQUEST,
   data,
@@ -204,6 +244,9 @@ export type FetchingPosts =
   | ReturnType<typeof writePostRequest>
   | ReturnType<typeof writePostuccess>
   | ReturnType<typeof writePostFailure>
+  | ReturnType<typeof updatePostRequest>
+  | ReturnType<typeof updatePostuccess>
+  | ReturnType<typeof updatePostFailure>
   | ReturnType<typeof deletePostRequest>
   | ReturnType<typeof deletePostuccess>
   | ReturnType<typeof deletePostFailure>
@@ -261,6 +304,21 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
       case WRITE_POST_FAILURE: {
         draft.writePostSuccess = false
         draft.writePostFailure = action.error
+        break
+      }
+      case UPDATE_POST_REQUEST: {
+        draft.updatePostLoading = true
+        draft.updatePostSuccess = false
+        break
+      }
+      case UPDATE_POST_SUCCESS: {
+        draft.updatePostLoading = false
+        draft.updatePostSuccess = true
+        break
+      }
+      case UPDATE_POST_FAILURE: {
+        draft.updatePostSuccess = false
+        draft.updatePostFailure = action.error
         break
       }
       case DELETE_POST_REQUEST: {
