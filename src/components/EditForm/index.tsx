@@ -38,6 +38,24 @@ const EditForm = (props: PostType) => {
     checkDataLength()
   }, [dataArr])
 
+  useEffect(() => {
+    const handleRemove = (e: any) => {
+      // console.log(e.target.innerHTML.replace(/[#]/, ''))
+      setHashArr(editHashArr.filter((v) => v !== e.target.innerHTML.replace(/[#]/, '')))
+      $outer?.removeChild(e.target)
+    }
+
+    const $outer = document.querySelector('.HashWrapOuter')
+
+    if ($outer) {
+      $outer.addEventListener('click', handleRemove)
+
+      return () => {
+        $outer.removeEventListener('click', handleRemove)
+      }
+    }
+  }, [editHashArr])
+
   /* dataArr의 문자열이 존재한다면 > 버튼을 활성화 */
   const checkDataLength = useCallback(() => {
     if (dataArr.every((data) => data?.length) === true) setReady(true)
@@ -74,64 +92,32 @@ const EditForm = (props: PostType) => {
   }, [])
 
   const onSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault()
-
-      axios
-        .put(
-          `api/v1/posts/${id}`,
-          {
-            name: editTitle,
-            deadline: editPeriod,
-            schedule: editSchedule,
-            qualification: editQualification,
-            summary: editSummary,
-            size: editPeopleNum,
-            tags: editHashArr,
-          },
-          myConfig
-        )
-        .then((res) => console.log(res))
-
-      alert('done')
-
-      setTitle('')
-      setPeriod('')
-      setSchedule('')
-      setQualification('')
-      setSummary('')
-      setPeopleNum('')
-      setHashArr([])
-      setHashtag('')
-
-      if (process.browser) {
-        const $HashWrapOuter = document.querySelector('.HashWrapOuter')
-        // HashWrap 노드의 자식 노드를 모두 삭제한다
-        $HashWrapOuter?.remove()
+      try {
+        await axios
+          .put(
+            `api/v1/posts/${id}`,
+            {
+              name: editTitle,
+              deadline: editPeriod,
+              schedule: editSchedule,
+              qualification: editQualification,
+              summary: editSummary,
+              size: editPeopleNum,
+              tags: editHashArr,
+            },
+            myConfig
+          )
+          .then((res) => console.log(res))
+        setReady(false)
+        location.replace('/together')
+      } catch (err) {
+        console.error(err)
       }
-      setReady(false)
-      location.href = '/together'
     },
-    [editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr]
+    [editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr, id]
   )
-
-  if (process.browser) {
-    // 이벤트 위임을 통해 자식 요소 제거
-    const $HashWrapOuter = document.querySelector('.HashWrapOuter')
-
-    $HashWrapOuter?.addEventListener('click', (e: any) => {
-      $HashWrapOuter.removeChild(e.target)
-      setHashArr(
-        editHashArr.filter(function (hashtag) {
-          // console.log('e.target:', e.target)
-          // 4번 눌리고 있는 상태..
-          // e.target(내가 누른 해시태그) 을 editHashArr에서 빼줘
-
-          return hashtag !== e.target.innerHTML
-        })
-      )
-    })
-  }
 
   const onKeyUp = useCallback(
     (e) => {
@@ -214,7 +200,7 @@ ex) 프론트 n명, 백 n명
               {tags &&
                 tags?.map((v, i) => (
                   <div className="HashWrapInner" key={i}>
-                    {v}
+                    #{v}
                   </div>
                 ))}
             </div>
@@ -228,7 +214,7 @@ ex) 프론트 n명, 백 n명
             />
           </div>
           {hashError && (
-            <Alert variant="outlined" severity="error" style={{ marginTop: 10 }}>
+            <Alert variant="outlined" severity="error" style={{ margin: '10px 0' }}>
               해시태그 등록 시에 스페이스바를 사용하실 수 없습니다.
             </Alert>
           )}
@@ -240,7 +226,7 @@ ex) 프론트 n명, 백 n명
             footButtonType={ready ? FootButtonType.ACTIVATION : FootButtonType.DISABLE}
             onClick={onSubmit}
           >
-            다음
+            수정하기
           </FootButton>
         </div>
       </main>
@@ -261,13 +247,17 @@ const modalWrap = css`
 
 const footButtonWrapper = css`
   position: absolute;
-  bottom: 4.4em;
+  bottom: 0.4em;
   left: 0;
   right: 0;
   padding: 0 20px;
   background: #fff;
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
+  }
+
+  @media (max-width: 375px) {
+    bottom: none !important;
   }
 `
 

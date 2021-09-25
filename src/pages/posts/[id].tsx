@@ -63,10 +63,6 @@ function Post() {
       ) : (
         <div></div>
       )}
-
-      <div>
-        <h1 style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', margin: '20px 0' }}>🌟 {id}번 게시물 🌟</h1>
-      </div>
       <main css={togetherBoard}>
         <div className="wrap">
           {post.length ? (

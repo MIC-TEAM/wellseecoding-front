@@ -26,6 +26,12 @@ function Home() {
     if (decodedUserName) localStorage.setItem('userName', decodedUserName)
   }, [decodedUserId, decodedUserName])
 
+  useEffect(() => {
+    setTimeout(() => {
+      checkDecode()
+    }, 2000)
+  }, [])
+
   /* JWT 토큰을 디코딩(복호화)한다. */
   const parseJwt = (token: any) => {
     try {
@@ -49,10 +55,6 @@ function Home() {
       }
     }
   }
-
-  setTimeout(() => {
-    checkDecode()
-  }, 2000)
 
   /* 복호화된 토큰 정보가 없을 경우 회원가입 단으로 이동 */
   function checkDecode() {
