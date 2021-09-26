@@ -5,16 +5,16 @@ type Props = {
   key: number
   uniq: number
   listTitle: string
-  hashtagArr: string[]
+  tags: []
 }
-function StudyBox({ uniq, listTitle, hashtagArr }: Props) {
+function StudyBox({ uniq, listTitle, tags }: Props) {
   return (
     <li css={studyContentBox}>
-      <Link href={`/post/${uniq}`}>
+      <Link href={`/posts/${uniq}`}>
         <a>
           <article>
             <h3>{listTitle}</h3>
-            {hashtagArr.map((v, i) => (
+            {tags?.map((v, i) => (
               <p key={i}>#{v}</p>
             ))}
           </article>

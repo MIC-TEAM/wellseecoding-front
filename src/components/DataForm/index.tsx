@@ -8,8 +8,6 @@ type Props = {
 
 function DataForm(props: Props) {
   const { datas } = props
-  // props로 받는 datas 객체 확인하기
-  console.log('datas: ', datas)
 
   return (
     <div style={{ marginTop: 50 }}>

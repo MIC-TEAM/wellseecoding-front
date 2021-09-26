@@ -2,33 +2,56 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
+import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { SET_ISMODAL } from 'reducers/common'
 import { Common } from 'styles/common'
 
 type Props = {
   title: string | null
   optional: boolean
+  // 로컬 스토리지에 저장된 내 id
+  localId?: number | null
+  // post로부터 불러오는 id
+  userId?: number
+  // 게시글의 고유 id
+  uniqId?: string | string[] | undefined
 }
 
-function BackOptional({ title, optional }: Props) {
+function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   const router = useRouter()
+  const dispatch = useDispatch()
+
+  const setModal = useCallback(() => {
+    dispatch({
+      type: SET_ISMODAL,
+      data: uniqId,
+    })
+  }, [dispatch])
 
   return (
-    <header css={backHeader}>
-      <button type="button" className="back" onClick={() => router.back()}>
-        <img src="/images/header/back.svg" alt="뒤로가기" />
-      </button>
-      <h1>{title ? title : ''}</h1>
-      {optional && (
-        <div>
-          <button type="button">
-            <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
-          </button>
-          <button type="button">
-            <img src="/images/header/setting.svg" alt="환경설정" onClick={() => alert('환경설정')} />
-          </button>
-        </div>
-      )}
-    </header>
+    <>
+      <header css={backHeader}>
+        <button type="button" className="back" onClick={() => router.back()}>
+          <img src="/images/header/back.svg" alt="뒤로가기" />
+        </button>
+        <h1>{title ? title : ''}</h1>
+        {optional && (
+          <div>
+            {/* 옵션이 존재하면서, 로컬 스토리지에 존재하는 아이디와 게시글의 유저아이디가 같은 경우에는 환경설정 버튼이 뜨도록 조건을 준다 */}
+            {localId === userId ? (
+              <button type="button" onClick={setModal}>
+                <img src="/images/header/setting.svg" alt="환경설정" />
+              </button>
+            ) : (
+              <button type="button">
+                <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
+              </button>
+            )}
+          </div>
+        )}
+      </header>
+    </>
   )
 }
 
