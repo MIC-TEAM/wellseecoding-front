@@ -1,12 +1,12 @@
+import { css } from '@emotion/react'
 import TogetherSearchBar from 'components/Together/Header/Search'
 import SearchBox from 'components/Together/SearchBox'
-import { css } from '@emotion/react'
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import React, { useEffect } from 'react'
 
 const SearchResult = () => {
   const router = useRouter()
-  const word = '자바스크립트'
+  const { id } = router.query
 
   const dummySearchBox = [
     {
@@ -47,26 +47,28 @@ const SearchResult = () => {
   ]
 
   useEffect(() => {
-    console.log(router.query)
-  })
+    console.log('router result:', router.query)
+    console.log('id:', id)
+  }, [id])
 
   return (
-    <div css={searchWrap}>
-      <TogetherSearchBar />
+    <>
+      <div css={searchWrap}>
+        <TogetherSearchBar />
 
-      <div css={searchWord}>
-        <h2>
-          <strong>{word}</strong>
-          를(을) 검색한 결과입니다.
-        </h2>
+        <div css={searchWord}>
+          <h2>
+            <strong>{id}</strong> 을(를) 검색한 결과입니다.
+          </h2>
+        </div>
+
+        <section>
+          {dummySearchBox.map((item) => (
+            <SearchBox key={item.id} listTitle={item.comment} hashTag={item.hashTag} />
+          ))}
+        </section>
       </div>
-
-      <section>
-        {dummySearchBox.map((item) => (
-          <SearchBox key={item.id} listTitle={item.comment} hashTag={item.hashTag} />
-        ))}
-      </section>
-    </div>
+    </>
   )
 }
 

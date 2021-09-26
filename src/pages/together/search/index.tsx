@@ -18,18 +18,6 @@ const Search = () => {
             <img src="/images/together/btn_delete.svg" alt="삭제" />
           </button>
         </li>
-        <li>
-          <p>자바스크립트</p>
-          <button type="button">
-            <img src="/images/together/btn_delete.svg" alt="삭제" />
-          </button>
-        </li>
-        <li>
-          <p>자바스크립트</p>
-          <button type="button">
-            <img src="/images/together/btn_delete.svg" alt="삭제" />
-          </button>
-        </li>
       </ul>
     </div>
   )

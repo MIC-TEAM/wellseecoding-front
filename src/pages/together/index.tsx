@@ -35,7 +35,6 @@ const Write = () => {
   return (
     <>
       <TogetherHeader />
-
       <main css={togetherBoard}>
         <div className="wrap">
           <StudySection title="모각코" data={posts} />
