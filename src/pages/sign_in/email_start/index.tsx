@@ -1,13 +1,49 @@
 import TextField from 'components/Common/TextField'
+import React, { useCallback, useState } from 'react'
 import PasswordField from 'components/Common/PasswordField'
 import BigTitle from 'components/Common/BigTitle'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
 
 const EmailLogin = () => {
+  const router = useRouter()
+
+  // 이메일, 비밀번호
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      console.log(`이메일 + ${email}, 패스워드 + ${password}`)
+      router.push('/home')
+    },
+    [email, password]
+  )
+
+  // 이메일
+  const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const emailCurrent = e.target.value
+    setEmail(emailCurrent)
+  }, [])
+
+  // 비밀번호
+  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
+    const passwordCurrent = e.target.value
+    setPassword(passwordCurrent)
+
+    if (!passwordRegex.test(passwordCurrent)) {
+      alert('비밀번호는 숫자 + 영문자 + 특수문자 조합으로 8자리 이상 입력해주세요.')
+    } else {
+      alert('비밀번호는 숫자 + 영문자 + 특수문자 조합으로 8자리 이상 입력해주세요.')
+    }
+  }, [])
+
   return (
     <>
       <Back />
@@ -16,9 +52,14 @@ const EmailLogin = () => {
         <BigTitle title="이메일로 로그인" />
       </div>
 
-      <form css={loginFrom}>
-        <TextField text="이메일" type="email" />
-        <PasswordField title="비밀번호" />
+      <form css={loginFrom} onSubmit={onSubmit}>
+        <TextField text="이메일" type="email" typeName="email" onChange={onChangeEmail} />
+        <PasswordField
+          title="비밀번호"
+          onChange={onChangePassword}
+          typeTitle="password"
+          passwordText="비밀번호 (숫자+영문자+특수문자 조합으로 8자리 이상)"
+        />
 
         <div css={footButtonWrapper}>
           <FootButton type="submit" footButtonType={FootButtonType.DISABLE}>

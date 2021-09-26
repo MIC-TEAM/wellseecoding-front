@@ -24,10 +24,6 @@ const SomethingJob = () => {
   const onSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    /*
-    API 구현 미완성
-    */
-
     router.push('/sign_up/self_introduction')
   }
 
