@@ -8,7 +8,7 @@ type Props = {
 function StudyBox({ listTitle, hashTag }: Props) {
   return (
     <li css={studyContentBox}>
-      <Link href={`/posts/116`}>
+      <Link href={`/posts/308`}>
         <a>
           <article>
             <h3>{listTitle}</h3>

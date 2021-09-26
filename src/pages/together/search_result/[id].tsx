@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import TogetherSearchBar from 'components/Together/Header/Search'
 import SearchBox from 'components/Together/SearchBox'
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 const SearchResult = () => {
   const router = useRouter()
@@ -46,10 +46,10 @@ const SearchResult = () => {
     },
   ]
 
-  useEffect(() => {
-    console.log('router result:', router.query)
-    console.log('id:', id)
-  }, [id])
+  // useEffect(() => {
+  //   console.log('result:', router.query)
+  //   console.log('id:', id)
+  // }, [router.query, id])
 
   return (
     <>

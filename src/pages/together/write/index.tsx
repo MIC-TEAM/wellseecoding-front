@@ -76,6 +76,7 @@ const TogetherWrite = () => {
           summary: summary,
           qualification: qualification,
           size: peopleNum,
+          tags: hashArr,
         },
       })
 

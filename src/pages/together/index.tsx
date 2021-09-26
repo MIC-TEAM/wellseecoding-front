@@ -7,14 +7,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { useCallback, useEffect } from 'react'
 import { FETCHING_POSTS_REQUEST, RESET_POST_LIST } from 'reducers/posts'
+import Loading from 'components/Loading'
 
 const Write = () => {
   const { posts, post } = useSelector((state: RootState) => state.posts)
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log('get posts!:', posts)
+  }, [posts])
+
+  useEffect(() => {
     !posts.length && loadUser()
-  }, [])
+  }, [posts])
 
   useEffect(() => {
     post.length && resetPost()
@@ -37,7 +42,7 @@ const Write = () => {
       <TogetherHeader />
       <main css={togetherBoard}>
         <div className="wrap">
-          <StudySection title="모각코" data={posts} />
+          {post ? posts.map((p, i) => <StudySection key={i} theme={p.theme} posts={p.posts} />) : <Loading />}
         </div>
       </main>
       <WriteButton />
