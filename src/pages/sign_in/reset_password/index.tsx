@@ -3,7 +3,9 @@ import Back from 'components/Common/Header/Back'
 import PasswordField from 'components/Common/PasswordField'
 import Title from 'components/Common/Title'
 import { css } from '@emotion/react'
+import { REGISTER_USERS_URL } from 'apis'
 import { useRouter } from 'next/router'
+import axios from 'axios'
 import React, { useCallback, useState } from 'react'
 
 interface PasswordReset {
@@ -27,6 +29,17 @@ const PasswordReset = () => {
   const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     router.push('/home')
+    try {
+      await axios
+        .post(REGISTER_USERS_URL, {
+          password: password,
+        })
+        .then((res) => {
+          console.log(res.data)
+        })
+    } catch (err) {
+      console.error(err)
+    }
   }, [])
 
   // 비밀번호
