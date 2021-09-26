@@ -1,33 +1,55 @@
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import TogetherBack from 'components/Common/Header/Back'
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from '@emotion/react'
+import React, { useCallback, useEffect, useState } from 'react'
+import EditBackOptional from 'components/Common/Header/EditBackOptional'
+import { Alert } from '@material-ui/lab'
+import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import { Common } from 'styles/common'
-import { useCallback, useEffect, useState } from 'react'
-import Alert from '@material-ui/lab/Alert'
+import { PostType } from 'types'
 import { useDispatch } from 'react-redux'
-import { WRITE_POST_REQUEST } from 'reducers/posts'
+import { UPDATE_POST_REQUEST } from 'reducers/posts'
 
-const TogetherWrite = () => {
-  const [title, setTitle] = useState<string | ''>('')
-  const [period, setPeriod] = useState<string | ''>('')
-  const [schedule, setSchedule] = useState<string | ''>('')
-  const [qualification, setQualification] = useState<string | ''>('')
-  const [summary, setSummary] = useState<string | ''>('')
-  const [peopleNum, setPeopleNum] = useState<string | ''>('')
-  const [hashtag, setHashtag] = useState<string | ''>('')
+const EditForm = (props: PostType) => {
+  const { id, name, deadline, schedule, summary, qualification, size, tags } = props
+
+  const [editTitle, setTitle] = useState<string | ''>(name)
+  const [editPeriod, setPeriod] = useState<string | ''>(deadline)
+  const [editSchedule, setSchedule] = useState<string | ''>(schedule)
+  const [editQualification, setQualification] = useState<string | ''>(qualification)
+  const [editSummary, setSummary] = useState<string | ''>(summary)
+  const [editPeopleNum, setPeopleNum] = useState<string | ''>(size)
+  const [editHashtag, setHashtag] = useState<string | ''>('')
   // 해시태그를 담을 배열
-  const [hashArr, setHashArr] = useState<string[] | []>([])
+  const [editHashArr, setHashArr] = useState<string[] | []>(tags)
   const [hashError, setHashError] = useState(false)
 
   const [ready, setReady] = useState(false)
 
-  const dataArr = [title, period, schedule, qualification, summary, peopleNum, hashArr]
+  const dataArr = [editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr]
 
   const dispatch = useDispatch()
 
   useEffect(() => {
     checkDataLength()
   }, [dataArr])
+
+  useEffect(() => {
+    const handleRemove = (e: any) => {
+      setHashArr(editHashArr.filter((v) => v !== e.target.innerHTML.replace(/[#]/, '')))
+      $outer?.removeChild(e.target)
+    }
+
+    const $outer = document.querySelector('.HashWrapOuter')
+
+    if ($outer) {
+      $outer.addEventListener('click', handleRemove)
+
+      return () => {
+        $outer.removeEventListener('click', handleRemove)
+      }
+    }
+  }, [editHashArr])
 
   /* dataArr의 문자열이 존재한다면 > 버튼을 활성화 */
   const checkDataLength = useCallback(() => {
@@ -65,38 +87,24 @@ const TogetherWrite = () => {
   }, [])
 
   const onSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault()
       dispatch({
-        type: WRITE_POST_REQUEST,
+        type: UPDATE_POST_REQUEST,
         data: {
-          name: title,
-          deadline: period,
-          schedule: schedule,
-          summary: summary,
-          qualification: qualification,
-          size: peopleNum,
+          id: id,
+          name: editTitle,
+          deadline: editPeriod,
+          schedule: editSchedule,
+          qualification: editQualification,
+          summary: editSummary,
+          size: editPeopleNum,
+          tags: editHashArr,
         },
       })
-
-      setTitle('')
-      setPeriod('')
-      setSchedule('')
-      setQualification('')
-      setSummary('')
-      setPeopleNum('')
-      setHashArr([])
-      setHashtag('')
-
-      if (process.browser) {
-        const $HashWrapOuter = document.querySelector('.HashWrapOuter')
-        // HashWrap 노드의 자식 노드를 모두 삭제한다
-        $HashWrapOuter?.remove()
-      }
-      setReady(false)
-      location.href = '/together'
+      location.replace('/together')
     },
-    [title, period, schedule, qualification, summary, peopleNum, hashArr]
+    [id, editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr, dispatch]
   )
 
   const onKeyUp = useCallback(
@@ -110,9 +118,10 @@ const TogetherWrite = () => {
         $HashWrapInner.className = 'HashWrapInner'
         /* 클릭시 부모 div에서 해당 요소 삭제*/
         $HashWrapInner.addEventListener('click', () => {
+          // div 태그에 대한 이벤트
           $HashWrapOuter?.removeChild($HashWrapInner)
           /*  hashArr state 배열에서 해당 hashTag를 삭제 */
-          setHashArr(hashArr.filter((hashtag) => hashtag))
+          setHashArr(editHashArr.filter((hashtag) => hashtag))
         })
 
         /* space bar 키 코드: 32 */
@@ -123,31 +132,31 @@ const TogetherWrite = () => {
           const replaceStr = e.target.value.replace(/(\s*)/g, '')
           $HashWrapInner.innerHTML = '#' + replaceStr
           $HashWrapOuter?.appendChild($HashWrapInner)
-          setHashArr((hashArr) => [...hashArr, hashtag])
+          setHashArr((hashArr) => [...hashArr, editHashtag])
           setHashtag('')
         }
       }
     },
-    [hashtag, hashArr]
+    [editHashtag, editHashArr]
   )
 
   return (
-    <>
-      <TogetherBack text="모임 글쓰기" />
+    <div css={modalWrap}>
+      <EditBackOptional text="수정하기" />
       <main css={writeWrap}>
         <form css={writeForm} onSubmit={onSubmit}>
-          <input type="text" value={title} onChange={onChangeTitle} placeholder="[모임지역]모임명" />
-          <input type="text" value={period} onChange={onChangePeriod} placeholder="작업기간 (데드라인)" />
+          <input type="text" value={editTitle} onChange={onChangeTitle} placeholder="[모임지역]모임명" />
+          <input type="text" value={editPeriod} onChange={onChangePeriod} placeholder="작업기간 (데드라인)" />
           <input
             type="text"
-            value={schedule}
+            value={editSchedule}
             onChange={onChangeSchedule}
             placeholder="일정 (주 몇회, 온라인/오프라인)"
           />
           <textarea
             rows={5}
             cols={5}
-            value={qualification}
+            value={editQualification}
             onChange={onChangeQualification}
             placeholder="자격요건(취준/경력, 사용언어 등등) 
 ex) 같은 취준생 / 경력 2년 이상 
@@ -157,7 +166,7 @@ ex) 같은 취준생 / 경력 2년 이상
           <textarea
             rows={5}
             cols={5}
-            value={summary}
+            value={editSummary}
             onChange={onChangeSummary}
             placeholder="스터디 설명
 스터디에 대한 목적 및 간단한 설명 입력"
@@ -166,25 +175,32 @@ ex) 같은 취준생 / 경력 2년 이상
           <textarea
             rows={5}
             cols={5}
-            value={peopleNum}
+            value={editPeopleNum}
             onChange={onChangePeopleNum}
             placeholder="모집인원 (분야별/몇명)
 ex) 프론트 n명, 백 n명
 기획자나 디자이너가 있을 경우 명시"
           />
           <div className="HashWrap" css={hashDivrap}>
-            <div className="HashWrapOuter"></div>
+            <div className="HashWrapOuter">
+              {tags &&
+                tags?.map((v, i) => (
+                  <div className="HashWrapInner" key={i}>
+                    #{v}
+                  </div>
+                ))}
+            </div>
             <input
               className="HashInput"
               type="text"
-              value={hashtag}
+              value={editHashtag}
               onChange={onChangeHashtag}
               onKeyUp={onKeyUp}
               placeholder="해시태그 입력"
             />
           </div>
           {hashError && (
-            <Alert variant="outlined" severity="error" style={{ marginTop: 10 }}>
+            <Alert variant="outlined" severity="error" style={{ margin: '10px 0' }}>
               해시태그 등록 시에 스페이스바를 사용하실 수 없습니다.
             </Alert>
           )}
@@ -196,19 +212,28 @@ ex) 프론트 n명, 백 n명
             footButtonType={ready ? FootButtonType.ACTIVATION : FootButtonType.DISABLE}
             onClick={onSubmit}
           >
-            다음
+            수정하기
           </FootButton>
         </div>
       </main>
-    </>
+    </div>
   )
 }
 
-export default TogetherWrite
+export default EditForm
+
+const modalWrap = css`
+  background-color: white;
+  width: 100%;
+  height: 100vh;
+  z-index: 10500;
+  position: absolute;
+  top: 0;
+`
 
 const footButtonWrapper = css`
   position: absolute;
-  bottom: 4.4em;
+  /* bottom: 0.4em; */
   left: 0;
   right: 0;
   padding: 0 20px;
@@ -216,11 +241,15 @@ const footButtonWrapper = css`
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
   }
+
+  @media (max-width: 375px) {
+    bottom: none !important;
+  }
 `
 
 const writeForm = css`
   width: 100%;
-  margin-bottom: 200px;
+  /* margin-bottom: 100px; */
   input {
     width: 100%;
     font-weight: 500;

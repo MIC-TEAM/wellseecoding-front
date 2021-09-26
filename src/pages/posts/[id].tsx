@@ -1,60 +1,77 @@
 import { css } from '@emotion/react'
 import FlatBox from 'components/Common/FlatBox'
-import HashWrap from 'components/Common/HashWrap'
+// import HashWrap from 'components/Common/HashWrap'
 import BackOptional from 'components/Common/Header/BackOptional'
 import PostFooter from 'components/Post/PostFooter'
 import { useRouter } from 'next/router'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Common } from 'styles/common'
-import faker from 'faker'
 import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'reducers'
+import IsModal from 'components/Common/IsModal'
+import { FETCHING_POST_REQUEST } from 'reducers/posts'
+import EditForm from 'components/EditForm'
+import HashWrap from 'components/Common/HashWrap'
+import Loading from 'components/Loading'
 
 function Post() {
   const router = useRouter()
   const { id } = router.query
+  const { isModal, editMode } = useSelector((state: RootState) => state.common)
+  const { post } = useSelector((state: RootState) => state.posts)
+
+  const [localInfo, setLocalInfo] = useState<number | null>(null)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    makeDummyUser()
-  })
-
-  const makeDummyUser = useCallback(() => {
-    const dummyUser = [
-      {
-        id: 1,
-        title: faker.lorem.sentence(),
-        name: faker.name.firstName(),
-        job: faker.name.jobTitle(),
-
-        term: faker.lorem.sentence(),
-        loc: faker.lorem.sentence(),
-        want: faker.lorem.sentence(),
-        summary: faker.lorem.sentence(),
-        limit: faker.lorem.sentence(),
-        hashTags: [faker.random.word(), faker.random.word(), faker.random.word(), faker.random.word()],
-      },
-    ]
-
-    return [dummyUser]
+    saveLocalInfo()
   }, [])
 
-  const [dummyUser] = makeDummyUser()
+  useEffect(() => {
+    !post.length && id && loadPost(id)
+  }, [post, id])
+
+  const saveLocalInfo = () => {
+    const result = Number(localStorage.getItem('id'))
+    setLocalInfo(result)
+  }
+
+  const loadPost = useCallback(
+    (id) => {
+      dispatch({
+        type: FETCHING_POST_REQUEST,
+        data: id,
+      })
+    },
+    [dispatch]
+  )
+
+  // url로 접근했을 때 데이터를 패칭하지 않은 상태에서 렌더링하여 오류가 생김
+  // 동기적으로 끊어줬다가 success 시에 해당 정보를 렌더링하도록 설정해야 할 듯
+
   return (
     <>
-      <BackOptional title="" optional={true} />
-      <div>
-        <h1 style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', margin: '20px 0' }}>🌟 {id}번 게시물 🌟</h1>
-      </div>
+      {post?.length ? (
+        post.map((d) => (
+          <BackOptional key={d.id} title="" optional={true} localId={localInfo} userId={d.userId} uniqId={id} />
+        ))
+      ) : (
+        <div></div>
+      )}
       <main css={togetherBoard}>
         <div className="wrap">
-          {dummyUser &&
-            dummyUser.map((d) => (
+          {post.length ? (
+            post.map((d) => (
               <div key={d.id}>
-                <h1>{d.title}</h1>
+                <h1>{d.name}</h1>
                 <div className="myInfo">
                   <div></div>
                   <div>
-                    <h3>{d.name}</h3>
-                    <p>{d.job}</p>
+                    {/* user에 대한 정보가 들어가야 함 */}
+                    <h3>{d.name && '이준희'}</h3>
+                    <p>{d.userId}</p>
                   </div>
                 </div>
 
@@ -66,23 +83,40 @@ function Post() {
                     </select>
                   </div>
 
-                  <FlatBox name="작업기간" contents={d.term} />
-                  <FlatBox name="일정/위치" contents={d.loc} />
-                  <FlatBox name="자격요건" contents={d.want} />
+                  <FlatBox name="작업기간" contents={d.schedule} />
+                  <FlatBox name="일정/위치" contents={d.schedule} />
+                  <FlatBox name="자격요건" contents={d.qualification} />
                   <FlatBox name="스터디 설명" contents={d.summary} />
-                  <FlatBox name="모집인원" contents={d.limit} />
+                  <FlatBox name="모집인원" contents={d.size} />
                   <div className="flatBox">
                     <h3>해시태그</h3>
-                    {d.hashTags.map((h, i) => (
+                    {d.tags.map((h, i) => (
                       <HashWrap key={i} content={h}></HashWrap>
                     ))}
                   </div>
                 </div>
+                {editMode && (
+                  <EditForm
+                    id={d.id}
+                    userId={d.userId}
+                    name={d.name}
+                    deadline={d.deadline}
+                    schedule={d.schedule}
+                    summary={d.summary}
+                    qualification={d.qualification}
+                    size={d.size}
+                    tags={d.tags}
+                  />
+                )}
               </div>
-            ))}
+            ))
+          ) : (
+            <Loading />
+          )}
         </div>
       </main>
       <PostFooter />
+      {isModal.open && <IsModal />}
     </>
   )
 }

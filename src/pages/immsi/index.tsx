@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { FETCHING_POSTS_REQUEST } from 'reducers/posts'
@@ -7,12 +7,7 @@ const Immsi = () => {
   const { posts } = useSelector((state: RootState) => state.posts)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    posts.length && console.log('posts:', posts)
-  }, [posts])
-
   const loadUser = () => {
-    console.log('start')
     dispatch({
       type: FETCHING_POSTS_REQUEST,
     })

@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 
 interface Props {
-  user: string
+  user: string | null
   num: number
 }
 function HomeMain({ user, num }: Props) {
