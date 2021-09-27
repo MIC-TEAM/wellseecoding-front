@@ -18,3 +18,6 @@ export const REGISTER_WORK_URL = '/api/v1/users/profile/works'
 
 // 포트폴리오
 export const REGISTER_LINK_URL = '/api/v1/users/profile/links'
+
+// 현재 직업 (취준생, 학생, 직장인)
+export const REGISTER_STATUS_URL = '/api/v1/users/profile/status'

@@ -35,23 +35,28 @@ const SingUp = () => {
   const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false)
   const router = useRouter()
 
-  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    router.push('/sign_up/profile_start')
-    try {
-      await axios
-        .post(REGISTER_USERS_URL, {
-          username: name,
-          password: password,
-          email: email,
-        })
-        .then((res) => {
-          console.log(res.data)
-        })
-    } catch (err) {
-      console.error(err)
-    }
-  }, [])
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      try {
+        await axios
+          .post(REGISTER_USERS_URL, {
+            username: name,
+            password: password,
+            email: email,
+          })
+          .then((res) => {
+            console.log('response:', res)
+            if (res.status === 200) {
+              router.push('/sign_up/profile_start')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [email, name, password, router]
+  )
 
   // 이름
   const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

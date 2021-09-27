@@ -42,43 +42,43 @@ export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS' as const
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE' as const
 
 // 액션에 대한 타입 정의;
-export interface FetchingPostsRequest {
+export interface SignupRequest {
   type: typeof SIGNUP_REQUEST
 }
 
-export interface FetchingPostsSuccess {
+export interface SignupSuccess {
   type: typeof SIGNUP_SUCCESS
   posts: PostType
   data: []
 }
 
-export interface FetchingPostsFailure {
+export interface SignupFailure {
   type: typeof SIGNUP_FAILURE
   error: Error
 }
 
 // 리듀서 안에 들어갈 액션 타입에 대한 액션 생성 함수 정의
 
-export const fetchingPostsRequest = (): FetchingPostsRequest => ({
+export const SignupRequest = (): SignupRequest => ({
   type: SIGNUP_REQUEST,
 })
 
-export const fetchingPostsSuccess = (posts: PostType, data: []): FetchingPostsSuccess => ({
+export const SignupSuccess = (posts: PostType, data: []): SignupSuccess => ({
   type: SIGNUP_SUCCESS,
   posts,
   data,
 })
 
-export const fetchingPostsFailure = (error: Error): FetchingPostsFailure => ({
+export const SignupFailure = (error: Error): SignupFailure => ({
   type: SIGNUP_FAILURE,
   error,
 })
 
-export type FetchingPosts =
-  | ReturnType<typeof fetchingPostsRequest>
-  | ReturnType<typeof fetchingPostsSuccess>
-  | ReturnType<typeof fetchingPostsFailure>
-const posts = (state: SignUpIntialState = initialState, action: FetchingPosts) =>
+export type Signup =
+  | ReturnType<typeof SignupRequest>
+  | ReturnType<typeof SignupSuccess>
+  | ReturnType<typeof SignupFailure>
+const signup = (state: SignUpIntialState = initialState, action: Signup) =>
   produce(state, (draft) => {
     switch (action.type) {
       case SIGNUP_REQUEST: {
@@ -101,4 +101,4 @@ const posts = (state: SignUpIntialState = initialState, action: FetchingPosts) =
     }
   })
 
-export default posts
+export default signup

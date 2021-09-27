@@ -23,29 +23,38 @@ const SelfIntroduction = () => {
 
   const router = useRouter()
 
-  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    router.push('/sign_up/experience')
-    try {
-      await axios
-        .put(REGISTER_EDUCATION_URL, {
-          degree: degree,
-          major: major,
-          graduated: graduated,
-        })
-        .then((res) => {
-          console.log(res.data)
-        })
-    } catch (err) {
-      console.error(err)
-    }
-  }, [])
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      alert(`degree: ${degree}, major: ${major}, graduated: ${graduated}`)
+      try {
+        await axios
+          .put(REGISTER_EDUCATION_URL, {
+            educations: [
+              {
+                degree: degree,
+                major: major,
+                graduated: graduated,
+              },
+            ],
+          })
+          .then((res) => {
+            console.log(res.data)
+            if (res.status === 200) {
+              router.push('/sign_up/experience')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [degree, major, graduated]
+  )
 
   const onChangeDegree = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setDegree(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsDegree(true)
     } else {
       setIsDegree(false)
@@ -54,9 +63,8 @@ const SelfIntroduction = () => {
 
   const onChangeMajor = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setMajor(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsMajor(true)
     } else {
       setIsMajor(false)

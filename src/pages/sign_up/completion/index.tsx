@@ -7,8 +7,7 @@ import { useRouter } from 'next/router'
 const SignUpCompletion = () => {
   const router = useRouter()
 
-  const NextHome = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault()
+  const NextHome = () => {
     router.push('/sign_up/self_introduction')
   }
 

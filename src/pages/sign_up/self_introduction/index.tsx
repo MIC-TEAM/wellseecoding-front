@@ -19,39 +19,39 @@ const SelfIntroduction = () => {
 
   const router = useRouter()
 
-  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    router.push('/sign_up/school')
-    try {
-      await axios
-        .put(REGISTER_ABOUT_ME_URL, {
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      alert(`자기소개: ${aboutMe}, 기술스택: ${skill}`)
+      try {
+        await axios.put(REGISTER_ABOUT_ME_URL, {
           aboutMe: aboutMe,
         })
-        .then((res) => {
-          console.log(res.data)
-        })
-    } catch (err) {
-      console.error(err)
-    }
-
-    try {
-      await axios
-        .put(REGISTER_WORK_URL, {
-          technology: skill,
-        })
-        .then((res) => {
-          console.log(res.data)
-        })
-    } catch (err) {
-      console.error(err)
-    }
-  }, [])
+        axios
+          .put(REGISTER_WORK_URL, {
+            works: [
+              {
+                technology: skill,
+              },
+            ],
+          })
+          .then((res) => {
+            console.log(res.data)
+            if (res.status === 200) {
+              router.push('/sign_up/school')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [aboutMe, skill]
+  )
 
   const onChangeAboutMe = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setAboutMe(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsAboutMe(true)
     } else {
       setIsAboutMe(false)
@@ -60,9 +60,8 @@ const SelfIntroduction = () => {
 
   const onChangeSkill = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSkill(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsSkill(true)
     } else {
       setIsSkill(false)

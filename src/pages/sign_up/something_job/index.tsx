@@ -5,27 +5,71 @@ import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useRouter } from 'next/router'
 import { useState, useCallback } from 'react'
+import axios from 'axios'
+import { REGISTER_STATUS_URL } from 'apis'
 
 const SomethingJob = () => {
   const router = useRouter()
-  // 학생, 취준생, 직장인
+  // 직업 선택시 다음으로 넘어갈 수 있도록
   const [isChecked, setIsChecked] = useState<boolean>(false)
 
+  // 현재 직업
+  const [value, setValue] = useState('')
+
+  // 학생
   const onChangeStudent = useCallback(() => {
     const student = document.getElementsByClassName('student')
-    const worker = document.getElementsByClassName('worker')
-    const jobSeeker = document.getElementsByClassName('jobSeeker')
+    const jobArr = student
 
-    if (student || worker || jobSeeker) {
+    if (jobArr) {
+      setValue('학생')
       setIsChecked(true)
     }
   }, [])
 
-  const onSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  // 직장인
+  const onChangeWorker = useCallback(() => {
+    const worker = document.getElementsByClassName('worker')
+    const jobArr = worker
 
-    router.push('/sign_up/self_introduction')
-  }
+    if (jobArr) {
+      setValue('직장인')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // 취준생
+  const onChangeJobSeeker = useCallback(() => {
+    const jobSeeker = document.getElementsByClassName('jobSeeker')
+    const jobArr = jobSeeker
+
+    if (jobArr) {
+      setValue('취준생')
+      setIsChecked(true)
+    }
+  }, [])
+
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      alert(`직업: ${value}`)
+      try {
+        await axios
+          .put(REGISTER_STATUS_URL, {
+            status: value,
+          })
+          .then((res) => {
+            console.log(res.data)
+            if (res.status === 200) {
+              router.push('/sign_up/self_introduction')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [value]
+  )
 
   return (
     <>
@@ -42,12 +86,12 @@ const SomethingJob = () => {
         </div>
 
         <div className="row-coloum">
-          <button type="button" className="job worker" onClick={onChangeStudent}>
+          <button type="button" className="job worker" onClick={onChangeWorker}>
             <img src="/images/signup/job03.svg" alt="직장인" />
             <p>직장인</p>
           </button>
 
-          <button type="button" className="job jobSeeker" onClick={onChangeStudent}>
+          <button type="button" className="job jobSeeker" onClick={onChangeJobSeeker}>
             <img src="/images/signup/job02.svg" alt="취준생" />
             <p>취준생</p>
           </button>

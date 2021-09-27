@@ -24,29 +24,38 @@ const Portfolio = () => {
   // 버튼 클릭 시 컴포넌트 추가
   // const [addBox, setAddBox] = useState(0)
 
-  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    router.push('/sign_up/profile_upload')
-    try {
-      await axios
-        .put(REGISTER_LINK_URL, {
-          name: project,
-          link: link,
-          description: desc,
-        })
-        .then((res) => {
-          console.log(res.data)
-        })
-    } catch (err) {
-      console.error(err)
-    }
-  }, [])
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      alert(`name: ${project}, link: ${link}, description: ${desc}`)
+      try {
+        await axios
+          .put(REGISTER_LINK_URL, {
+            links: [
+              {
+                name: project,
+                link: link,
+                description: desc,
+              },
+            ],
+          })
+          .then((res) => {
+            console.log('response:', res)
+            if (res.status === 200) {
+              router.push('/sign_up/profile_upload')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [project, link, desc, router]
+  )
 
   const onChangeProject = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setProject(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsProject(true)
     } else {
       setIsProject(false)
@@ -55,9 +64,8 @@ const Portfolio = () => {
 
   const onChangeLink = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setLink(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsLink(true)
     } else {
       setIsLink(false)
@@ -66,9 +74,8 @@ const Portfolio = () => {
 
   const onChangeDesc = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setDesc(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsDesc(true)
     } else {
       setIsDesc(false)

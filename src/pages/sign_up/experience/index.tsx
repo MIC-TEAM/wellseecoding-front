@@ -21,29 +21,38 @@ const Experience = () => {
   const [isTechnology, setIsTechnology] = useState<boolean>(false)
   const [isYears, setIsYears] = useState<boolean>(false)
 
-  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    router.push('/sign_up/portfolio')
-    try {
-      await axios
-        .put(REGISTER_WORK_URL, {
-          role: role,
-          technology: technology,
-          years: years,
-        })
-        .then((res) => {
-          console.log(res.data)
-        })
-    } catch (err) {
-      console.error(err)
-    }
-  }, [])
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      alert(`role: ${role}, technology: ${technology}, years: ${years}`)
+      try {
+        await axios
+          .put(REGISTER_WORK_URL, {
+            works: [
+              {
+                role: role,
+                technology: technology,
+                years: years,
+              },
+            ],
+          })
+          .then((res) => {
+            console.log(res.data)
+            if (res.status === 200) {
+              router.push('/sign_up/profile_upload')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [role, technology, years]
+  )
 
   const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setRole(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsRole(true)
     } else {
       setIsRole(false)
@@ -52,9 +61,8 @@ const Experience = () => {
 
   const onChangeTechnology = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTechnology(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsTechnology(true)
     } else {
       setIsTechnology(false)
@@ -63,9 +71,8 @@ const Experience = () => {
 
   const onChangeYears = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setYears(e.target.value)
-    console.log(e.target.value)
 
-    if (e.target.value.length > 0) {
+    if (e.target.value.length) {
       setIsYears(true)
     } else {
       setIsYears(false)

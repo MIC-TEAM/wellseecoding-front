@@ -7,13 +7,11 @@ import { useRouter } from 'next/router'
 const SignUpProfileStart = () => {
   const router = useRouter()
 
-  const NextHome = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault()
+  const NextHome = () => {
     router.push('/home')
   }
 
-  const NextPage = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault()
+  const NextPage = () => {
     router.push('/sign_up/something_job')
   }
 
