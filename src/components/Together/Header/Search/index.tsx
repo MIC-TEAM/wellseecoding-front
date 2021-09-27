@@ -16,6 +16,14 @@ function TogetherSearchBar() {
       e.preventDefault()
       // 로컬 스토리지에 해당 searchValue를 저장해야 한다
       setSearchValue('')
+      const newKeywords = [
+        {
+          id: Date.now(),
+          text: searchValue,
+        },
+      ]
+
+      localStorage.setItem('keywords', JSON.stringify(newKeywords))
       router.push(`/together/search_result/${searchValue}`)
     },
     [searchValue, router]
