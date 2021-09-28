@@ -12,21 +12,18 @@ const SelfIntroduction = () => {
   // 학위, 전공, 재학 및 졸업여부
   const [degree, setDegree] = useState<string>('')
   const [major, setMajor] = useState<string>('')
-  const [school, setSchool] = useState<boolean>(false)
-  const [graduated, setGraduated] = useState<boolean>(false)
+  const [isChecked, setIsChecked] = useState<string>('')
 
   // 유효성 검사
   const [isDegree, setIsDegree] = useState<boolean>(false)
   const [isMajor, setIsMajor] = useState<boolean>(false)
-  const [isSchool, setIsSchool] = useState<boolean>(false)
-  const [isGraduated, setIsGraduated] = useState<boolean>(false)
 
   const router = useRouter()
 
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      alert(`degree: ${degree}, major: ${major}, graduated: ${graduated}`)
+      alert(`어느대학: ${degree}, 전공: ${major}, 졸업여부: ${isChecked}`)
       try {
         await axios
           .put(REGISTER_EDUCATION_URL, {
@@ -34,7 +31,7 @@ const SelfIntroduction = () => {
               {
                 degree: degree,
                 major: major,
-                graduated: graduated,
+                graduated: isChecked,
               },
             ],
           })
@@ -48,49 +45,35 @@ const SelfIntroduction = () => {
         console.error(err)
       }
     },
-    [degree, major, graduated]
+    [degree, major, isChecked]
   )
 
+  // 학교를 입력해주세요
   const onChangeDegree = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setDegree(e.target.value)
 
-    if (e.target.value.length) {
+    if (e.target.value.length > 4) {
       setIsDegree(true)
     } else {
       setIsDegree(false)
     }
   }, [])
 
+  // 전공을 입력해주세요
   const onChangeMajor = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setMajor(e.target.value)
 
-    if (e.target.value.length) {
+    if (e.target.value.length > 3) {
       setIsMajor(true)
     } else {
       setIsMajor(false)
     }
   }, [])
 
-  const onChangeSchool = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === e.target.name) {
-      setSchool(true)
-      setGraduated(false)
-    } else {
-      setSchool(false)
-      setGraduated(true)
-    }
-    setIsSchool(true)
-  }, [])
-
-  const onChangeGraduated = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === e.target.name) {
-      setGraduated(true)
-      setSchool(false)
-    } else {
-      setGraduated(false)
-      setSchool(true)
-    }
-    setIsGraduated(true)
+  // 졸업 체크박스
+  const onChangeValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(`🥳 ${e.target.value}`)
+    setIsChecked(e.target.value)
   }, [])
 
   // 나중에 쓸게요 버튼 -> 경력정보 입력 페이지로 이동
@@ -108,14 +91,14 @@ const SelfIntroduction = () => {
         <TextFieldProfile text="학교를 입력해주세요" type="text" onChange={onChangeDegree} />
         <TextFieldProfile text="전공을 입력해주세요" type="text" onChange={onChangeMajor} />
 
-        <div className="ingOrEnd">
+        <div className="ingOrEnd" onChange={onChangeValue}>
           <label htmlFor="school-ing">
-            <input type="radio" value="school-ing" name="school-ing" onChange={onChangeSchool} checked={school} />
+            <input type="radio" value="재학중" name="school-ing" checked={isChecked === '재학중'} readOnly />
             재학중
           </label>
 
           <label htmlFor="school-end">
-            <input type="radio" value="school-end" name="school-end" onChange={onChangeGraduated} checked={graduated} />
+            <input type="radio" value="졸업" name="school-end" checked={isChecked === '졸업'} readOnly />
             졸업
           </label>
         </div>
@@ -127,7 +110,7 @@ const SelfIntroduction = () => {
           <FootButton
             type="submit"
             footButtonType={FootButtonType.ACTIVATION}
-            disabled={!((isDegree && isMajor && isSchool) || isGraduated)}
+            disabled={!(isDegree && isMajor && isChecked)}
           >
             다음
           </FootButton>
