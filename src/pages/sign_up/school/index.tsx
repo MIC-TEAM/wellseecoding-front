@@ -52,7 +52,7 @@ const SelfIntroduction = () => {
   const onChangeDegree = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setDegree(e.target.value)
 
-    if (e.target.value.length > 4) {
+    if (e.target.value.length > 3) {
       setIsDegree(true)
     } else {
       setIsDegree(false)
@@ -63,7 +63,7 @@ const SelfIntroduction = () => {
   const onChangeMajor = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setMajor(e.target.value)
 
-    if (e.target.value.length > 3) {
+    if (e.target.value.length > 2) {
       setIsMajor(true)
     } else {
       setIsMajor(false)
