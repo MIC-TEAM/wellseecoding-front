@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 import { TogetherHeaderSearch } from './style'
 
-function TogetherSearchBar() {
+function TogetherSearchBar({ onAddKeyword }: any) {
   const [searchValue, setSearchValue] = useState<string>('')
 
   const router = useRouter()
@@ -15,18 +15,12 @@ function TogetherSearchBar() {
     (e) => {
       e.preventDefault()
       // 로컬 스토리지에 해당 searchValue를 저장해야 한다
+      onAddKeyword(searchValue)
       setSearchValue('')
-      const newKeywords = [
-        {
-          id: Date.now(),
-          text: searchValue,
-        },
-      ]
 
-      localStorage.setItem('keywords', JSON.stringify(newKeywords))
-      router.push(`/together/search_result/${searchValue}`)
+      // router.push(`/together/search_result/${searchValue}`)
     },
-    [searchValue, router]
+    [searchValue, onAddKeyword]
   )
 
   return (
