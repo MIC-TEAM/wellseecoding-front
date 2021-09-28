@@ -38,20 +38,28 @@ const Search = () => {
 
       <div css={searchRecord}>
         <h2>최근 검색어</h2>
-        <button type="button" onClick={() => alert('전체 삭제')}>
-          전체 삭제
-        </button>
+        {keywords.length ? (
+          <button type="button" onClick={() => alert('전체 삭제')}>
+            전체 삭제
+          </button>
+        ) : (
+          <button />
+        )}
       </div>
 
       <ul css={searchList}>
-        {keywords.map((k) => (
-          <li key={k.id}>
-            <p>{k.text}</p>
-            <button className="removeBtn" type="button">
-              <img src="/images/together/btn_delete.svg" alt="삭제" />
-            </button>
-          </li>
-        ))}
+        {keywords.length ? (
+          keywords.map((k) => (
+            <li key={k.id}>
+              <p>{k.text}</p>
+              <button className="removeBtn" type="button">
+                <img src="/images/together/btn_delete.svg" alt="삭제" />
+              </button>
+            </li>
+          ))
+        ) : (
+          <div>최근 검색어가 없습니다</div>
+        )}
       </ul>
     </div>
   )
