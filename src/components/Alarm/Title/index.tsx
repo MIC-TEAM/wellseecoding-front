@@ -11,7 +11,9 @@ const AlarmTitle = ({ num }: Props) => {
 
   const toggleModal = useCallback(() => {
     setIsShowing((prevState) => !prevState)
+    document.body.style.overflow = 'hidden'
   }, [])
+
   return (
     <section css={alarmTitWrap}>
       <h1>알림</h1>

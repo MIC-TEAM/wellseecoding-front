@@ -1,21 +1,100 @@
 import Back from 'components/Common/Header/Back'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Title from 'components/Common/Title'
-import TextFields from 'components/Common/TextField'
+import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
+import { useCallback, useState } from 'react'
+import { useRouter } from 'next/router'
+import axios from 'axios'
+import { REGISTER_WORK_URL } from 'apis'
 
 const Experience = () => {
+  const router = useRouter()
+
+  // 프로젝트명, 링크, 설명
+  const [role, setRole] = useState<string>('')
+  const [technology, setTechnology] = useState<string>('')
+  const [years, setYears] = useState<string>('')
+
+  // 유효성 검사
+  const [isRole, setIsRole] = useState<boolean>(false)
+  const [isTechnology, setIsTechnology] = useState<boolean>(false)
+  const [isYears, setIsYears] = useState<boolean>(false)
+
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      alert(`role: ${role}, technology: ${technology}, years: ${years}`)
+      try {
+        await axios
+          .put(REGISTER_WORK_URL, {
+            works: [
+              {
+                role: role,
+                technology: technology,
+                years: years,
+              },
+            ],
+          })
+          .then((res) => {
+            console.log(res.data)
+            if (res.status === 200) {
+              router.push('/sign_up/profile_upload')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [role, technology, years]
+  )
+
+  const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setRole(e.target.value)
+
+    if (e.target.value.length) {
+      setIsRole(true)
+    } else {
+      setIsRole(false)
+    }
+  }, [])
+
+  const onChangeTechnology = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTechnology(e.target.value)
+
+    if (e.target.value.length) {
+      setIsTechnology(true)
+    } else {
+      setIsTechnology(false)
+    }
+  }, [])
+
+  const onChangeYears = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setYears(e.target.value)
+
+    if (e.target.value.length) {
+      setIsYears(true)
+    } else {
+      setIsYears(false)
+    }
+  }, [])
+
+  // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
+  const NextPage = useCallback(() => {
+    router.push('/sign_up/portfolio')
+  }, [])
+
   return (
     <>
       <Back />
 
       <Title title="경력 정보를 적어주세요!" className="loginMt" />
 
-      <div css={infoWrap}>
+      <form css={infoWrap} onSubmit={onSubmit}>
         <div css={info}>
-          <TextFields type="text" text="역할" />
-          <TextFields type="text" text="기술스택" />
-          <TextFields type="text" text="경력" />
+          <TextFieldProfile type="text" text="역할" onChange={onChangeRole} />
+          <TextFieldProfile type="text" text="기술스택" onChange={onChangeTechnology} />
+          <TextFieldProfile type="text" text="경력" onChange={onChangeYears} />
         </div>
 
         <button css={companyAdd}>
@@ -27,16 +106,20 @@ const Experience = () => {
           </span>
           <span>회사 추가</span>
         </button>
-      </div>
 
-      <div css={footButtonWrapper}>
-        <FootButton type="button" footButtonType={FootButtonType.SKIP}>
-          나중에 쓸게요~
-        </FootButton>
-        <FootButton type="button" footButtonType={FootButtonType.ACTIVATION}>
-          다음
-        </FootButton>
-      </div>
+        <div css={footButtonWrapper}>
+          <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
+            나중에 쓸게요~
+          </FootButton>
+          <FootButton
+            type="submit"
+            footButtonType={FootButtonType.ACTIVATION}
+            disabled={!(isRole && isTechnology && isYears)}
+          >
+            다음
+          </FootButton>
+        </div>
+      </form>
     </>
   )
 }
@@ -44,12 +127,16 @@ const Experience = () => {
 export default Experience
 
 const footButtonWrapper = css`
-  position: fixed;
+  position: absolute;
   bottom: 4.4em;
   left: 0;
   right: 0;
   padding: 0 20px;
-
+  button:disabled,
+  button[disabled] {
+    background-color: #d3cfcc;
+    color: #ffffff;
+  }
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
   }
