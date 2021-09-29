@@ -108,9 +108,9 @@ const Experience = () => {
   )
 
   // 삭제 버튼 클릭시
-  const onDeleteBtnClick = useCallback((e: React.MouseEvent<HTMLButtonElement>, id) => {
+  const onDeleteBtnClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    setInputList(inputList.filter((item) => item.id !== id))
+    setInputList(inputList.filter((item, index) => item.index !== index))
   }, [])
 
   // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
