@@ -6,6 +6,7 @@ import TextField from 'components/Common/TextField'
 import PasswordField from 'components/Common/PasswordField'
 import { css } from '@emotion/react'
 import { REGISTER_USERS_URL } from 'apis'
+import { useRouter } from 'next/router'
 import axios from 'axios'
 
 interface SingUp {
@@ -32,21 +33,30 @@ const SingUp = () => {
   const [isEmail, setIsEmail] = useState<boolean>(false)
   const [isPassword, setIsPassword] = useState<boolean>(false)
   const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false)
+  const router = useRouter()
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    try {
-      await axios
-        .post(REGISTER_USERS_URL, {
-          username: name,
-          password: password,
-          email: email,
-        })
-        .then((res) => console.log(res.data))
-    } catch (err) {
-      console.error(err)
-    }
-  }
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      try {
+        await axios
+          .post(REGISTER_USERS_URL, {
+            username: name,
+            password: password,
+            email: email,
+          })
+          .then((res) => {
+            console.log('response:', res)
+            if (res.status === 200) {
+              router.push('/sign_up/profile_start')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [email, name, password, router]
+  )
 
   // 이름
   const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

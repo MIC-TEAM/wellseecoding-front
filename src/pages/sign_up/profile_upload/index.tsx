@@ -2,8 +2,16 @@ import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
 import Title from 'components/Common/Title'
 import { css } from '@emotion/react'
+import { useRouter } from 'next/router'
+import { useCallback } from 'react'
 
 const SignUpProfileUpload = () => {
+  const router = useRouter()
+
+  const NextPage = useCallback(() => {
+    router.push('/home')
+  }, [])
+
   return (
     <>
       <Back />
@@ -13,7 +21,7 @@ const SignUpProfileUpload = () => {
       <input type="file" accept="image/*" />
 
       <div css={footButtonWrapper}>
-        <FootButton type="button" footButtonType={FootButtonType.SKIP}>
+        <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
           올리기 싫어요
         </FootButton>
         <FootButton type="button" footButtonType={FootButtonType.ACTIVATION}>
@@ -27,7 +35,7 @@ const SignUpProfileUpload = () => {
 export default SignUpProfileUpload
 
 const footButtonWrapper = css`
-  position: fixed;
+  position: absolute;
   bottom: 4.4em;
   left: 0;
   right: 0;

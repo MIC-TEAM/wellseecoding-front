@@ -59,7 +59,7 @@ const kakaoStyle = css`
 
 const naverStyle = css`
   color: #ffffff;
-  background: #03c75a;
+  background: #a5ada9;
 `
 
 const email = css`
