@@ -23,13 +23,30 @@ const Search = () => {
   }, [keywords])
 
   // 검색어 추가
-  const handleAddKeyword = (text: any) => {
-    console.log('text', text)
+  const handleAddKeyword = (text: string) => {
     const newKeyword = {
       id: Date.now(),
       text: text,
     }
     setKeywords([newKeyword, ...keywords])
+  }
+
+  const handleRemoveKeyword = (id: number) => {
+    // 고차함수 filter()는 필터링 된 배열을 반환한다
+    // console.log(
+    //   keywords.filter((keyword) => {
+    //     return keyword.id != id
+    //   })
+    // )
+    const nextKeyword = keywords.filter((keyword) => {
+      return keyword.id != id
+    })
+    setKeywords(nextKeyword)
+  }
+
+  //검색어 전체 삭제
+  const handleClearKeywords = () => {
+    setKeywords([])
   }
 
   return (
@@ -39,7 +56,7 @@ const Search = () => {
       <div css={searchRecord}>
         <h2>최근 검색어</h2>
         {keywords.length ? (
-          <button type="button" onClick={() => alert('전체 삭제')}>
+          <button type="button" onClick={handleClearKeywords}>
             전체 삭제
           </button>
         ) : (
@@ -52,7 +69,7 @@ const Search = () => {
           keywords.map((k) => (
             <li key={k.id}>
               <p>{k.text}</p>
-              <button className="removeBtn" type="button">
+              <button className="removeBtn" type="button" onClick={() => handleRemoveKeyword(k.id)}>
                 <img src="/images/together/btn_delete.svg" alt="삭제" />
               </button>
             </li>
