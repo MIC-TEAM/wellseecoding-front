@@ -97,7 +97,7 @@ const TogetherWrite = () => {
       setReady(false)
       location.href = '/together'
     },
-    [title, period, schedule, qualification, summary, peopleNum, hashArr]
+    [title, period, schedule, qualification, summary, peopleNum, hashArr, dispatch]
   )
 
   const onKeyUp = useCallback(
