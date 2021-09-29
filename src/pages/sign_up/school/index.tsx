@@ -45,7 +45,7 @@ const SelfIntroduction = () => {
         console.error(err)
       }
     },
-    [degree, major, isChecked]
+    [degree, major, isChecked, router]
   )
 
   // 학교를 입력해주세요
@@ -79,7 +79,7 @@ const SelfIntroduction = () => {
   // 나중에 쓸게요 버튼 -> 경력정보 입력 페이지로 이동
   const NextPage = useCallback(() => {
     router.push('/sign_up/experience')
-  }, [])
+  }, [router])
 
   return (
     <>

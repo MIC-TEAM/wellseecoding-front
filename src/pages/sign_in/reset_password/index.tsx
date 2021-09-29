@@ -24,10 +24,13 @@ const PasswordReset = () => {
   const [isPassword, setIsPassword] = useState<boolean>(false)
   const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false)
 
-  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    router.push('/home')
-  }, [])
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      router.push('/home')
+    },
+    [router]
+  )
 
   // 비밀번호
   const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

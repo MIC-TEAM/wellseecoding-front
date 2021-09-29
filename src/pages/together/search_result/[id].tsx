@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import TogetherSearchBar from 'components/Together/Header/Search'
+import TogetherHeader from 'components/Together/Header'
 import SearchBox from 'components/Together/SearchBox'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -54,7 +54,7 @@ const SearchResult = () => {
   return (
     <>
       <div css={searchWrap}>
-        <TogetherSearchBar />
+        <TogetherHeader />
 
         <div css={searchWord}>
           <h2>

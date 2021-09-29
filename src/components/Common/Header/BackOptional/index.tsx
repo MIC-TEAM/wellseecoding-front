@@ -27,7 +27,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
       type: SET_ISMODAL,
       data: uniqId,
     })
-  }, [dispatch])
+  }, [dispatch, uniqId])
 
   return (
     <>
