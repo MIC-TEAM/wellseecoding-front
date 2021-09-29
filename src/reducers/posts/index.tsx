@@ -1,9 +1,13 @@
 import produce from 'immer'
-import { PostType, WritePostType } from 'types'
+import { PostData, PostType, WritePostType } from 'types'
+
+export interface IPosttype {
+  posts: PostData
+}
 
 // initialState 타입 정의
 export interface PostsIntialState {
-  posts: PostType[]
+  posts: PostData[]
   post: PostType[]
 
   fetchPostsLoading: boolean

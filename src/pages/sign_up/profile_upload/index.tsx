@@ -10,7 +10,7 @@ const SignUpProfileUpload = () => {
 
   const NextPage = useCallback(() => {
     router.push('/home')
-  }, [])
+  }, [router])
 
   return (
     <>

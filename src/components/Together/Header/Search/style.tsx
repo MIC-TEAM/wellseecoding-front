@@ -5,6 +5,11 @@ export const TogetherHeaderSearch = css`
   justify-content: space-around;
   height: 40px;
   margin-top: 20px;
+
+  form {
+    width: 100%;
+  }
+
   input {
     width: 100%;
     border-bottom: 1.6px solid #ff6e35;

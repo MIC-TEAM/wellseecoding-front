@@ -5,6 +5,11 @@ export type TodoType = {
   userId: number
 }
 
+export type PostData = {
+  theme: string
+  posts: PostType[]
+}
+
 /* 서버로부터 받아오는 Posts 배열의 한 객체당 타입 */
 export type PostType = {
   id: number
