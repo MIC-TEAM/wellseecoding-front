@@ -1,55 +1,39 @@
 import { css } from '@emotion/react'
+import axios from 'axios'
 import TogetherHeader from 'components/Together/Header'
 import SearchBox from 'components/Together/SearchBox'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { myConfig } from 'sagas'
+import { PostType } from 'types'
 
 const SearchResult = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const dummySearchBox = [
-    {
-      id: 1,
-      comment: '[서울] 취업용 프로젝트 같이 하실 분 모집합니다!',
-      hashTag: 'JavaScript',
-    },
-    {
-      id: 2,
-      comment: '[광주] 스프링 책 한권 같이 끝내실 분 구합니다!',
-      hashTag: 'Spring',
-    },
-    {
-      id: 3,
-      comment: '[남양주] 포폴용 프로젝트 같이 하실 분 모집합니다!',
-      hashTag: 'Python',
-    },
-    {
-      id: 4,
-      comment: '[부산] 취업 면접 준비 같이 하실 분 모집합니다!',
-      hashTag: 'Django',
-    },
-    {
-      id: 5,
-      comment: '[서울대입구] 코테 준비 같이 하실 분 ?!',
-      hashTag: 'Django',
-    },
-    {
-      id: 6,
-      comment: '[부산] 취업 면접 준비 같이 하실 분 모집합니다!',
-      hashTag: 'Django',
-    },
-    {
-      id: 7,
-      comment: '[서울대입구] 코테 준비 같이 하실 분 ?!',
-      hashTag: 'Django',
-    },
-  ]
+  console.log(router.query.id)
 
-  // useEffect(() => {
-  //   console.log('result:', router.query)
-  //   console.log('id:', id)
-  // }, [router.query, id])
+  const [dummySearchBox, setDummySearchBox] = useState<PostType[]>([])
+
+  useEffect(() => {
+    if (typeof id === 'string') {
+      // const stringId = encodeURI(id)
+      searchKeyword(id)
+    } else {
+      alert('잘못된 접근입니다 🧐')
+      router.back()
+    }
+  }, [id, router])
+
+  const searchKeyword = useCallback(async (id) => {
+    try {
+      await axios
+        .get(`https://api.wellseecoding.com/api/v1/posts?keyword=${id}`, myConfig)
+        .then((res) => setDummySearchBox(res.data))
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
 
   return (
     <>
@@ -64,7 +48,7 @@ const SearchResult = () => {
 
         <section>
           {dummySearchBox.map((item) => (
-            <SearchBox key={item.id} listTitle={item.comment} hashTag={item.hashTag} />
+            <SearchBox key={item.id} id={item.id} listTitle={item.name} hashTag={item.tags} />
           ))}
         </section>
       </div>

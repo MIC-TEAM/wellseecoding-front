@@ -30,6 +30,10 @@ function Post() {
   }, [])
 
   useEffect(() => {
+    post.length && console.log(post)
+  }, [post])
+
+  useEffect(() => {
     !post.length && id && loadPost(id)
   }, [post, id])
 
@@ -70,7 +74,7 @@ function Post() {
                   <div></div>
                   <div>
                     {/* user에 대한 정보가 들어가야 함 */}
-                    <h3>{d.name && '이준희'}</h3>
+                    <h3>{d.userId && '칼국수'}</h3>
                     <p>{d.userId}</p>
                   </div>
                 </div>

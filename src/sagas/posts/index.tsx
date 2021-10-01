@@ -12,6 +12,8 @@ import {
   FETCHING_POST_FAILURE,
   FETCHING_POST_REQUEST,
   FETCHING_POST_SUCCESS,
+  SearchPostsRequest,
+  SEARCH_POSTS_REQUEST,
   UpdatePostRequest,
   UPDATE_POST_FAILURE,
   UPDATE_POST_REQUEST,
@@ -151,6 +153,32 @@ function* deletePost(action: DeletePostRequest) {
   }
 }
 
+async function searchPostsAPI(data: string) {
+  try {
+    const result = await axios.get(`/api/v1/posts/${data}`, myConfig)
+
+    return result.data
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* searchPosts(action: SearchPostsRequest) {
+  try {
+    const result: PostType[] | [] = yield call(searchPostsAPI, action.data)
+    yield put({
+      type: FETCHING_POST_SUCCESS,
+      data: result,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: FETCHING_POST_FAILURE,
+      data: err,
+    })
+  }
+}
+
 function* watchFetchPosts() {
   yield takeLatest(FETCHING_POSTS_REQUEST, fetchPosts)
 }
@@ -171,6 +199,10 @@ function* watchDeletePost() {
   yield takeLatest(DELETE_POST_REQUEST, deletePost)
 }
 
+function* watchSearchPosts() {
+  yield takeLatest(SEARCH_POSTS_REQUEST, searchPosts)
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchFetchPosts),
@@ -178,5 +210,6 @@ export default function* postSaga() {
     fork(watchUpdatePost),
     fork(watchFetchPost),
     fork(watchDeletePost),
+    fork(watchSearchPosts),
   ])
 }

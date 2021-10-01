@@ -14,7 +14,7 @@ const Write = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('get posts!:', posts)
+    console.log('get posts!:', posts, posts.length)
   }, [posts])
 
   useEffect(() => {
