@@ -71,7 +71,9 @@ const Search = () => {
         {keywords.length ? (
           keywords.map((k) => (
             <li key={k.id}>
-              <p>{k.text}</p>
+              <p>
+                <Link href={`/together/search_result/${k.text}`}>{k.text}</Link>
+              </p>
               <button className="removeBtn" type="button" onClick={() => handleRemoveKeyword(k.id)}>
                 <img src="/images/together/btn_delete.svg" alt="삭제" />
               </button>
