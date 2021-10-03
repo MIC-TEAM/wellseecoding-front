@@ -35,6 +35,15 @@ export type WritePostType = {
   id?: number
 }
 
+export type CommentType = {
+  id: number
+  name: string
+  job: string
+  text: string
+  me: boolean
+  date: string
+}
+
 //----------------------------------------
 // 회원가입 단계
 

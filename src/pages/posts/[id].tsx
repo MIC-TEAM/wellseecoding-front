@@ -119,7 +119,7 @@ function Post() {
           )}
         </div>
       </main>
-      <PostFooter />
+      <PostFooter id={id} />
       {isModal.open && <IsModal />}
     </>
   )
