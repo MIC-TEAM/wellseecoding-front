@@ -9,6 +9,7 @@ export interface IPosttype {
 export interface PostsIntialState {
   posts: PostData[]
   post: PostType[]
+  searchPosts: PostType[]
 
   fetchPostsLoading: boolean
   fetchPostsSuccess: boolean
@@ -29,12 +30,17 @@ export interface PostsIntialState {
   deletePostLoading: boolean
   deletePostSuccess: boolean
   deletePostFailure: null | Error
+
+  searchPostsLoading: boolean
+  searchPostsSuccess: boolean
+  searchPostsFailure: null | Error
 }
 
 // initialState 정의
 export const initialState: PostsIntialState = {
   posts: [],
   post: [],
+  searchPosts: [],
 
   fetchPostsLoading: false,
   fetchPostsSuccess: false,
@@ -55,6 +61,10 @@ export const initialState: PostsIntialState = {
   deletePostLoading: false,
   deletePostSuccess: false,
   deletePostFailure: null,
+
+  searchPostsLoading: false,
+  searchPostsSuccess: false,
+  searchPostsFailure: null,
 }
 
 // 액션 정의
@@ -79,6 +89,10 @@ export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS' as const
 export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE' as const
 
 export const RESET_POST_LIST = 'RESET_POST_LIST' as const
+
+export const SEARCH_POSTS_REQUEST = 'SEARCH_POSTS_REQUEST' as const
+export const SEARCH_POSTS_SUCCESS = 'SEARCH_POSTS_SUCCESS' as const
+export const SEARCH_POSTS_FAILURE = 'SEARCH_POSTS_FAILURE' as const
 
 // 액션에 대한 타입 정의;
 export interface FetchingPostsRequest {
@@ -157,6 +171,22 @@ export interface DeletePostFailure {
 
 export interface ResetPostList {
   type: typeof RESET_POST_LIST
+}
+
+export interface SearchPostsRequest {
+  type: typeof SEARCH_POSTS_REQUEST
+  data: string
+}
+
+export interface SearchPostsSuccess {
+  type: typeof SEARCH_POSTS_SUCCESS
+  searchPosts: PostType
+  data: []
+}
+
+export interface SearchPostsFailure {
+  type: typeof SEARCH_POSTS_FAILURE
+  error: Error
 }
 
 // 리듀서 안에 들어갈 액션 타입에 대한 액션 생성 함수 정의
@@ -238,6 +268,22 @@ export const resetPostList = (): ResetPostList => ({
   type: RESET_POST_LIST,
 })
 
+export const searchPostsRequest = (data: string): SearchPostsRequest => ({
+  type: SEARCH_POSTS_REQUEST,
+  data,
+})
+
+export const searchPostsSuccess = (searchPosts: PostType, data: []): SearchPostsSuccess => ({
+  type: SEARCH_POSTS_SUCCESS,
+  searchPosts,
+  data,
+})
+
+export const searchPostsFailure = (error: Error): SearchPostsFailure => ({
+  type: SEARCH_POSTS_FAILURE,
+  error,
+})
+
 export type FetchingPosts =
   | ReturnType<typeof fetchingPostsRequest>
   | ReturnType<typeof fetchingPostsSuccess>
@@ -255,6 +301,9 @@ export type FetchingPosts =
   | ReturnType<typeof deletePostuccess>
   | ReturnType<typeof deletePostFailure>
   | ReturnType<typeof resetPostList>
+  | ReturnType<typeof searchPostsRequest>
+  | ReturnType<typeof searchPostsSuccess>
+  | ReturnType<typeof searchPostsFailure>
 
 const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
   produce(state, (draft) => {
@@ -338,6 +387,22 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
       case DELETE_POST_FAILURE: {
         draft.deletePostSuccess = false
         draft.deletePostFailure = action.error
+        break
+      }
+      case SEARCH_POSTS_REQUEST: {
+        draft.searchPostsLoading = true
+        draft.searchPostsSuccess = false
+        break
+      }
+      case SEARCH_POSTS_SUCCESS: {
+        draft.searchPostsLoading = false
+        draft.searchPostsSuccess = true
+        draft.searchPosts = draft.searchPosts.concat(action.data)
+        break
+      }
+      case SEARCH_POSTS_FAILURE: {
+        draft.searchPostsSuccess = false
+        draft.searchPostsFailure = action.error
         break
       }
       default:

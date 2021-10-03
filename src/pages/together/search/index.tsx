@@ -1,6 +1,7 @@
 import TogetherSearchBar from 'components/Together/Header/Search'
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 interface keyInterface {
   id: number
@@ -18,6 +19,7 @@ const Search = () => {
     }
   }, [])
 
+  // ② keywords 객체를 의존하여, 변경될 경우 새롭게 localStroage의 아이템 'keywords'를 세팅한다
   useEffect(() => {
     localStorage.setItem('keywords', JSON.stringify(keywords))
   }, [keywords])
@@ -31,6 +33,7 @@ const Search = () => {
     setKeywords([newKeyword, ...keywords])
   }
 
+  // 단일 검색어 삭제
   const handleRemoveKeyword = (id: number) => {
     // 고차함수 filter()는 필터링 된 배열을 반환한다
     // console.log(
@@ -68,7 +71,9 @@ const Search = () => {
         {keywords.length ? (
           keywords.map((k) => (
             <li key={k.id}>
-              <p>{k.text}</p>
+              <p>
+                <Link href={`/together/search_result/${k.text}`}>{k.text}</Link>
+              </p>
               <button className="removeBtn" type="button" onClick={() => handleRemoveKeyword(k.id)}>
                 <img src="/images/together/btn_delete.svg" alt="삭제" />
               </button>
