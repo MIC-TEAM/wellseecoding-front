@@ -1,20 +1,28 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import BackOptional from 'components/Common/Header/BackOptional'
 import { useRouter } from 'next/router'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { Common } from 'styles/common'
 import { css } from '@emotion/react'
+import { writeCommentRequest } from 'reducers/comments'
 
 function Comment() {
   const router = useRouter()
   const [value, setValue] = useState('')
   const [name, setName] = useState('')
   const [visible, setVisible] = useState(false)
+  const [num, setNum] = useState(3)
 
   const { comments } = useSelector((state: RootState) => state.comments)
 
+  const dispatch = useDispatch()
+
   const { id } = router.query
+
+  useEffect(() => {
+    console.log('comments:', comments)
+  }, [comments])
 
   const onChange = useCallback((e) => {
     setValue(e.target.value)
@@ -24,9 +32,21 @@ function Comment() {
     (e) => {
       e.preventDefault()
       alert(value)
+      dispatch(
+        writeCommentRequest({
+          id: num,
+          name: '이준희',
+          job: '프론트엔드',
+          text: value,
+          me: true,
+          date: '2021-10-03',
+        })
+      )
+      console.log('done')
       setValue('')
+      setNum((num) => num + 1)
     },
-    [value]
+    [value, dispatch, num]
   )
 
   const handleState = useCallback(() => {

@@ -45,6 +45,7 @@ export const WRITE_COMMENT_FAILURE = 'WRITE_COMMENT_FAILURE' as const
 // 액션에 대한 타입 정의;
 export interface WriteCommentRequest {
   type: typeof WRITE_COMMENT_REQUEST
+  data: CommentType
 }
 
 export interface WriteCommentSuccess {
@@ -59,8 +60,9 @@ export interface WriteCommentFailure {
 
 // 리듀서 안에 들어갈 액션 타입에 대한 액션 생성 함수 정의
 
-export const writeCommentRequest = (): WriteCommentRequest => ({
+export const writeCommentRequest = (data: CommentType): WriteCommentRequest => ({
   type: WRITE_COMMENT_REQUEST,
+  data,
 })
 
 export const writeCommentSuccess = (): WriteCommentSuccess => ({
@@ -84,6 +86,7 @@ const comments = (state: PostsIntialState = initialState, action: FetchingPosts)
       case WRITE_COMMENT_REQUEST: {
         draft.writeCommentLoading = true
         draft.writeCommentSuccess = false
+        draft.comments = draft.comments.concat(action.data)
         break
       }
       case WRITE_COMMENT_SUCCESS: {
