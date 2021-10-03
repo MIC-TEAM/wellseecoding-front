@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { Common } from 'styles/common'
 import { css } from '@emotion/react'
-import { writeCommentRequest } from 'reducers/comments'
+import { deleteCommentRequest, writeCommentRequest } from 'reducers/comments'
 
 function Comment() {
   const router = useRouter()
@@ -14,6 +14,9 @@ function Comment() {
   const [visible, setVisible] = useState(false)
   const [num, setNum] = useState(3)
 
+  const [localUname, setLocalUname] = useState<string>('')
+  const [localUid, setLocalUid] = useState<string>('')
+
   const { comments } = useSelector((state: RootState) => state.comments)
 
   const dispatch = useDispatch()
@@ -21,8 +24,19 @@ function Comment() {
   const { id } = router.query
 
   useEffect(() => {
+    if (typeof window.localStorage !== 'undefined') {
+      setLocalUname(localStorage.getItem('userName') || '')
+      setLocalUid(localStorage.getItem('id') || '')
+    }
+  }, [])
+
+  useEffect(() => {
     console.log('comments:', comments)
   }, [comments])
+
+  useEffect(() => {
+    console.log('LS Storage info:', localUname, localUid)
+  }, [localUname, localUid])
 
   const onChange = useCallback((e) => {
     setValue(e.target.value)
@@ -31,22 +45,22 @@ function Comment() {
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      alert(value)
+      // alert(value)
+      alert(`${id} 번 글에 대한 요청입니다`)
       dispatch(
         writeCommentRequest({
           id: num,
-          name: '이준희',
+          name: localUname,
           job: '프론트엔드',
           text: value,
           me: true,
           date: '2021-10-03',
         })
       )
-      console.log('done')
       setValue('')
       setNum((num) => num + 1)
     },
-    [value, dispatch, num]
+    [dispatch, value, num, id, localUname]
   )
 
   const handleState = useCallback(() => {
@@ -62,7 +76,6 @@ function Comment() {
   return (
     <>
       <BackOptional title="댓글" optional={false} />
-      <h1>{id}번 글에 대한 Comment입니다</h1>
       <div css={CommentMain}>
         {/* 나 */}
         {comments.map((v) => (
@@ -71,6 +84,18 @@ function Comment() {
               <div css={MainWrapHead}>{/* 이미지 */}</div>
               <h3>{v.name}</h3>
               <span>{v.job}</span>
+
+              <div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    alert(v.id)
+                    dispatch(deleteCommentRequest(v.id))
+                  }}
+                >
+                  <img src="/images/header/setting.svg" alt="환경설정" />
+                </button>
+              </div>
             </div>
 
             <div css={MainWrapMain}>
@@ -147,6 +172,15 @@ const MainWrapHead = css`
   border-radius: 50%;
   background-color: #c4c4c4;
   margin-right: 6px;
+
+  ~ div {
+    position: absolute;
+    right: 20px;
+
+    img {
+      height: 18px;
+    }
+  }
 `
 
 const MainWrapMain = css`

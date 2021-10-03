@@ -8,6 +8,10 @@ export interface PostsIntialState {
   writeCommentLoading: boolean
   writeCommentSuccess: boolean
   writeCommentFailure: null | Error
+
+  deleteCommentLoading: boolean
+  deleteCommentSuccess: boolean
+  deleteCommentFailure: null | Error
 }
 
 // initialState 정의
@@ -34,6 +38,10 @@ export const initialState: PostsIntialState = {
   writeCommentLoading: false,
   writeCommentSuccess: false,
   writeCommentFailure: null,
+
+  deleteCommentLoading: false,
+  deleteCommentSuccess: false,
+  deleteCommentFailure: null,
 }
 
 // 액션 정의
@@ -41,6 +49,10 @@ export const initialState: PostsIntialState = {
 export const WRITE_COMMENT_REQUEST = 'WRITE_COMMENT_REQUEST' as const
 export const WRITE_COMMENT_SUCCESS = 'WRITE_COMMENT_SUCCESS' as const
 export const WRITE_COMMENT_FAILURE = 'WRITE_COMMENT_FAILURE' as const
+
+export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST' as const
+export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS' as const
+export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE' as const
 
 // 액션에 대한 타입 정의;
 export interface WriteCommentRequest {
@@ -55,6 +67,21 @@ export interface WriteCommentSuccess {
 
 export interface WriteCommentFailure {
   type: typeof WRITE_COMMENT_FAILURE
+  error: Error
+}
+
+export interface DeleteCommentRequest {
+  type: typeof DELETE_COMMENT_REQUEST
+  data: number
+}
+
+export interface DeleteCommentSuccess {
+  type: typeof DELETE_COMMENT_SUCCESS
+  data: []
+}
+
+export interface DeleteCommentFailure {
+  type: typeof DELETE_COMMENT_FAILURE
   error: Error
 }
 
@@ -75,10 +102,28 @@ export const writeCommentFailure = (error: Error): WriteCommentFailure => ({
   error,
 })
 
+export const deleteCommentRequest = (data: number): DeleteCommentRequest => ({
+  type: DELETE_COMMENT_REQUEST,
+  data,
+})
+
+export const deleteCommentSuccess = (): DeleteCommentSuccess => ({
+  type: DELETE_COMMENT_SUCCESS,
+  data: [],
+})
+
+export const deleteCommentFailure = (error: Error): DeleteCommentFailure => ({
+  type: DELETE_COMMENT_FAILURE,
+  error,
+})
+
 export type FetchingPosts =
   | ReturnType<typeof writeCommentRequest>
   | ReturnType<typeof writeCommentSuccess>
   | ReturnType<typeof writeCommentFailure>
+  | ReturnType<typeof deleteCommentRequest>
+  | ReturnType<typeof deleteCommentSuccess>
+  | ReturnType<typeof deleteCommentFailure>
 
 const comments = (state: PostsIntialState = initialState, action: FetchingPosts) =>
   produce(state, (draft) => {
@@ -92,12 +137,29 @@ const comments = (state: PostsIntialState = initialState, action: FetchingPosts)
       case WRITE_COMMENT_SUCCESS: {
         draft.writeCommentLoading = false
         draft.writeCommentSuccess = true
-        draft.comments = draft.comments.concat(action.data)
+        // draft.comments = draft.comments.concat(action.data)
         break
       }
       case WRITE_COMMENT_FAILURE: {
         draft.writeCommentSuccess = false
         draft.writeCommentFailure = action.error
+        break
+      }
+      case DELETE_COMMENT_REQUEST: {
+        draft.deleteCommentLoading = true
+        draft.deleteCommentSuccess = false
+        draft.comments = draft.comments.filter((data) => data.id !== action.data)
+        break
+      }
+      case DELETE_COMMENT_SUCCESS: {
+        draft.deleteCommentLoading = false
+        draft.deleteCommentSuccess = true
+        // draft.comments = draft.comments.concat(action.data)
+        break
+      }
+      case DELETE_COMMENT_FAILURE: {
+        draft.deleteCommentSuccess = false
+        draft.deleteCommentFailure = action.error
         break
       }
 
