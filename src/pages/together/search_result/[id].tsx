@@ -1,39 +1,36 @@
 import { css } from '@emotion/react'
-import axios from 'axios'
 import TogetherHeader from 'components/Together/Header'
 import SearchBox from 'components/Together/SearchBox'
 import { useRouter } from 'next/router'
-import React, { useCallback, useEffect, useState } from 'react'
-import { myConfig } from 'sagas'
-import { PostType } from 'types'
+import React, { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'reducers'
+import { SEARCH_POSTS_REQUEST } from 'reducers/posts'
 
 const SearchResult = () => {
   const router = useRouter()
   const { id } = router.query
 
-  console.log(router.query.id)
+  const dispatch = useDispatch()
 
-  const [dummySearchBox, setDummySearchBox] = useState<PostType[]>([])
+  const { searchPosts } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
-    if (typeof id === 'string') {
+    if (typeof id === 'string' && !searchPosts.length) {
       // const stringId = encodeURI(id)
       searchKeyword(id)
-    } else {
-      alert('잘못된 접근입니다 🧐')
-      router.back()
     }
-  }, [id, router])
+  }, [id])
 
-  const searchKeyword = useCallback(async (id) => {
-    try {
-      await axios
-        .get(`https://api.wellseecoding.com/api/v1/posts?keyword=${id}`, myConfig)
-        .then((res) => setDummySearchBox(res.data))
-    } catch (err) {
-      console.error(err)
-    }
-  }, [])
+  const searchKeyword = useCallback(
+    (id) => {
+      dispatch({
+        type: SEARCH_POSTS_REQUEST,
+        data: id,
+      })
+    },
+    [dispatch]
+  )
 
   return (
     <>
@@ -47,9 +44,13 @@ const SearchResult = () => {
         </div>
 
         <section>
-          {dummySearchBox.map((item) => (
-            <SearchBox key={item.id} id={item.id} listTitle={item.name} hashTag={item.tags} />
-          ))}
+          {searchPosts.length ? (
+            searchPosts.map((item) => (
+              <SearchBox key={item.id} id={item.id} listTitle={item.name} hashTag={item.tags} />
+            ))
+          ) : (
+            <div>검색한 결과가 없습니다.</div>
+          )}
         </section>
       </div>
     </>

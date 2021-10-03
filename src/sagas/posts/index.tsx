@@ -13,7 +13,9 @@ import {
   FETCHING_POST_REQUEST,
   FETCHING_POST_SUCCESS,
   SearchPostsRequest,
+  SEARCH_POSTS_FAILURE,
   SEARCH_POSTS_REQUEST,
+  SEARCH_POSTS_SUCCESS,
   UpdatePostRequest,
   UPDATE_POST_FAILURE,
   UPDATE_POST_REQUEST,
@@ -155,8 +157,7 @@ function* deletePost(action: DeletePostRequest) {
 
 async function searchPostsAPI(data: string) {
   try {
-    const result = await axios.get(`/api/v1/posts/${data}`, myConfig)
-
+    const result = await axios.get(`/api/v1/posts?keyword=${data}`, myConfig)
     return result.data
   } catch (err) {
     console.error(err)
@@ -165,15 +166,15 @@ async function searchPostsAPI(data: string) {
 
 function* searchPosts(action: SearchPostsRequest) {
   try {
-    const result: PostType[] | [] = yield call(searchPostsAPI, action.data)
+    const result: PostType[] = yield call(searchPostsAPI, action.data)
     yield put({
-      type: FETCHING_POST_SUCCESS,
+      type: SEARCH_POSTS_SUCCESS,
       data: result,
     })
   } catch (err) {
     console.error(err)
     yield put({
-      type: FETCHING_POST_FAILURE,
+      type: SEARCH_POSTS_FAILURE,
       data: err,
     })
   }
