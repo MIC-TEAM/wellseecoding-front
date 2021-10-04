@@ -7,6 +7,7 @@ import { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { REGISTER_LINK_URL } from 'apis'
+import { myConfig } from 'sagas'
 
 const Portfolio = () => {
   const router = useRouter()
@@ -30,15 +31,19 @@ const Portfolio = () => {
       alert(`name: ${project}, link: ${link}, description: ${desc}`)
       try {
         await axios
-          .put(REGISTER_LINK_URL, {
-            links: [
-              {
-                name: project,
-                link: link,
-                description: desc,
-              },
-            ],
-          })
+          .put(
+            REGISTER_LINK_URL,
+            {
+              links: [
+                {
+                  name: project,
+                  link: link,
+                  description: desc,
+                },
+              ],
+            },
+            myConfig
+          )
           .then((res) => {
             console.log('response:', res)
             if (res.status === 200) {
