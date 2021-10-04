@@ -45,7 +45,7 @@ const SelfIntroduction = () => {
         console.error(err)
       }
     },
-    [aboutMe, skill]
+    [aboutMe, skill, router]
   )
 
   const onChangeAboutMe = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

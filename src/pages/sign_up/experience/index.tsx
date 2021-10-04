@@ -50,7 +50,7 @@ const Experience = () => {
         console.error(err)
       }
     },
-    [role, technology, years]
+    [role, technology, years, router]
   )
 
   const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,7 +116,7 @@ const Experience = () => {
   // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
   const NextPage = useCallback(() => {
     router.push('/sign_up/portfolio')
-  }, [])
+  }, [router])
 
   return (
     <>

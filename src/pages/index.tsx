@@ -4,9 +4,9 @@ import SplashScreen from 'components/SplashScreen'
 import { useEffect, useState } from 'react'
 
 function Home() {
-  const [tokenId, setTokenId] = useState(null)
-  const [decodedUserId, setDecodedUserId] = useState(null)
-  const [decodedUserName, setDecodedUserName] = useState(null)
+  const [tokenId, setTokenId] = useState<string>('')
+  const [decodedUserId, setDecodedUserId] = useState<string>('')
+  const [decodedUserName, setDecodedUserName] = useState<string>('')
 
   // 1차적으로 복호화했을 때 아직 이름이 없어서, 해당 정보를 어떻게 저장할 지는 협의해봐야 할 것 같네요
 

@@ -1,21 +1,17 @@
 import StudySlider from 'components/Together/StudySlider'
 import { css } from '@emotion/react'
-import { PostType } from 'types'
+import { PostData } from 'types'
 
 // data는 dataProps { } 객체 형식으로 이루어진 배열이다
 
-type Props = {
-  title: string
-  data: PostType[]
-}
-function StudySection({ title, data }: Props) {
+function StudySection({ theme, posts }: PostData) {
   return (
     <section style={{ paddingTop: '16px' }}>
       <h2 css={titleStyle} className="together__title">
-        #{title} 모임이에요!
+        # {theme} 모임이에요!
       </h2>
 
-      <StudySlider data={data} />
+      <StudySlider data={posts} />
     </section>
   )
 }

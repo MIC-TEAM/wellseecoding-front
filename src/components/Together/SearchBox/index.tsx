@@ -2,17 +2,18 @@ import Link from 'next/link'
 import { studyContentBox } from './style'
 
 type Props = {
+  id: number
   listTitle: string
-  hashTag: string
+  hashTag: string[]
 }
-function StudyBox({ listTitle, hashTag }: Props) {
+function StudyBox({ id, listTitle, hashTag }: Props) {
   return (
     <li css={studyContentBox}>
-      <Link href="/">
+      <Link href={`/posts/${id}`}>
         <a>
           <article>
             <h3>{listTitle}</h3>
-            <p>#{hashTag}</p>
+            {hashTag ? hashTag.map((v, i) => <p key={i}>#{v}</p>) : <span></span>}
           </article>
         </a>
       </Link>

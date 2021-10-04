@@ -10,7 +10,7 @@ const SignUpProfileUpload = () => {
 
   const NextPage = useCallback(() => {
     router.push('/home')
-  }, [])
+  }, [router])
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     const img = e.target.files[0]

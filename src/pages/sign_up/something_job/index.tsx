@@ -68,7 +68,7 @@ const SomethingJob = () => {
         console.error(err)
       }
     },
-    [value]
+    [value, router]
   )
 
   return (

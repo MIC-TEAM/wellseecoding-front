@@ -90,7 +90,7 @@ const Portfolio = () => {
   // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
   const NextPage = useCallback(() => {
     router.push('/sign_up/profile_upload')
-  }, [])
+  }, [router])
 
   // 포트폴리오 추가 버튼
   // const PortfolioAdd = useCallback(() => {}, [])

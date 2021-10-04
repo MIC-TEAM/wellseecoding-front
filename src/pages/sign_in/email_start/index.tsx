@@ -43,7 +43,7 @@ const EmailLogin = () => {
       //   console.error(err)
       // }
     },
-    [email, password]
+    [router]
   )
 
   // 이메일

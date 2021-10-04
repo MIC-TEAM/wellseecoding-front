@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FETCHING_POSTS_REQUEST, RESET_POST_LIST } from 'reducers/posts'
 import { RootState } from 'reducers'
-import StudySection from 'components/Together/StudySection'
+// import StudySection from 'components/Together/StudySection'
 
 const Home = () => {
   const { posts, post } = useSelector((state: RootState) => state.posts)
@@ -50,9 +50,9 @@ const Home = () => {
         <HomeMain user={name} num={4} />
         <div className="listWrap">
           <main css={ClassListWrap}>
-            <StudySection title="내가 개설한 모임" data={posts} />
-            <StudySection title="가입 신청한 모임" data={posts} />
-            <StudySection title="가입 승인된 모임" data={posts} />
+            {/* <StudySection theme="내가 개설한 모임" posts={posts} />
+            <StudySection theme="가입 신청한 모임" posts={posts} />
+            <StudySection theme="가입 승인된 모임" posts={posts} /> */}
           </main>
         </div>
       </div>
