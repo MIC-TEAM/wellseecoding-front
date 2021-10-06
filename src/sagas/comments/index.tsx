@@ -17,7 +17,7 @@ import { myConfig } from 'sagas'
 async function fetchCommentsAPI(id: number) {
   try {
     console.log('fetch Comment Start!', id)
-    const response: any = await axios.get(`/api/v1/posts/${id}/comments`, myConfig)
+    const response = await axios.get(`/api/v1/posts/${id}/comments`, myConfig)
     return response.data
   } catch (err) {
     console.error(err)

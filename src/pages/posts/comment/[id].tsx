@@ -119,16 +119,17 @@ function Comment() {
                   <div css={MainWrapHead}>{/* 이미지 */}</div>
                   <h3>{v.userName}</h3>
                   {/* <span>{v.userName}</span> */}
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      alert(v.userId)
-                      dispatch(deleteCommentRequest(v.userId))
-                    }}
-                  >
-                    <img src="/images/header/setting.svg" alt="환경설정" />
-                  </button>
+                  {v.userId === Number(localUid) && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        alert(v.userId)
+                        dispatch(deleteCommentRequest(v.userId))
+                      }}
+                    >
+                      <img src="/images/header/setting.svg" alt="환경설정" />
+                    </button>
+                  )}
                 </div>
 
                 <div css={MainWrapMain}>{!v.deleted ? <p>{v.text}</p> : <p>삭제된 댓글입니다</p>}</div>
@@ -198,15 +199,17 @@ function Comment() {
                       <h3>{v.userName}</h3>
                       {/* <span>{v.userName}</span> */}
                       <div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            alert(v.userId)
-                            dispatch(deleteCommentRequest(v.userId))
-                          }}
-                        >
-                          <img src="/images/header/setting.svg" alt="환경설정" />
-                        </button>
+                        {v.userId === Number(localUid) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              alert(v.userId)
+                              dispatch(deleteCommentRequest(v.userId))
+                            }}
+                          >
+                            <img src="/images/header/setting.svg" alt="환경설정" />
+                          </button>
+                        )}
                       </div>
                     </div>
 
