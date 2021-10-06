@@ -16,6 +16,10 @@ export interface PostsIntialState {
   deleteCommentLoading: boolean
   deleteCommentSuccess: boolean
   deleteCommentFailure: null | Error
+
+  updateCommentLoading: boolean
+  updateCommentSuccess: boolean
+  updateCommentFailure: null | Error
 }
 
 // initialState 정의
@@ -33,6 +37,10 @@ export const initialState: PostsIntialState = {
   deleteCommentLoading: false,
   deleteCommentSuccess: false,
   deleteCommentFailure: null,
+
+  updateCommentLoading: false,
+  updateCommentSuccess: false,
+  updateCommentFailure: null,
 }
 
 // 액션 정의
@@ -48,6 +56,10 @@ export const WRITE_COMMENT_FAILURE = 'WRITE_COMMENT_FAILURE' as const
 export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST' as const
 export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS' as const
 export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE' as const
+
+export const UPDATE_COMMENT_REQUEST = 'UPDATE_COMMENT_REQUEST' as const
+export const UPDATE_COMMENT_SUCCESS = 'UPDATE_COMMENT_SUCCESS' as const
+export const UPDATE_COMMENT_FAILURE = 'UPDATE_COMMENT_FAILURE' as const
 
 export const RESET_COMMENTS_LIST = 'RESET_COMMENTS_LIST' as const
 
@@ -97,6 +109,25 @@ export interface DeleteCommentSuccess {
 
 export interface DeleteCommentFailure {
   type: typeof DELETE_COMMENT_FAILURE
+  error: Error
+}
+
+export interface UpdateCommentRequest {
+  type: typeof UPDATE_COMMENT_REQUEST
+  data: {
+    postId: number
+    commentId: number
+    text: string
+  }
+}
+
+export interface UpdateCommentSuccess {
+  type: typeof UPDATE_COMMENT_SUCCESS
+  data: []
+}
+
+export interface UpdateCommentFailure {
+  type: typeof UPDATE_COMMENT_FAILURE
   error: Error
 }
 
@@ -151,6 +182,25 @@ export const deleteCommentFailure = (error: Error): DeleteCommentFailure => ({
   error,
 })
 
+export const updateCommentRequest = (data: {
+  postId: number
+  commentId: number
+  text: string
+}): UpdateCommentRequest => ({
+  type: UPDATE_COMMENT_REQUEST,
+  data,
+})
+
+export const updateCommentSuccess = (): UpdateCommentSuccess => ({
+  type: UPDATE_COMMENT_SUCCESS,
+  data: [],
+})
+
+export const updateCommentFailure = (error: Error): UpdateCommentFailure => ({
+  type: UPDATE_COMMENT_FAILURE,
+  error,
+})
+
 export const resetCommentRequest = (): ResetCommentsList => ({
   type: RESET_COMMENTS_LIST,
 })
@@ -165,6 +215,9 @@ export type FetchingPosts =
   | ReturnType<typeof deleteCommentRequest>
   | ReturnType<typeof deleteCommentSuccess>
   | ReturnType<typeof deleteCommentFailure>
+  | ReturnType<typeof updateCommentRequest>
+  | ReturnType<typeof updateCommentSuccess>
+  | ReturnType<typeof updateCommentFailure>
   | ReturnType<typeof resetCommentRequest>
 
 const comments = (state: PostsIntialState = initialState, action: FetchingPosts) =>
@@ -218,6 +271,22 @@ const comments = (state: PostsIntialState = initialState, action: FetchingPosts)
       case DELETE_COMMENT_FAILURE: {
         draft.deleteCommentSuccess = false
         draft.deleteCommentFailure = action.error
+        break
+      }
+      case UPDATE_COMMENT_REQUEST: {
+        draft.updateCommentLoading = true
+        draft.updateCommentSuccess = false
+        break
+      }
+      case UPDATE_COMMENT_SUCCESS: {
+        draft.updateCommentLoading = false
+        draft.updateCommentSuccess = true
+        // draft.comments.find((v) => v.commentId === action.data.commentId).text = action.data.text
+        break
+      }
+      case UPDATE_COMMENT_FAILURE: {
+        draft.updateCommentSuccess = false
+        draft.updateCommentFailure = action.error
         break
       }
 

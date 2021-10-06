@@ -11,6 +11,10 @@ import {
   FETCH_COMMENTS_FAILURE,
   FETCH_COMMENTS_REQUEST,
   FETCH_COMMENTS_SUCCESS,
+  UpdateCommentRequest,
+  UPDATE_COMMENT_FAILURE,
+  UPDATE_COMMENT_REQUEST,
+  UPDATE_COMMENT_SUCCESS,
   WriteCommentRequest,
   WRITE_COMMENT_FAILURE,
   WRITE_COMMENT_REQUEST,
@@ -97,6 +101,35 @@ function* deleteComment(action: DeleteCommentRequest) {
   }
 }
 
+async function updateCommentAPI(data: { postId: number; commentId: number; text: string }) {
+  try {
+    // https://api.wellseecoding.com/api/v1/posts/370/comments/446
+    const response = await axios.put(`/api/v1/posts/${data.postId}/comments/${data.commentId}`, data, myConfig)
+    return response.status
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* updateComment(action: UpdateCommentRequest) {
+  console.log('update Request!', action)
+  try {
+    const result: number = yield call(updateCommentAPI, action.data)
+    if (result === 200) {
+      yield put({
+        type: UPDATE_COMMENT_SUCCESS,
+        data: action.data,
+      })
+    }
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: UPDATE_COMMENT_FAILURE,
+      data: err,
+    })
+  }
+}
+
 function* watchFetchComments() {
   yield takeLatest(FETCH_COMMENTS_REQUEST, fetchComments)
 }
@@ -109,6 +142,10 @@ function* watchDeleteComment() {
   yield takeLatest(DELETE_COMMENT_REQUEST, deleteComment)
 }
 
+function* watchUpdateComment() {
+  yield takeLatest(UPDATE_COMMENT_REQUEST, updateComment)
+}
+
 export default function* commentSaga() {
-  yield all([fork(watchFetchComments), fork(watchWriteComment), fork(watchDeleteComment)])
+  yield all([fork(watchFetchComments), fork(watchWriteComment), fork(watchDeleteComment), fork(watchUpdateComment)])
 }

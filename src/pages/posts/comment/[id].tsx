@@ -8,6 +8,7 @@ import { css } from '@emotion/react'
 import { FETCH_COMMENTS_REQUEST, WRITE_COMMENT_REQUEST } from 'reducers/comments'
 import { SET_ISMODAL } from 'reducers/common'
 import CommentModal from 'components/Common/CommentModal'
+import EditComment from 'components/Post/EditComment'
 
 function Comment() {
   const router = useRouter()
@@ -22,7 +23,7 @@ function Comment() {
   const [localUid, setLocalUid] = useState<string>('')
 
   const { comments } = useSelector((state: RootState) => state.comments)
-  const { isModal } = useSelector((state: RootState) => state.common)
+  const { isModal, editMode } = useSelector((state: RootState) => state.common)
 
   const dispatch = useDispatch()
 
@@ -34,6 +35,10 @@ function Comment() {
       setLocalUid(localStorage.getItem('id') || '')
     }
   }, [])
+
+  useEffect(() => {
+    console.log('editMode:', editMode)
+  }, [editMode])
 
   useEffect(() => {
     console.log('comments:', comments)
@@ -132,7 +137,7 @@ function Comment() {
                   <div css={MainWrapHead}>{/* 이미지 */}</div>
                   <h3>{v.userName}</h3>
                   {/* <span>{v.userName}</span> */}
-                  {v.userId === Number(localUid) && (
+                  {v.userId === Number(localUid) && !v.deleted && (
                     <button
                       type="button"
                       onClick={() => {
@@ -146,7 +151,9 @@ function Comment() {
 
                 <div css={MainWrapMain}>
                   {!v.deleted ? (
-                    <p>{v.text}</p>
+                    <>
+                      {editMode ? <EditComment postId={id} commentId={v.commentId} value={v.text} /> : <p>{v.text}</p>}
+                    </>
                   ) : (
                     <p style={{ color: '#8f8c8b', fontStyle: 'oblique' }}>삭제된 댓글입니다</p>
                   )}

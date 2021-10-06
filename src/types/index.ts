@@ -60,6 +60,12 @@ export type WriteCommentType = {
   text: string
 }
 
+export type UpdateCommentType = {
+  postId: number
+  commentId: number
+  text: string
+}
+
 //----------------------------------------
 // 회원가입 단계
 
