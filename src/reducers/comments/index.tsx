@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { FetchCommentsType } from 'types'
+import { FetchCommentsType, WriteCommentType } from 'types'
 
 // initialState 타입 정의
 export interface PostsIntialState {
@@ -69,7 +69,7 @@ export interface FetchCommentsFailure {
 
 export interface WriteCommentRequest {
   type: typeof WRITE_COMMENT_REQUEST
-  data: string
+  data: WriteCommentType
 }
 
 export interface WriteCommentSuccess {
@@ -118,7 +118,7 @@ export const fetchCommentsFailure = (error: Error): FetchCommentsFailure => ({
   error,
 })
 
-export const writeCommentRequest = (data: string): WriteCommentRequest => ({
+export const writeCommentRequest = (data: WriteCommentType): WriteCommentRequest => ({
   type: WRITE_COMMENT_REQUEST,
   data,
 })
@@ -179,7 +179,6 @@ const comments = (state: PostsIntialState = initialState, action: FetchingPosts)
       case FETCH_COMMENTS_SUCCESS: {
         draft.fetchCommentsLoading = false
         draft.fetchCommentsSuccess = true
-        // draft.posts = draft.posts.concat(action.data)
         draft.comments = draft.comments.concat(action.data)
         break
       }
@@ -196,7 +195,6 @@ const comments = (state: PostsIntialState = initialState, action: FetchingPosts)
       case WRITE_COMMENT_SUCCESS: {
         draft.writeCommentLoading = false
         draft.writeCommentSuccess = true
-        // draft.comments = draft.comments.concat(action.data)
         break
       }
       case WRITE_COMMENT_FAILURE: {

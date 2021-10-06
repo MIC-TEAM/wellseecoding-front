@@ -44,14 +44,6 @@ export type CommentType = {
   date: string
 }
 
-/*
-"userId": 19,
-        "userName": "배일섭",
-        "commentId": 414,
-        "commentDate": 1633350714,
-        "text": "hello world",
-        "deleted": false,
-*/
 export type FetchCommentsType = {
   userId: number
   userName: string
@@ -60,6 +52,12 @@ export type FetchCommentsType = {
   text: string
   deleted: boolean
   children: FetchCommentsType[]
+}
+
+export type WriteCommentType = {
+  id: number
+  parentId: number
+  text: string
 }
 
 //----------------------------------------

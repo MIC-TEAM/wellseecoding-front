@@ -5,14 +5,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { Common } from 'styles/common'
 import { css } from '@emotion/react'
-import { deleteCommentRequest, FETCH_COMMENTS_REQUEST } from 'reducers/comments'
+import { deleteCommentRequest, FETCH_COMMENTS_REQUEST, WRITE_COMMENT_REQUEST } from 'reducers/comments'
 
 function Comment() {
   const router = useRouter()
   const [value, setValue] = useState('')
   const [name, setName] = useState('')
   const [visible, setVisible] = useState(false)
-  const [replyForm, setReplyForm] = useState(false)
+
+  // const [replyForm, setReplyForm] = useState(false)
+  // const [replyValue, setReplyValue] = useState('')
 
   const [localUname, setLocalUname] = useState<string>('')
   const [localUid, setLocalUid] = useState<string>('')
@@ -56,20 +58,46 @@ function Comment() {
     setValue(e.target.value)
   }, [])
 
+  // const onReplyChange = useCallback((e) => {
+  //   setReplyValue(e.target.value)
+  // }, [])
+
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      // alert(value)
-      alert(`${id} 번 글에 대한 요청입니다`)
-
-      setValue('')
+      try {
+        dispatch({
+          type: WRITE_COMMENT_REQUEST,
+          data: {
+            id: Number(id),
+            parentId: 0,
+            text: value,
+          },
+        })
+        setValue('')
+      } catch (err) {
+        console.error(err)
+      } finally {
+        router.reload()
+      }
     },
-    [id]
+    [dispatch, value, id]
   )
+
+  // const onReplySubmit = useCallback(() => {
+  //   dispatch({
+  //     type: WRITE_COMMENT_REQUEST,
+  //     data: {
+  //       id: Number(id),
+  //       parentId: 0,
+  //       text: value,
+  //     },
+  //   })
+  // }, [dispatch, value, id])
 
   const handleState = useCallback(() => {
     setVisible((prev) => !prev)
-    setReplyForm(false)
+    // setReplyForm(false)
     setName('')
   }, [])
 
@@ -91,17 +119,16 @@ function Comment() {
                   <div css={MainWrapHead}>{/* 이미지 */}</div>
                   <h3>{v.userName}</h3>
                   {/* <span>{v.userName}</span> */}
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        alert(v.userId)
-                        dispatch(deleteCommentRequest(v.userId))
-                      }}
-                    >
-                      <img src="/images/header/setting.svg" alt="환경설정" />
-                    </button>
-                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      alert(v.userId)
+                      dispatch(deleteCommentRequest(v.userId))
+                    }}
+                  >
+                    <img src="/images/header/setting.svg" alt="환경설정" />
+                  </button>
                 </div>
 
                 <div css={MainWrapMain}>{!v.deleted ? <p>{v.text}</p> : <p>삭제된 댓글입니다</p>}</div>
@@ -111,7 +138,6 @@ function Comment() {
                     type="button"
                     onClick={() => {
                       handleName(v.userName)
-                      setReplyForm((prev) => !prev)
                     }}
                   >
                     답글달기
@@ -125,7 +151,7 @@ function Comment() {
               </div>
 
               {/* 답글 달기 관련 토클 창*/}
-              {replyForm && (
+              {/* {replyForm && (
                 <div
                   style={{
                     padding: 20,
@@ -137,6 +163,8 @@ function Comment() {
                     <span>{localUname}</span>
                   </div>
                   <textarea
+                    value={replyValue}
+                    onChange={onReplyChange}
                     placeholder="답글달기"
                     rows={1}
                     style={{ border: 'none', width: '100%', height: '2em', resize: 'none', background: 'inherit' }}
@@ -151,12 +179,12 @@ function Comment() {
                     >
                       <span style={{ fontSize: 10 }}>취소</span>
                     </button>
-                    <button>
+                    <button onClick={onReplySubmit}>
                       <span style={{ fontSize: 10 }}>등록</span>
                     </button>
                   </div>
                 </div>
-              )}
+              )} */}
 
               {/* 자식 요소 댓글 달기 */}
               {v.children.length ? (
@@ -243,6 +271,8 @@ const CommentMainWrap = css`
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+  position: relative;
+
   h3 {
     margin-right: 4px;
     font-size: ${Common.fontSize.fs16};
@@ -250,6 +280,10 @@ const CommentMainWrap = css`
   span {
     font-size: ${Common.fontSize.fs14};
     color: #8f8c8b;
+  }
+  button {
+    position: absolute;
+    right: 0px;
   }
 `
 
@@ -260,13 +294,8 @@ const MainWrapHead = css`
   background-color: #c4c4c4;
   margin-right: 6px;
 
-  ~ div {
-    position: absolute;
-    right: 20px;
-
-    img {
-      height: 18px;
-    }
+  img {
+    height: 18px;
   }
 `
 
