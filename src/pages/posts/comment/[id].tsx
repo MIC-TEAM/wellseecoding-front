@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { Common } from 'styles/common'
 import { css } from '@emotion/react'
-import { deleteCommentRequest, writeCommentRequest } from 'reducers/comments'
+import { deleteCommentRequest, FETCH_COMMENTS_REQUEST } from 'reducers/comments'
 
 function Comment() {
   const router = useRouter()
   const [value, setValue] = useState('')
   const [name, setName] = useState('')
   const [visible, setVisible] = useState(false)
-  const [num, setNum] = useState(3)
+  const [replyForm, setReplyForm] = useState(false)
 
   const [localUname, setLocalUname] = useState<string>('')
   const [localUid, setLocalUid] = useState<string>('')
@@ -38,6 +38,20 @@ function Comment() {
     console.log('LS Storage info:', localUname, localUid)
   }, [localUname, localUid])
 
+  useEffect(() => {
+    if (id && !comments.length) getComment(id)
+  }, [id])
+
+  const getComment = useCallback(
+    async (id) => {
+      dispatch({
+        type: FETCH_COMMENTS_REQUEST,
+        data: Number(id),
+      })
+    },
+    [dispatch]
+  )
+
   const onChange = useCallback((e) => {
     setValue(e.target.value)
   }, [])
@@ -47,24 +61,15 @@ function Comment() {
       e.preventDefault()
       // alert(value)
       alert(`${id} 번 글에 대한 요청입니다`)
-      dispatch(
-        writeCommentRequest({
-          id: num,
-          name: localUname,
-          job: '프론트엔드',
-          text: value,
-          me: true,
-          date: '2021-10-03',
-        })
-      )
+
       setValue('')
-      setNum((num) => num + 1)
     },
-    [dispatch, value, num, id, localUname]
+    [id]
   )
 
   const handleState = useCallback(() => {
     setVisible((prev) => !prev)
+    setReplyForm(false)
     setName('')
   }, [])
 
@@ -78,43 +83,126 @@ function Comment() {
       <BackOptional title="댓글" optional={false} />
       <div css={CommentMain}>
         {/* 나 */}
-        {comments.map((v) => (
-          <div key={v.id}>
-            <div css={CommentMainWrap}>
-              <div css={MainWrapHead}>{/* 이미지 */}</div>
-              <h3>{v.name}</h3>
-              <span>{v.job}</span>
+        {comments.length ? (
+          comments.map((v) => (
+            <div key={v.commentId}>
+              <div style={{ padding: '20px' }}>
+                <div css={CommentMainWrap}>
+                  <div css={MainWrapHead}>{/* 이미지 */}</div>
+                  <h3>{v.userName}</h3>
+                  {/* <span>{v.userName}</span> */}
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        alert(v.userId)
+                        dispatch(deleteCommentRequest(v.userId))
+                      }}
+                    >
+                      <img src="/images/header/setting.svg" alt="환경설정" />
+                    </button>
+                  </div>
+                </div>
 
-              <div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    alert(v.id)
-                    dispatch(deleteCommentRequest(v.id))
+                <div css={MainWrapMain}>{!v.deleted ? <p>{v.text}</p> : <p>삭제된 댓글입니다</p>}</div>
+
+                <div css={MainWrapBottom}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleName(v.userName)
+                      setReplyForm((prev) => !prev)
+                    }}
+                  >
+                    답글달기
+                  </button>
+                  {Math.floor((Date.now() / 1000 - v.commentDate) / 24 / 60 / 60) >= 1 ? (
+                    <span> {Math.floor((Date.now() / 1000 - v.commentDate) / 24 / 60 / 60)} 일전 </span>
+                  ) : (
+                    <span>오늘</span>
+                  )}
+                </div>
+              </div>
+
+              {/* 답글 달기 관련 토클 창*/}
+              {replyForm && (
+                <div
+                  style={{
+                    padding: 20,
+                    position: 'relative',
+                    border: '1px solid gray',
                   }}
                 >
-                  <img src="/images/header/setting.svg" alt="환경설정" />
-                </button>
-              </div>
-            </div>
+                  <div style={{ marginBottom: 10 }}>
+                    <span>{localUname}</span>
+                  </div>
+                  <textarea
+                    placeholder="답글달기"
+                    rows={1}
+                    style={{ border: 'none', width: '100%', height: '2em', resize: 'none', background: 'inherit' }}
+                  />
+                  <div style={{ textAlign: 'end' }}>
+                    <button
+                      style={{ marginRight: 5 }}
+                      onClick={() => {
+                        setReplyForm(false)
+                        setVisible(false)
+                      }}
+                    >
+                      <span style={{ fontSize: 10 }}>취소</span>
+                    </button>
+                    <button>
+                      <span style={{ fontSize: 10 }}>등록</span>
+                    </button>
+                  </div>
+                </div>
+              )}
 
-            <div css={MainWrapMain}>
-              <p>{v.text}</p>
-            </div>
+              {/* 자식 요소 댓글 달기 */}
+              {v.children.length ? (
+                v.children.map((v) => (
+                  <div style={{ padding: '20px', background: '#efebe8' }} key={v.commentId}>
+                    <div css={CommentMainWrap}>
+                      <div style={{ position: 'relative', marginRight: '20px' }}>
+                        <img src="/images/post/recoment.svg" alt="" />
+                      </div>
+                      <div css={MainWrapHead}>{/* 이미지 */}</div>
+                      <h3>{v.userName}</h3>
+                      {/* <span>{v.userName}</span> */}
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            alert(v.userId)
+                            dispatch(deleteCommentRequest(v.userId))
+                          }}
+                        >
+                          <img src="/images/header/setting.svg" alt="환경설정" />
+                        </button>
+                      </div>
+                    </div>
 
-            <div css={MainWrapBottom}>
-              <button
-                type="button"
-                onClick={() => {
-                  handleName(v.name)
-                }}
-              >
-                답글달기
-              </button>
-              <span>{v.date}</span>
+                    <div css={MainWrapMain}>{!v.deleted ? <p>{v.text}</p> : <p>삭제된 댓글입니다</p>}</div>
+
+                    <div css={MainWrapBottom}>
+                      <button type="button">답글달기</button>
+                      {Math.floor((Date.now() / 1000 - v.commentDate) / 24 / 60 / 60) >= 1 ? (
+                        <span> {Math.floor((Date.now() / 1000 - v.commentDate) / 24 / 60 / 60)} 일전 </span>
+                      ) : (
+                        <span>오늘</span>
+                      )}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div />
+              )}
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          // comments가 없을 때!
+          <div />
+        )}
       </div>
 
       <form onSubmit={onSubmit} css={commentFooter}>
@@ -147,7 +235,6 @@ const CommentMain = css`
   background: #f5f5f5;
   width: 100%;
   & > div {
-    padding: 20px;
     background: #fff;
   }
 `

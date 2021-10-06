@@ -1,9 +1,13 @@
 import produce from 'immer'
-import { CommentType } from 'types'
+import { FetchCommentsType } from 'types'
 
 // initialState 타입 정의
 export interface PostsIntialState {
-  comments: CommentType[]
+  comments: FetchCommentsType[]
+
+  fetchCommentsLoading: boolean
+  fetchCommentsSuccess: boolean
+  fetchCommentsFailure: null | Error
 
   writeCommentLoading: boolean
   writeCommentSuccess: boolean
@@ -16,24 +20,11 @@ export interface PostsIntialState {
 
 // initialState 정의
 export const initialState: PostsIntialState = {
-  comments: [
-    {
-      id: 1,
-      name: '이준희',
-      job: '프론트엔드',
-      text: '언제 시작하실 건가요?',
-      me: true,
-      date: '2021-10-03',
-    },
-    {
-      id: 2,
-      name: '배일섭',
-      job: '백엔드',
-      text: '다음주에 구글 밋 얘기해봐요!',
-      me: false,
-      date: '2021-10-03',
-    },
-  ],
+  comments: [],
+
+  fetchCommentsLoading: false,
+  fetchCommentsSuccess: false,
+  fetchCommentsFailure: null,
 
   writeCommentLoading: false,
   writeCommentSuccess: false,
@@ -46,6 +37,10 @@ export const initialState: PostsIntialState = {
 
 // 액션 정의
 
+export const FETCH_COMMENTS_REQUEST = 'FETCH_COMMENTS_REQUEST' as const
+export const FETCH_COMMENTS_SUCCESS = 'FETCH_COMMENTS_SUCCESS' as const
+export const FETCH_COMMENTS_FAILURE = 'FETCH_COMMENTS_FAILURE' as const
+
 export const WRITE_COMMENT_REQUEST = 'WRITE_COMMENT_REQUEST' as const
 export const WRITE_COMMENT_SUCCESS = 'WRITE_COMMENT_SUCCESS' as const
 export const WRITE_COMMENT_FAILURE = 'WRITE_COMMENT_FAILURE' as const
@@ -54,10 +49,27 @@ export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST' as const
 export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS' as const
 export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE' as const
 
+export const RESET_COMMENTS_LIST = 'RESET_COMMENTS_LIST' as const
+
 // 액션에 대한 타입 정의;
+export interface FetchCommentsRequest {
+  type: typeof FETCH_COMMENTS_REQUEST
+  data: number
+}
+
+export interface FetchCommentsSuccess {
+  type: typeof FETCH_COMMENTS_SUCCESS
+  data: []
+}
+
+export interface FetchCommentsFailure {
+  type: typeof FETCH_COMMENTS_FAILURE
+  error: Error
+}
+
 export interface WriteCommentRequest {
   type: typeof WRITE_COMMENT_REQUEST
-  data: CommentType
+  data: string
 }
 
 export interface WriteCommentSuccess {
@@ -85,9 +97,28 @@ export interface DeleteCommentFailure {
   error: Error
 }
 
+export interface ResetCommentsList {
+  type: typeof RESET_COMMENTS_LIST
+}
+
 // 리듀서 안에 들어갈 액션 타입에 대한 액션 생성 함수 정의
 
-export const writeCommentRequest = (data: CommentType): WriteCommentRequest => ({
+export const fetchCommentsRequest = (data: number): FetchCommentsRequest => ({
+  type: FETCH_COMMENTS_REQUEST,
+  data,
+})
+
+export const fetchCommentsSuccess = (): FetchCommentsSuccess => ({
+  type: FETCH_COMMENTS_SUCCESS,
+  data: [],
+})
+
+export const fetchCommentsFailure = (error: Error): FetchCommentsFailure => ({
+  type: FETCH_COMMENTS_FAILURE,
+  error,
+})
+
+export const writeCommentRequest = (data: string): WriteCommentRequest => ({
   type: WRITE_COMMENT_REQUEST,
   data,
 })
@@ -117,21 +148,49 @@ export const deleteCommentFailure = (error: Error): DeleteCommentFailure => ({
   error,
 })
 
+export const resetCommentRequest = (): ResetCommentsList => ({
+  type: RESET_COMMENTS_LIST,
+})
+
 export type FetchingPosts =
+  | ReturnType<typeof fetchCommentsRequest>
+  | ReturnType<typeof fetchCommentsSuccess>
+  | ReturnType<typeof fetchCommentsFailure>
   | ReturnType<typeof writeCommentRequest>
   | ReturnType<typeof writeCommentSuccess>
   | ReturnType<typeof writeCommentFailure>
   | ReturnType<typeof deleteCommentRequest>
   | ReturnType<typeof deleteCommentSuccess>
   | ReturnType<typeof deleteCommentFailure>
+  | ReturnType<typeof resetCommentRequest>
 
 const comments = (state: PostsIntialState = initialState, action: FetchingPosts) =>
   produce(state, (draft) => {
     switch (action.type) {
+      case RESET_COMMENTS_LIST: {
+        draft.comments = []
+        break
+      }
+      case FETCH_COMMENTS_REQUEST: {
+        draft.fetchCommentsLoading = true
+        draft.fetchCommentsSuccess = false
+        break
+      }
+      case FETCH_COMMENTS_SUCCESS: {
+        draft.fetchCommentsLoading = false
+        draft.fetchCommentsSuccess = true
+        // draft.posts = draft.posts.concat(action.data)
+        draft.comments = draft.comments.concat(action.data)
+        break
+      }
+      case FETCH_COMMENTS_FAILURE: {
+        draft.writeCommentSuccess = false
+        draft.writeCommentFailure = action.error
+        break
+      }
       case WRITE_COMMENT_REQUEST: {
         draft.writeCommentLoading = true
         draft.writeCommentSuccess = false
-        draft.comments = draft.comments.concat(action.data)
         break
       }
       case WRITE_COMMENT_SUCCESS: {
@@ -148,7 +207,7 @@ const comments = (state: PostsIntialState = initialState, action: FetchingPosts)
       case DELETE_COMMENT_REQUEST: {
         draft.deleteCommentLoading = true
         draft.deleteCommentSuccess = false
-        draft.comments = draft.comments.filter((data) => data.id !== action.data)
+        // draft.comments = draft.comments.filter((data) => data.id !== action.data)
         break
       }
       case DELETE_COMMENT_SUCCESS: {

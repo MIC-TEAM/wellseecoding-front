@@ -14,16 +14,25 @@ import { FETCHING_POST_REQUEST } from 'reducers/posts'
 import EditForm from 'components/EditForm'
 import HashWrap from 'components/Common/HashWrap'
 import Loading from 'components/Loading'
+import { RESET_COMMENTS_LIST } from 'reducers/comments'
 
 function Post() {
   const router = useRouter()
   const { id } = router.query
   const { isModal, editMode } = useSelector((state: RootState) => state.common)
   const { post } = useSelector((state: RootState) => state.posts)
+  const { comments } = useSelector((state: RootState) => state.comments)
 
   const [localInfo, setLocalInfo] = useState<number | null>(null)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (comments.length)
+      dispatch({
+        type: RESET_COMMENTS_LIST,
+      })
+  }, [comments, dispatch])
 
   useEffect(() => {
     saveLocalInfo()

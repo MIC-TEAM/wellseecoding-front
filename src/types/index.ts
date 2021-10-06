@@ -44,6 +44,24 @@ export type CommentType = {
   date: string
 }
 
+/*
+"userId": 19,
+        "userName": "배일섭",
+        "commentId": 414,
+        "commentDate": 1633350714,
+        "text": "hello world",
+        "deleted": false,
+*/
+export type FetchCommentsType = {
+  userId: number
+  userName: string
+  commentId: number
+  commentDate: number
+  text: string
+  deleted: boolean
+  children: FetchCommentsType[]
+}
+
 //----------------------------------------
 // 회원가입 단계
 
