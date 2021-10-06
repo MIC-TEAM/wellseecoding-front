@@ -3,6 +3,10 @@ import axios from 'axios'
 import { all, call, fork, takeLatest } from 'redux-saga/effects'
 import { FetchCommentsType, WriteCommentType } from 'types'
 import {
+  DeleteCommentRequest,
+  DELETE_COMMENT_FAILURE,
+  DELETE_COMMENT_REQUEST,
+  DELETE_COMMENT_SUCCESS,
   FetchCommentsRequest,
   FETCH_COMMENTS_FAILURE,
   FETCH_COMMENTS_REQUEST,
@@ -66,6 +70,33 @@ function* writeComment(action: WriteCommentRequest) {
   }
 }
 
+async function deleteCommentAPI(data: { postId: number; commentId: number }) {
+  try {
+    // http://api.wellseecoding/api/v1/posts/73/comments/23
+    const response = await axios.delete(`/api/v1/posts/${data.postId}/comments/${data.commentId}`, myConfig)
+    return response.status
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* deleteComment(action: DeleteCommentRequest) {
+  try {
+    const result: number = yield call(deleteCommentAPI, action.data)
+    if (result === 200) {
+      yield put({
+        type: DELETE_COMMENT_SUCCESS,
+      })
+    }
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: DELETE_COMMENT_FAILURE,
+      data: err,
+    })
+  }
+}
+
 function* watchFetchComments() {
   yield takeLatest(FETCH_COMMENTS_REQUEST, fetchComments)
 }
@@ -74,6 +105,10 @@ function* watchWriteComment() {
   yield takeLatest(WRITE_COMMENT_REQUEST, writeComment)
 }
 
+function* watchDeleteComment() {
+  yield takeLatest(DELETE_COMMENT_REQUEST, deleteComment)
+}
+
 export default function* commentSaga() {
-  yield all([fork(watchFetchComments), fork(watchWriteComment)])
+  yield all([fork(watchFetchComments), fork(watchWriteComment), fork(watchDeleteComment)])
 }

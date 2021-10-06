@@ -84,7 +84,10 @@ export interface WriteCommentFailure {
 
 export interface DeleteCommentRequest {
   type: typeof DELETE_COMMENT_REQUEST
-  data: number
+  data: {
+    postId: number
+    commentId: number
+  }
 }
 
 export interface DeleteCommentSuccess {
@@ -133,7 +136,7 @@ export const writeCommentFailure = (error: Error): WriteCommentFailure => ({
   error,
 })
 
-export const deleteCommentRequest = (data: number): DeleteCommentRequest => ({
+export const deleteCommentRequest = (data: { postId: number; commentId: number }): DeleteCommentRequest => ({
   type: DELETE_COMMENT_REQUEST,
   data,
 })
@@ -205,13 +208,11 @@ const comments = (state: PostsIntialState = initialState, action: FetchingPosts)
       case DELETE_COMMENT_REQUEST: {
         draft.deleteCommentLoading = true
         draft.deleteCommentSuccess = false
-        // draft.comments = draft.comments.filter((data) => data.id !== action.data)
         break
       }
       case DELETE_COMMENT_SUCCESS: {
         draft.deleteCommentLoading = false
         draft.deleteCommentSuccess = true
-        // draft.comments = draft.comments.concat(action.data)
         break
       }
       case DELETE_COMMENT_FAILURE: {

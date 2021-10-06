@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { Common } from 'styles/common'
 import { css } from '@emotion/react'
-import { deleteCommentRequest, FETCH_COMMENTS_REQUEST, WRITE_COMMENT_REQUEST } from 'reducers/comments'
+import { FETCH_COMMENTS_REQUEST, WRITE_COMMENT_REQUEST } from 'reducers/comments'
+import { SET_ISMODAL } from 'reducers/common'
+import CommentModal from 'components/Common/CommentModal'
 
 function Comment() {
   const router = useRouter()
@@ -20,6 +22,7 @@ function Comment() {
   const [localUid, setLocalUid] = useState<string>('')
 
   const { comments } = useSelector((state: RootState) => state.comments)
+  const { isModal } = useSelector((state: RootState) => state.common)
 
   const dispatch = useDispatch()
 
@@ -81,7 +84,7 @@ function Comment() {
         router.reload()
       }
     },
-    [dispatch, value, id]
+    [dispatch, value, id, router]
   )
 
   // const onReplySubmit = useCallback(() => {
@@ -106,6 +109,16 @@ function Comment() {
     setName(name)
   }, [])
 
+  const setModal = useCallback(
+    (id) => {
+      dispatch({
+        type: SET_ISMODAL,
+        data: id,
+      })
+    },
+    [dispatch]
+  )
+
   return (
     <>
       <BackOptional title="댓글" optional={false} />
@@ -123,8 +136,7 @@ function Comment() {
                     <button
                       type="button"
                       onClick={() => {
-                        alert(v.userId)
-                        dispatch(deleteCommentRequest(v.userId))
+                        setModal(v.commentId)
                       }}
                     >
                       <img src="/images/header/setting.svg" alt="환경설정" />
@@ -132,7 +144,13 @@ function Comment() {
                   )}
                 </div>
 
-                <div css={MainWrapMain}>{!v.deleted ? <p>{v.text}</p> : <p>삭제된 댓글입니다</p>}</div>
+                <div css={MainWrapMain}>
+                  {!v.deleted ? (
+                    <p>{v.text}</p>
+                  ) : (
+                    <p style={{ color: '#8f8c8b', fontStyle: 'oblique' }}>삭제된 댓글입니다</p>
+                  )}
+                </div>
 
                 <div css={MainWrapBottom}>
                   <button
@@ -203,8 +221,7 @@ function Comment() {
                           <button
                             type="button"
                             onClick={() => {
-                              alert(v.userId)
-                              dispatch(deleteCommentRequest(v.userId))
+                              setModal(v.commentId)
                             }}
                           >
                             <img src="/images/header/setting.svg" alt="환경설정" />
@@ -255,6 +272,8 @@ function Comment() {
           <img src="/images/post/upload.svg" alt="댓글 업로드 버튼" />
         </button>
       </form>
+
+      {isModal.open && <CommentModal postId={id} />}
     </>
   )
 }
