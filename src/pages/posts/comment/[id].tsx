@@ -34,23 +34,7 @@ function Comment() {
   const { id } = router.query
 
   useEffect(() => {
-    console.log('check whole type: ', 'isModal:', isModal, 'editMode:', editMode)
-  }, [isModal, editMode])
-
-  useEffect(() => {
-    editNum && console.log('editNum:', editNum, typeof editNum)
-  }, [editNum])
-
-  useEffect(() => {
     if (isModal) setEditNum(Number(isModal.uniqId))
-  }, [isModal])
-
-  useEffect(() => {
-    comments.length && console.log(comments)
-  }, [comments])
-
-  useEffect(() => {
-    isModal && console.log(isModal)
   }, [isModal])
 
   useEffect(() => {

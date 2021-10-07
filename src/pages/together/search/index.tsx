@@ -19,7 +19,6 @@ const Search = () => {
 
   useEffect(() => {
     if (searchPosts.length) {
-      console.log('reset searchPosts')
       dispatch({ type: RESET_SEARCH_LIST })
     }
   }, [searchPosts, dispatch])
