@@ -256,7 +256,9 @@ function Comment() {
 export default Comment
 
 const CommentMain = css`
-  height: 100vh;
+  height: auto;
+  margin-bottom: 100px;
+  /* height: 100vh; */
   background: #f5f5f5;
   width: 100%;
   & > div {

@@ -2,7 +2,7 @@
 import React, { useCallback } from 'react'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CLOSE_ISMODAL, OPEN_EDITMODE, OPEN_ISMODAL } from 'reducers/common'
+import { CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
 import { RootState } from 'reducers'
 import { DELETE_POST_REQUEST } from 'reducers/posts'
 
@@ -15,7 +15,7 @@ const IsModal = () => {
     (e) => {
       e.stopPropagation()
       dispatch({
-        type: OPEN_ISMODAL,
+        type: CLOSE_ISMODAL,
       })
     },
     [dispatch]

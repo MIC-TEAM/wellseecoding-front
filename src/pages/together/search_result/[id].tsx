@@ -16,7 +16,7 @@ const SearchResult = () => {
   const { searchPosts } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
-    if (typeof id === 'string') {
+    if (typeof id === 'string' && searchPosts.length) {
       // const stringId = encodeURI(id)
       searchKeyword(id)
     }
