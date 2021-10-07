@@ -90,6 +90,8 @@ export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE' as const
 
 export const RESET_POST_LIST = 'RESET_POST_LIST' as const
 
+export const RESET_SEARCH_LIST = 'RESET_SEARCH_LIST' as const
+
 export const SEARCH_POSTS_REQUEST = 'SEARCH_POSTS_REQUEST' as const
 export const SEARCH_POSTS_SUCCESS = 'SEARCH_POSTS_SUCCESS' as const
 export const SEARCH_POSTS_FAILURE = 'SEARCH_POSTS_FAILURE' as const
@@ -171,6 +173,10 @@ export interface DeletePostFailure {
 
 export interface ResetPostList {
   type: typeof RESET_POST_LIST
+}
+
+export interface ResetSearchList {
+  type: typeof RESET_SEARCH_LIST
 }
 
 export interface SearchPostsRequest {
@@ -268,6 +274,10 @@ export const resetPostList = (): ResetPostList => ({
   type: RESET_POST_LIST,
 })
 
+export const resetSearchList = (): ResetSearchList => ({
+  type: RESET_SEARCH_LIST,
+})
+
 export const searchPostsRequest = (data: string): SearchPostsRequest => ({
   type: SEARCH_POSTS_REQUEST,
   data,
@@ -301,6 +311,7 @@ export type FetchingPosts =
   | ReturnType<typeof deletePostuccess>
   | ReturnType<typeof deletePostFailure>
   | ReturnType<typeof resetPostList>
+  | ReturnType<typeof resetSearchList>
   | ReturnType<typeof searchPostsRequest>
   | ReturnType<typeof searchPostsSuccess>
   | ReturnType<typeof searchPostsFailure>
@@ -342,6 +353,10 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
       }
       case RESET_POST_LIST: {
         draft.post = []
+        break
+      }
+      case RESET_SEARCH_LIST: {
+        draft.searchPosts = []
         break
       }
       case WRITE_POST_REQUEST: {

@@ -20,7 +20,6 @@ function Comment() {
   const [commentId, setCommentId] = useState(0)
 
   /* 로컬 스토리지에 저장된 userName과 userId */
-  const [localUname, setLocalUname] = useState<string>('')
   const [localUid, setLocalUid] = useState<string>('')
 
   const { comments, writeCommentSuccess } = useSelector((state: RootState) => state.comments)
@@ -32,7 +31,6 @@ function Comment() {
 
   useEffect(() => {
     if (typeof window.localStorage !== 'undefined') {
-      setLocalUname(localStorage.getItem('userName') || '')
       setLocalUid(localStorage.getItem('id') || '')
     }
   }, [])
@@ -222,7 +220,7 @@ function Comment() {
         </button>
       </form>
 
-      {isModal.open && <CommentModal postId={id} />}
+      {isModal.open && <CommentModal />}
     </>
   )
 }

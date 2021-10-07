@@ -2,6 +2,9 @@ import TogetherSearchBar from 'components/Together/Header/Search'
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'reducers'
+import { RESET_SEARCH_LIST } from 'reducers/posts'
 
 interface keyInterface {
   id: number
@@ -10,6 +13,16 @@ interface keyInterface {
 
 const Search = () => {
   const [keywords, setKeywords] = useState<keyInterface[]>([])
+  const dispatch = useDispatch()
+
+  const { searchPosts } = useSelector((state: RootState) => state.posts)
+
+  useEffect(() => {
+    if (searchPosts.length) {
+      console.log('reset searchPosts')
+      dispatch({ type: RESET_SEARCH_LIST })
+    }
+  }, [searchPosts, dispatch])
 
   // ① window 즉, 브라우저가 모두 렌더링된 상태에서 해당 함수를 실행할 수 있도록 작업
   useEffect(() => {
@@ -35,12 +48,6 @@ const Search = () => {
 
   // 단일 검색어 삭제
   const handleRemoveKeyword = (id: number) => {
-    // 고차함수 filter()는 필터링 된 배열을 반환한다
-    // console.log(
-    //   keywords.filter((keyword) => {
-    //     return keyword.id != id
-    //   })
-    // )
     const nextKeyword = keywords.filter((keyword) => {
       return keyword.id != id
     })

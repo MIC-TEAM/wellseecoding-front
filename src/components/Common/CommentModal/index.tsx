@@ -7,11 +7,7 @@ import { RootState } from 'reducers'
 import { DELETE_COMMENT_REQUEST } from 'reducers/comments'
 import { useRouter } from 'next/router'
 
-export type props = {
-  postId: string | string[] | undefined
-}
-
-function CommentModal({ postId }: props) {
+function CommentModal() {
   const dispatch = useDispatch()
   const router = useRouter()
 
