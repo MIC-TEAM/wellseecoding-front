@@ -39,10 +39,6 @@ function Post() {
   }, [])
 
   useEffect(() => {
-    post.length && console.log(post)
-  }, [post])
-
-  useEffect(() => {
     !post.length && id && loadPost(id)
   }, [post, id])
 

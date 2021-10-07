@@ -16,14 +16,11 @@ function CommentModal({ postId }: props) {
   const router = useRouter()
 
   const { isModal } = useSelector((state: RootState) => state.common)
+  const { deleteCommentSuccess } = useSelector((state: RootState) => state.comments)
 
   useEffect(() => {
-    console.log('comment Modal Info:', isModal)
-  }, [isModal])
-
-  useEffect(() => {
-    console.log('postId:', postId)
-  }, [postId])
+    if (deleteCommentSuccess) router.reload()
+  }, [deleteCommentSuccess, router])
 
   const setModal = useCallback(
     (e) => {
@@ -58,9 +55,8 @@ function CommentModal({ postId }: props) {
           commentId: Number(isModal.uniqId),
         },
       })
-      router.reload()
     },
-    [dispatch, router, isModal]
+    [dispatch, isModal]
   )
 
   return (

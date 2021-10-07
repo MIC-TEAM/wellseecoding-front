@@ -16,13 +16,14 @@ function Comment() {
   const [name, setName] = useState('')
   const [visible, setVisible] = useState(false)
 
-  // const [replyForm, setReplyForm] = useState(false)
-  // const [replyValue, setReplyValue] = useState('')
+  /* comments 리듀서에 들어있는 각 항목 당 설정할 commentId 답글 달기를 위해 state로 지정함 */
+  const [commentId, setCommentId] = useState(0)
 
+  /* 로컬 스토리지에 저장된 userName과 userId */
   const [localUname, setLocalUname] = useState<string>('')
   const [localUid, setLocalUid] = useState<string>('')
 
-  const { comments } = useSelector((state: RootState) => state.comments)
+  const { comments, writeCommentSuccess } = useSelector((state: RootState) => state.comments)
   const { isModal, editMode } = useSelector((state: RootState) => state.common)
 
   const dispatch = useDispatch()
@@ -37,16 +38,8 @@ function Comment() {
   }, [])
 
   useEffect(() => {
-    console.log('editMode:', editMode)
-  }, [editMode])
-
-  useEffect(() => {
-    console.log('comments:', comments)
-  }, [comments])
-
-  useEffect(() => {
-    console.log('LS Storage info:', localUname, localUid)
-  }, [localUname, localUid])
+    if (writeCommentSuccess) router.reload()
+  }, [writeCommentSuccess, router])
 
   useEffect(() => {
     if (id && !comments.length) getComment(id)
@@ -66,10 +59,7 @@ function Comment() {
     setValue(e.target.value)
   }, [])
 
-  // const onReplyChange = useCallback((e) => {
-  //   setReplyValue(e.target.value)
-  // }, [])
-
+  // parentId가 0 일 경우에는 children 답글이 아닌, 기본 댓글로 작성된다
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault()
@@ -78,40 +68,28 @@ function Comment() {
           type: WRITE_COMMENT_REQUEST,
           data: {
             id: Number(id),
-            parentId: 0,
+            parentId: commentId,
             text: value,
           },
         })
         setValue('')
       } catch (err) {
         console.error(err)
-      } finally {
-        router.reload()
       }
     },
-    [dispatch, value, id, router]
+    [dispatch, value, id, commentId]
   )
-
-  // const onReplySubmit = useCallback(() => {
-  //   dispatch({
-  //     type: WRITE_COMMENT_REQUEST,
-  //     data: {
-  //       id: Number(id),
-  //       parentId: 0,
-  //       text: value,
-  //     },
-  //   })
-  // }, [dispatch, value, id])
 
   const handleState = useCallback(() => {
     setVisible((prev) => !prev)
-    // setReplyForm(false)
     setName('')
+    setCommentId(0)
   }, [])
 
-  const handleName = useCallback((name) => {
+  const handleInfo = useCallback((name, id) => {
     setVisible((prev) => !prev)
     setName(name)
+    setCommentId(id)
   }, [])
 
   const setModal = useCallback(
@@ -163,7 +141,7 @@ function Comment() {
                   <button
                     type="button"
                     onClick={() => {
-                      handleName(v.userName)
+                      handleInfo(v.userName, v.commentId)
                     }}
                   >
                     답글달기
@@ -175,42 +153,6 @@ function Comment() {
                   )}
                 </div>
               </div>
-
-              {/* 답글 달기 관련 토클 창*/}
-              {/* {replyForm && (
-                <div
-                  style={{
-                    padding: 20,
-                    position: 'relative',
-                    border: '1px solid gray',
-                  }}
-                >
-                  <div style={{ marginBottom: 10 }}>
-                    <span>{localUname}</span>
-                  </div>
-                  <textarea
-                    value={replyValue}
-                    onChange={onReplyChange}
-                    placeholder="답글달기"
-                    rows={1}
-                    style={{ border: 'none', width: '100%', height: '2em', resize: 'none', background: 'inherit' }}
-                  />
-                  <div style={{ textAlign: 'end' }}>
-                    <button
-                      style={{ marginRight: 5 }}
-                      onClick={() => {
-                        setReplyForm(false)
-                        setVisible(false)
-                      }}
-                    >
-                      <span style={{ fontSize: 10 }}>취소</span>
-                    </button>
-                    <button onClick={onReplySubmit}>
-                      <span style={{ fontSize: 10 }}>등록</span>
-                    </button>
-                  </div>
-                </div>
-              )} */}
 
               {/* 자식 요소 댓글 달기 */}
               {v.children.length ? (

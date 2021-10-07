@@ -91,8 +91,7 @@ async function writePostAPI(data: WritePostType) {
 
 function* writePost(action: WritePostRequest) {
   try {
-    const result: number = yield call(writePostAPI, action.data)
-    console.log('success', result)
+    yield call(writePostAPI, action.data)
     yield put({
       type: WRITE_POST_SUCCESS,
     })
@@ -116,8 +115,7 @@ async function updatePostAPI(data: WritePostType) {
 
 function* updatePost(action: UpdatePostRequest) {
   try {
-    const result: number = yield call(updatePostAPI, action.data)
-    console.log('success', result)
+    yield call(updatePostAPI, action.data)
     yield put({
       type: UPDATE_POST_SUCCESS,
     })
@@ -141,8 +139,7 @@ async function deletePostAPI(data: number) {
 
 function* deletePost(action: DeletePostRequest) {
   try {
-    const result: number = yield call(deletePostAPI, action.data)
-    console.log('success', result)
+    yield call(deletePostAPI, action.data)
     yield put({
       type: DELETE_POST_SUCCESS,
     })

@@ -24,7 +24,6 @@ import { myConfig } from 'sagas'
 
 async function fetchCommentsAPI(id: number) {
   try {
-    console.log('fetch Comment Start!', id)
     const response = await axios.get(`/api/v1/posts/${id}/comments`, myConfig)
     return response.data
   } catch (err) {
@@ -112,7 +111,6 @@ async function updateCommentAPI(data: { postId: number; commentId: number; text:
 }
 
 function* updateComment(action: UpdateCommentRequest) {
-  console.log('update Request!', action)
   try {
     const result: number = yield call(updateCommentAPI, action.data)
     if (result === 200) {

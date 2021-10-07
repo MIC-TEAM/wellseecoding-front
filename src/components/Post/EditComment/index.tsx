@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
-import React, { useCallback, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'reducers'
 import { UPDATE_COMMENT_REQUEST } from 'reducers/comments'
 import { SET_EDITMODE } from 'reducers/common'
 
@@ -13,8 +14,12 @@ export type Props = {
 function EditComment({ value, commentId, postId }: Props) {
   const [text, setText] = useState(value)
   const dispatch = useDispatch()
-
+  const { updateCommentSuccess } = useSelector((state: RootState) => state.comments)
   const router = useRouter()
+
+  useEffect(() => {
+    if (updateCommentSuccess) router.reload()
+  }, [updateCommentSuccess, router])
 
   const onChangeText = useCallback((e) => {
     setText(e.target.value)
@@ -34,12 +39,9 @@ function EditComment({ value, commentId, postId }: Props) {
         })
       } catch (err) {
         console.error(err)
-      } finally {
-        alert('수정되었습니다')
-        router.reload()
       }
     },
-    [dispatch, commentId, postId, text, router]
+    [dispatch, commentId, postId, text]
   )
 
   return (
