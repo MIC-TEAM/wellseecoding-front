@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { SET_EDITMODE, SET_ISMODAL } from 'reducers/common'
+import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
 import { RootState } from 'reducers'
 import { DELETE_COMMENT_REQUEST } from 'reducers/comments'
 import { useRouter } from 'next/router'
@@ -22,7 +22,10 @@ function CommentModal() {
     (e) => {
       e.stopPropagation()
       dispatch({
-        type: SET_ISMODAL,
+        type: CLOSE_ISMODAL,
+      })
+      dispatch({
+        type: CLOSE_EDITMODE,
       })
     },
     [dispatch]
@@ -32,10 +35,10 @@ function CommentModal() {
     (e) => {
       e.stopPropagation()
       dispatch({
-        type: SET_ISMODAL,
+        type: CLOSE_ISMODAL,
       })
       dispatch({
-        type: SET_EDITMODE,
+        type: OPEN_EDITMODE,
       })
     },
     [dispatch]

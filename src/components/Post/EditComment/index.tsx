@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { UPDATE_COMMENT_REQUEST } from 'reducers/comments'
-import { SET_EDITMODE } from 'reducers/common'
+import { CLOSE_EDITMODE } from 'reducers/common'
 
 export type Props = {
   value: string
@@ -52,7 +52,7 @@ function EditComment({ value, commentId, postId }: Props) {
         onChange={onChangeText}
       />
       <div style={{ textAlign: 'end', fontSize: '14px' }}>
-        <button onClick={() => dispatch({ type: SET_EDITMODE })}>
+        <button onClick={() => dispatch({ type: CLOSE_EDITMODE })}>
           <span style={{ marginRight: 10 }}>취소</span>
         </button>
         <button type="submit">

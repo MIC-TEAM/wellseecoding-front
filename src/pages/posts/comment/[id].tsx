@@ -6,9 +6,10 @@ import { RootState } from 'reducers'
 import { Common } from 'styles/common'
 import { css } from '@emotion/react'
 import { FETCH_COMMENTS_REQUEST, WRITE_COMMENT_REQUEST } from 'reducers/comments'
-import { SET_ISMODAL } from 'reducers/common'
+
 import CommentModal from 'components/Common/CommentModal'
 import EditComment from 'components/Post/EditComment'
+import { OPEN_ISMODAL } from 'reducers/common'
 
 function Comment() {
   const router = useRouter()
@@ -19,6 +20,9 @@ function Comment() {
   /* comments 리듀서에 들어있는 각 항목 당 설정할 commentId 답글 달기를 위해 state로 지정함 */
   const [commentId, setCommentId] = useState(0)
 
+  /* 수정 모드 시에 클릭한 인풋박스만 수정모드를 주기 위한 작업*/
+  const [editNum, setEditNum] = useState(0)
+
   /* 로컬 스토리지에 저장된 userName과 userId */
   const [localUid, setLocalUid] = useState<string>('')
 
@@ -28,6 +32,26 @@ function Comment() {
   const dispatch = useDispatch()
 
   const { id } = router.query
+
+  useEffect(() => {
+    console.log('check whole type: ', 'isModal:', isModal, 'editMode:', editMode)
+  }, [isModal, editMode])
+
+  useEffect(() => {
+    editNum && console.log('editNum:', editNum, typeof editNum)
+  }, [editNum])
+
+  useEffect(() => {
+    if (isModal) setEditNum(Number(isModal.uniqId))
+  }, [isModal])
+
+  useEffect(() => {
+    comments.length && console.log(comments)
+  }, [comments])
+
+  useEffect(() => {
+    isModal && console.log(isModal)
+  }, [isModal])
 
   useEffect(() => {
     if (typeof window.localStorage !== 'undefined') {
@@ -93,7 +117,7 @@ function Comment() {
   const setModal = useCallback(
     (id) => {
       dispatch({
-        type: SET_ISMODAL,
+        type: OPEN_ISMODAL,
         data: id,
       })
     },
@@ -128,7 +152,11 @@ function Comment() {
                 <div css={MainWrapMain}>
                   {!v.deleted ? (
                     <>
-                      {editMode ? <EditComment postId={id} commentId={v.commentId} value={v.text} /> : <p>{v.text}</p>}
+                      {editMode && editNum == Number(v.commentId) ? (
+                        <EditComment postId={id} commentId={v.commentId} value={v.text} />
+                      ) : (
+                        <p>{v.text}</p>
+                      )}
                     </>
                   ) : (
                     <p style={{ color: '#8f8c8b', fontStyle: 'oblique' }}>삭제된 댓글입니다</p>

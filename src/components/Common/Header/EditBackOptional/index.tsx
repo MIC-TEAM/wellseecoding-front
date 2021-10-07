@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { SET_EDITMODE } from 'reducers/common'
+import { CLOSE_EDITMODE } from 'reducers/common'
 import { Common } from 'styles/common'
 
 type Props = {
@@ -13,7 +13,7 @@ function EditBack({ text }: Props) {
 
   const closeModal = useCallback(() => {
     dispatch({
-      type: SET_EDITMODE,
+      type: CLOSE_EDITMODE,
     })
   }, [dispatch])
 
