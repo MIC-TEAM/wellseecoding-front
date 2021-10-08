@@ -1,11 +1,15 @@
 import Link from 'next/link'
 import { css } from '@emotion/react'
 
-function PostFooter() {
+export type props = {
+  id: string | string[] | undefined
+}
+
+function PostFooter({ id }: props) {
   return (
     <nav css={footerNav}>
       <div css={footerNavWrap}>
-        <Link href="/post/comment">
+        <Link href={`/posts/comment/${Number(id)}`}>
           <a>
             <img src="/images/post/comment.svg" alt="댓글 달기" />
             <span>12</span>

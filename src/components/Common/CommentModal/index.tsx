@@ -1,21 +1,31 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
+import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
 import { RootState } from 'reducers'
-import { DELETE_POST_REQUEST } from 'reducers/posts'
+import { DELETE_COMMENT_REQUEST } from 'reducers/comments'
+import { useRouter } from 'next/router'
 
-const IsModal = () => {
+function CommentModal() {
   const dispatch = useDispatch()
+  const router = useRouter()
 
   const { isModal } = useSelector((state: RootState) => state.common)
+  const { deleteCommentSuccess } = useSelector((state: RootState) => state.comments)
+
+  useEffect(() => {
+    if (deleteCommentSuccess) router.reload()
+  }, [deleteCommentSuccess, router])
 
   const setModal = useCallback(
     (e) => {
       e.stopPropagation()
       dispatch({
         type: CLOSE_ISMODAL,
+      })
+      dispatch({
+        type: CLOSE_EDITMODE,
       })
     },
     [dispatch]
@@ -38,13 +48,14 @@ const IsModal = () => {
     (e, id) => {
       e.stopPropagation()
       dispatch({
-        type: DELETE_POST_REQUEST,
-        data: id,
+        type: DELETE_COMMENT_REQUEST,
+        data: {
+          postId: Number(id),
+          commentId: Number(isModal.uniqId),
+        },
       })
-
-      location.href = '/together'
     },
-    [dispatch]
+    [dispatch, isModal]
   )
 
   return (
@@ -69,7 +80,7 @@ const IsModal = () => {
   )
 }
 
-export default IsModal
+export default CommentModal
 
 const modalWrap = css`
   background-color: rgba(196, 196, 196, 0.6);

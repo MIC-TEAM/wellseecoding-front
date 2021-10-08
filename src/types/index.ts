@@ -35,6 +35,37 @@ export type WritePostType = {
   id?: number
 }
 
+export type CommentType = {
+  id: number
+  name: string
+  job: string
+  text: string
+  me: boolean
+  date: string
+}
+
+export type FetchCommentsType = {
+  userId: number
+  userName: string
+  commentId: number
+  commentDate: number
+  text: string
+  deleted: boolean
+  children: FetchCommentsType[]
+}
+
+export type WriteCommentType = {
+  id: number
+  parentId: number
+  text: string
+}
+
+export type UpdateCommentType = {
+  postId: number
+  commentId: number
+  text: string
+}
+
 //----------------------------------------
 // 회원가입 단계
 

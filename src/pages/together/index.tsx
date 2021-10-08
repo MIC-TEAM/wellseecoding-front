@@ -14,10 +14,6 @@ const Write = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('get posts!:', posts, posts.length)
-  }, [posts])
-
-  useEffect(() => {
     !posts.length && loadUser()
   }, [posts])
 

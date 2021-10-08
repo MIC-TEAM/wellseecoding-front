@@ -4,7 +4,7 @@ import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { SET_ISMODAL } from 'reducers/common'
+import { OPEN_ISMODAL } from 'reducers/common'
 import { Common } from 'styles/common'
 
 type Props = {
@@ -24,7 +24,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
 
   const setModal = useCallback(() => {
     dispatch({
-      type: SET_ISMODAL,
+      type: OPEN_ISMODAL,
       data: uniqId,
     })
   }, [dispatch, uniqId])
