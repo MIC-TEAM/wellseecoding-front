@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { FETCHING_POSTS_REQUEST, RESET_POST_LIST } from 'reducers/posts'
 import { RootState } from 'reducers'
+import Head from 'next/head'
 // import StudySection from 'components/Together/StudySection'
 
 const Home = () => {
@@ -44,6 +45,9 @@ const Home = () => {
 
   return (
     <>
+      <Head>
+        <title>홈 | wellseecoding</title>
+      </Head>
       <HomeHeader />
 
       <div css={wrap}>

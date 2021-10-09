@@ -6,6 +6,7 @@ import { RootState } from 'reducers'
 import { Common } from 'styles/common'
 import { css } from '@emotion/react'
 import { FETCH_COMMENTS_REQUEST, WRITE_COMMENT_REQUEST } from 'reducers/comments'
+import Head from 'next/head'
 
 import CommentModal from 'components/Common/CommentModal'
 import EditComment from 'components/Post/EditComment'
@@ -110,6 +111,9 @@ function Comment() {
 
   return (
     <>
+      <Head>
+        <title>댓글 | wellseecoding</title>
+      </Head>
       <BackOptional title="댓글" optional={false} />
       <div css={CommentMain}>
         {/* 나 */}

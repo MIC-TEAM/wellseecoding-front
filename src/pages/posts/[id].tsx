@@ -14,6 +14,7 @@ import EditForm from 'components/EditForm'
 import HashWrap from 'components/Common/HashWrap'
 import Loading from 'components/Loading'
 import { RESET_COMMENTS_LIST } from 'reducers/comments'
+import Head from 'next/head'
 
 function Post() {
   const router = useRouter()
@@ -65,6 +66,9 @@ function Post() {
 
   return (
     <>
+      <Head>
+        <title>게시글 | wellseecoding</title>
+      </Head>
       {post?.length ? (
         post.map((d) => (
           <BackOptional key={d.id} title="" optional={true} localId={localInfo} userId={d.userId} uniqId={id} />

@@ -6,6 +6,7 @@ import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { SEARCH_POSTS_REQUEST } from 'reducers/posts'
+import Head from 'next/head'
 
 const SearchResult = () => {
   const router = useRouter()
@@ -34,6 +35,9 @@ const SearchResult = () => {
 
   return (
     <>
+      <Head>
+        <title>검색 결과 | wellseecoding</title>
+      </Head>
       <div css={searchWrap}>
         <TogetherHeader />
 

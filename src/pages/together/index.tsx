@@ -8,6 +8,7 @@ import { RootState } from 'reducers'
 import { useCallback, useEffect } from 'react'
 import { FETCHING_POSTS_REQUEST, RESET_POST_LIST } from 'reducers/posts'
 import Loading from 'components/Loading'
+import Head from 'next/head'
 
 const Write = () => {
   const { posts, post } = useSelector((state: RootState) => state.posts)
@@ -35,6 +36,9 @@ const Write = () => {
 
   return (
     <>
+      <Head>
+        <title>함께해요 | wellseecoding</title>
+      </Head>
       <TogetherHeader />
       <main css={togetherBoard}>
         <div className="wrap">
