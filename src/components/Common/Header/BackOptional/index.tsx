@@ -2,10 +2,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_ISMODAL } from 'reducers/common'
 import { Common } from 'styles/common'
+// import FavoriteIcon from '@mui/icons-material/Favorite'
+// import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 
 type Props = {
   title: string | null
@@ -21,6 +23,11 @@ type Props = {
 function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   const router = useRouter()
   const dispatch = useDispatch()
+  const [heartState, setHeartState] = useState(false)
+
+  useEffect(() => {
+    console.log('heartState:', heartState)
+  }, [heartState])
 
   const setModal = useCallback(() => {
     dispatch({
@@ -40,6 +47,11 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
     ]).then(() => router.back())
   }, [dispatch, router])
 
+  const handleLike = useCallback(() => {
+    alert(`${uniqId}번 게시글을 좋아합니다`)
+    setHeartState((prev) => !prev)
+  }, [uniqId])
+
   return (
     <>
       <header css={backHeader}>
@@ -55,8 +67,12 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
                 <img src="/images/header/setting.svg" alt="환경설정" />
               </button>
             ) : (
-              <button type="button">
-                <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert(`${uniqId}번 게시글이 좋아요`)} />
+              <button type="button" onClick={handleLike}>
+                {heartState ? (
+                  <img src="/images/header/heart.svg" alt="좋아요" />
+                ) : (
+                  <img src="/images/header/heart.svg" alt="좋아요" />
+                )}
               </button>
             )}
           </div>

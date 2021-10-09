@@ -4,6 +4,7 @@ import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 export type props = {
+  commentCount: number
   // 게시글의 고유 id
   uniqId: string | string[] | undefined
   // 로컬 스토리지에 저장된 내 id
@@ -12,7 +13,7 @@ export type props = {
   userId?: number
 }
 
-function PostFooter({ uniqId, localId, userId }: props) {
+function PostFooter({ commentCount, uniqId, localId, userId }: props) {
   useEffect(() => {
     console.log('localId:', localId, 'userId:', userId)
   }, [localId, userId])
@@ -32,7 +33,7 @@ function PostFooter({ uniqId, localId, userId }: props) {
         <Link href={`/posts/comment/${Number(uniqId)}`}>
           <a>
             <img src="/images/post/comment.svg" alt="댓글 달기" />
-            <span>12</span>
+            <span>{commentCount}</span>
           </a>
         </Link>
         {localId === userId ? (

@@ -122,6 +122,7 @@ function Post() {
                     qualification={d.qualification}
                     size={d.size}
                     tags={d.tags}
+                    commentCount={d.commentCount}
                   />
                 )}
               </div>
@@ -132,7 +133,7 @@ function Post() {
         </div>
         {/* localStorage에 저장된 id와 게시글의 id가 같을 경우에 가입현황 / 가입하기 버튼 보여주기  */}
         {post.map((d) => (
-          <PostFooter key={d.id} localId={localInfo} userId={d.userId} uniqId={id} />
+          <PostFooter key={d.id} localId={localInfo} userId={d.userId} uniqId={id} commentCount={d.commentCount} />
         ))}
       </main>
 

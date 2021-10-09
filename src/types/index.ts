@@ -21,6 +21,7 @@ export type PostType = {
   qualification: string | ''
   size: string | ''
   tags: []
+  commentCount: number
 }
 
 /* 내가 쓴 글 보낼 때 필요한 타입 */
