@@ -156,4 +156,5 @@ const searchList = css`
 `
 const searchWrap = css`
   padding: 0 20px;
+  height: 97vh;
 `

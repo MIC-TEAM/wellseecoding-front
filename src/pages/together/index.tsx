@@ -54,12 +54,16 @@ const Write = () => {
 export default Write
 
 const togetherBoard = css`
+  background: #ffeee7;
   width: 100%;
-  height: 100vh;
+  height: 91vh;
+
+  @media (max-width: 420px) {
+    height: 80vh;
+    overflow: scroll;
+  }
 
   .wrap {
-    padding-bottom: 100px;
-    background: #ffeee7;
     height: 100%;
   }
 `

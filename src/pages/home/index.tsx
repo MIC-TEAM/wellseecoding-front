@@ -71,14 +71,13 @@ export default Home
 const wrap = css`
   .listWrap {
     background: #ffeee7;
-    padding-bottom: 100px;
   }
 `
 
 export const ClassListWrap = css`
   width: 100%;
   background: #ffeee7;
-  height: 100vh;
+  height: 82vh;
   margin-top: -45px;
   z-index: 100;
 `

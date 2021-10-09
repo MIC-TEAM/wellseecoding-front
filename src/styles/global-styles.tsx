@@ -42,7 +42,6 @@ export const GlobalStyles = (
         letter-spacing: -0.025em;
         min-width: 375px;
         margin: 0 auto;
-        height: 100vh;
         width: 100%;
         max-width: 600px;
         min-height: 100%;
@@ -54,7 +53,7 @@ export const GlobalStyles = (
       html,
       body,
       #__next {
-        height: 100vh;
+        height: 100%;
         width: 100%;
       }
       a {

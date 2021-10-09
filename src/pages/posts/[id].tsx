@@ -145,17 +145,20 @@ function Post() {
 const flatBox = css`
   background-color: #fff8f5;
 `
-
+// 게시글
 const togetherBoard = css`
   width: 100%;
-  height: 100vh;
+  height: 94vh;
   background-color: #fff8f5;
+
+  @media (max-width: 420px) {
+    height: 140vh;
+  }
+
   .mainContents {
     background-color: #fff8f5;
   }
-  .wrap {
-    padding-bottom: 100px;
-  }
+
   h1 {
     padding: 9px 21px;
     line-height: 28px;
