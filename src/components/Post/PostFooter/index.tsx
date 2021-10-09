@@ -36,7 +36,10 @@ function PostFooter({ uniqId, localId, userId }: props) {
           </a>
         </Link>
         {localId === userId ? (
-          <button className="joinButton" onClick={() => router.push('/class_join_list')}>
+          <button
+            className="joinButton"
+            onClick={() => router.push('/class_join_list').then(() => window.scrollTo(0, 0))}
+          >
             가입현황
           </button>
         ) : (

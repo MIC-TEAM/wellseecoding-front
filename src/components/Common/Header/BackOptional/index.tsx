@@ -4,7 +4,7 @@ import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { OPEN_ISMODAL } from 'reducers/common'
+import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_ISMODAL } from 'reducers/common'
 import { Common } from 'styles/common'
 
 type Props = {
@@ -29,10 +29,21 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
     })
   }, [dispatch, uniqId])
 
+  const stopWholeTasks = useCallback(() => {
+    Promise.allSettled([
+      dispatch({
+        type: CLOSE_ISMODAL,
+      }),
+      dispatch({
+        type: CLOSE_EDITMODE,
+      }),
+    ]).then(() => router.back())
+  }, [dispatch, router])
+
   return (
     <>
       <header css={backHeader}>
-        <button type="button" className="back" onClick={() => router.back()}>
+        <button type="button" className="back" onClick={() => stopWholeTasks()}>
           <img src="/images/header/back.svg" alt="뒤로가기" />
         </button>
         <h1>{title ? title : ''}</h1>

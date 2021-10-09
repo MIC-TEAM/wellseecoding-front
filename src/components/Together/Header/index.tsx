@@ -10,7 +10,7 @@ function TogetherHeader() {
 
   return (
     <header css={TogetherHeaderInput}>
-      <div onClick={() => router.push('/together/search')}>
+      <div onClick={() => router.push('/together/search').then(() => window.scrollTo(0, 0))}>
         <span>모임 이름 / 소개 / 태그 검색</span>
       </div>
       <Link href="/alarm">
