@@ -16,8 +16,8 @@ const SearchResult = () => {
   const { searchPosts } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
-    if (typeof id === 'string' && searchPosts.length) {
-      // const stringId = encodeURI(id)
+    // 검색 데이터 잘못 보내고 있는 부분 수정함
+    if (typeof id === 'string' && !searchPosts.length) {
       searchKeyword(id)
     }
   }, [id])

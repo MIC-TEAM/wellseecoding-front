@@ -1,6 +1,5 @@
 import { css } from '@emotion/react'
 import FlatBox from 'components/Common/FlatBox'
-// import HashWrap from 'components/Common/HashWrap'
 import BackOptional from 'components/Common/Header/BackOptional'
 import PostFooter from 'components/Post/PostFooter'
 import { useRouter } from 'next/router'
@@ -26,6 +25,10 @@ function Post() {
   const [localInfo, setLocalInfo] = useState<number | null>(null)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    console.log('post', post)
+  }, [post])
 
   useEffect(() => {
     if (comments.length)
@@ -123,8 +126,12 @@ function Post() {
             <Loading />
           )}
         </div>
+        {/* localStorage에 저장된 id와 게시글의 id가 같을 경우에 가입현황 / 가입하기 버튼 보여주기  */}
+        {post.map((d) => (
+          <PostFooter key={d.id} localId={localInfo} userId={d.userId} uniqId={id} />
+        ))}
       </main>
-      <PostFooter id={id} />
+
       {isModal.open && <IsModal />}
     </>
   )

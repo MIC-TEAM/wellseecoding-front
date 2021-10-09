@@ -45,7 +45,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
               </button>
             ) : (
               <button type="button">
-                <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
+                <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert(`${uniqId}번 게시글이 좋아요`)} />
               </button>
             )}
           </div>
