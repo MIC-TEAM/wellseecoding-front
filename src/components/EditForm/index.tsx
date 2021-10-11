@@ -210,17 +210,16 @@ ex) 프론트 n명, 백 n명
               해시태그 등록 시에 스페이스바를 사용하실 수 없습니다.
             </Alert>
           )}
+          <div css={footButtonWrapper}>
+            <FootButton
+              type="submit"
+              footButtonType={ready ? FootButtonType.ACTIVATION : FootButtonType.DISABLE}
+              onClick={onSubmit}
+            >
+              수정하기
+            </FootButton>
+          </div>
         </form>
-
-        <div css={footButtonWrapper}>
-          <FootButton
-            type="submit"
-            footButtonType={ready ? FootButtonType.ACTIVATION : FootButtonType.DISABLE}
-            onClick={onSubmit}
-          >
-            수정하기
-          </FootButton>
-        </div>
       </main>
     </div>
   )
@@ -235,6 +234,7 @@ const modalWrap = css`
   z-index: 10500;
   position: absolute;
   top: 0;
+  overflow-y: auto;
 `
 
 const footButtonWrapper = css`
@@ -244,12 +244,9 @@ const footButtonWrapper = css`
   right: 0;
   padding: 0 20px;
   background: #fff;
+  padding-top: 40px;
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
-  }
-
-  @media (max-width: 375px) {
-    bottom: none !important;
   }
 `
 

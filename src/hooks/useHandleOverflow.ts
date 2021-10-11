@@ -9,7 +9,13 @@ export default function usehandleOverFlow() {
     x.style.overflow = 'auto'
   }
 
-  return { hidden, show }
+  function modalShow() {
+    const x = document.getElementsByClassName('css-qxiuy7-togetherBoard')[0] as HTMLStyleElement
+    x.style.height = '100%'
+    x.style.overflow = 'scroll'
+  }
+
+  return { hidden, show, modalShow }
 }
 
 /* 

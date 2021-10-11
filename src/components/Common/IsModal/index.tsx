@@ -15,7 +15,7 @@ const IsModal = () => {
 
   useEffect(() => {
     isModal && hidden()
-  }, [])
+  }, [isModal, hidden])
 
   const setModal = useCallback(
     (e) => {
