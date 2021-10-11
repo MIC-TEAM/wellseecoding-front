@@ -1,15 +1,21 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
 import { RootState } from 'reducers'
 import { DELETE_POST_REQUEST } from 'reducers/posts'
+import usehandleOverFlow from 'hooks/useHandleOverflow'
 
 const IsModal = () => {
+  const { hidden, show } = usehandleOverFlow()
   const dispatch = useDispatch()
 
   const { isModal } = useSelector((state: RootState) => state.common)
+
+  useEffect(() => {
+    isModal && hidden()
+  }, [])
 
   const setModal = useCallback(
     (e) => {
@@ -17,8 +23,9 @@ const IsModal = () => {
       dispatch({
         type: CLOSE_ISMODAL,
       })
+      show()
     },
-    [dispatch]
+    [dispatch, show]
   )
 
   const updatePost = useCallback(

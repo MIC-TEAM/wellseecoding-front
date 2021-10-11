@@ -7,8 +7,10 @@ import { Alert } from '@material-ui/lab'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import { Common } from 'styles/common'
 import { PostType } from 'types'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_POST_REQUEST } from 'reducers/posts'
+import { RootState } from 'reducers'
+import router from 'next/router'
 
 const EditForm = (props: PostType) => {
   const { id, name, deadline, schedule, summary, qualification, size, tags } = props
@@ -29,6 +31,11 @@ const EditForm = (props: PostType) => {
   const dataArr = [editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr]
 
   const dispatch = useDispatch()
+  const { updatePostSuccess } = useSelector((state: RootState) => state.posts)
+
+  useEffect(() => {
+    updatePostSuccess && router.push('/together')
+  }, [updatePostSuccess])
 
   useEffect(() => {
     checkDataLength()
@@ -102,7 +109,6 @@ const EditForm = (props: PostType) => {
           tags: editHashArr,
         },
       })
-      location.replace('/together')
     },
     [id, editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr, dispatch]
   )
@@ -248,6 +254,7 @@ const footButtonWrapper = css`
 `
 
 const writeForm = css`
+  height: 90%;
   width: 100%;
   /* margin-bottom: 100px; */
   input {
@@ -337,5 +344,6 @@ const hashDivrap = css`
 `
 
 const writeWrap = css`
+  height: 95%;
   padding: 0 20px;
 `

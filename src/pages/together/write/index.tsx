@@ -221,7 +221,7 @@ const footButtonWrapper = css`
 
 const writeForm = css`
   width: 100%;
-  margin-bottom: 200px;
+  margin-bottom: 40px;
   input {
     width: 100%;
     font-weight: 500;
@@ -309,5 +309,6 @@ const hashDivrap = css`
 `
 
 const writeWrap = css`
+  height: 95%;
   padding: 0 20px;
 `

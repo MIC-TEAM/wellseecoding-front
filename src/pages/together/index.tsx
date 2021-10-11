@@ -56,7 +56,7 @@ export default Write
 const togetherBoard = css`
   background: #ffeee7;
   width: 100%;
-  height: 91vh;
+  height: 85vh;
 
   @media (max-width: 420px) {
     height: 80vh;

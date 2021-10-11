@@ -56,10 +56,10 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
 export default PostFooter
 
 const footerNav = css`
-  position: absolute;
+  position: sticky;
   width: 100%;
   left: 0;
-  bottom: -1px;
+  bottom: 0px;
   z-index: 10;
   background: #fff;
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.04);

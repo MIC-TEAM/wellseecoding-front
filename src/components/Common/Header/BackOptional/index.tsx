@@ -30,6 +30,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   }, [heartState])
 
   const setModal = useCallback(() => {
+    window.scrollTo(0, 0)
     dispatch({
       type: OPEN_ISMODAL,
       data: uniqId,

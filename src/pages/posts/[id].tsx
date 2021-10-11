@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import IsModal from 'components/Common/IsModal'
-import { FETCHING_POST_REQUEST } from 'reducers/posts'
+import { FETCHING_POST_REQUEST, RESET_POSTS_STATE } from 'reducers/posts'
 import EditForm from 'components/EditForm'
 import HashWrap from 'components/Common/HashWrap'
 import Loading from 'components/Loading'
@@ -20,7 +20,7 @@ function Post() {
   const router = useRouter()
   const { id } = router.query
   const { isModal, editMode } = useSelector((state: RootState) => state.common)
-  const { post } = useSelector((state: RootState) => state.posts)
+  const { post, updatePostSuccess } = useSelector((state: RootState) => state.posts)
   const { comments } = useSelector((state: RootState) => state.comments)
 
   const [localInfo, setLocalInfo] = useState<number | null>(null)
@@ -30,6 +30,10 @@ function Post() {
   useEffect(() => {
     console.log('post', post)
   }, [post])
+
+  useEffect(() => {
+    if (updatePostSuccess) dispatch({ type: RESET_POSTS_STATE })
+  }, [updatePostSuccess, dispatch])
 
   useEffect(() => {
     if (comments.length)
@@ -76,6 +80,7 @@ function Post() {
       ) : (
         <div></div>
       )}
+
       <main css={togetherBoard}>
         <div className="wrap">
           {post.length ? (
@@ -131,11 +136,11 @@ function Post() {
             <Loading />
           )}
         </div>
-        {/* localStorage에 저장된 id와 게시글의 id가 같을 경우에 가입현황 / 가입하기 버튼 보여주기  */}
-        {post.map((d) => (
-          <PostFooter key={d.id} localId={localInfo} userId={d.userId} uniqId={id} commentCount={d.commentCount} />
-        ))}
       </main>
+      {/* localStorage에 저장된 id와 게시글의 id가 같을 경우에 가입현황 / 가입하기 버튼 보여주기  */}
+      {post.map((d) => (
+        <PostFooter key={d.id} localId={localInfo} userId={d.userId} uniqId={id} commentCount={d.commentCount} />
+      ))}
 
       {isModal.open && <IsModal />}
     </>
@@ -148,14 +153,10 @@ const flatBox = css`
 // 게시글
 const togetherBoard = css`
   width: 100%;
-  height: 94vh;
   background-color: #fff8f5;
 
-  @media (max-width: 420px) {
-    height: 140vh;
-  }
-
   .mainContents {
+    padding-bottom: 20px;
     background-color: #fff8f5;
   }
 

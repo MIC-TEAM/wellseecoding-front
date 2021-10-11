@@ -69,15 +69,17 @@ const Home = () => {
 export default Home
 
 const wrap = css`
+  height: 85vh;
   .listWrap {
     background: #ffeee7;
+    height: 90%;
   }
 `
 
 export const ClassListWrap = css`
   width: 100%;
   background: #ffeee7;
-  height: 82vh;
+  height: 100%;
   margin-top: -45px;
   z-index: 100;
 `

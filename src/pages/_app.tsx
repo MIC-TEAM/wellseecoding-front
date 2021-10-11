@@ -26,9 +26,9 @@ function App({ Component, pageProps }: AppProps) {
 export default wrapper.withRedux(App)
 
 const mainWrap = css`
-  height: 100%;
+  height: 100vh;
   width: 100%;
-  overflow: scroll;
+  /* overflow: auto; */
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
