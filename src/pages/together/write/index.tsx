@@ -190,7 +190,6 @@ ex) 프론트 n명, 백 n명
             </Alert>
           )}
         </form>
-
         <div css={footButtonWrapper}>
           <FootButton
             type="submit"
@@ -208,10 +207,6 @@ ex) 프론트 n명, 백 n명
 export default TogetherWrite
 
 const footButtonWrapper = css`
-  position: absolute;
-  bottom: 4.4em;
-  left: 0;
-  right: 0;
   padding: 0 20px;
   background: #fff;
   & > button:nth-of-type(1) {
@@ -221,7 +216,7 @@ const footButtonWrapper = css`
 
 const writeForm = css`
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   input {
     width: 100%;
     font-weight: 500;
@@ -309,6 +304,7 @@ const hashDivrap = css`
 `
 
 const writeWrap = css`
-  height: 95%;
+  border: 1px solid rgb(245, 245, 245);
+  padding-bottom: 20px;
   padding: 0 20px;
 `

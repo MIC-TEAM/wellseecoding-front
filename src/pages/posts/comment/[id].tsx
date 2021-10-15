@@ -11,6 +11,7 @@ import Head from 'next/head'
 import CommentModal from 'components/Common/CommentModal'
 import EditComment from 'components/Post/EditComment'
 import { OPEN_ISMODAL } from 'reducers/common'
+import usehandleOverFlow from 'hooks/useHandleOverflow'
 
 function Comment() {
   const router = useRouter()
@@ -31,6 +32,7 @@ function Comment() {
   const { isModal, editMode } = useSelector((state: RootState) => state.common)
 
   const dispatch = useDispatch()
+  const { hidden } = usehandleOverFlow()
 
   const { id } = router.query
 
@@ -94,6 +96,7 @@ function Comment() {
   }, [])
 
   const handleInfo = useCallback((name, id) => {
+    window.scrollTo(0, document.body.scrollHeight)
     setVisible((prev) => !prev)
     setName(name)
     setCommentId(id)
@@ -101,12 +104,14 @@ function Comment() {
 
   const setModal = useCallback(
     (id) => {
+      window.scrollTo(0, 0)
+      hidden()
       dispatch({
         type: OPEN_ISMODAL,
         data: id,
       })
     },
-    [dispatch]
+    [dispatch, hidden]
   )
 
   return (
@@ -152,14 +157,21 @@ function Comment() {
                 </div>
 
                 <div css={MainWrapBottom}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      handleInfo(v.userName, v.commentId)
-                    }}
-                  >
-                    답글달기
-                  </button>
+                  {!v.deleted ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleInfo(v.userName, v.commentId)
+                      }}
+                    >
+                      답글달기
+                    </button>
+                  ) : (
+                    <button type="button" disabled style={{ color: 'rgb(143, 140, 139)' }}>
+                      답글달기
+                    </button>
+                  )}
+
                   {Math.floor((Date.now() / 1000 - v.commentDate) / 24 / 60 / 60) >= 1 ? (
                     <span> {Math.floor((Date.now() / 1000 - v.commentDate) / 24 / 60 / 60)} 일전 </span>
                   ) : (
@@ -245,7 +257,9 @@ export default Comment
 
 const CommentMain = css`
   height: auto;
-  margin-bottom: 100px;
+  border: 1px solid rgb(243, 243, 243);
+  margin-bottom: 60px;
+
   /* height: 100vh; */
   background: #f5f5f5;
   width: 100%;
@@ -310,7 +324,8 @@ const MainWrapBottom = css`
 `
 
 const commentFooter = css`
-  position: absolute;
+  border: 1px solid rgb(243, 243, 243);
+  position: relative;
   width: 100%;
   bottom: -1px;
   left: 0;
@@ -319,7 +334,7 @@ const commentFooter = css`
   justify-content: space-between;
   background-color: white;
   z-index: 9999;
-  padding: 20px 20px 40px;
+  padding: 20px;
   .recomment {
     position: absolute;
     width: 100%;

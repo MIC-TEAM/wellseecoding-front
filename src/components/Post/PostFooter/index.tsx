@@ -44,7 +44,7 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
             가입현황
           </button>
         ) : (
-          <button className="joinButton" onClick={() => onRegister}>
+          <button className="joinButton" onClick={() => onRegister()}>
             가입하기
           </button>
         )}
