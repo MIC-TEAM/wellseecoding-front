@@ -192,7 +192,7 @@ function Comment() {
                       <h3>{v.userName}</h3>
                       {/* <span>{v.userName}</span> */}
                       <div>
-                        {v.userId === Number(localUid) && (
+                        {v.userId === Number(localUid) && !v.deleted && (
                           <button
                             type="button"
                             onClick={() => {
@@ -259,8 +259,6 @@ const CommentMain = css`
   height: auto;
   border: 1px solid rgb(243, 243, 243);
   margin-bottom: 60px;
-
-  /* height: 100vh; */
   background: #f5f5f5;
   width: 100%;
   & > div {
