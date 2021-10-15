@@ -9,6 +9,7 @@ export const TogetherHeaderSearch = css`
 
   form {
     width: 100%;
+    padding-right: 20px;
   }
 
   input {

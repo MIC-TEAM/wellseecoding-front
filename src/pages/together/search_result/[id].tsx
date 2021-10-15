@@ -39,23 +39,24 @@ const SearchResult = () => {
         <title>검색 결과 | wellseecoding</title>
       </Head>
       <div css={searchWrap}>
-        <TogetherHeader />
+        <TogetherHeader optional={true} />
+        <div style={{ padding: '0 20px' }}>
+          <div css={searchWord}>
+            <h2>
+              <strong>{id}</strong> 을(를) 검색한 결과입니다.
+            </h2>
+          </div>
 
-        <div css={searchWord}>
-          <h2>
-            <strong>{id}</strong> 을(를) 검색한 결과입니다.
-          </h2>
+          <section>
+            {searchPosts.length ? (
+              searchPosts.map((item) => (
+                <SearchBox key={item.id} id={item.id} listTitle={item.name} hashTag={item.tags} />
+              ))
+            ) : (
+              <div>검색한 결과가 없습니다.</div>
+            )}
+          </section>
         </div>
-
-        <section>
-          {searchPosts.length ? (
-            searchPosts.map((item) => (
-              <SearchBox key={item.id} id={item.id} listTitle={item.name} hashTag={item.tags} />
-            ))
-          ) : (
-            <div>검색한 결과가 없습니다.</div>
-          )}
-        </section>
       </div>
     </>
   )
@@ -80,6 +81,5 @@ const searchWord = css`
 `
 
 const searchWrap = css`
-  padding: 0 20px;
   height: 97vh;
 `

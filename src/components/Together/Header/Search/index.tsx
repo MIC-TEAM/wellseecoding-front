@@ -28,6 +28,9 @@ function TogetherSearchBar({ onAddKeyword }: Props) {
 
   return (
     <header css={TogetherHeaderSearch}>
+      <button onClick={() => router.back()}>
+        <img src="/images/header/searchBack.svg" alt="searchBack" />
+      </button>
       <form onSubmit={onSubmit}>
         <input type="search" value={searchValue} onChange={onChangeSearch} placeholder="모임 이름 / 소개 / 태그 검색" />
       </form>
