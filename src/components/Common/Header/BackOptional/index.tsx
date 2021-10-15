@@ -70,7 +70,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
             ) : (
               <button type="button" onClick={handleLike}>
                 {heartState ? (
-                  <img src="/images/header/heart.svg" alt="좋아요" />
+                  <img src="/images/header/FilledHeart.svg" alt="좋아요" />
                 ) : (
                   <img src="/images/header/heart.svg" alt="좋아요" />
                 )}
