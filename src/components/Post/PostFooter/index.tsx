@@ -23,9 +23,9 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
   const onRegister = useCallback(() => {
     const result = window.confirm('정말로 가입하시겠습니까?')
 
-    if (result) alert(`${uniqId}번 게시글에 가입신청 하셨습니다.`)
+    if (result) alert(`유저 정보 ${localId}번 님이 ${uniqId}번 게시글에 가입신청 하셨습니다.`)
     else return
-  }, [uniqId])
+  }, [localId, uniqId])
 
   return (
     <nav css={footerNav}>

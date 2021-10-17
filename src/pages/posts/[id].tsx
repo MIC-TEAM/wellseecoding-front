@@ -25,7 +25,22 @@ function Post() {
 
   const [localInfo, setLocalInfo] = useState<number | null>(null)
 
+  const [likePost, setLikePost] = useState([])
+
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const result = localStorage.getItem('myLikes') || '[]'
+      setLikePost(JSON.parse(result))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (likePost.length) {
+      console.log('like posts: ', likePost)
+    }
+  }, [likePost])
 
   useEffect(() => {
     console.log('post', post)

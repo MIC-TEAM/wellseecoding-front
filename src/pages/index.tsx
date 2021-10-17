@@ -1,12 +1,16 @@
 import { css } from '@emotion/react'
+import axios from 'axios'
 import FooterMenu from 'components/Common/FooterMenu'
 import SplashScreen from 'components/SplashScreen'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { myConfig } from 'sagas'
 
 function Home() {
   const [tokenId, setTokenId] = useState<string>('')
   const [decodedUserId, setDecodedUserId] = useState<string>('')
   const [decodedUserName, setDecodedUserName] = useState<string>('')
+
+  const [likes, setLikes] = useState([])
 
   // 1차적으로 복호화했을 때 아직 이름이 없어서, 해당 정보를 어떻게 저장할 지는 협의해봐야 할 것 같네요
 
@@ -31,6 +35,25 @@ function Home() {
       checkDecode()
     }, 2000)
   }, [])
+
+  // ④ 토큰이 있다면 좋아요한 게시물이 있는지 요청을 보낸다
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.log('토큰 있음!')
+      getLikes()
+    } else {
+      console.log('토큰 없음')
+      return
+    }
+  }, [])
+
+  // ⑤ state에 저장한 Likes 확인
+  useEffect(() => {
+    if (likes.length) {
+      localStorage.setItem('myLikes', JSON.stringify(likes))
+      console.log('done')
+    }
+  }, [likes])
 
   /* JWT 토큰을 디코딩(복호화)한다. */
   const parseJwt = (token: any) => {
@@ -62,6 +85,17 @@ function Home() {
       location.href = '/sign_in/auth_start'
     }
   }
+
+  const getLikes = useCallback(async () => {
+    try {
+      console.log('getLikes()')
+      await axios.get('/api/v1/users/likes', myConfig).then((res) => {
+        setLikes(res.data.likes)
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }, [])
 
   return (
     <>

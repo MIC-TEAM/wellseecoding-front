@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import Modal from 'components/Modal'
@@ -8,6 +8,17 @@ type Props = {
 }
 const AlarmTitle = ({ num }: Props) => {
   const [isShowing, setIsShowing] = useState(false)
+
+  useEffect(() => {
+    if (isShowing) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = 'auto'
+  }, [isShowing])
+
+  const readAll = useCallback(() => {
+    const result = window.confirm('전체 읽기를 실행하시겠습니까?')
+    if (result) alert('알림 전체 읽기')
+    else return
+  }, [])
 
   const toggleModal = useCallback(() => {
     setIsShowing((prevState) => !prevState)
@@ -23,7 +34,9 @@ const AlarmTitle = ({ num }: Props) => {
         </p>
 
         <div>
-          <button type="button">전체 읽음</button>
+          <button type="button" onClick={readAll}>
+            전체 읽음
+          </button>
           <button type="button" onClick={toggleModal} className="allDelete">
             전체 삭제
           </button>

@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from '@emotion/react'
+import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_ISMODAL } from 'reducers/common'
+import { myConfig } from 'sagas'
 import { Common } from 'styles/common'
 // import FavoriteIcon from '@mui/icons-material/Favorite'
 // import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
@@ -48,10 +50,38 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
     ]).then(() => router.back())
   }, [dispatch, router])
 
-  const handleLike = useCallback(() => {
-    alert(`${uniqId}번 게시글을 좋아합니다`)
-    setHeartState((prev) => !prev)
-  }, [uniqId])
+  const unLike = useCallback(async () => {
+    try {
+      alert(`유저 정보 ${localId}번 님이 ${uniqId}번 게시글 좋아요를 취소합니다`)
+      await axios
+        .delete('api/v1/users/likes', {
+          headers: myConfig,
+          data: {
+            postId: uniqId,
+          },
+        })
+        .then((res) => (res.status === 200 ? setHeartState(false) : alert('잘못된 요청입니다!')))
+    } catch (err) {
+      console.log(err)
+    }
+  }, [localId, uniqId])
+
+  const onLike = useCallback(async () => {
+    try {
+      alert(`유저 정보 ${localId}번 님이 ${uniqId}번 게시글을 좋아합니다`)
+      await axios
+        .post(
+          '/api/v1/users/likes',
+          {
+            postId: uniqId,
+          },
+          myConfig
+        )
+        .then((res) => (res.status === 200 ? setHeartState(true) : alert('잘못된 요청입니다!')))
+    } catch (err) {
+      console.log(err)
+    }
+  }, [localId, uniqId])
 
   return (
     <>
@@ -68,13 +98,17 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
                 <img src="/images/header/setting.svg" alt="환경설정" />
               </button>
             ) : (
-              <button type="button" onClick={handleLike}>
+              <>
                 {heartState ? (
-                  <img src="/images/header/FilledHeart.svg" alt="좋아요" />
+                  <button type="button" onClick={unLike}>
+                    <img src="/images/header/FilledHeart.svg" alt="좋아요" />
+                  </button>
                 ) : (
-                  <img src="/images/header/heart.svg" alt="좋아요" />
+                  <button type="button" onClick={onLike}>
+                    <img src="/images/header/heart.svg" alt="좋아요" />
+                  </button>
                 )}
-              </button>
+              </>
             )}
           </div>
         )}
