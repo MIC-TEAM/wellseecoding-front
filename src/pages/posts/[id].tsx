@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import IsModal from 'components/Common/IsModal'
-import { FETCHING_POST_REQUEST, RESET_POSTS_STATE } from 'reducers/posts'
+import { FETCHING_POST_REQUEST, RESET_MEMBERS_STATE, RESET_POSTS_STATE } from 'reducers/posts'
 import EditForm from 'components/EditForm'
 import HashWrap from 'components/Common/HashWrap'
 import Loading from 'components/Loading'
@@ -20,7 +20,7 @@ function Post() {
   const router = useRouter()
   const { id } = router.query
   const { isModal, editMode } = useSelector((state: RootState) => state.common)
-  const { post, updatePostSuccess } = useSelector((state: RootState) => state.posts)
+  const { post, updatePostSuccess, members } = useSelector((state: RootState) => state.posts)
   const { comments } = useSelector((state: RootState) => state.comments)
 
   const [localInfo, setLocalInfo] = useState<number | null>(null)
@@ -49,6 +49,13 @@ function Post() {
   useEffect(() => {
     if (updatePostSuccess) dispatch({ type: RESET_POSTS_STATE })
   }, [updatePostSuccess, dispatch])
+
+  useEffect(() => {
+    if (members.length) {
+      console.log('reset members list!')
+      dispatch({ type: RESET_MEMBERS_STATE })
+    }
+  }, [members, dispatch])
 
   useEffect(() => {
     if (comments.length)

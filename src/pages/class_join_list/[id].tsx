@@ -1,61 +1,51 @@
 import { css } from '@emotion/react'
-import axios from 'axios'
 import JoinHeader from 'components/Common/Header/Back'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
-import { myConfig } from 'sagas'
-
-interface State {
-  userId: number
-  postId: number
-  name: string
-  authorized: boolean
-}
+import { useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'reducers'
+import { ACCEPT_MEMBER_REQUEST, FETCH_MEMBERS_REQUEST } from 'reducers/posts'
 
 const ClassJoinList = () => {
   const router = useRouter()
   const { id } = router.query
+  const dispatch = useDispatch()
 
-  const [members, setMembers] = useState<State[]>([])
-
-  useEffect(() => {
-    console.log('members:', members)
-  }, [members])
+  const { members, acceptMemberSuccess } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
-    if (id) {
-      console.log('id:', id, typeof id)
+    if (id && !members.length) {
       getLists()
     }
   }, [id])
 
+  useEffect(() => {
+    if (acceptMemberSuccess) router.reload()
+  }, [router, acceptMemberSuccess])
+
   const getLists = useCallback(async () => {
     console.log('get memeber lists!!')
-    try {
-      await axios.get(`/api/v1/posts/${Number(id)}/members`, myConfig).then((res) => {
-        res.status === 200 ? catchMemberData(res.data) : alert('잘못된 접근입니다!')
-      })
-    } catch (err) {
-      console.error(err)
-    }
-  }, [id])
-
-  const catchMemberData = (res: any) => {
-    console.log('catch res!!', res.members)
-    setMembers(res.members)
-  }
+    dispatch({
+      type: FETCH_MEMBERS_REQUEST,
+      data: Number(id),
+    })
+  }, [dispatch, id])
 
   const ApplyMember = useCallback(
     async (userId) => {
-      console.log(typeof Number(id), userId)
-      try {
-        await axios.put(`api/v1/posts/${Number(id)}/members/${userId}`, {}, myConfig).then((res) => console.log(res))
-      } catch (err) {
-        console.error(err)
+      const result = window.confirm('해당 유저의 가입을 승인하시겠습니까?')
+      if (result) {
+        dispatch({
+          type: ACCEPT_MEMBER_REQUEST,
+          data: {
+            id: Number(id),
+            userId: userId,
+          },
+        })
       }
     },
-    [id]
+    [dispatch, id]
   )
 
   return (

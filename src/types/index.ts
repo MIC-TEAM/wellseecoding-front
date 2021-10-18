@@ -5,6 +5,13 @@ export type TodoType = {
   userId: number
 }
 
+export type MemberData = {
+  userId: number
+  postId: number
+  name: string
+  authorized: boolean
+}
+
 export type PostData = {
   theme: string
   posts: PostType[]
