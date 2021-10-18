@@ -21,7 +21,10 @@ function Home() {
 
   // ② 객체에 담긴 복호화된 token 정보 중 userId를 추출
   useEffect(() => {
-    if (tokenId) checkId(tokenId)
+    if (tokenId) {
+      console.log('token ID', tokenId)
+      checkId(tokenId)
+    }
   }, [tokenId])
 
   // ③ 마지막 복호화된 토큰의 userId 확인
@@ -67,9 +70,9 @@ function Home() {
   const checkId = (tokenId: any) => {
     // 객체를 순회할 때는 for in문을 사용한다.
     for (const key in tokenId) {
-      // console.log(key, tokenId[key])
+      console.log(key, tokenId[key])
       if (key === 'sub') {
-        // console.log('tokenId의 키:', tokenId[key])
+        console.log('tokenId의 키:', tokenId[key])
         setDecodedUserId(tokenId[key])
       }
       if (key === 'uname') {

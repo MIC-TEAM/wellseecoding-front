@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { css } from '@emotion/react'
 import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import axios from 'axios'
+import { myConfig } from 'sagas'
 
 export type props = {
   commentCount: number
@@ -20,12 +22,26 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
 
   const router = useRouter()
 
-  const onRegister = useCallback(() => {
+  const onRegister = useCallback(async () => {
     const result = window.confirm('정말로 가입하시겠습니까?')
+    console.log(uniqId, typeof uniqId)
+    if (result) {
+      try {
+        await axios
+          .post(`/api/v1/posts/${Number(uniqId)}/members`, {}, myConfig)
+          .then((res) =>
+            res.status === 200 ? catchState(res, uniqId) : alert('잘못된 접근방법입니다 잠시 후에 다시 시도해주세요')
+          )
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  }, [uniqId])
 
-    if (result) alert(`유저 정보 ${localId}번 님이 ${uniqId}번 게시글에 가입신청 하셨습니다.`)
-    else return
-  }, [localId, uniqId])
+  const catchState = (response: any, id: any) => {
+    console.log('response:', response)
+    console.log(`${id} 번 게시글에 대한 가입신청이 완료되었습니다.`)
+  }
 
   return (
     <nav css={footerNav}>
@@ -39,7 +55,7 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
         {localId === userId ? (
           <button
             className="joinButton"
-            onClick={() => router.push('/class_join_list').then(() => window.scrollTo(0, 0))}
+            onClick={() => router.push(`/class_join_list/${uniqId}`).then(() => window.scrollTo(0, 0))}
           >
             가입현황
           </button>
