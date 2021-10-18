@@ -3,6 +3,7 @@ import { all, fork } from 'redux-saga/effects'
 import postSaga from './posts'
 import todoSaga from './todos'
 import commentSaga from './comments'
+import homeSaga from './home'
 
 const myToken = process.env.NEXT_PUBLIC_TOKEN
 
@@ -17,5 +18,5 @@ export const myConfig = {
 }
 
 export default function* rootSaga() {
-  yield all([fork(todoSaga), fork(postSaga), fork(commentSaga)])
+  yield all([fork(todoSaga), fork(postSaga), fork(commentSaga), fork(homeSaga)])
 }

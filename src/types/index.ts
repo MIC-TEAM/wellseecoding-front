@@ -1,3 +1,10 @@
+export type homeData = {
+  createdGroups: PostType[]
+  registeredGroups: PostType[]
+  appliedGroups: PostType[]
+  likedGroups: PostType[]
+}
+
 export type TodoType = {
   completed: boolean
   id: number
