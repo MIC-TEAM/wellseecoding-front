@@ -23,13 +23,31 @@ type Props = {
 }
 
 function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
+  // router.query.id는 uniqId로 넘겨받고 있는 상황
+
   const router = useRouter()
   const dispatch = useDispatch()
   const [heartState, setHeartState] = useState(false)
 
+  const [likePost, setLikePost] = useState([])
+
   useEffect(() => {
     console.log('heartState:', heartState)
   }, [heartState])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const result = localStorage.getItem('myLikes') || '[]'
+      setLikePost(JSON.parse(result))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (likePost.length) {
+      console.log('like posts: ', likePost)
+      compareLikeState()
+    }
+  }, [likePost])
 
   const setModal = useCallback(() => {
     window.scrollTo(0, 0)
@@ -38,6 +56,15 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
       data: uniqId,
     })
   }, [dispatch, uniqId])
+
+  const compareLikeState = () => {
+    for (const x of likePost) {
+      if (x === Number(uniqId)) {
+        setHeartState(true)
+        break
+      }
+    }
+  }
 
   const stopWholeTasks = useCallback(() => {
     Promise.allSettled([
