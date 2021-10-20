@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { HiX } from 'react-icons/Hi'
 import { REGISTER_WORK_URL } from 'apis'
+import { myConfig } from 'sagas'
 
 const Experience = () => {
   const router = useRouter()
@@ -15,7 +16,7 @@ const Experience = () => {
   // 프로젝트명, 링크, 설명
   const [role, setRole] = useState<string>('')
   const [technology, setTechnology] = useState<string>('')
-  const [years, setYears] = useState<string>('')
+  const [years, setYears] = useState<number>(0)
 
   // 유효성 검사
   const [isRole, setIsRole] = useState<boolean>(false)
@@ -31,15 +32,19 @@ const Experience = () => {
       alert(`role: ${role}, technology: ${technology}, years: ${years}`)
       try {
         await axios
-          .put(REGISTER_WORK_URL, {
-            works: [
-              {
-                role: role,
-                technology: technology,
-                years: years,
-              },
-            ],
-          })
+          .put(
+            REGISTER_WORK_URL,
+            {
+              works: [
+                {
+                  role: role,
+                  technology: technology,
+                  years: years,
+                },
+              ],
+            },
+            myConfig
+          )
           .then((res) => {
             console.log(res.data)
             if (res.status === 200) {
@@ -74,7 +79,7 @@ const Experience = () => {
   }, [])
 
   const onChangeYears = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setYears(e.target.value)
+    setYears(e.target.valueAsNumber)
 
     if (e.target.value.length) {
       setIsYears(true)
@@ -91,9 +96,9 @@ const Experience = () => {
           <HiX />
         </button>
 
-        <TextFieldProfile type="text" text="역할" onChange={onChangeRole} />
-        <TextFieldProfile type="text" text="기술스택" onChange={onChangeTechnology} />
-        <TextFieldProfile type="text" text="경력" onChange={onChangeYears} />
+        <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
+        <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
+        <TextFieldProfile type="number" text="경력을 입력해주세요" onChange={onChangeYears} />
       </div>
     )
   }
@@ -108,10 +113,9 @@ const Experience = () => {
   )
 
   // 삭제 버튼 클릭시
-  const onDeleteBtnClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
+  const onDeleteBtnClick = () => {
     setInputList(inputList.filter((item, index) => item.index !== index))
-  }, [])
+  }
 
   // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
   const NextPage = useCallback(() => {
@@ -127,9 +131,9 @@ const Experience = () => {
       <form css={infoWrap} onSubmit={onSubmit}>
         <div className="formBox">
           <div css={info} id="experienceInputBox">
-            <TextFieldProfile type="text" text="역할" onChange={onChangeRole} />
-            <TextFieldProfile type="text" text="기술스택" onChange={onChangeTechnology} />
-            <TextFieldProfile type="text" text="경력" onChange={onChangeYears} />
+            <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
+            <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
+            <TextFieldProfile type="number" text="경력을 입력해주세요" onChange={onChangeYears} />
           </div>
           {inputList}
           <button css={companyAdd} onClick={onAddBtnClick} type="button">

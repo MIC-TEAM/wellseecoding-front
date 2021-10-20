@@ -9,7 +9,6 @@ function Home() {
   const [decodedUserName, setDecodedUserName] = useState<string>('')
 
   // 1차적으로 복호화했을 때 아직 이름이 없어서, 해당 정보를 어떻게 저장할 지는 협의해봐야 할 것 같네요
-
   // ① 환경 변수에 등록한 토큰을 디코딩
   useEffect(() => {
     parseJwt(process.env.NEXT_PUBLIC_TOKEN)

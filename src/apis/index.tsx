@@ -4,7 +4,7 @@ export const API_URL = `https://jsonplaceholder.typicode.com/todos`
 export const GET_POSTS_URL = '/api/v1/posts'
 export const WRITE_POST_URL = '/api/v1/posts'
 
-//회원가입 이름, 아이디, 비밀번호
+// 회원가입 이름, 아이디, 비밀번호
 export const REGISTER_USERS_URL = '/api/v1/users'
 
 // 자기소개

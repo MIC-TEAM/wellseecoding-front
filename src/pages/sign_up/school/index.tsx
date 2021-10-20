@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useState, useCallback } from 'react'
 import axios from 'axios'
 import { REGISTER_EDUCATION_URL } from 'apis'
+import { myConfig } from 'sagas'
 
 const SelfIntroduction = () => {
   // 학위, 전공, 재학 및 졸업여부
@@ -26,15 +27,19 @@ const SelfIntroduction = () => {
       alert(`어느대학: ${degree}, 전공: ${major}, 졸업여부: ${isChecked}`)
       try {
         await axios
-          .put(REGISTER_EDUCATION_URL, {
-            educations: [
-              {
-                degree: degree,
-                major: major,
-                graduated: isChecked,
-              },
-            ],
-          })
+          .put(
+            REGISTER_EDUCATION_URL,
+            {
+              educations: [
+                {
+                  degree: degree,
+                  major: major,
+                  graduated: isChecked,
+                },
+              ],
+            },
+            myConfig
+          )
           .then((res) => {
             console.log(res.data)
             if (res.status === 200) {

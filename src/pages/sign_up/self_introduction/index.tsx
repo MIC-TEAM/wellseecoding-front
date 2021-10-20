@@ -7,6 +7,7 @@ import { useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { REGISTER_ABOUT_ME_URL, REGISTER_WORK_URL } from 'apis'
+import { myConfig } from 'sagas'
 
 const SelfIntroduction = () => {
   // 간단한 자기소개, 기술스택
@@ -28,13 +29,17 @@ const SelfIntroduction = () => {
           aboutMe: aboutMe,
         })
         axios
-          .put(REGISTER_WORK_URL, {
-            works: [
-              {
-                technology: skill,
-              },
-            ],
-          })
+          .put(
+            REGISTER_WORK_URL,
+            {
+              works: [
+                {
+                  technology: skill,
+                },
+              ],
+            },
+            myConfig
+          )
           .then((res) => {
             console.log(res.data)
             if (res.status === 200) {

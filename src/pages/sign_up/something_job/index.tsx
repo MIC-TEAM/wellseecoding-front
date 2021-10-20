@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useState, useCallback } from 'react'
 import axios from 'axios'
 import { REGISTER_STATUS_URL } from 'apis'
+import { myConfig } from 'sagas'
 
 const SomethingJob = () => {
   const router = useRouter()
@@ -55,9 +56,13 @@ const SomethingJob = () => {
       alert(`직업: ${value}`)
       try {
         await axios
-          .put(REGISTER_STATUS_URL, {
-            status: value,
-          })
+          .put(
+            REGISTER_STATUS_URL,
+            {
+              status: value,
+            },
+            myConfig
+          )
           .then((res) => {
             console.log(res.data)
             if (res.status === 200) {
