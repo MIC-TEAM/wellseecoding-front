@@ -8,8 +8,6 @@ import { useDispatch } from 'react-redux'
 import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_ISMODAL } from 'reducers/common'
 import { myConfig } from 'sagas'
 import { Common } from 'styles/common'
-// import FavoriteIcon from '@mui/icons-material/Favorite'
-// import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 
 type Props = {
   title: string | null
@@ -29,12 +27,13 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   const dispatch = useDispatch()
   const [heartState, setHeartState] = useState(false)
 
-  const [likePost, setLikePost] = useState([])
+  const [likePost, setLikePost] = useState<number[]>([])
 
   useEffect(() => {
-    console.log('heartState:', heartState)
-  }, [heartState])
+    console.log('like Post changed:', likePost)
+  }, [likePost])
 
+  // ① 로컬 스토리지에 담긴 좋아요한 게시물을 state인 likePost에 저장한다
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const result = localStorage.getItem('myLikes') || '[]'
@@ -42,11 +41,17 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
     }
   }, [])
 
+  // ② likePost가 존재하는 배열일 경우, compareLikeState 함수를 호출한다 (있을 경우에 하트를 채워 표시할 수 있도록)
   useEffect(() => {
     if (likePost.length) {
-      console.log('like posts: ', likePost)
       compareLikeState()
+      // handleUnlikePosts(Number(uniqId))
     }
+  }, [likePost])
+
+  // ③ likePost가 변경될 경우, likePost state를 직렬화하여 로컬 스토리지에 myLikes를 재설정한다
+  useEffect(() => {
+    localStorage.setItem('myLikes', JSON.stringify(likePost))
   }, [likePost])
 
   const setModal = useCallback(() => {
@@ -57,6 +62,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
     })
   }, [dispatch, uniqId])
 
+  // 기존 로컬 스토리지와 비교하여 로컬 스토리지 내에 배열에 해당 게시물이 있을 경우 좋아요를 한 것으로 표시한다
   const compareLikeState = () => {
     for (const x of likePost) {
       if (x === Number(uniqId)) {
@@ -77,22 +83,6 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
     ]).then(() => router.back())
   }, [dispatch, router])
 
-  const unLike = useCallback(async () => {
-    try {
-      alert(`유저 정보 ${localId}번 님이 ${uniqId}번 게시글 좋아요를 취소합니다`)
-      await axios
-        .delete('api/v1/users/likes', {
-          headers: myConfig,
-          data: {
-            postId: uniqId,
-          },
-        })
-        .then((res) => (res.status === 200 ? setHeartState(false) : alert('잘못된 요청입니다!')))
-    } catch (err) {
-      console.log(err)
-    }
-  }, [localId, uniqId])
-
   const onLike = useCallback(async () => {
     try {
       alert(`유저 정보 ${localId}번 님이 ${uniqId}번 게시글을 좋아합니다`)
@@ -100,15 +90,54 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
         .post(
           '/api/v1/users/likes',
           {
-            postId: uniqId,
+            postId: Number(uniqId),
           },
           myConfig
         )
-        .then((res) => (res.status === 200 ? setHeartState(true) : alert('잘못된 요청입니다!')))
+        .then((res) => (res.status === 200 ? concatPost(Number(uniqId)) : alert('잘못된 요청입니다!')))
     } catch (err) {
       console.log(err)
     }
   }, [localId, uniqId])
+
+  // 200 이 떨어지는데 DB에 반영이 안됨
+
+  // 좋아요 요청 성공시, 로컬스토리지에 저장된 myLikes 배열에 좋아요한 데이터를 추가하는 로직
+  const concatPost = useCallback((id: number) => {
+    console.log('concatPost!')
+    setLikePost((likePost) => [...likePost, id])
+  }, [])
+
+  // 로컬스토리지에 저장된 myLikes의 배열에서 좋아요를 취소한 데이터를 필터링하는 로직
+  const filteringPost = useCallback(async () => {
+    try {
+      console.log('filtering post!')
+      await axios
+        .delete('/api/v1/users/likes', {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+            'Cache-Control': 'no-cache',
+            Pragma: 'no-cache',
+            Expires: '0',
+          },
+          data: {
+            postId: Number(uniqId),
+          },
+        })
+        .then((res) => (res.status === 200 ? handleLikePost(Number(uniqId)) : console.log('fail')))
+    } catch (err) {
+      console.log(err)
+    } finally {
+      console.log('filtering post done!')
+    }
+  }, [likePost, uniqId])
+
+  // axios.delete 요청 성공시 실행할 로직
+  const handleLikePost = (id: number) => {
+    console.log('success')
+    setLikePost(likePost.filter((v) => v !== id))
+    setHeartState(false)
+  }
 
   return (
     <>
@@ -127,7 +156,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
             ) : (
               <>
                 {heartState ? (
-                  <button type="button" onClick={unLike}>
+                  <button type="button" onClick={() => filteringPost()}>
                     <img src="/images/header/FilledHeart.svg" alt="좋아요" />
                   </button>
                 ) : (
