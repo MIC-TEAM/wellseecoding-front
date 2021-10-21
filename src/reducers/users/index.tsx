@@ -23,36 +23,37 @@ export const SIGNUP_EXPERIENCE_REMOVE_SUCCECSS = 'SIGNUP_EXPERIENCE_REMOVE_SUCCE
 export const SIGNUP_EXPERIENCE_REMOVE_FAIRIUR = 'SIGNUP_EXPERIENCE_REMOVE_FAIRIUR' as const
 
 // 액션에 대한 타입 정의;
-export interface SignupRequest {
+export interface RemoveItemRequest {
   type: typeof SIGNUP_EXPERIENCE_REMOVE_REQUEST
 }
-export interface SignupRequest {
-  type: typeof SIGNUP_EXPERIENCE_REMOVE_REQUEST
+export interface RemoveItemSuccecss {
+  type: typeof SIGNUP_EXPERIENCE_REMOVE_SUCCECSS
+  data: { PostId: number }
 }
-export interface SignupRequest {
-  type: typeof SIGNUP_EXPERIENCE_REMOVE_REQUEST
+export interface RemoveItemFailure {
+  type: typeof SIGNUP_EXPERIENCE_REMOVE_FAIRIUR
 }
 
 // 리듀서 안에 들어갈 액션 타입에 대한 액션 생성 함수 정의
 
-export const RemoveItemRequest = () => ({
+export const removeItemRequest = () => ({
   type: SIGNUP_EXPERIENCE_REMOVE_REQUEST,
 })
 
-export const RemoveItemSuccecss = () => ({
+export const removeItemSuccecss = (data: { PostId: number }): RemoveItemSuccecss => ({
   type: SIGNUP_EXPERIENCE_REMOVE_SUCCECSS,
-  data: { PostId: {} },
+  data,
 })
 
-export const RemoveItemFailure = () => ({
+export const removeItemFailure = () => ({
   type: SIGNUP_EXPERIENCE_REMOVE_FAIRIUR,
   error: Error,
 })
 
 export type Signup =
-  | ReturnType<typeof RemoveItemRequest>
-  | ReturnType<typeof RemoveItemSuccecss>
-  | ReturnType<typeof RemoveItemFailure>
+  | ReturnType<typeof removeItemRequest>
+  | ReturnType<typeof removeItemSuccecss>
+  | ReturnType<typeof removeItemFailure>
 const signup = (state: SignUpIntialState = initialState, action: Signup) =>
   produce(state, (draft) => {
     switch (action.type) {
@@ -65,7 +66,7 @@ const signup = (state: SignUpIntialState = initialState, action: Signup) =>
       case SIGNUP_EXPERIENCE_REMOVE_SUCCECSS: {
         draft.removeItemLoading = false
         draft.removeItemDone = true
-        draft.item = draft.item.filter((v) => v.id !== action.data.PostId)
+        // draft.item = draft.item.filter((v) => v.id !== action.data.PostId)
         break
       }
       case SIGNUP_EXPERIENCE_REMOVE_FAIRIUR: {
