@@ -4,6 +4,9 @@ export const API_URL = `https://jsonplaceholder.typicode.com/todos`
 export const GET_POSTS_URL = '/api/v1/posts'
 export const WRITE_POST_URL = '/api/v1/posts'
 
+// 이메일로 회원가입 한 것 로그인
+export const REGISTER_USERS_LOGIN = '/api/v1/users/token'
+
 // 회원가입 이름, 아이디, 비밀번호
 export const REGISTER_USERS_URL = '/api/v1/users'
 
