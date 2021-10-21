@@ -88,33 +88,20 @@ const Experience = () => {
     }
   }, [])
 
-  // 경력정보 폼박스
-  const ExperienceForm = () => {
-    return (
-      <div css={info} id="experienceInputBox" className="newForm">
-        <button type="button" className="delete" onClick={onDeleteBtnClick}>
-          <HiX />
-        </button>
-
-        <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
-        <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
-        <TextFieldProfile type="number" text="경력을 입력해주세요" onChange={onChangeYears} />
-      </div>
-    )
-  }
-
   // 회사 추가 버튼 클릭시
   const onAddBtnClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-      setInputList(inputList.concat(<ExperienceForm key={inputList.length} />))
+      console.log('추가됐습니다.', inputList)
+      setInputList([inputList, ...inputList])
     },
     [inputList]
   )
 
   // 삭제 버튼 클릭시
-  const onDeleteBtnClick = () => {
-    setInputList(inputList.filter((item, index) => item.index !== index))
+  const onDeleteBtnClick = (index: any) => {
+    console.log('삭제되었습니다.', inputList)
+    setInputList([...inputList.slice(0, index), ...inputList.slice(index + 1, inputList.length)])
   }
 
   // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
@@ -135,7 +122,20 @@ const Experience = () => {
             <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
             <TextFieldProfile type="number" text="경력을 입력해주세요" onChange={onChangeYears} />
           </div>
-          {inputList}
+
+          {inputList &&
+            inputList.map((item, index) => (
+              <div css={info} id="experienceInputBox" className="newForm" key={item.length}>
+                <button type="button" className="delete" onClick={() => onDeleteBtnClick(index)}>
+                  <HiX />
+                </button>
+
+                <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
+                <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
+                <TextFieldProfile type="number" text="경력을 입력해주세요" onChange={onChangeYears} />
+              </div>
+            ))}
+
           <button css={companyAdd} onClick={onAddBtnClick} type="button">
             <span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">

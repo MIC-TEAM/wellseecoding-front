@@ -12,12 +12,17 @@ const SignUpProfileUpload = () => {
     router.push('/home')
   }, [router])
 
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const img = e.target.files[0]
-    const formData = new FormData()
-    formData.append('img', img)
-    console.log(formData)
-  }
+  // const onChange = (e: React.FormEvent<HTMLInputElement>) => {
+  //   const img = e.target.files[0]
+  //   const formData = new FormData()
+  //   formData.append('img', img)
+  //   console.log(formData)
+  // }
+
+  // const onChangeProfile = (e: any) => {
+  //   e.preventDefault()
+  //   myProfileUpload.current.click()
+  // }
 
   return (
     <>
@@ -25,17 +30,8 @@ const SignUpProfileUpload = () => {
 
       <Title title="프로필 사진을 올려주세요!" className="loginMt" />
 
-      <div>
-        <input
-          type="file"
-          accept="image/jpg,impge/png,image/jpeg,image/gif"
-          name="profile_img"
-          onChange={onChange}
-        ></input>
-      </div>
-
       <form method="post" encType="multipart/form-data" action="http://foo.bar/upload">
-        <input type="file" name="media" />
+        {/* <input type="file" className="imgInput" accept="image/*" name="file" onChange={onChangeProfile} /> */}
 
         <input name="nickname" />
         <input name="website" />
