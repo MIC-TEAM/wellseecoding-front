@@ -9,7 +9,7 @@ const SignUpProfileUpload = () => {
   const router = useRouter()
 
   const NextPage = useCallback(() => {
-    router.push('/home')
+    router.push('/sign_up/completion')
   }, [router])
 
   // const onChange = (e: React.FormEvent<HTMLInputElement>) => {
