@@ -26,6 +26,9 @@ const Experience = () => {
   // 회사 추가 버튼 클릭 시 컴포넌트 추가
   const [inputList, setInputList] = useState<any[]>([])
 
+  // 경력 컴포넌트가 4개 이상일 경우 회사추가 버튼 안보이도록
+  const [btnShow, setBtnShow] = useState<any>(true)
+
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -94,6 +97,10 @@ const Experience = () => {
       e.preventDefault()
       console.log('추가됐습니다.', inputList)
       setInputList([inputList, ...inputList])
+
+      if (inputList.length === 2) {
+        setBtnShow(false)
+      }
     },
     [inputList]
   )
@@ -102,6 +109,10 @@ const Experience = () => {
   const onDeleteBtnClick = (index: any) => {
     console.log('삭제되었습니다.', inputList)
     setInputList([...inputList.slice(0, index), ...inputList.slice(index + 1, inputList.length)])
+
+    if (inputList.length > 1) {
+      setBtnShow(true)
+    }
   }
 
   // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
@@ -113,7 +124,7 @@ const Experience = () => {
     <>
       <Back />
 
-      <Title title="경력 정보를 적어주세요!" className="loginMt" />
+      <Title title="경력 정보를 적어주세요! (최대 4개)" className="loginMt" />
 
       <form css={infoWrap} onSubmit={onSubmit}>
         <div className="formBox">
@@ -136,15 +147,19 @@ const Experience = () => {
               </div>
             ))}
 
-          <button css={companyAdd} onClick={onAddBtnClick} type="button">
-            <span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
-                <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
-              </svg>
-            </span>
-            <span>회사 추가</span>
-          </button>
+          {btnShow ? (
+            <button css={companyAdd} onClick={onAddBtnClick} type="button">
+              <span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
+                  <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
+                </svg>
+              </span>
+              <span>회사 추가</span>
+            </button>
+          ) : (
+            setBtnShow
+          )}
         </div>
 
         <div css={footButtonWrapper}>
