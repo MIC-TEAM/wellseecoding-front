@@ -25,6 +25,10 @@ export const SIGNUP_EXPERIENCE_REMOVE_FAIRIUR = 'SIGNUP_EXPERIENCE_REMOVE_FAIRIU
 // 액션에 대한 타입 정의;
 export interface RemoveItemRequest {
   type: typeof SIGNUP_EXPERIENCE_REMOVE_REQUEST
+  data: {
+    first: number
+    last: number
+  }
 }
 export interface RemoveItemSuccecss {
   type: typeof SIGNUP_EXPERIENCE_REMOVE_SUCCECSS
