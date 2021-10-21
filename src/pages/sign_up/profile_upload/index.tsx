@@ -3,26 +3,23 @@ import Back from 'components/Common/Header/Back'
 import Title from 'components/Common/Title'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 const SignUpProfileUpload = () => {
   const router = useRouter()
+  const [imgLoading, setImgLoading] = useState(false)
 
   const NextPage = useCallback(() => {
     router.push('/sign_up/completion')
   }, [router])
 
-  // const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-  //   const img = e.target.files[0]
-  //   const formData = new FormData()
-  //   formData.append('img', img)
-  //   console.log(formData)
-  // }
+  const onChangeProfile = async (e: any) => {
+    setImgLoading(true)
+    const formData = new FormData()
+    formData.append('file', e.target.files[0])
 
-  // const onChangeProfile = (e: any) => {
-  //   e.preventDefault()
-  //   myProfileUpload.current.click()
-  // }
+    setImgLoading(false)
+  }
 
   return (
     <>
@@ -30,12 +27,14 @@ const SignUpProfileUpload = () => {
 
       <Title title="프로필 사진을 올려주세요!" className="loginMt" />
 
-      <form method="post" encType="multipart/form-data" action="http://foo.bar/upload">
-        {/* <input type="file" className="imgInput" accept="image/*" name="file" onChange={onChangeProfile} /> */}
-
-        <input name="nickname" />
-        <input name="website" />
-        <input type="submit" value="upload" />
+      <form css={profileFrom}>
+        {imgLoading ? (
+          <input type="file" accept="image/*" name="profile_img" onChange={onChangeProfile} />
+        ) : (
+          <button type="button">
+            <img src="/images/signup/profile.svg" alt="프로필 업로드" />
+          </button>
+        )}
       </form>
 
       <div css={footButtonWrapper}>
@@ -62,4 +61,11 @@ const footButtonWrapper = css`
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
   }
+`
+
+const profileFrom = css`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-top: 4rem;
 `
