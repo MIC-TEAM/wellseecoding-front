@@ -28,16 +28,11 @@ function Post() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('post', post)
-  }, [post])
-
-  useEffect(() => {
     if (updatePostSuccess) dispatch({ type: RESET_POSTS_STATE })
   }, [updatePostSuccess, dispatch])
 
   useEffect(() => {
     if (members.length) {
-      console.log('reset members list!')
       dispatch({ type: RESET_MEMBERS_STATE })
     }
   }, [members, dispatch])

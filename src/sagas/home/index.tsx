@@ -7,7 +7,6 @@ import { homeData } from 'types'
 async function fetchHomePostsAPI() {
   try {
     const response = await axios.get('api/v1/home/posts', myConfig)
-    console.log('response.data: ', response.data)
     return response.data
   } catch (err) {
     console.error(err)

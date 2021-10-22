@@ -22,7 +22,6 @@ function Home() {
   // ② 객체에 담긴 복호화된 token 정보 중 userId를 추출
   useEffect(() => {
     if (tokenId) {
-      console.log('token ID', tokenId)
       checkId(tokenId)
     }
   }, [tokenId])
@@ -41,20 +40,13 @@ function Home() {
 
   // ④ 토큰이 있다면 좋아요한 게시물이 있는지 요청을 보낸다
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      console.log('토큰 있음!')
-      getLikes()
-    } else {
-      console.log('토큰 없음')
-      return
-    }
+    if (typeof window !== 'undefined') getLikes()
   }, [])
 
   // ⑤ state에 저장한 Likes 확인
   useEffect(() => {
     if (likes.length) {
       localStorage.setItem('myLikes', JSON.stringify(likes))
-      console.log('done')
     }
   }, [likes])
 
@@ -70,9 +62,7 @@ function Home() {
   const checkId = (tokenId: any) => {
     // 객체를 순회할 때는 for in문을 사용한다.
     for (const key in tokenId) {
-      console.log(key, tokenId[key])
       if (key === 'sub') {
-        console.log('tokenId의 키:', tokenId[key])
         setDecodedUserId(tokenId[key])
       }
       if (key === 'uname') {
@@ -91,7 +81,6 @@ function Home() {
 
   const getLikes = useCallback(async () => {
     try {
-      console.log('getLikes()')
       await axios.get('/api/v1/users/likes', myConfig).then((res) => {
         setLikes(res.data.likes)
       })

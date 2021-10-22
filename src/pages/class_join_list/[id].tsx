@@ -26,7 +26,6 @@ const ClassJoinList = () => {
   }, [router, acceptMemberSuccess])
 
   const getLists = useCallback(async () => {
-    console.log('get memeber lists!!')
     dispatch({
       type: FETCH_MEMBERS_REQUEST,
       data: Number(id),

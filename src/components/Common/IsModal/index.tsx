@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
@@ -6,22 +7,21 @@ import { CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
 import { RootState } from 'reducers'
 import { DELETE_POST_REQUEST } from 'reducers/posts'
 import usehandleOverFlow from 'hooks/useHandleOverflow'
-import { useRouter } from 'next/router'
 
 const IsModal = () => {
   const { hidden, show } = usehandleOverFlow()
   const dispatch = useDispatch()
-  const router = useRouter()
 
   const { isModal } = useSelector((state: RootState) => state.common)
   const { deletePostSuccess } = useSelector((state: RootState) => state.posts)
 
+  // 내 게시글 삭제시 오류 때문에 일단 멈춰둠
+
   useEffect(() => {
     if (deletePostSuccess) {
-      alert('삭제되었습니다')
-      router.replace('/home')
+      location.replace('/home')
     }
-  }, [deletePostSuccess, router])
+  }, [deletePostSuccess])
 
   useEffect(() => {
     isModal && hidden()
@@ -54,7 +54,6 @@ const IsModal = () => {
   const removePost = useCallback(
     (e, id) => {
       e.stopPropagation()
-      console.log('removePost ID:', id, typeof id)
       dispatch({
         type: DELETE_POST_REQUEST,
         data: id,
@@ -64,7 +63,6 @@ const IsModal = () => {
   )
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div css={modalWrap} onClick={setModal}>
       <div css={modalBtnWrap}>
         <div css={modalInner}>

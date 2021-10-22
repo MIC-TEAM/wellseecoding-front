@@ -15,10 +15,6 @@ const Write = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('posts changed!', posts)
-  }, [posts])
-
-  useEffect(() => {
     !posts.length && loadUser()
   }, [posts])
 

@@ -7,7 +7,6 @@ import Alert from '@material-ui/lab/Alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { WRITE_POST_REQUEST } from 'reducers/posts'
 import { RootState } from 'reducers'
-import { useRouter } from 'next/router'
 
 /* 함께해요 글 작성 페이지 */
 
@@ -29,14 +28,12 @@ const TogetherWrite = () => {
 
   const { writePostSuccess } = useSelector((state: RootState) => state.posts)
   const dispatch = useDispatch()
-  const router = useRouter()
 
   useEffect(() => {
     if (writePostSuccess) {
-      alert('성공적으로 작성되었습니다!')
-      router.replace('/home')
+      location.replace('/home')
     }
-  }, [writePostSuccess, router])
+  }, [writePostSuccess])
 
   useEffect(() => {
     checkDataLength()

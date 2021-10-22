@@ -81,7 +81,6 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
 
   const onLike = useCallback(async () => {
     try {
-      alert(`유저 정보 ${localId}번 님이 ${uniqId}번 게시글을 좋아합니다`)
       await axios
         .post(
           '/api/v1/users/likes',
@@ -99,15 +98,17 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   // 200 이 떨어지는데 DB에 반영이 안됨
 
   // 좋아요 요청 성공시, 로컬스토리지에 저장된 myLikes 배열에 좋아요한 데이터를 추가하는 로직
-  const concatPost = useCallback((id: number) => {
-    console.log('concatPost!')
-    setLikePost((likePost) => [...likePost, id])
-  }, [])
+  const concatPost = useCallback(
+    (id: number) => {
+      setLikePost((likePost) => [...likePost, id])
+      router.reload()
+    },
+    [router]
+  )
 
   // 로컬스토리지에 저장된 myLikes의 배열에서 좋아요를 취소한 데이터를 필터링하는 로직
   const filteringPost = useCallback(async () => {
     try {
-      console.log('filtering post!')
       await axios
         .delete('/api/v1/users/likes', {
           headers: {
@@ -123,16 +124,14 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
         .then((res) => (res.status === 200 ? handleLikePost(Number(uniqId)) : console.log('fail')))
     } catch (err) {
       console.log(err)
-    } finally {
-      console.log('filtering post done!')
     }
   }, [likePost, uniqId])
 
   // axios.delete 요청 성공시 실행할 로직
   const handleLikePost = (id: number) => {
-    console.log('success')
     setLikePost(likePost.filter((v) => v !== id))
     setHeartState(false)
+    router.reload()
   }
 
   return (
