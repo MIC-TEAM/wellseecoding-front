@@ -8,7 +8,6 @@ import { RESET_DELETE_STATE, RESET_POSTS_STATE, RESET_POST_LIST } from 'reducers
 import { RootState } from 'reducers'
 import Head from 'next/head'
 import { FETCHING_HOME_POSTS_REQUEST } from 'reducers/home'
-// import StudySection from 'components/Together/StudySection'
 import Loading from 'components/Loading'
 import StudySectionOpt from 'components/Together/StudySectionOption'
 
@@ -16,7 +15,10 @@ const Home = () => {
   const { post, deletePostSuccess, writePostSuccess } = useSelector((state: RootState) => state.posts)
   const { homePosts } = useSelector((state: RootState) => state.home)
   const dispatch = useDispatch()
+
+  /* 로컬 스토리지에 저장된 이름과 고유 id */
   const [name, setName] = useState<string | null>(null)
+  const [userId, setUserId] = useState(0)
 
   // deletePostSuccess를 false로 초기화
   useEffect(() => {
@@ -41,12 +43,18 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    localStorage.getItem('id') && getUserName()
-  })
+    if (typeof window !== 'undefined') {
+      localStorage.getItem('id') && getLocalInfo()
+    }
+  }, [])
 
   useEffect(() => {
     post.length && resetPost()
   }, [post])
+
+  useEffect(() => {
+    if (name && userId) console.log('name', name, 'userId', userId)
+  }, [name, userId])
 
   const loadHomePosts = useCallback(() => {
     dispatch({
@@ -60,9 +68,11 @@ const Home = () => {
     })
   }
 
-  const getUserName = useCallback(() => {
+  const getLocalInfo = useCallback(() => {
     const myname = localStorage.getItem('userName')
+    const myId = localStorage.getItem('id')
     setName(myname)
+    setUserId(Number(myId))
   }, [])
 
   return (
