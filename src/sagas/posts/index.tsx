@@ -150,6 +150,7 @@ function* deletePost(action: DeletePostRequest) {
     yield call(deletePostAPI, action.data)
     yield put({
       type: DELETE_POST_SUCCESS,
+      data: action.data,
     })
   } catch (err) {
     console.error(err)

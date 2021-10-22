@@ -15,6 +15,10 @@ const Write = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    console.log('posts changed!', posts)
+  }, [posts])
+
+  useEffect(() => {
     !posts.length && loadUser()
   }, [posts])
 
@@ -42,7 +46,7 @@ const Write = () => {
       <TogetherHeader />
       <main css={togetherBoard}>
         <div className="wrap">
-          {post ? posts.map((p, i) => <StudySection key={i} theme={p.theme} posts={p.posts} />) : <Loading />}
+          {posts ? posts.map((p, i) => <StudySection key={i} theme={p.theme} posts={p.posts} />) : <Loading />}
         </div>
       </main>
       <WriteButton />

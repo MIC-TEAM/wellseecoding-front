@@ -3,7 +3,7 @@ import { Common } from 'styles/common'
 
 interface Props {
   user: string | null
-  num: number
+  num?: number
 }
 function HomeMain({ user, num }: Props) {
   return (
@@ -15,8 +15,14 @@ function HomeMain({ user, num }: Props) {
           안녕하세요 <strong>{user}님 👋</strong>
         </h1>
         <p>
-          가입하신 스터디는
-          <br />총 {num}개에요~
+          {num ? (
+            <span>
+              가입하신 스터디는
+              <br />총 {num}개에요~
+            </span>
+          ) : (
+            <span>아직 가입하신 스터디가 없어요.. 🥲</span>
+          )}
         </p>
       </div>
     </section>

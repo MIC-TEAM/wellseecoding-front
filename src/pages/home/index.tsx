@@ -4,7 +4,7 @@ import HomeMain from 'components/Home/Main'
 import { css } from '@emotion/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { FETCHING_POSTS_REQUEST, RESET_POST_LIST } from 'reducers/posts'
+import { RESET_DELETE_STATE, RESET_POSTS_STATE, RESET_POST_LIST } from 'reducers/posts'
 import { RootState } from 'reducers'
 import Head from 'next/head'
 import { FETCHING_HOME_POSTS_REQUEST } from 'reducers/home'
@@ -13,14 +13,28 @@ import Loading from 'components/Loading'
 import StudySectionOpt from 'components/Together/StudySectionOption'
 
 const Home = () => {
-  const { posts, post } = useSelector((state: RootState) => state.posts)
+  const { post, deletePostSuccess, writePostSuccess } = useSelector((state: RootState) => state.posts)
   const { homePosts } = useSelector((state: RootState) => state.home)
   const dispatch = useDispatch()
   const [name, setName] = useState<string | null>(null)
 
+  // deletePostSuccess를 false로 초기화
   useEffect(() => {
-    console.log('homePosts:', homePosts)
-  }, [homePosts])
+    if (deletePostSuccess) {
+      dispatch({
+        type: RESET_DELETE_STATE,
+      })
+    }
+  }, [dispatch, deletePostSuccess])
+
+  // writePostSuccess를 false로 초기화
+  useEffect(() => {
+    if (writePostSuccess) {
+      dispatch({
+        type: RESET_POSTS_STATE,
+      })
+    }
+  }, [dispatch, writePostSuccess])
 
   useEffect(() => {
     !homePosts.length && loadHomePosts()
@@ -31,18 +45,8 @@ const Home = () => {
   })
 
   useEffect(() => {
-    !posts.length && loadUser()
-  }, [])
-
-  useEffect(() => {
     post.length && resetPost()
   }, [post])
-
-  const loadUser = useCallback(() => {
-    dispatch({
-      type: FETCHING_POSTS_REQUEST,
-    })
-  }, [dispatch])
 
   const loadHomePosts = useCallback(() => {
     dispatch({
@@ -69,7 +73,12 @@ const Home = () => {
       <HomeHeader />
 
       <div css={wrap}>
-        <HomeMain user={name} num={4} />
+        {homePosts.length ? (
+          homePosts.map((v, i) => <HomeMain user={name} num={v.registeredGroups.length} key={i} />)
+        ) : (
+          <HomeMain user={name} num={4} />
+        )}
+
         <div className="listWrap">
           <main css={ClassListWrap}>
             {homePosts.length ? (

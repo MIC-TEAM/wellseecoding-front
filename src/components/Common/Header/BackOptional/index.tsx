@@ -30,7 +30,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   const [likePost, setLikePost] = useState<number[]>([])
 
   useEffect(() => {
-    console.log('like Post changed:', likePost)
+    console.log('like Post changed in BackOptional Component:', likePost)
   }, [likePost])
 
   // ① 로컬 스토리지에 담긴 좋아요한 게시물을 state인 likePost에 저장한다

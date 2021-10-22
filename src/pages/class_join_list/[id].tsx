@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import JoinHeader from 'components/Common/Header/Back'
+import WellseeError from 'components/Common/wellseeError'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
@@ -76,7 +77,7 @@ const ClassJoinList = () => {
             </li>
           ))
         ) : (
-          <div>멤버 없음</div>
+          <WellseeError text={'아직 가입신청한 인원이 없어요...'} />
         )}
       </ul>
     </div>

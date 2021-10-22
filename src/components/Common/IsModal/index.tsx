@@ -6,12 +6,22 @@ import { CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
 import { RootState } from 'reducers'
 import { DELETE_POST_REQUEST } from 'reducers/posts'
 import usehandleOverFlow from 'hooks/useHandleOverflow'
+import { useRouter } from 'next/router'
 
 const IsModal = () => {
   const { hidden, show } = usehandleOverFlow()
   const dispatch = useDispatch()
+  const router = useRouter()
 
   const { isModal } = useSelector((state: RootState) => state.common)
+  const { deletePostSuccess } = useSelector((state: RootState) => state.posts)
+
+  useEffect(() => {
+    if (deletePostSuccess) {
+      alert('삭제되었습니다')
+      router.replace('/home')
+    }
+  }, [deletePostSuccess, router])
 
   useEffect(() => {
     isModal && hidden()
@@ -44,12 +54,11 @@ const IsModal = () => {
   const removePost = useCallback(
     (e, id) => {
       e.stopPropagation()
+      console.log('removePost ID:', id, typeof id)
       dispatch({
         type: DELETE_POST_REQUEST,
         data: id,
       })
-
-      location.href = '/together'
     },
     [dispatch]
   )
@@ -62,7 +71,7 @@ const IsModal = () => {
           <button type="button" onClick={updatePost}>
             수정
           </button>
-          <button type="button" onClick={(e) => removePost(e, isModal.uniqId)}>
+          <button type="button" onClick={(e) => removePost(e, Number(isModal.uniqId))}>
             삭제
           </button>
         </div>

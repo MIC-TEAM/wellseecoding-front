@@ -12,6 +12,7 @@ import CommentModal from 'components/Common/CommentModal'
 import EditComment from 'components/Post/EditComment'
 import { OPEN_ISMODAL } from 'reducers/common'
 import usehandleOverFlow from 'hooks/useHandleOverflow'
+import WellseeError from 'components/Common/wellseeError'
 
 function Comment() {
   const router = useRouter()
@@ -224,7 +225,7 @@ function Comment() {
           ))
         ) : (
           // comments가 없을 때!
-          <div />
+          <WellseeError text="아직 달린 댓글이 없어요.." />
         )}
       </div>
 

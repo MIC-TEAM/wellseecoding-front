@@ -4,8 +4,12 @@ import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useCallback, useEffect, useState } from 'react'
 import Alert from '@material-ui/lab/Alert'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { WRITE_POST_REQUEST } from 'reducers/posts'
+import { RootState } from 'reducers'
+import { useRouter } from 'next/router'
+
+/* 함께해요 글 작성 페이지 */
 
 const TogetherWrite = () => {
   const [title, setTitle] = useState<string | ''>('')
@@ -23,7 +27,16 @@ const TogetherWrite = () => {
 
   const dataArr = [title, period, schedule, qualification, summary, peopleNum, hashArr]
 
+  const { writePostSuccess } = useSelector((state: RootState) => state.posts)
   const dispatch = useDispatch()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (writePostSuccess) {
+      alert('성공적으로 작성되었습니다!')
+      router.replace('/home')
+    }
+  }, [writePostSuccess, router])
 
   useEffect(() => {
     checkDataLength()
@@ -95,7 +108,6 @@ const TogetherWrite = () => {
         $HashWrapOuter?.remove()
       }
       setReady(false)
-      location.href = '/together'
     },
     [title, period, schedule, qualification, summary, peopleNum, hashArr, dispatch]
   )

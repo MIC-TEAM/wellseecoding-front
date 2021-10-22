@@ -7,6 +7,7 @@ export interface IPosttype {
 
 // initialState 타입 정의
 export interface PostsIntialState {
+  // 전체 게시글
   posts: PostData[]
   post: PostType[]
   searchPosts: PostType[]
@@ -114,6 +115,8 @@ export const RESET_POSTS_STATE = 'RESET_POSTS_STATE' as const
 
 export const RESET_MEMBERS_STATE = 'RESET_MEMBERS_STATE' as const
 
+export const RESET_DELETE_STATE = 'RESET_DELETE_STATE' as const
+
 export const SEARCH_POSTS_REQUEST = 'SEARCH_POSTS_REQUEST' as const
 export const SEARCH_POSTS_SUCCESS = 'SEARCH_POSTS_SUCCESS' as const
 export const SEARCH_POSTS_FAILURE = 'SEARCH_POSTS_FAILURE' as const
@@ -194,6 +197,7 @@ export interface DeletePostRequest {
 
 export interface DeletePostuccess {
   type: typeof DELETE_POST_SUCCESS
+  data: number
 }
 
 export interface DeletePostFailure {
@@ -215,6 +219,10 @@ export interface ResetPostsState {
 
 export interface ResetMembersState {
   type: typeof RESET_MEMBERS_STATE
+}
+
+export interface ResetDeleteState {
+  type: typeof RESET_DELETE_STATE
 }
 
 export interface SearchPostsRequest {
@@ -333,8 +341,9 @@ export const deletePostRequest = (data: number): DeletePostRequest => ({
   data,
 })
 
-export const deletePostuccess = (): DeletePostuccess => ({
+export const deletePostuccess = (data: number): DeletePostuccess => ({
   type: DELETE_POST_SUCCESS,
+  data,
 })
 
 export const deletePostFailure = (error: Error): DeletePostFailure => ({
@@ -356,6 +365,10 @@ export const resetPostsState = (): ResetPostsState => ({
 
 export const resetMembersState = (): ResetMembersState => ({
   type: RESET_MEMBERS_STATE,
+})
+
+export const resetDeleteState = (): ResetDeleteState => ({
+  type: RESET_DELETE_STATE,
 })
 
 export const searchPostsRequest = (data: string): SearchPostsRequest => ({
@@ -425,6 +438,7 @@ export type FetchingPosts =
   | ReturnType<typeof resetSearchList>
   | ReturnType<typeof resetPostsState>
   | ReturnType<typeof resetMembersState>
+  | ReturnType<typeof resetDeleteState>
   | ReturnType<typeof searchPostsRequest>
   | ReturnType<typeof searchPostsSuccess>
   | ReturnType<typeof searchPostsFailure>
@@ -480,10 +494,15 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
       }
       case RESET_POSTS_STATE: {
         draft.updatePostSuccess = false
+        draft.writePostSuccess = false
         break
       }
       case RESET_MEMBERS_STATE: {
         draft.members = []
+        break
+      }
+      case RESET_DELETE_STATE: {
+        draft.deletePostSuccess = false
         break
       }
       case WRITE_POST_REQUEST: {
@@ -522,8 +541,10 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
         break
       }
       case DELETE_POST_SUCCESS: {
+        // const myPost = draft.posts.find((v) => v.posts.find((p) => p.id === action.data))
         draft.deletePostLoading = false
         draft.deletePostSuccess = true
+        // draft.posts.filter((v) => v !== myPost)
         break
       }
       case DELETE_POST_FAILURE: {
