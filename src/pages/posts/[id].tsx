@@ -1,6 +1,5 @@
 import { css } from '@emotion/react'
 import FlatBox from 'components/Common/FlatBox'
-// import HashWrap from 'components/Common/HashWrap'
 import BackOptional from 'components/Common/Header/BackOptional'
 import PostFooter from 'components/Post/PostFooter'
 import { useRouter } from 'next/router'
@@ -10,22 +9,33 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import IsModal from 'components/Common/IsModal'
-import { FETCHING_POST_REQUEST } from 'reducers/posts'
+import { FETCHING_POST_REQUEST, RESET_MEMBERS_STATE, RESET_POSTS_STATE } from 'reducers/posts'
 import EditForm from 'components/EditForm'
 import HashWrap from 'components/Common/HashWrap'
 import Loading from 'components/Loading'
 import { RESET_COMMENTS_LIST } from 'reducers/comments'
+import Head from 'next/head'
 
 function Post() {
   const router = useRouter()
   const { id } = router.query
   const { isModal, editMode } = useSelector((state: RootState) => state.common)
-  const { post } = useSelector((state: RootState) => state.posts)
+  const { post, updatePostSuccess, members } = useSelector((state: RootState) => state.posts)
   const { comments } = useSelector((state: RootState) => state.comments)
 
   const [localInfo, setLocalInfo] = useState<number | null>(null)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (updatePostSuccess) dispatch({ type: RESET_POSTS_STATE })
+  }, [updatePostSuccess, dispatch])
+
+  useEffect(() => {
+    if (members.length) {
+      dispatch({ type: RESET_MEMBERS_STATE })
+    }
+  }, [members, dispatch])
 
   useEffect(() => {
     if (comments.length)
@@ -62,6 +72,9 @@ function Post() {
 
   return (
     <>
+      <Head>
+        <title>게시글 | wellseecoding</title>
+      </Head>
       {post?.length ? (
         post.map((d) => (
           <BackOptional key={d.id} title="" optional={true} localId={localInfo} userId={d.userId} uniqId={id} />
@@ -69,6 +82,7 @@ function Post() {
       ) : (
         <div></div>
       )}
+
       <main css={togetherBoard}>
         <div className="wrap">
           {post.length ? (
@@ -115,6 +129,7 @@ function Post() {
                     qualification={d.qualification}
                     size={d.size}
                     tags={d.tags}
+                    commentCount={d.commentCount}
                   />
                 )}
               </div>
@@ -124,7 +139,11 @@ function Post() {
           )}
         </div>
       </main>
-      <PostFooter id={id} />
+      {/* localStorage에 저장된 id와 게시글의 id가 같을 경우에 가입현황 / 가입하기 버튼 보여주기  */}
+      {post.map((d) => (
+        <PostFooter key={d.id} localId={localInfo} userId={d.userId} uniqId={id} commentCount={d.commentCount} />
+      ))}
+
       {isModal.open && <IsModal />}
     </>
   )
@@ -133,17 +152,16 @@ function Post() {
 const flatBox = css`
   background-color: #fff8f5;
 `
-
+// 게시글
 const togetherBoard = css`
   width: 100%;
-  height: 100vh;
   background-color: #fff8f5;
+
   .mainContents {
+    padding-bottom: 20px;
     background-color: #fff8f5;
   }
-  .wrap {
-    padding-bottom: 100px;
-  }
+
   h1 {
     padding: 9px 21px;
     line-height: 28px;

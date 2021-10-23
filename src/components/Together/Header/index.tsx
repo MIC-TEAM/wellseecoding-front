@@ -5,12 +5,22 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { TogetherHeaderInput } from './style'
 
-function TogetherHeader() {
+export type Props = {
+  optional?: boolean
+}
+
+function TogetherHeader({ optional }: Props) {
   const router = useRouter()
 
   return (
     <header css={TogetherHeaderInput}>
-      <div onClick={() => router.push('/together/search')}>
+      {optional && (
+        <button onClick={() => router.back()}>
+          <img src="/images/header/searchBack.svg" alt="뒤로가기" />
+        </button>
+      )}
+
+      <div onClick={() => router.push('/together/search').then(() => window.scrollTo(0, 0))}>
         <span>모임 이름 / 소개 / 태그 검색</span>
       </div>
       <Link href="/alarm">

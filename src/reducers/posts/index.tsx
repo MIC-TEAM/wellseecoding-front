@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { PostData, PostType, WritePostType } from 'types'
+import { MemberData, PostData, PostType, WritePostType } from 'types'
 
 export interface IPosttype {
   posts: PostData
@@ -7,9 +7,11 @@ export interface IPosttype {
 
 // initialState 타입 정의
 export interface PostsIntialState {
+  // 전체 게시글
   posts: PostData[]
   post: PostType[]
   searchPosts: PostType[]
+  members: MemberData[]
 
   fetchPostsLoading: boolean
   fetchPostsSuccess: boolean
@@ -34,6 +36,14 @@ export interface PostsIntialState {
   searchPostsLoading: boolean
   searchPostsSuccess: boolean
   searchPostsFailure: null | Error
+
+  fetchMembersLoading: boolean
+  fetchMembersSuccess: boolean
+  fetchMembersFailure: null | Error
+
+  acceptMemberRequest: boolean
+  acceptMemberSuccess: boolean
+  acceptMemberFailure: null | Error
 }
 
 // initialState 정의
@@ -41,6 +51,7 @@ export const initialState: PostsIntialState = {
   posts: [],
   post: [],
   searchPosts: [],
+  members: [],
 
   fetchPostsLoading: false,
   fetchPostsSuccess: false,
@@ -65,6 +76,14 @@ export const initialState: PostsIntialState = {
   searchPostsLoading: false,
   searchPostsSuccess: false,
   searchPostsFailure: null,
+
+  fetchMembersLoading: false,
+  fetchMembersSuccess: false,
+  fetchMembersFailure: null,
+
+  acceptMemberRequest: false,
+  acceptMemberSuccess: false,
+  acceptMemberFailure: null,
 }
 
 // 액션 정의
@@ -92,9 +111,23 @@ export const RESET_POST_LIST = 'RESET_POST_LIST' as const
 
 export const RESET_SEARCH_LIST = 'RESET_SEARCH_LIST' as const
 
+export const RESET_POSTS_STATE = 'RESET_POSTS_STATE' as const
+
+export const RESET_MEMBERS_STATE = 'RESET_MEMBERS_STATE' as const
+
+export const RESET_DELETE_STATE = 'RESET_DELETE_STATE' as const
+
 export const SEARCH_POSTS_REQUEST = 'SEARCH_POSTS_REQUEST' as const
 export const SEARCH_POSTS_SUCCESS = 'SEARCH_POSTS_SUCCESS' as const
 export const SEARCH_POSTS_FAILURE = 'SEARCH_POSTS_FAILURE' as const
+
+export const FETCH_MEMBERS_REQUEST = 'FETCH_MEMBERS_REQUEST' as const
+export const FETCH_MEMBERS_SUCCESS = 'FETCH_MEMBERS_SUCCESS' as const
+export const FETCH_MEMBERS_FAILURE = 'FETCH_MEMBERS_FAILURE' as const
+
+export const ACCEPT_MEMBER_REQUEST = 'ACCEPT_MEMBER_REQUEST' as const
+export const ACCEPT_MEMBER_SUCCESS = 'ACCEPT_MEMBER_SUCCESS' as const
+export const ACCEPT_MEMBER_FAILURE = 'ACCEPT_MEMBER_FAILURE' as const
 
 // 액션에 대한 타입 정의;
 export interface FetchingPostsRequest {
@@ -164,6 +197,7 @@ export interface DeletePostRequest {
 
 export interface DeletePostuccess {
   type: typeof DELETE_POST_SUCCESS
+  data: number
 }
 
 export interface DeletePostFailure {
@@ -179,6 +213,18 @@ export interface ResetSearchList {
   type: typeof RESET_SEARCH_LIST
 }
 
+export interface ResetPostsState {
+  type: typeof RESET_POSTS_STATE
+}
+
+export interface ResetMembersState {
+  type: typeof RESET_MEMBERS_STATE
+}
+
+export interface ResetDeleteState {
+  type: typeof RESET_DELETE_STATE
+}
+
 export interface SearchPostsRequest {
   type: typeof SEARCH_POSTS_REQUEST
   data: string
@@ -192,6 +238,40 @@ export interface SearchPostsSuccess {
 
 export interface SearchPostsFailure {
   type: typeof SEARCH_POSTS_FAILURE
+  error: Error
+}
+
+export interface FetchMembersRequest {
+  type: typeof FETCH_MEMBERS_REQUEST
+  data: number
+}
+
+export interface FetchMembersSuccess {
+  type: typeof FETCH_MEMBERS_SUCCESS
+  members: MemberData
+  data: []
+}
+
+export interface FetchMembersFailure {
+  type: typeof FETCH_MEMBERS_FAILURE
+  error: Error
+}
+
+export interface AcceptMemberRequest {
+  type: typeof ACCEPT_MEMBER_REQUEST
+  data: {
+    id: number
+    userId: number
+  }
+}
+
+export interface AcceptMemberSuccess {
+  type: typeof ACCEPT_MEMBER_SUCCESS
+  data: MemberData
+}
+
+export interface AcceptMemberFailure {
+  type: typeof ACCEPT_MEMBER_FAILURE
   error: Error
 }
 
@@ -261,8 +341,9 @@ export const deletePostRequest = (data: number): DeletePostRequest => ({
   data,
 })
 
-export const deletePostuccess = (): DeletePostuccess => ({
+export const deletePostuccess = (data: number): DeletePostuccess => ({
   type: DELETE_POST_SUCCESS,
+  data,
 })
 
 export const deletePostFailure = (error: Error): DeletePostFailure => ({
@@ -278,6 +359,18 @@ export const resetSearchList = (): ResetSearchList => ({
   type: RESET_SEARCH_LIST,
 })
 
+export const resetPostsState = (): ResetPostsState => ({
+  type: RESET_POSTS_STATE,
+})
+
+export const resetMembersState = (): ResetMembersState => ({
+  type: RESET_MEMBERS_STATE,
+})
+
+export const resetDeleteState = (): ResetDeleteState => ({
+  type: RESET_DELETE_STATE,
+})
+
 export const searchPostsRequest = (data: string): SearchPostsRequest => ({
   type: SEARCH_POSTS_REQUEST,
   data,
@@ -291,6 +384,37 @@ export const searchPostsSuccess = (searchPosts: PostType, data: []): SearchPosts
 
 export const searchPostsFailure = (error: Error): SearchPostsFailure => ({
   type: SEARCH_POSTS_FAILURE,
+  error,
+})
+
+export const fetchMembersRequest = (data: number): FetchMembersRequest => ({
+  type: FETCH_MEMBERS_REQUEST,
+  data,
+})
+
+export const fetchMembersSuccess = (members: MemberData, data: []): FetchMembersSuccess => ({
+  type: FETCH_MEMBERS_SUCCESS,
+  members,
+  data,
+})
+
+export const fetchMembersFailure = (error: Error): FetchMembersFailure => ({
+  type: FETCH_MEMBERS_FAILURE,
+  error,
+})
+
+export const acceptMemberRequest = (data: { id: number; userId: number }): AcceptMemberRequest => ({
+  type: ACCEPT_MEMBER_REQUEST,
+  data,
+})
+
+export const acceptMemberSuccess = (data: MemberData): AcceptMemberSuccess => ({
+  type: ACCEPT_MEMBER_SUCCESS,
+  data,
+})
+
+export const acceptMemberFailure = (error: Error): AcceptMemberFailure => ({
+  type: ACCEPT_MEMBER_FAILURE,
   error,
 })
 
@@ -312,9 +436,18 @@ export type FetchingPosts =
   | ReturnType<typeof deletePostFailure>
   | ReturnType<typeof resetPostList>
   | ReturnType<typeof resetSearchList>
+  | ReturnType<typeof resetPostsState>
+  | ReturnType<typeof resetMembersState>
+  | ReturnType<typeof resetDeleteState>
   | ReturnType<typeof searchPostsRequest>
   | ReturnType<typeof searchPostsSuccess>
   | ReturnType<typeof searchPostsFailure>
+  | ReturnType<typeof fetchMembersRequest>
+  | ReturnType<typeof fetchMembersSuccess>
+  | ReturnType<typeof fetchMembersFailure>
+  | ReturnType<typeof acceptMemberRequest>
+  | ReturnType<typeof acceptMemberSuccess>
+  | ReturnType<typeof acceptMemberFailure>
 
 const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
   produce(state, (draft) => {
@@ -359,6 +492,19 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
         draft.searchPosts = []
         break
       }
+      case RESET_POSTS_STATE: {
+        draft.updatePostSuccess = false
+        draft.writePostSuccess = false
+        break
+      }
+      case RESET_MEMBERS_STATE: {
+        draft.members = []
+        break
+      }
+      case RESET_DELETE_STATE: {
+        draft.deletePostSuccess = false
+        break
+      }
       case WRITE_POST_REQUEST: {
         draft.writePostLoading = true
         draft.writePostSuccess = false
@@ -395,8 +541,10 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
         break
       }
       case DELETE_POST_SUCCESS: {
+        // const myPost = draft.posts.find((v) => v.posts.find((p) => p.id === action.data))
         draft.deletePostLoading = false
         draft.deletePostSuccess = true
+        // draft.posts.filter((v) => v !== myPost)
         break
       }
       case DELETE_POST_FAILURE: {
@@ -418,6 +566,38 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
       case SEARCH_POSTS_FAILURE: {
         draft.searchPostsSuccess = false
         draft.searchPostsFailure = action.error
+        break
+      }
+      case FETCH_MEMBERS_REQUEST: {
+        draft.fetchMembersLoading = true
+        draft.fetchMembersSuccess = false
+        break
+      }
+      case FETCH_MEMBERS_SUCCESS: {
+        draft.fetchMembersLoading = false
+        draft.fetchMembersSuccess = true
+        draft.members = draft.members.concat(action.data)
+        break
+      }
+      case FETCH_MEMBERS_FAILURE: {
+        draft.fetchMembersSuccess = false
+        draft.fetchMembersFailure = action.error
+        break
+      }
+      case ACCEPT_MEMBER_REQUEST: {
+        draft.acceptMemberRequest = true
+        draft.acceptMemberSuccess = false
+        break
+      }
+      case ACCEPT_MEMBER_SUCCESS: {
+        draft.acceptMemberRequest = false
+        draft.acceptMemberSuccess = true
+        // draft.members.find((v) => v.userId === action.data.userId).authorized
+        break
+      }
+      case ACCEPT_MEMBER_FAILURE: {
+        draft.acceptMemberSuccess = false
+        draft.acceptMemberFailure = action.error
         break
       }
       default:

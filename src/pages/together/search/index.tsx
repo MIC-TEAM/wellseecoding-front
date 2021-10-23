@@ -2,6 +2,7 @@ import TogetherSearchBar from 'components/Together/Header/Search'
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { RESET_SEARCH_LIST } from 'reducers/posts'
@@ -59,37 +60,47 @@ const Search = () => {
   }
 
   return (
-    <div css={searchWrap}>
-      <TogetherSearchBar onAddKeyword={handleAddKeyword} />
+    <>
+      <Head>
+        <title>검색하기 | wellseecoding</title>
+      </Head>
 
-      <div css={searchRecord}>
-        <h2>최근 검색어</h2>
-        {keywords.length ? (
-          <button type="button" onClick={handleClearKeywords}>
-            전체 삭제
-          </button>
-        ) : (
-          <button />
-        )}
-      </div>
+      <div css={searchWrap}>
+        <TogetherSearchBar onAddKeyword={handleAddKeyword} />
 
-      <ul css={searchList}>
-        {keywords.length ? (
-          keywords.map((k) => (
-            <li key={k.id}>
-              <p>
-                <Link href={`/together/search_result/${k.text}`}>{k.text}</Link>
-              </p>
-              <button className="removeBtn" type="button" onClick={() => handleRemoveKeyword(k.id)}>
-                <img src="/images/together/btn_delete.svg" alt="삭제" />
+        <div style={{ padding: '0px 20px' }}>
+          <div css={searchRecord}>
+            <h2>최근 검색어</h2>
+            {keywords.length ? (
+              <button type="button" onClick={handleClearKeywords}>
+                전체 삭제
               </button>
-            </li>
-          ))
-        ) : (
-          <div>최근 검색어가 없습니다</div>
-        )}
-      </ul>
-    </div>
+            ) : (
+              <button />
+            )}
+          </div>
+
+          <ul css={searchList}>
+            {keywords.length ? (
+              keywords.map((k) => (
+                <li key={k.id}>
+                  <p>
+                    <Link href={`/together/search_result/${k.text}`}>
+                      <a>{k.text}</a>
+                    </Link>
+                  </p>
+                  <button className="removeBtn" type="button" onClick={() => handleRemoveKeyword(k.id)}>
+                    <img src="/images/together/btn_delete.svg" alt="삭제" />
+                  </button>
+                </li>
+              ))
+            ) : (
+              <div style={{ fontSize: '16px' }}>최근 검색어가 없습니다</div>
+            )}
+          </ul>
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -139,5 +150,5 @@ const searchList = css`
   }
 `
 const searchWrap = css`
-  padding: 0 20px;
+  height: 97vh;
 `

@@ -8,6 +8,7 @@ import { RootState } from 'reducers'
 import { useCallback, useEffect } from 'react'
 import { FETCHING_POSTS_REQUEST, RESET_POST_LIST } from 'reducers/posts'
 import Loading from 'components/Loading'
+import Head from 'next/head'
 
 const Write = () => {
   const { posts, post } = useSelector((state: RootState) => state.posts)
@@ -35,10 +36,13 @@ const Write = () => {
 
   return (
     <>
+      <Head>
+        <title>함께해요 | wellseecoding</title>
+      </Head>
       <TogetherHeader />
       <main css={togetherBoard}>
         <div className="wrap">
-          {post ? posts.map((p, i) => <StudySection key={i} theme={p.theme} posts={p.posts} />) : <Loading />}
+          {posts ? posts.map((p, i) => <StudySection key={i} theme={p.theme} posts={p.posts} />) : <Loading />}
         </div>
       </main>
       <WriteButton />
@@ -50,12 +54,16 @@ const Write = () => {
 export default Write
 
 const togetherBoard = css`
+  background: #ffeee7;
   width: 100%;
-  height: 100vh;
+  height: 85vh;
+
+  @media (max-width: 420px) {
+    height: 80vh;
+    overflow: scroll;
+  }
 
   .wrap {
-    padding-bottom: 100px;
-    background: #ffeee7;
     height: 100%;
   }
 `

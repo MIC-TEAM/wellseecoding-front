@@ -4,8 +4,11 @@ import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useCallback, useEffect, useState } from 'react'
 import Alert from '@material-ui/lab/Alert'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { WRITE_POST_REQUEST } from 'reducers/posts'
+import { RootState } from 'reducers'
+
+/* 함께해요 글 작성 페이지 */
 
 const TogetherWrite = () => {
   const [title, setTitle] = useState<string | ''>('')
@@ -23,7 +26,14 @@ const TogetherWrite = () => {
 
   const dataArr = [title, period, schedule, qualification, summary, peopleNum, hashArr]
 
+  const { writePostSuccess } = useSelector((state: RootState) => state.posts)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (writePostSuccess) {
+      location.replace('/home')
+    }
+  }, [writePostSuccess])
 
   useEffect(() => {
     checkDataLength()
@@ -95,7 +105,6 @@ const TogetherWrite = () => {
         $HashWrapOuter?.remove()
       }
       setReady(false)
-      location.href = '/together'
     },
     [title, period, schedule, qualification, summary, peopleNum, hashArr, dispatch]
   )
@@ -190,7 +199,6 @@ ex) 프론트 n명, 백 n명
             </Alert>
           )}
         </form>
-
         <div css={footButtonWrapper}>
           <FootButton
             type="submit"
@@ -208,10 +216,6 @@ ex) 프론트 n명, 백 n명
 export default TogetherWrite
 
 const footButtonWrapper = css`
-  position: absolute;
-  bottom: 4.4em;
-  left: 0;
-  right: 0;
   padding: 0 20px;
   background: #fff;
   & > button:nth-of-type(1) {
@@ -221,7 +225,7 @@ const footButtonWrapper = css`
 
 const writeForm = css`
   width: 100%;
-  margin-bottom: 200px;
+  margin-bottom: 50px;
   input {
     width: 100%;
     font-weight: 500;
@@ -309,5 +313,7 @@ const hashDivrap = css`
 `
 
 const writeWrap = css`
+  border: 1px solid rgb(245, 245, 245);
+  padding-bottom: 20px;
   padding: 0 20px;
 `

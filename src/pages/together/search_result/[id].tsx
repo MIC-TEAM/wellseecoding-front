@@ -6,6 +6,7 @@ import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { SEARCH_POSTS_REQUEST } from 'reducers/posts'
+import Head from 'next/head'
 
 const SearchResult = () => {
   const router = useRouter()
@@ -16,8 +17,8 @@ const SearchResult = () => {
   const { searchPosts } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
-    if (typeof id === 'string' && searchPosts.length) {
-      // const stringId = encodeURI(id)
+    // 검색 데이터 잘못 보내고 있는 부분 수정함
+    if (typeof id === 'string' && !searchPosts.length) {
       searchKeyword(id)
     }
   }, [id])
@@ -34,24 +35,28 @@ const SearchResult = () => {
 
   return (
     <>
+      <Head>
+        <title>검색 결과 | wellseecoding</title>
+      </Head>
       <div css={searchWrap}>
-        <TogetherHeader />
+        <TogetherHeader optional={true} />
+        <div style={{ padding: '0 20px' }}>
+          <div css={searchWord}>
+            <h2>
+              <strong>{id}</strong> 을(를) 검색한 결과입니다.
+            </h2>
+          </div>
 
-        <div css={searchWord}>
-          <h2>
-            <strong>{id}</strong> 을(를) 검색한 결과입니다.
-          </h2>
+          <section>
+            {searchPosts.length ? (
+              searchPosts.map((item) => (
+                <SearchBox key={item.id} id={item.id} listTitle={item.name} hashTag={item.tags} />
+              ))
+            ) : (
+              <div>검색한 결과가 없습니다.</div>
+            )}
+          </section>
         </div>
-
-        <section>
-          {searchPosts.length ? (
-            searchPosts.map((item) => (
-              <SearchBox key={item.id} id={item.id} listTitle={item.name} hashTag={item.tags} />
-            ))
-          ) : (
-            <div>검색한 결과가 없습니다.</div>
-          )}
-        </section>
       </div>
     </>
   )
@@ -76,5 +81,5 @@ const searchWord = css`
 `
 
 const searchWrap = css`
-  padding: 0 20px;
+  height: 97vh;
 `

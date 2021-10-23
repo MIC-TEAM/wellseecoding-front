@@ -6,6 +6,7 @@ import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
 import { RootState } from 'reducers'
 import { DELETE_COMMENT_REQUEST } from 'reducers/comments'
 import { useRouter } from 'next/router'
+import usehandleOverFlow from 'hooks/useHandleOverflow'
 
 function CommentModal() {
   const dispatch = useDispatch()
@@ -14,12 +15,15 @@ function CommentModal() {
   const { isModal } = useSelector((state: RootState) => state.common)
   const { deleteCommentSuccess } = useSelector((state: RootState) => state.comments)
 
+  const { show } = usehandleOverFlow()
+
   useEffect(() => {
     if (deleteCommentSuccess) router.reload()
   }, [deleteCommentSuccess, router])
 
   const setModal = useCallback(
     (e) => {
+      show()
       e.stopPropagation()
       dispatch({
         type: CLOSE_ISMODAL,
@@ -28,11 +32,12 @@ function CommentModal() {
         type: CLOSE_EDITMODE,
       })
     },
-    [dispatch]
+    [dispatch, show]
   )
 
   const updatePost = useCallback(
     (e) => {
+      show()
       e.stopPropagation()
       dispatch({
         type: CLOSE_ISMODAL,
@@ -41,7 +46,7 @@ function CommentModal() {
         type: OPEN_EDITMODE,
       })
     },
-    [dispatch]
+    [dispatch, show]
   )
 
   const removePost = useCallback(

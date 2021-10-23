@@ -124,6 +124,38 @@ const AlarmList = ({ user, classRoom }: Props) => {
           {user}님이 {classRoom}에 가입 요청했어요!
         </p>
       </div>
+
+      <div>
+        {/* 가입 요청 */}
+        <div className="header">
+          <h4>
+            <img src="/images/common/alarm.svg" alt="" />
+            가입요청
+          </h4>
+
+          <span>3시간전</span>
+        </div>
+
+        <p>
+          {user}님이 {classRoom}에 가입 요청했어요!
+        </p>
+      </div>
+
+      <div>
+        {/* 가입 요청 */}
+        <div className="header">
+          <h4>
+            <img src="/images/common/alarm.svg" alt="" />
+            가입요청
+          </h4>
+
+          <span>3시간전</span>
+        </div>
+
+        <p>
+          {user}님이 {classRoom}에 가입 요청했어요!
+        </p>
+      </div>
     </div>
   )
 }

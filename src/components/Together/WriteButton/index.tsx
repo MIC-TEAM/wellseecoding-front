@@ -18,13 +18,13 @@ const WriteBtn = () => {
 export default WriteBtn
 
 export const WriteButton = css`
-  width: 100%;
-  left: 0;
+  right: 0;
   bottom: 0;
   z-index: 10;
   position: absolute;
   bottom: 90px;
   .writeWrap {
+    height: 95%;
     display: grid;
     justify-items: end;
     width: 100%;

@@ -1,8 +1,22 @@
+export type homeData = {
+  createdGroups: PostType[]
+  registeredGroups: PostType[]
+  appliedGroups: PostType[]
+  likedGroups: PostType[]
+}
+
 export type TodoType = {
   completed: boolean
   id: number
   title: string
   userId: number
+}
+
+export type MemberData = {
+  userId: number
+  postId: number
+  name: string
+  authorized: boolean
 }
 
 export type PostData = {
@@ -21,6 +35,7 @@ export type PostType = {
   qualification: string | ''
   size: string | ''
   tags: []
+  commentCount: number
 }
 
 /* 내가 쓴 글 보낼 때 필요한 타입 */

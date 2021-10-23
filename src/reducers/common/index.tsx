@@ -21,7 +21,7 @@ export const initialState: CommonState = {
 export const OPEN_ISMODAL = 'OPEN_ISMODAL' as const
 export const OPEN_EDITMODE = 'OPEN_EDITMODE' as const
 export const CLOSE_EDITMODE = 'CLOSE_EDITMODE' as const
-export const CLOSE_ISMODAL = 'CLOSE_ISEMODAL' as const
+export const CLOSE_ISMODAL = 'CLOSE_ISMODAL' as const
 
 // 액션에 대한 타입 정의;
 export interface OpenIsModal {
