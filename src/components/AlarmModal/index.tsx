@@ -6,15 +6,17 @@ interface onCloseProps {
   onClose: (event: React.MouseEvent) => void
   path: string
   text?: string
+  textOpt?: string
 }
 
-const AlarmModal = ({ onClose, path, text }: onCloseProps) => {
+const AlarmModal = ({ onClose, path, text, textOpt }: onCloseProps) => {
   return (
     <div className="modal" css={Modal} onClick={onClose}>
       <div className="modal__wrap">
         <div className="modal__box">
           <img src={path} alt="체크" />
           <h3>{text}</h3>
+          <p>{textOpt}</p>
         </div>
       </div>
     </div>

@@ -96,7 +96,12 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
         <RegisterModal onClose={() => setConfirmModal(false)} confirmResult={() => setConfirmResult(true)} />
       )}
       {isShowing && (
-        <AlarmModal onClose={toggleModal} text="가입 신청이 완료되었어요!" path="/images/alarmModal/checked.svg" />
+        <AlarmModal
+          onClose={toggleModal}
+          text="가입 신청이 완료되었어요!"
+          textOpt="2초 뒤에 자동으로 종료됩니다"
+          path="/images/alarmModal/checked.svg"
+        />
       )}
     </>
   )

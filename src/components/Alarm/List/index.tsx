@@ -168,8 +168,6 @@ AlarmList.defaultProps = {
 }
 
 const alarmListBox = css`
-  /* height: 85vh;
-  overflow-y: auto; */
   img {
     margin-right: 10px;
   }

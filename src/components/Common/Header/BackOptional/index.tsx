@@ -152,7 +152,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
               <>
                 {heartState ? (
                   <button type="button" onClick={() => filteringPost()}>
-                    <img src="/images/header/FilledHeart.svg" alt="좋아요" />
+                    <img src="/images/header/FilledHeart.svg" alt="좋아요 취소" />
                   </button>
                 ) : (
                   <button type="button" onClick={onLike}>

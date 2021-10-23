@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
-// import AlarmModal from 'components/AlarmModal'
 import MoreModal from 'components/Modal'
 
 type Props = {
@@ -44,10 +43,7 @@ const AlarmTitle = ({ num }: Props) => {
         </div>
       </div>
 
-      {isShowing && (
-        // <AlarmModal onClose={toggleModal} text="가입 신청이 완료되었어요!" path="/images/alarmModal/checked.svg" />
-        <MoreModal onClose={toggleModal} />
-      )}
+      {isShowing && <MoreModal onClose={toggleModal} />}
     </section>
   )
 }

@@ -10,7 +10,6 @@ import { PostType } from 'types'
 import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_POST_REQUEST } from 'reducers/posts'
 import { RootState } from 'reducers'
-import router from 'next/router'
 
 const EditForm = (props: PostType) => {
   const { id, name, deadline, schedule, summary, qualification, size, tags } = props
@@ -34,7 +33,7 @@ const EditForm = (props: PostType) => {
   const { updatePostSuccess } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
-    updatePostSuccess && router.push('/together')
+    updatePostSuccess && location.replace('/home')
   }, [updatePostSuccess])
 
   useEffect(() => {

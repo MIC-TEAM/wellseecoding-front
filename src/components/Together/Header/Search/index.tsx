@@ -19,7 +19,7 @@ function TogetherSearchBar({ onAddKeyword }: Props) {
     (e) => {
       e.preventDefault()
       // 로컬 스토리지에 해당 searchValue를 저장해야 한다
-      router.push(`/together/search_result/${searchValue}`).then(() => window.scrollTo(0, 0))
+      router.push(`/together/search_result/${searchValue}`)
       onAddKeyword(searchValue)
       setSearchValue('')
     },

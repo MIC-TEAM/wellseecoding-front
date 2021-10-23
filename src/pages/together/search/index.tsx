@@ -6,7 +6,6 @@ import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { RESET_SEARCH_LIST } from 'reducers/posts'
-// import { useRouter } from 'next/router'
 
 interface keyInterface {
   id: number
@@ -16,7 +15,6 @@ interface keyInterface {
 const Search = () => {
   const [keywords, setKeywords] = useState<keyInterface[]>([])
   const dispatch = useDispatch()
-  // const router = useRouter()
 
   const { searchPosts } = useSelector((state: RootState) => state.posts)
 
@@ -68,12 +66,7 @@ const Search = () => {
       </Head>
 
       <div css={searchWrap}>
-        {/* <div style={{ display: 'flex', alignItems: 'center' }}>
-        <button type="button" className="back" onClick={() => router.back()}>
-          <img src="/images/header/back.svg" alt="뒤로가기" />
-        </button> */}
         <TogetherSearchBar onAddKeyword={handleAddKeyword} />
-        {/* </div> */}
 
         <div style={{ padding: '0px 20px' }}>
           <div css={searchRecord}>
@@ -102,7 +95,7 @@ const Search = () => {
                 </li>
               ))
             ) : (
-              <div>최근 검색어가 없습니다</div>
+              <div style={{ fontSize: '16px' }}>최근 검색어가 없습니다</div>
             )}
           </ul>
         </div>
