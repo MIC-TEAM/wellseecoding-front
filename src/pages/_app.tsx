@@ -8,6 +8,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
+        <link rel="shortcut icon" href="/images/icon/dog.svg" />
         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
         <script
           type="text/javascript"
