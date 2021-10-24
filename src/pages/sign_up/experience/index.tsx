@@ -147,19 +147,26 @@ const Experience = () => {
               </div>
             ))}
 
-          {btnShow ? (
-            <button css={companyAdd} onClick={onAddBtnClick} type="button">
-              <span>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
-                  <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
-                </svg>
-              </span>
-              <span>회사 추가</span>
-            </button>
-          ) : (
-            setBtnShow
-          )}
+          <div css={companyAddWrap}>
+            {btnShow ? (
+              <button
+                css={companyAdd}
+                onClick={onAddBtnClick}
+                type="button"
+                disabled={!(isRole && isTechnology && isYears)}
+              >
+                <span>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
+                    <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
+                  </svg>
+                </span>
+                <span>회사 추가</span>
+              </button>
+            ) : (
+              setBtnShow
+            )}
+          </div>
         </div>
 
         <div css={footButtonWrapper}>
@@ -223,6 +230,23 @@ const infoWrap = css`
   .delete {
     font-size: 30px;
     float: right;
+  }
+`
+
+const companyAddWrap = css`
+  button:disabled,
+  button[disabled] {
+    background-color: #fff;
+    box-shadow: none;
+    border: 1px solid #eee;
+    span {
+      color: #d3cfcc;
+      svg {
+        rect {
+          fill: #d3cfcc;
+        }
+      }
+    }
   }
 `
 

@@ -9,6 +9,7 @@ import axios from 'axios'
 import { HiX } from 'react-icons/Hi'
 import { REGISTER_LINK_URL } from 'apis'
 import { myConfig } from 'sagas'
+import { useEffect } from 'react'
 
 const Portfolio = () => {
   const router = useRouter()
@@ -29,22 +30,20 @@ const Portfolio = () => {
   // 포트폴리오 컴포넌트가 4개 이상일 경우 회사추가 버튼 안보이도록
   const [btnShow, setBtnShow] = useState<any>(true)
 
+  useEffect(() => {
+    console.log('valueArr------->', inputList)
+  }, [inputList])
+
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      alert(`name: ${project}, link: ${link}, description: ${desc}`)
+
       try {
         await axios
           .put(
             REGISTER_LINK_URL,
             {
-              links: [
-                {
-                  name: project,
-                  link: link,
-                  description: desc,
-                },
-              ],
+              links: inputList,
             },
             myConfig
           )
@@ -58,9 +57,10 @@ const Portfolio = () => {
         console.error(err)
       }
     },
-    [project, link, desc, router]
+    [router, inputList]
   )
 
+  // 프로젝트 이름
   const onChangeProject = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setProject(e.target.value)
 
@@ -71,6 +71,7 @@ const Portfolio = () => {
     }
   }, [])
 
+  // 링크 (깃허브 또는 결과물 URL)
   const onChangeLink = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setLink(e.target.value)
 
@@ -81,6 +82,7 @@ const Portfolio = () => {
     }
   }, [])
 
+  // 설명
   const onChangeDesc = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setDesc(e.target.value)
 
@@ -91,7 +93,7 @@ const Portfolio = () => {
     }
   }, [])
 
-  // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
+  // 나중에 쓸게요 버튼 ---> 프로필 업로드 페이지로 이동
   const NextPage = useCallback(() => {
     router.push('/sign_up/profile_upload')
   }, [router])
@@ -100,14 +102,24 @@ const Portfolio = () => {
   const onAddBtnClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-      console.log('추가됐습니다.', inputList)
-      setInputList([inputList, ...inputList])
+      e.stopPropagation()
 
+      // links 배열에 넣어줄 객체
+      const newProtfolio = {
+        name: project,
+        link: link,
+        desc: desc,
+      }
+
+      setInputList([...inputList, newProtfolio])
+      console.log('추가됐습니다.', newProtfolio)
+
+      // 포트폴리오 입력란이 최대 3개가 되면 포트폴리오 추가 버튼 안보이도록
       if (inputList.length === 2) {
         setBtnShow(false)
       }
     },
-    [inputList]
+    [inputList, link, project, desc]
   )
 
   // 삭제 버튼 클릭시
@@ -115,6 +127,7 @@ const Portfolio = () => {
     console.log('삭제되었습니다.', inputList)
     setInputList([...inputList.slice(0, index), ...inputList.slice(index + 1, inputList.length)])
 
+    // 3개 미만이면 포트폴리오 추가 버튼 보이도록
     if (inputList.length > 1) {
       setBtnShow(true)
     }
@@ -124,7 +137,7 @@ const Portfolio = () => {
     <>
       <Back />
 
-      <Title title="포트폴리오를 올려주세요!" className="loginMt" />
+      <Title title="포트폴리오를 올려주세요! (최대 4개)" className="loginMt" />
 
       <form css={infoWrap} onSubmit={onSubmit}>
         <div className="formBox">
@@ -147,19 +160,26 @@ const Portfolio = () => {
               </div>
             ))}
 
-          {btnShow ? (
-            <button css={companyAdd} type="button" onClick={onAddBtnClick}>
-              <span>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
-                  <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
-                </svg>
-              </span>
-              <span>포트폴리오 링크 추가</span>
-            </button>
-          ) : (
-            setBtnShow
-          )}
+          <div css={companyAddWrap}>
+            {btnShow ? (
+              <button
+                css={companyAdd}
+                type="button"
+                onClick={onAddBtnClick}
+                disabled={!(isProject && isLink && isDesc)}
+              >
+                <span>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
+                    <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
+                  </svg>
+                </span>
+                <span>포트폴리오 링크 추가</span>
+              </button>
+            ) : (
+              setBtnShow
+            )}
+          </div>
         </div>
 
         <div css={footButtonWrapper}>
@@ -226,6 +246,23 @@ const infoWrap = css`
   }
 `
 
+const companyAddWrap = css`
+  button:disabled,
+  button[disabled] {
+    background-color: #fff;
+    box-shadow: none;
+    border: 1px solid #eee;
+    span {
+      color: #d3cfcc;
+      svg {
+        rect {
+          fill: #d3cfcc;
+        }
+      }
+    }
+  }
+`
+
 const companyAdd = css`
   background: #ffffff;
   border: 1px solid #ffeee7;
@@ -234,6 +271,7 @@ const companyAdd = css`
   border-radius: 10px;
   width: 100%;
   padding: 15px 0;
+
   span {
     font-weight: 500;
     font-size: 18px;
