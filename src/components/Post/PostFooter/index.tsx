@@ -55,9 +55,10 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
     if (alreadyRegisteredModal) {
       setTimeout(() => {
         setAlreadyRegisteredModal(false)
+        router.reload()
       }, 2000)
     }
-  }, [alreadyRegisteredModal])
+  }, [alreadyRegisteredModal, router])
 
   /*  registerSuccess 즉, 가입 로직이 성공적으로 실행됐다면, 새로고침한다 */
   useEffect(() => {
@@ -86,14 +87,17 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
   }
 
   /* 가입 신청하는 함수 */
+  /* 이미 가입 신청한 모임일 경우, 백엔드 단에서 Bad Request(400)를 내려준다 */
+  /* 200이 아닌 경우를 캐치하여, 이미 가입 신청한 모임이라는 모달을 띄어줄 것이다 */
   const onRegister = useCallback(async () => {
     setConfirmModal(true)
     setConfirmModal(false)
     try {
       await axios
         .post(`/api/v1/posts/${Number(uniqId)}/members`, {}, myConfig)
-        .then((res) =>
-          res.status === 200 ? toggleModal() : alert('잘못된 접근방법입니다 잠시 후에 다시 시도해주세요')
+        .then((res) => (res.status === 200 ? toggleModal() : alert('다시 시도해보세요!')))
+        .catch((err) =>
+          err.response.status === 400 ? setAlreadyRegisteredModal(true) : console.log('err!', err.response)
         )
     } catch (err) {
       console.error(err)
