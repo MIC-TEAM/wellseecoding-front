@@ -11,6 +11,7 @@ function Home() {
   const [decodedUserName, setDecodedUserName] = useState<string>('')
 
   const [likes, setLikes] = useState([])
+  const [registeredGroup, setRegisteredGroup] = useState([])
 
   // 1차적으로 복호화했을 때 아직 이름이 없어서, 해당 정보를 어떻게 저장할 지는 협의해봐야 할 것 같네요
 
@@ -40,15 +41,24 @@ function Home() {
 
   // ④ 토큰이 있다면 좋아요한 게시물이 있는지 요청을 보낸다
   useEffect(() => {
-    if (typeof window !== 'undefined') getLikes()
+    if (typeof window !== 'undefined') {
+      Promise.allSettled([getLikesGroup(), getRegisteredGroup()])
+    }
   }, [])
 
-  // ⑤ state에 저장한 Likes 확인
+  // ⑤ state에 저장한 좋아요 한 게시물 확인
   useEffect(() => {
     if (likes.length) {
       localStorage.setItem('myLikes', JSON.stringify(likes))
     }
   }, [likes])
+
+  // ⑥ state에 저장한 가입된 그룹 확인
+  useEffect(() => {
+    if (registeredGroup.length) {
+      localStorage.setItem('registered', JSON.stringify(registeredGroup))
+    }
+  }, [registeredGroup])
 
   /* JWT 토큰을 디코딩(복호화)한다. */
   const parseJwt = (token: any) => {
@@ -79,11 +89,19 @@ function Home() {
     }
   }
 
-  const getLikes = useCallback(async () => {
+  const getLikesGroup = useCallback(async () => {
     try {
       await axios.get('/api/v1/users/likes', myConfig).then((res) => {
         setLikes(res.data.likes)
       })
+    } catch (err) {
+      console.log(err)
+    }
+  }, [])
+
+  const getRegisteredGroup = useCallback(async () => {
+    try {
+      await axios.get('/api/v1/users/groups/registered', myConfig).then((res) => setRegisteredGroup(res.data.groups))
     } catch (err) {
       console.log(err)
     }

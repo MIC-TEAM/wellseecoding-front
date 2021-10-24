@@ -38,6 +38,7 @@ const Home = () => {
     }
   }, [dispatch, writePostSuccess])
 
+  // homePosts 데이터가 없다면 loadHomePosts 호출
   useEffect(() => {
     !homePosts.length && loadHomePosts()
   }, [])
@@ -99,11 +100,6 @@ const Home = () => {
                   ) : (
                     <StudySectionOpt key={i + 1} theme={'만든 '} />
                   )}
-                  {v.likedGroups.length ? (
-                    <StudySectionOpt key={i + 2} theme={'좋아요 한 '} posts={v.likedGroups} />
-                  ) : (
-                    <StudySectionOpt key={i + 2} theme={'좋아요 한 '} />
-                  )}
                   {v.registeredGroups.length ? (
                     <StudySectionOpt key={i + 3} theme={'가입한 '} posts={v.registeredGroups} />
                   ) : (
@@ -113,6 +109,11 @@ const Home = () => {
                     <StudySectionOpt key={i + 4} theme={'가입 신청한 '} posts={v.appliedGroups} />
                   ) : (
                     <StudySectionOpt key={i + 4} theme={'가입 신청한 '} />
+                  )}
+                  {v.likedGroups.length ? (
+                    <StudySectionOpt key={i + 2} theme={'좋아요 한 '} posts={v.likedGroups} />
+                  ) : (
+                    <StudySectionOpt key={i + 2} theme={'좋아요 한 '} />
                   )}
                 </div>
               ))
