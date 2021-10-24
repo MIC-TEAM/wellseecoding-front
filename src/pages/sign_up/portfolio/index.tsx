@@ -30,10 +30,6 @@ const Portfolio = () => {
   // 포트폴리오 컴포넌트가 4개 이상일 경우 회사추가 버튼 안보이도록
   const [btnShow, setBtnShow] = useState<any>(true)
 
-  useEffect(() => {
-    console.log('valueArr------->', inputList)
-  }, [inputList])
-
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -102,7 +98,6 @@ const Portfolio = () => {
   const onAddBtnClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-      e.stopPropagation()
 
       // links 배열에 넣어줄 객체
       const newProtfolio = {

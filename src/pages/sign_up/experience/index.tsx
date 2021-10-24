@@ -3,7 +3,7 @@ import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Title from 'components/Common/Title'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { HiX } from 'react-icons/Hi'
@@ -95,14 +95,22 @@ const Experience = () => {
   const onAddBtnClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
-      console.log('추가됐습니다.', inputList)
-      setInputList([inputList, ...inputList])
+
+      // works 배열에 넣어줄 객체
+      const newExperence = {
+        name: role,
+        link: technology,
+        desc: years,
+      }
+
+      setInputList([...inputList, newExperence])
+      console.log('추가됐습니다.', newExperence)
 
       if (inputList.length === 2) {
         setBtnShow(false)
       }
     },
-    [inputList]
+    [role, technology, years, inputList]
   )
 
   // 삭제 버튼 클릭시
