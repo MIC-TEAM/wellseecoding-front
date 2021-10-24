@@ -38,6 +38,7 @@ const Write = () => {
     <>
       <Head>
         <title>함께해요 | wellseecoding</title>
+        <meta name="description" content="랜덤 키워드를 바탕으로 게시물을 불러오는 함께해요 페이지입니다." />
       </Head>
       <TogetherHeader />
       <main css={togetherBoard}>

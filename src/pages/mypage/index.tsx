@@ -5,10 +5,15 @@ import AboutMe from 'components/MyPage/AboutMe'
 import Portfolio from 'components/MyPage/Portfolio'
 import Career from 'components/MyPage/Career'
 import LikePost from 'components/MyPage/LikePost'
+import Head from 'next/head'
 
 const MyPage = () => {
   return (
     <>
+      <Head>
+        <title>마이 페이지 | wellseecoding</title>
+        <meta name="description" content="마이 페이지입니다." />
+      </Head>
       <main css={mypageWrap}>
         <div css={profilePadding}>
           <Profile

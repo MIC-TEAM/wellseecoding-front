@@ -80,6 +80,7 @@ const Home = () => {
     <>
       <Head>
         <title>홈 | wellseecoding</title>
+        <meta name="description" content="개인 별 현황을 볼 수 있는 메인(홈) 페이지입니다." />
       </Head>
       <HomeHeader />
 

@@ -4,6 +4,7 @@ import FooterMenu from 'components/Common/FooterMenu'
 import SplashScreen from 'components/SplashScreen'
 import { useCallback, useEffect, useState } from 'react'
 import { myConfig } from 'sagas'
+import Head from 'next/head'
 
 function Home() {
   const [tokenId, setTokenId] = useState<string>('')
@@ -109,6 +110,10 @@ function Home() {
 
   return (
     <>
+      <Head>
+        <title>웰시코딩 | wellseecoding</title>
+        <meta name="description" content="홈, 메인 화면입니다" />
+      </Head>
       <div css={container}>
         <SplashScreen />
       </div>

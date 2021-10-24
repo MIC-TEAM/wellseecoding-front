@@ -22,6 +22,7 @@ const Alarm = () => {
     <div>
       <Head>
         <title>알림 | wellseecoding</title>
+        <meta name="description" content="알림 페이지입니다." />
       </Head>
       <Back />
       <AlarmTitle num={2} />

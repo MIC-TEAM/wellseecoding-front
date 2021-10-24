@@ -37,6 +37,7 @@ const SearchResult = () => {
     <>
       <Head>
         <title>검색 결과 | wellseecoding</title>
+        <meta name="description" content="검색 결과를 나타내는 페이지입니다." />
       </Head>
       <div css={searchWrap}>
         <TogetherHeader optional={true} />
