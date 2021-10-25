@@ -16,16 +16,177 @@ const SelfIntroduction = () => {
   const [aboutMe, setAboutMe] = useState<string>('')
   const [skill, setSkill] = useState<string>('')
 
+  // 직무 선택시 다음으로 넘어갈 수 있도록
+  const [isChecked, setIsChecked] = useState<boolean>(false)
+
+  // 현재 직무
+  const [job, setJob] = useState('')
+
   // 유효성 검사
   const [isAboutMe, setIsAboutMe] = useState<boolean>(false)
   const [isSkill, setIsSkill] = useState<boolean>(false)
 
   const router = useRouter()
 
+  // 직무선택
+  // 서버/백엔드
+  const onChangeBackEnd = useCallback(() => {
+    const jobBackEnd = document.getElementsByClassName('jobBackEnd')
+    const jobArr = jobBackEnd
+
+    if (jobArr) {
+      setJob('서버/백엔드')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // 프론트엔드
+  const onChangeFrontEnd = useCallback(() => {
+    const jobFrontEnd = document.getElementsByClassName('jobFrontEnd')
+    const jobArr = jobFrontEnd
+
+    if (jobArr) {
+      setJob('프론트엔드')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // 웹 풀스택
+  const onChangeFull = useCallback(() => {
+    const jobFull = document.getElementsByClassName('jobFull')
+    const jobArr = jobFull
+
+    if (jobArr) {
+      setJob('웹 풀스택')
+      setIsChecked(true)
+    }
+  }, [])
+
+  //모바일 앱
+  const onChangeMobile = useCallback(() => {
+    const jobMobile = document.getElementsByClassName('jobMobile')
+    const jobArr = jobMobile
+
+    if (jobArr) {
+      setJob('모바일 앱')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // 게임 서버
+  const onChangeGame = useCallback(() => {
+    const jobGame = document.getElementsByClassName('jobGame')
+    const jobArr = jobGame
+
+    if (jobArr) {
+      setJob('게임 서버')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // 게임 클라이언트
+  const onChangeGameClient = useCallback(() => {
+    const jobGameClient = document.getElementsByClassName('jobGameClient')
+    const jobArr = jobGameClient
+
+    if (jobArr) {
+      setJob('게임 클라이언트')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // 데이터 엔지니어
+  const onChangeDBA = useCallback(() => {
+    const jobDBA = document.getElementsByClassName('jobDBA')
+    const jobArr = jobDBA
+
+    if (jobArr) {
+      setJob('데이터 엔지니어(DBA)')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // 개발 매니저
+  const onChangePM = useCallback(() => {
+    const jobPM = document.getElementsByClassName('jobPM')
+    const jobArr = jobPM
+
+    if (jobArr) {
+      setJob('개발 매니저(PM)')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // devops/시스템 엔지니어
+  const onChangeDevops = useCallback(() => {
+    const jobDevops = document.getElementsByClassName('jobDevops')
+    const jobArr = jobDevops
+
+    if (jobArr) {
+      setJob('devops/시스템 엔지니어')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // 보안
+  const onChangeSecurity = useCallback(() => {
+    const jobSecurity = document.getElementsByClassName('jobSecurity')
+    const jobArr = jobSecurity
+
+    if (jobArr) {
+      setJob('보안')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // QA
+  const onChangeQA = useCallback(() => {
+    const jobQA = document.getElementsByClassName('jobQA')
+    const jobArr = jobQA
+
+    if (jobArr) {
+      setJob('QA')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // 인공지능/머신러닝
+  const onChangeAi = useCallback(() => {
+    const jobAi = document.getElementsByClassName('jobAi')
+    const jobArr = jobAi
+
+    if (jobArr) {
+      setJob('인공지능/머신러닝')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // HW/임베디드
+  const onChangeHW = useCallback(() => {
+    const jobHW = document.getElementsByClassName('jobHW')
+    const jobArr = jobHW
+
+    if (jobArr) {
+      setJob('HW/임베디드')
+      setIsChecked(true)
+    }
+  }, [])
+
+  // SW/솔루션
+  const onChangeSW = useCallback(() => {
+    const jobSW = document.getElementsByClassName('jobSW')
+    const jobArr = jobSW
+
+    if (jobArr) {
+      setJob('SW/솔루션')
+      setIsChecked(true)
+    }
+  }, [])
+
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      alert(`자기소개: ${aboutMe}, 기술스택: ${skill}`)
+      alert(`자기소개: ${aboutMe}, 기술스택: ${skill}, 현재직무: ${job}`)
       try {
         await axios.put(REGISTER_ABOUT_ME_URL, {
           aboutMe: aboutMe,
@@ -52,7 +213,7 @@ const SelfIntroduction = () => {
         console.error(err)
       }
     },
-    [aboutMe, skill, router]
+    [aboutMe, skill, router, job]
   )
 
   const onChangeAboutMe = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,24 +262,28 @@ const SelfIntroduction = () => {
             <p>1가지만 선택*</p>
           </div>
 
-          <JobButton job_text="서버/백엔드" />
-          <JobButton job_text="프론트엔드" />
-          <JobButton job_text="웹 풀스택" />
-          <JobButton job_text="모바일 앱" />
-          <JobButton job_text="게임 서버" />
-          <JobButton job_text="게임 클라이언트" />
-          <JobButton job_text="데이터 엔지니어(DBA)" />
-          <JobButton job_text="개발 매니저(PM)" />
-          <JobButton job_text="devops/시스템 엔지니어" />
-          <JobButton job_text="보안" />
-          <JobButton job_text="QA" />
-          <JobButton job_text="인공지능/머신러닝" />
-          <JobButton job_text="HW/임베디드" />
-          <JobButton job_text="SW/솔루션" />
+          <JobButton onClick={onChangeBackEnd} job_text="서버/백엔드" className="jobBackEnd" />
+          <JobButton onClick={onChangeFrontEnd} job_text="프론트엔드" className="jobFrontEnd" />
+          <JobButton onClick={onChangeFull} job_text="웹 풀스택" className="jobFull" />
+          <JobButton onClick={onChangeMobile} job_text="모바일 앱" className="jobMobile" />
+          <JobButton onClick={onChangeGame} job_text="게임 서버" className="jobGame" />
+          <JobButton onClick={onChangeGameClient} job_text="게임 클라이언트" className="jobGameClient" />
+          <JobButton onClick={onChangeDBA} job_text="데이터 엔지니어(DBA)" className="jobDBA" />
+          <JobButton onClick={onChangePM} job_text="개발 매니저(PM)" className="jobPM" />
+          <JobButton onClick={onChangeDevops} job_text="devops/시스템 엔지니어" className="jobDevops" />
+          <JobButton onClick={onChangeSecurity} job_text="보안" className="jobSecurity" />
+          <JobButton onClick={onChangeQA} job_text="QA" className="jobQA" />
+          <JobButton onClick={onChangeAi} job_text="인공지능/머신러닝" className="jobAi" />
+          <JobButton onClick={onChangeHW} job_text="HW/임베디드" className="jobHW" />
+          <JobButton onClick={onChangeSW} job_text="SW/솔루션" className="jobSW" />
         </div>
 
         <div css={footButtonWrapper}>
-          <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!(isAboutMe && isSkill)}>
+          <FootButton
+            type="submit"
+            footButtonType={FootButtonType.ACTIVATION}
+            disabled={!(isAboutMe && isSkill && isChecked)}
+          >
             다음
           </FootButton>
         </div>
@@ -130,8 +295,8 @@ const SelfIntroduction = () => {
 export default SelfIntroduction
 
 const footButtonWrapper = css`
-  position: absolute;
-  bottom: 4.4em;
+  position: fixed;
+  bottom: 0;
   left: 0;
   right: 0;
   padding: 0 20px;

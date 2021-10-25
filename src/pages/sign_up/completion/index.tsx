@@ -8,7 +8,7 @@ const SignUpCompletion = () => {
   const router = useRouter()
 
   const NextHome = () => {
-    router.push('/sign_up/self_introduction')
+    router.push('/home')
   }
 
   return (

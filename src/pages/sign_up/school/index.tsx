@@ -24,7 +24,6 @@ const SelfIntroduction = () => {
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      alert(`어느대학: ${degree}, 전공: ${major}, 졸업여부: ${isChecked}`)
       try {
         await axios
           .put(
@@ -77,7 +76,6 @@ const SelfIntroduction = () => {
 
   // 졸업 체크박스
   const onChangeValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`🥳 ${e.target.value}`)
     setIsChecked(e.target.value)
   }, [])
 

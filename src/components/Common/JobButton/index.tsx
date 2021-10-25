@@ -2,11 +2,13 @@ import { css } from '@emotion/react'
 
 type Props = {
   job_text: string
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  className: string
 }
 
-function JobButton({ job_text }: Props) {
+function JobButton({ job_text, onClick, className }: Props) {
   return (
-    <button type="button" css={hashTag}>
+    <button type="button" css={hashTag} onClick={onClick} className={className}>
       <p>#{job_text}</p>
     </button>
   )

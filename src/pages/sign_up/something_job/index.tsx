@@ -53,7 +53,6 @@ const SomethingJob = () => {
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      alert(`직업: ${value}`)
       try {
         await axios
           .put(

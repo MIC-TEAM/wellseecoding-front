@@ -97,7 +97,6 @@ const Experience = () => {
       }
 
       setInputList([...inputList, newExperence])
-      console.log('추가됐습니다.', newExperence)
 
       if (inputList.length === 2) {
         setBtnShow(false)
@@ -108,7 +107,6 @@ const Experience = () => {
 
   // 삭제 버튼 클릭시
   const onDeleteBtnClick = (index: any) => {
-    console.log('삭제되었습니다.', inputList)
     setInputList([...inputList.slice(0, index), ...inputList.slice(index + 1, inputList.length)])
 
     if (inputList.length > 1) {
@@ -132,7 +130,7 @@ const Experience = () => {
           <div css={info} id="experienceInputBox">
             <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
             <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
-            <TextFieldProfile type="number" text="경력을 입력해주세요" onChange={onChangeYears} />
+            <TextFieldProfile type="number" text="경력을 입력해주세요 (숫자로만 기재)" onChange={onChangeYears} />
           </div>
 
           {inputList &&
@@ -144,7 +142,7 @@ const Experience = () => {
 
                 <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
                 <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
-                <TextFieldProfile type="number" text="경력을 입력해주세요" onChange={onChangeYears} />
+                <TextFieldProfile type="number" text="경력을 입력해주세요 (숫자로만 기재)" onChange={onChangeYears} />
               </div>
             ))}
 
@@ -171,16 +169,18 @@ const Experience = () => {
         </div>
 
         <div css={footButtonWrapper}>
-          <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
-            나중에 쓸게요~
-          </FootButton>
-          <FootButton
-            type="submit"
-            footButtonType={FootButtonType.ACTIVATION}
-            disabled={!(isRole && isTechnology && isYears)}
-          >
-            다음
-          </FootButton>
+          <div className="wrap">
+            <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
+              나중에 쓸게요~
+            </FootButton>
+            <FootButton
+              type="submit"
+              footButtonType={FootButtonType.ACTIVATION}
+              disabled={!(isRole && isTechnology && isYears)}
+            >
+              다음
+            </FootButton>
+          </div>
         </div>
       </form>
     </>
@@ -190,23 +190,26 @@ const Experience = () => {
 export default Experience
 
 const footButtonWrapper = css`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 0 20px;
+  padding: 0 20px 20px;
   background-color: #fff;
   button:disabled,
   button[disabled] {
     background-color: #d3cfcc;
     color: #ffffff;
   }
-  & > button:nth-of-type(1) {
-    margin-bottom: 11px;
-    margin-top: 20px;
-  }
-  & > button:nth-of-type(2) {
-    margin-bottom: 4.4em;
+
+  .wrap {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    & > button:nth-of-type(1) {
+      margin-bottom: 11px;
+      margin-top: 20px;
+    }
   }
 `
 
@@ -225,6 +228,7 @@ const info = css`
 `
 const infoWrap = css`
   padding: 0 20px;
+  padding-bottom: 1rem;
   .formBox {
     margin-bottom: 250px;
   }
