@@ -10,15 +10,27 @@ import Head from 'next/head'
 import { FETCHING_HOME_POSTS_REQUEST } from 'reducers/home'
 import Loading from 'components/Loading'
 import StudySectionOpt from 'components/Together/StudySectionOption'
+import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
 
 const Home = () => {
   const { post, deletePostSuccess, writePostSuccess } = useSelector((state: RootState) => state.posts)
   const { homePosts } = useSelector((state: RootState) => state.home)
+  const { notifications } = useSelector((state: RootState) => state.notifications)
   const dispatch = useDispatch()
 
   /* 로컬 스토리지에 저장된 이름과 고유 id */
   const [name, setName] = useState<string | null>(null)
-  const [userId, setUserId] = useState(0)
+
+  /* 알림 유무를 판단할 state */
+  const [notis, setNotis] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (!notifications.length) fetchNotifications()
+  }, [])
+
+  useEffect(() => {
+    if (notifications.length) setNotis(true)
+  }, [notifications])
 
   // deletePostSuccess를 false로 초기화
   useEffect(() => {
@@ -53,10 +65,6 @@ const Home = () => {
     post.length && resetPost()
   }, [post])
 
-  useEffect(() => {
-    if (name && userId) console.log('name', name, 'userId', userId)
-  }, [name, userId])
-
   const loadHomePosts = useCallback(() => {
     dispatch({
       type: FETCHING_HOME_POSTS_REQUEST,
@@ -71,10 +79,15 @@ const Home = () => {
 
   const getLocalInfo = useCallback(() => {
     const myname = localStorage.getItem('userName')
-    const myId = localStorage.getItem('id')
     setName(myname)
-    setUserId(Number(myId))
   }, [])
+
+  const fetchNotifications = useCallback(() => {
+    console.log('FETCHING_NOTIS_REQUEST !')
+    dispatch({
+      type: FETCHING_NOTIS_REQUEST,
+    })
+  }, [dispatch])
 
   return (
     <>
@@ -82,7 +95,7 @@ const Home = () => {
         <title>홈 | wellseecoding</title>
         <meta name="description" content="개인 별 현황을 볼 수 있는 메인(홈) 페이지입니다." />
       </Head>
-      <HomeHeader />
+      <HomeHeader notis={notis} />
 
       <div css={wrap}>
         {homePosts.length ? (
