@@ -32,19 +32,12 @@ const Experience = () => {
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      alert(`role: ${role}, technology: ${technology}, years: ${years}`)
       try {
         await axios
           .put(
             REGISTER_WORK_URL,
             {
-              works: [
-                {
-                  role: role,
-                  technology: technology,
-                  years: years,
-                },
-              ],
+              works: inputList,
             },
             myConfig
           )
@@ -58,7 +51,7 @@ const Experience = () => {
         console.error(err)
       }
     },
-    [role, technology, years, router]
+    [inputList, router]
   )
 
   const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
