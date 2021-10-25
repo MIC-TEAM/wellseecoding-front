@@ -7,8 +7,9 @@ import { Alert } from '@material-ui/lab'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import { Common } from 'styles/common'
 import { PostType } from 'types'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { UPDATE_POST_REQUEST } from 'reducers/posts'
+import { RootState } from 'reducers'
 
 const EditForm = (props: PostType) => {
   const { id, name, deadline, schedule, summary, qualification, size, tags } = props
@@ -29,6 +30,11 @@ const EditForm = (props: PostType) => {
   const dataArr = [editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr]
 
   const dispatch = useDispatch()
+  const { updatePostSuccess } = useSelector((state: RootState) => state.posts)
+
+  useEffect(() => {
+    updatePostSuccess && location.replace('/home')
+  }, [updatePostSuccess])
 
   useEffect(() => {
     checkDataLength()
@@ -102,7 +108,6 @@ const EditForm = (props: PostType) => {
           tags: editHashArr,
         },
       })
-      location.replace('/together')
     },
     [id, editTitle, editPeriod, editSchedule, editQualification, editSummary, editPeopleNum, editHashArr, dispatch]
   )
@@ -204,17 +209,16 @@ ex) 프론트 n명, 백 n명
               해시태그 등록 시에 스페이스바를 사용하실 수 없습니다.
             </Alert>
           )}
+          <div css={footButtonWrapper}>
+            <FootButton
+              type="submit"
+              footButtonType={ready ? FootButtonType.ACTIVATION : FootButtonType.DISABLE}
+              onClick={onSubmit}
+            >
+              수정하기
+            </FootButton>
+          </div>
         </form>
-
-        <div css={footButtonWrapper}>
-          <FootButton
-            type="submit"
-            footButtonType={ready ? FootButtonType.ACTIVATION : FootButtonType.DISABLE}
-            onClick={onSubmit}
-          >
-            수정하기
-          </FootButton>
-        </div>
       </main>
     </div>
   )
@@ -229,6 +233,7 @@ const modalWrap = css`
   z-index: 10500;
   position: absolute;
   top: 0;
+  overflow-y: auto;
 `
 
 const footButtonWrapper = css`
@@ -238,16 +243,14 @@ const footButtonWrapper = css`
   right: 0;
   padding: 0 20px;
   background: #fff;
+  padding-top: 40px;
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
-  }
-
-  @media (max-width: 375px) {
-    bottom: none !important;
   }
 `
 
 const writeForm = css`
+  height: 90%;
   width: 100%;
   /* margin-bottom: 100px; */
   input {
@@ -337,5 +340,6 @@ const hashDivrap = css`
 `
 
 const writeWrap = css`
+  height: 95%;
   padding: 0 20px;
 `

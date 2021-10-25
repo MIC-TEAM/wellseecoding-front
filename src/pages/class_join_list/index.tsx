@@ -1,9 +1,13 @@
 import { css } from '@emotion/react'
 import JoinHeader from 'components/Common/Header/Back'
+import Head from 'next/head'
 
 const ClassJoinList = () => {
   return (
     <div>
+      <Head>
+        <title>가입 현황 | wellseecoding</title>
+      </Head>
       <JoinHeader text="가입신청 목록" />
 
       <ul css={Classjoin}>

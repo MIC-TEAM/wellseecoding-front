@@ -18,42 +18,72 @@ export const initialState: CommonState = {
 }
 
 // 액션 정의
-export const SET_ISMODAL = 'SET_ISMODAL' as const
-export const SET_EDITMODE = 'SET_EDITMODE' as const
+export const OPEN_ISMODAL = 'OPEN_ISMODAL' as const
+export const OPEN_EDITMODE = 'OPEN_EDITMODE' as const
+export const CLOSE_EDITMODE = 'CLOSE_EDITMODE' as const
+export const CLOSE_ISMODAL = 'CLOSE_ISMODAL' as const
 
 // 액션에 대한 타입 정의;
-export interface SetIsModal {
-  type: typeof SET_ISMODAL
+export interface OpenIsModal {
+  type: typeof OPEN_ISMODAL
   data: string
 }
 
-export interface SetEditMode {
-  type: typeof SET_EDITMODE
+export interface OpenEditMode {
+  type: typeof OPEN_EDITMODE
+}
+
+export interface CloseEditMode {
+  type: typeof CLOSE_EDITMODE
+}
+
+export interface CloseIsModal {
+  type: typeof CLOSE_ISMODAL
 }
 
 // 리듀서 안에 들어갈 액션 타입에 대한 액션 생성 함수 정의
 
-export const setIsModal = (data: string): SetIsModal => ({
-  type: SET_ISMODAL,
+export const setIsModal = (data: string): OpenIsModal => ({
+  type: OPEN_ISMODAL,
   data,
 })
 
-export const setEditMode = (): SetEditMode => ({
-  type: SET_EDITMODE,
+export const setEditMode = (): OpenEditMode => ({
+  type: OPEN_EDITMODE,
 })
 
-export type SetCommon = ReturnType<typeof setIsModal> | ReturnType<typeof setEditMode>
+export const closeEditMode = (): CloseEditMode => ({
+  type: CLOSE_EDITMODE,
+})
+
+export const closeIsModal = (): CloseIsModal => ({
+  type: CLOSE_ISMODAL,
+})
+
+export type SetCommon =
+  | ReturnType<typeof setIsModal>
+  | ReturnType<typeof setEditMode>
+  | ReturnType<typeof closeEditMode>
+  | ReturnType<typeof closeIsModal>
 
 const common = (state = initialState, action: SetCommon) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case SET_ISMODAL: {
-        draft.isModal.open = !state.isModal.open
+      case OPEN_ISMODAL: {
+        draft.isModal.open = true
         draft.isModal.uniqId = action.data
         break
       }
-      case SET_EDITMODE: {
-        draft.editMode = !state.editMode
+      case OPEN_EDITMODE: {
+        draft.editMode = true
+        break
+      }
+      case CLOSE_EDITMODE: {
+        draft.editMode = false
+        break
+      }
+      case CLOSE_ISMODAL: {
+        draft.isModal.open = false
         break
       }
 

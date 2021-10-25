@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 
 export const TogetherHeaderSearch = css`
+  width: 100%;
   display: flex;
   justify-content: space-around;
   height: 40px;
@@ -8,6 +9,7 @@ export const TogetherHeaderSearch = css`
 
   form {
     width: 100%;
+    padding-right: 20px;
   }
 
   input {

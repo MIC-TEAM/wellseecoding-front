@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from '@emotion/react'
+import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { SET_ISMODAL } from 'reducers/common'
+import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_ISMODAL } from 'reducers/common'
+import { myConfig } from 'sagas'
 import { Common } from 'styles/common'
 
 type Props = {
@@ -19,20 +21,123 @@ type Props = {
 }
 
 function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
+  // router.query.id는 uniqId로 넘겨받고 있는 상황
+
   const router = useRouter()
   const dispatch = useDispatch()
+  const [heartState, setHeartState] = useState(false)
+
+  const [likePost, setLikePost] = useState<number[]>([])
+
+  // ① 로컬 스토리지에 담긴 좋아요한 게시물을 state인 likePost에 저장한다
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const result = localStorage.getItem('myLikes') || '[]'
+      setLikePost(JSON.parse(result))
+    }
+  }, [])
+
+  // ② likePost가 존재하는 배열일 경우, compareLikeState 함수를 호출한다 (있을 경우에 하트를 채워 표시할 수 있도록)
+  useEffect(() => {
+    if (likePost.length) {
+      compareLikeState()
+      // handleUnlikePosts(Number(uniqId))
+    }
+  }, [likePost])
+
+  // ③ likePost가 변경될 경우, likePost state를 직렬화하여 로컬 스토리지에 myLikes를 재설정한다
+  useEffect(() => {
+    localStorage.setItem('myLikes', JSON.stringify(likePost))
+  }, [likePost])
 
   const setModal = useCallback(() => {
+    window.scrollTo(0, 0)
     dispatch({
-      type: SET_ISMODAL,
+      type: OPEN_ISMODAL,
       data: uniqId,
     })
   }, [dispatch, uniqId])
 
+  // 기존 로컬 스토리지와 비교하여 로컬 스토리지 내에 배열에 해당 게시물이 있을 경우 좋아요를 한 것으로 표시한다
+  const compareLikeState = () => {
+    for (const x of likePost) {
+      if (x === Number(uniqId)) {
+        setHeartState(true)
+        break
+      }
+    }
+  }
+
+  const stopWholeTasks = useCallback(() => {
+    Promise.allSettled([
+      dispatch({
+        type: CLOSE_ISMODAL,
+      }),
+      dispatch({
+        type: CLOSE_EDITMODE,
+      }),
+    ]).then(() => router.back())
+  }, [dispatch, router])
+
+  const onLike = useCallback(async () => {
+    try {
+      await axios
+        .post(
+          '/api/v1/users/likes',
+          {
+            postId: Number(uniqId),
+          },
+          myConfig
+        )
+        .then((res) => (res.status === 200 ? concatPost(Number(uniqId)) : alert('잘못된 요청입니다!')))
+    } catch (err) {
+      console.log(err)
+    }
+  }, [localId, uniqId])
+
+  // 200 이 떨어지는데 DB에 반영이 안됨
+
+  // 좋아요 요청 성공시, 로컬스토리지에 저장된 myLikes 배열에 좋아요한 데이터를 추가하는 로직
+  const concatPost = useCallback(
+    (id: number) => {
+      setLikePost((likePost) => [...likePost, id])
+      router.reload()
+    },
+    [router]
+  )
+
+  // 로컬스토리지에 저장된 myLikes의 배열에서 좋아요를 취소한 데이터를 필터링하는 로직
+  const filteringPost = useCallback(async () => {
+    try {
+      await axios
+        .delete('/api/v1/users/likes', {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+            'Cache-Control': 'no-cache',
+            Pragma: 'no-cache',
+            Expires: '0',
+          },
+          data: {
+            postId: Number(uniqId),
+          },
+        })
+        .then((res) => (res.status === 200 ? handleLikePost(Number(uniqId)) : console.log('fail')))
+    } catch (err) {
+      console.log(err)
+    }
+  }, [likePost, uniqId])
+
+  // axios.delete 요청 성공시 실행할 로직
+  const handleLikePost = (id: number) => {
+    setLikePost(likePost.filter((v) => v !== id))
+    setHeartState(false)
+    router.reload()
+  }
+
   return (
     <>
       <header css={backHeader}>
-        <button type="button" className="back" onClick={() => router.back()}>
+        <button type="button" className="back" onClick={() => stopWholeTasks()}>
           <img src="/images/header/back.svg" alt="뒤로가기" />
         </button>
         <h1>{title ? title : ''}</h1>
@@ -44,9 +149,17 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
                 <img src="/images/header/setting.svg" alt="환경설정" />
               </button>
             ) : (
-              <button type="button">
-                <img src="/images/header/heart.svg" alt="좋아요" onClick={() => alert('좋아요')} />
-              </button>
+              <>
+                {heartState ? (
+                  <button type="button" onClick={() => filteringPost()}>
+                    <img src="/images/header/FilledHeart.svg" alt="좋아요 취소" />
+                  </button>
+                ) : (
+                  <button type="button" onClick={onLike}>
+                    <img src="/images/header/heart.svg" alt="좋아요" />
+                  </button>
+                )}
+              </>
             )}
           </div>
         )}

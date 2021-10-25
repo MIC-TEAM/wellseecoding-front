@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { all, call, fork, takeLatest, put } from 'redux-saga/effects'
 import {
+  AcceptMemberRequest,
+  ACCEPT_MEMBER_FAILURE,
+  ACCEPT_MEMBER_REQUEST,
+  ACCEPT_MEMBER_SUCCESS,
   DeletePostRequest,
   DELETE_POST_FAILURE,
   DELETE_POST_REQUEST,
@@ -12,6 +16,10 @@ import {
   FETCHING_POST_FAILURE,
   FETCHING_POST_REQUEST,
   FETCHING_POST_SUCCESS,
+  FetchMembersRequest,
+  FETCH_MEMBERS_FAILURE,
+  FETCH_MEMBERS_REQUEST,
+  FETCH_MEMBERS_SUCCESS,
   SearchPostsRequest,
   SEARCH_POSTS_FAILURE,
   SEARCH_POSTS_REQUEST,
@@ -26,7 +34,7 @@ import {
   WRITE_POST_SUCCESS,
 } from 'reducers/posts'
 import { myConfig } from 'sagas'
-import { PostType, WritePostType } from 'types'
+import { MemberData, PostType, WritePostType } from 'types'
 
 async function fetchPostsAPI() {
   try {
@@ -91,8 +99,7 @@ async function writePostAPI(data: WritePostType) {
 
 function* writePost(action: WritePostRequest) {
   try {
-    const result: number = yield call(writePostAPI, action.data)
-    console.log('success', result)
+    yield call(writePostAPI, action.data)
     yield put({
       type: WRITE_POST_SUCCESS,
     })
@@ -116,8 +123,7 @@ async function updatePostAPI(data: WritePostType) {
 
 function* updatePost(action: UpdatePostRequest) {
   try {
-    const result: number = yield call(updatePostAPI, action.data)
-    console.log('success', result)
+    yield call(updatePostAPI, action.data)
     yield put({
       type: UPDATE_POST_SUCCESS,
     })
@@ -141,10 +147,10 @@ async function deletePostAPI(data: number) {
 
 function* deletePost(action: DeletePostRequest) {
   try {
-    const result: number = yield call(deletePostAPI, action.data)
-    console.log('success', result)
+    yield call(deletePostAPI, action.data)
     yield put({
       type: DELETE_POST_SUCCESS,
+      data: action.data,
     })
   } catch (err) {
     console.error(err)
@@ -180,6 +186,55 @@ function* searchPosts(action: SearchPostsRequest) {
   }
 }
 
+async function fetchMembersAPI(data: number) {
+  try {
+    const result = await axios.get(`/api/v1/posts/${data}/members`, myConfig)
+    return result.data.members
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* fetchMembers(action: FetchMembersRequest) {
+  try {
+    const result: MemberData[] = yield call(fetchMembersAPI, action.data)
+    yield put({
+      type: FETCH_MEMBERS_SUCCESS,
+      data: result,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: FETCH_MEMBERS_FAILURE,
+      data: err,
+    })
+  }
+}
+
+async function acceptMemberAPI(data: { id: number; userId: number }) {
+  try {
+    await axios.put(`api/v1/posts/${data.id}/members/${data.userId}`, {}, myConfig)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* acceptMember(action: AcceptMemberRequest) {
+  try {
+    yield call(acceptMemberAPI, action.data)
+    yield put({
+      type: ACCEPT_MEMBER_SUCCESS,
+      data: action.data,
+    })
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: ACCEPT_MEMBER_FAILURE,
+      data: err,
+    })
+  }
+}
+
 function* watchFetchPosts() {
   yield takeLatest(FETCHING_POSTS_REQUEST, fetchPosts)
 }
@@ -204,6 +259,14 @@ function* watchSearchPosts() {
   yield takeLatest(SEARCH_POSTS_REQUEST, searchPosts)
 }
 
+function* watchFetchMembers() {
+  yield takeLatest(FETCH_MEMBERS_REQUEST, fetchMembers)
+}
+
+function* watchAcceptMember() {
+  yield takeLatest(ACCEPT_MEMBER_REQUEST, acceptMember)
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchFetchPosts),
@@ -212,5 +275,7 @@ export default function* postSaga() {
     fork(watchFetchPost),
     fork(watchDeletePost),
     fork(watchSearchPosts),
+    fork(watchFetchMembers),
+    fork(watchAcceptMember),
   ])
 }

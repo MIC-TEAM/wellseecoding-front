@@ -1,7 +1,8 @@
 import { css } from '@emotion/react'
+import usehandleOverFlow from 'hooks/useHandleOverflow'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { SET_EDITMODE } from 'reducers/common'
+import { CLOSE_EDITMODE } from 'reducers/common'
 import { Common } from 'styles/common'
 
 type Props = {
@@ -10,12 +11,14 @@ type Props = {
 
 function EditBack({ text }: Props) {
   const dispatch = useDispatch()
+  const { show } = usehandleOverFlow()
 
   const closeModal = useCallback(() => {
+    show()
     dispatch({
-      type: SET_EDITMODE,
+      type: CLOSE_EDITMODE,
     })
-  }, [dispatch])
+  }, [show, dispatch])
 
   return (
     <header css={backHeader}>

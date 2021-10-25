@@ -2,6 +2,10 @@ import TogetherSearchBar from 'components/Together/Header/Search'
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'reducers'
+import { RESET_SEARCH_LIST } from 'reducers/posts'
 
 interface keyInterface {
   id: number
@@ -10,6 +14,15 @@ interface keyInterface {
 
 const Search = () => {
   const [keywords, setKeywords] = useState<keyInterface[]>([])
+  const dispatch = useDispatch()
+
+  const { searchPosts } = useSelector((state: RootState) => state.posts)
+
+  useEffect(() => {
+    if (searchPosts.length) {
+      dispatch({ type: RESET_SEARCH_LIST })
+    }
+  }, [searchPosts, dispatch])
 
   // ① window 즉, 브라우저가 모두 렌더링된 상태에서 해당 함수를 실행할 수 있도록 작업
   useEffect(() => {
@@ -35,12 +48,6 @@ const Search = () => {
 
   // 단일 검색어 삭제
   const handleRemoveKeyword = (id: number) => {
-    // 고차함수 filter()는 필터링 된 배열을 반환한다
-    // console.log(
-    //   keywords.filter((keyword) => {
-    //     return keyword.id != id
-    //   })
-    // )
     const nextKeyword = keywords.filter((keyword) => {
       return keyword.id != id
     })
@@ -53,37 +60,47 @@ const Search = () => {
   }
 
   return (
-    <div css={searchWrap}>
-      <TogetherSearchBar onAddKeyword={handleAddKeyword} />
+    <>
+      <Head>
+        <title>검색하기 | wellseecoding</title>
+      </Head>
 
-      <div css={searchRecord}>
-        <h2>최근 검색어</h2>
-        {keywords.length ? (
-          <button type="button" onClick={handleClearKeywords}>
-            전체 삭제
-          </button>
-        ) : (
-          <button />
-        )}
-      </div>
+      <div css={searchWrap}>
+        <TogetherSearchBar onAddKeyword={handleAddKeyword} />
 
-      <ul css={searchList}>
-        {keywords.length ? (
-          keywords.map((k) => (
-            <li key={k.id}>
-              <p>
-                <Link href={`/together/search_result/${k.text}`}>{k.text}</Link>
-              </p>
-              <button className="removeBtn" type="button" onClick={() => handleRemoveKeyword(k.id)}>
-                <img src="/images/together/btn_delete.svg" alt="삭제" />
+        <div style={{ padding: '0px 20px' }}>
+          <div css={searchRecord}>
+            <h2>최근 검색어</h2>
+            {keywords.length ? (
+              <button type="button" onClick={handleClearKeywords}>
+                전체 삭제
               </button>
-            </li>
-          ))
-        ) : (
-          <div>최근 검색어가 없습니다</div>
-        )}
-      </ul>
-    </div>
+            ) : (
+              <button />
+            )}
+          </div>
+
+          <ul css={searchList}>
+            {keywords.length ? (
+              keywords.map((k) => (
+                <li key={k.id}>
+                  <p>
+                    <Link href={`/together/search_result/${k.text}`}>
+                      <a>{k.text}</a>
+                    </Link>
+                  </p>
+                  <button className="removeBtn" type="button" onClick={() => handleRemoveKeyword(k.id)}>
+                    <img src="/images/together/btn_delete.svg" alt="삭제" />
+                  </button>
+                </li>
+              ))
+            ) : (
+              <div style={{ fontSize: '16px' }}>최근 검색어가 없습니다</div>
+            )}
+          </ul>
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -133,5 +150,5 @@ const searchList = css`
   }
 `
 const searchWrap = css`
-  padding: 0 20px;
+  height: 97vh;
 `
