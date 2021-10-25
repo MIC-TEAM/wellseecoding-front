@@ -9,7 +9,6 @@ import axios from 'axios'
 import { HiX } from 'react-icons/Hi'
 import { REGISTER_LINK_URL } from 'apis'
 import { myConfig } from 'sagas'
-import { useEffect } from 'react'
 
 const Portfolio = () => {
   const router = useRouter()
