@@ -6,12 +6,21 @@ import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
+import { RESET_POST_LIST } from 'reducers/posts'
 
 const Alarm = () => {
   const [myId, setMyId] = useState(0)
   const { notifications } = useSelector((state: RootState) => state.notifications)
+  const { post } = useSelector((state: RootState) => state.posts)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (post.length)
+      dispatch({
+        type: RESET_POST_LIST,
+      })
+  }, [post, dispatch])
 
   useEffect(() => {
     notifications.length && console.log('notifications', notifications)

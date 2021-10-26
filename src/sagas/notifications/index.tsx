@@ -16,10 +16,12 @@ async function fetchNotisAPI() {
 function* fetchNotis() {
   try {
     const result: notificationType[] = yield call(fetchNotisAPI)
-    yield put({
-      type: FETCHING_NOTIS_SUCCESS,
-      data: result,
-    })
+    if (result.length) {
+      yield put({
+        type: FETCHING_NOTIS_SUCCESS,
+        data: result,
+      })
+    }
   } catch (err) {
     console.error(err)
     yield put({

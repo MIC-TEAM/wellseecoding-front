@@ -28,8 +28,12 @@ export type PostData = {
 
 export type notificationType = {
   id: number
-  userId: number
+  senderUserId: number
+  senderUserName: string
+  receiverUserId: number
+  receiverUserName: string
   postId: number
+  postTitle: string
   eventCategory: string
   timestamp: number
   read: boolean
