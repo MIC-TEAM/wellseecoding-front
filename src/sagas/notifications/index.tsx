@@ -1,5 +1,13 @@
 import axios from 'axios'
-import { FETCHING_NOTIS_FAILURE, FETCHING_NOTIS_REQUEST, FETCHING_NOTIS_SUCCESS } from 'reducers/notifications'
+import {
+  FETCHING_NOTIS_FAILURE,
+  FETCHING_NOTIS_REQUEST,
+  FETCHING_NOTIS_SUCCESS,
+  UpdateNotiRequest,
+  UPDATE_NOTI_FAILURE,
+  UPDATE_NOTI_REQUEST,
+  UPDATE_NOTI_SUCCESS,
+} from 'reducers/notifications'
 import { all, call, fork, takeLatest, put } from 'redux-saga/effects'
 import { myConfig } from 'sagas'
 import { notificationType } from 'types'
@@ -16,6 +24,7 @@ async function fetchNotisAPI() {
 function* fetchNotis() {
   try {
     const result: notificationType[] = yield call(fetchNotisAPI)
+    console.log('fetchNotis result:', result)
     if (result.length) {
       yield put({
         type: FETCHING_NOTIS_SUCCESS,
@@ -31,10 +40,42 @@ function* fetchNotis() {
   }
 }
 
+async function updateNotiAPI(data: number) {
+  try {
+    const response = await axios.put(`/api/v1/users/notifications/${data}/read`, {}, myConfig)
+    console.log(response)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* updateNoti(action: UpdateNotiRequest) {
+  try {
+    const result: number = yield call(updateNotiAPI, action.data)
+    console.log('fetchNotis result:', result)
+    {
+      yield put({
+        type: UPDATE_NOTI_SUCCESS,
+        data: action.data,
+      })
+    }
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: UPDATE_NOTI_FAILURE,
+      data: err,
+    })
+  }
+}
+
 function* watchFetchNotis() {
   yield takeLatest(FETCHING_NOTIS_REQUEST, fetchNotis)
 }
 
+function* watchUpdateNoti() {
+  yield takeLatest(UPDATE_NOTI_REQUEST, updateNoti)
+}
+
 export default function* NotificationSaga() {
-  yield all([fork(watchFetchNotis)])
+  yield all([fork(watchFetchNotis), fork(watchUpdateNoti)])
 }
