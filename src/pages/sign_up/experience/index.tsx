@@ -136,11 +136,13 @@ const Experience = () => {
 
       <form css={infoWrap} onSubmit={onSubmit}>
         <div className="formBox">
-          <div css={info} id="experienceInputBox">
-            <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
-            <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
-            <TextFieldProfile type="number" text="경력을 입력해주세요 (숫자로만 기재)" onChange={onChangeYears} />
-          </div>
+          {inputList ? (
+            <div css={info} id="experienceInputBox">
+              <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
+              <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
+              <TextFieldProfile type="number" text="경력을 입력해주세요 (숫자로만 기재)" onChange={onChangeYears} />
+            </div>
+          ) : null}
 
           {inputList &&
             inputList.map((item, index) => (
