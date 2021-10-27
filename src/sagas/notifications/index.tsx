@@ -3,6 +3,9 @@ import {
   FETCHING_NOTIS_FAILURE,
   FETCHING_NOTIS_REQUEST,
   FETCHING_NOTIS_SUCCESS,
+  READ_ALL_NOTIS_FAILURE,
+  READ_ALL_NOTIS_REQUEST,
+  READ_ALL_NOTIS_SUCCESS,
   UpdateNotiRequest,
   UPDATE_NOTI_FAILURE,
   UPDATE_NOTI_REQUEST,
@@ -68,6 +71,32 @@ function* updateNoti(action: UpdateNotiRequest) {
   }
 }
 
+async function readAllNotisAPI() {
+  try {
+    const response = await axios.put('/api/v1/users/notifications/read', {}, myConfig)
+    return response.status
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* readAllNotis() {
+  try {
+    const result: number = yield call(readAllNotisAPI)
+    if (result === 200) {
+      yield put({
+        type: READ_ALL_NOTIS_SUCCESS,
+      })
+    }
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: READ_ALL_NOTIS_FAILURE,
+      data: err,
+    })
+  }
+}
+
 function* watchFetchNotis() {
   yield takeLatest(FETCHING_NOTIS_REQUEST, fetchNotis)
 }
@@ -76,6 +105,10 @@ function* watchUpdateNoti() {
   yield takeLatest(UPDATE_NOTI_REQUEST, updateNoti)
 }
 
+function* watchReadAllNotis() {
+  yield takeLatest(READ_ALL_NOTIS_REQUEST, readAllNotis)
+}
+
 export default function* NotificationSaga() {
-  yield all([fork(watchFetchNotis), fork(watchUpdateNoti)])
+  yield all([fork(watchFetchNotis), fork(watchUpdateNoti), fork(watchReadAllNotis)])
 }

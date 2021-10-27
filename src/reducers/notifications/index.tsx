@@ -24,6 +24,10 @@ interface notiInitialState {
   updateNotiLoading: boolean
   updateNotiSuccess: boolean
   updateNotiFailure: null | Error
+
+  readAllNotisLoading: boolean
+  readAllNotisSuccess: boolean
+  readAllNotisFailure: null | Error
 }
 
 const initialState: notiInitialState = {
@@ -36,6 +40,10 @@ const initialState: notiInitialState = {
   updateNotiLoading: false,
   updateNotiSuccess: false,
   updateNotiFailure: null,
+
+  readAllNotisLoading: false,
+  readAllNotisSuccess: false,
+  readAllNotisFailure: null,
 }
 
 // 액션 정의
@@ -46,6 +54,10 @@ export const FETCHING_NOTIS_FAILURE = 'FETCHING_NOTIS_FAILURE' as const
 export const UPDATE_NOTI_REQUEST = 'UPDATE_NOTI_REQUEST' as const
 export const UPDATE_NOTI_SUCCESS = 'UPDATE_NOTI_SUCCESS' as const
 export const UPDATE_NOTI_FAILURE = 'UPDATE_NOTI_FAILURE' as const
+
+export const READ_ALL_NOTIS_REQUEST = 'READ_ALL_NOTIS_REQUEST' as const
+export const READ_ALL_NOTIS_SUCCESS = 'READ_ALL_NOTIS_SUCCESS' as const
+export const READ_ALL_NOTIS_FAILURE = 'READ_ALL_NOTIS_FAILURE' as const
 
 // 액션에 대한 타입에 대한 인터페이스 정의
 export interface FetchingNotisRequest {
@@ -76,6 +88,20 @@ export interface UpdateNotiSuccess {
 
 export interface UpdateNotiFailure {
   type: typeof UPDATE_NOTI_FAILURE
+  error: Error
+}
+
+export interface ReadAllNotisRequest {
+  type: typeof READ_ALL_NOTIS_REQUEST
+}
+
+export interface ReadAllNotisSuccess {
+  type: typeof READ_ALL_NOTIS_SUCCESS
+  notifications: notificationType
+}
+
+export interface ReadAllNotisFailure {
+  type: typeof READ_ALL_NOTIS_FAILURE
   error: Error
 }
 
@@ -112,6 +138,20 @@ export const updateNotiFailure = (error: Error): UpdateNotiFailure => ({
   error,
 })
 
+export const readAllNotisRequest = (): ReadAllNotisRequest => ({
+  type: READ_ALL_NOTIS_REQUEST,
+})
+
+export const readAllNotisSuccess = (notifications: notificationType): ReadAllNotisSuccess => ({
+  type: READ_ALL_NOTIS_SUCCESS,
+  notifications,
+})
+
+export const readAllNotisFailure = (error: Error): ReadAllNotisFailure => ({
+  type: READ_ALL_NOTIS_FAILURE,
+  error,
+})
+
 export type NotificationActions =
   | ReturnType<typeof fetchingNotisRequest>
   | ReturnType<typeof fetchingNotisSuccess>
@@ -119,6 +159,9 @@ export type NotificationActions =
   | ReturnType<typeof updateNotiRequest>
   | ReturnType<typeof updateNotiSuccess>
   | ReturnType<typeof updateNotiFailure>
+  | ReturnType<typeof readAllNotisRequest>
+  | ReturnType<typeof readAllNotisSuccess>
+  | ReturnType<typeof readAllNotisFailure>
 
 const notifications = (state: notiInitialState = initialState, action: NotificationActions) =>
   produce(state, (draft) => {
@@ -155,6 +198,22 @@ const notifications = (state: notiInitialState = initialState, action: Notificat
       case UPDATE_NOTI_FAILURE: {
         draft.updateNotiSuccess = false
         draft.updateNotiFailure = action.error
+        break
+      }
+      case READ_ALL_NOTIS_REQUEST: {
+        draft.readAllNotisLoading = true
+        draft.readAllNotisSuccess = false
+        break
+      }
+      case READ_ALL_NOTIS_SUCCESS: {
+        draft.readAllNotisLoading = false
+        draft.readAllNotisSuccess = true
+        draft.notifications.forEach((v) => (v.read = true))
+        break
+      }
+      case READ_ALL_NOTIS_FAILURE: {
+        draft.readAllNotisSuccess = false
+        draft.readAllNotisFailure = action.error
         break
       }
       default:
