@@ -71,7 +71,13 @@ const AlarmTitle = ({ num }: Props) => {
       <h1>알림</h1>
       <div className="desc">
         <p>
-          <strong>{num}</strong>개의 읽지 않은 알림이 있습니다.
+          {num !== 0 ? (
+            <span>
+              <strong>{num}</strong>개의 읽지 않은 알림이 있습니다.
+            </span>
+          ) : (
+            <span>읽지 않은 알림이 없습니다</span>
+          )}
         </p>
 
         <div>
@@ -85,10 +91,22 @@ const AlarmTitle = ({ num }: Props) => {
       </div>
 
       {readModalShowing && (
-        <ConfirmModal onClose={() => setReadModalShowing(false)} confirmResult={() => setRmConfirmResult(true)} />
+        <ConfirmModal
+          onClose={() => setReadModalShowing(false)}
+          confirmResult={() => setRmConfirmResult(true)}
+          h3={'알림을 전체 읽음 표시 하시겠어요?'}
+          p1={'내 서랍의 모든 알림이 읽음 표시로 처리됩니다'}
+          p2={'읽음 표시한 알림은 이전 상태로 되돌릴 수 없습니다'}
+        />
       )}
       {deleteModalShowing && (
-        <ConfirmModal onClose={toggleDeleteModal} confirmResult={() => setDmConfirmResult(true)} />
+        <ConfirmModal
+          onClose={toggleDeleteModal}
+          confirmResult={() => setDmConfirmResult(true)}
+          h3={'알림을 모두 삭제 하시겠어요?'}
+          p1={'내 서랍의 모든 알림이 삭제됩니다'}
+          p2={'삭제된 알림은 다시 복구할 수 없습니다'}
+        />
       )}
     </section>
   )

@@ -152,7 +152,13 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
         </div>
       </nav>
       {confirmModal && (
-        <ConfirmModal onClose={() => setConfirmModal(false)} confirmResult={() => setConfirmResult(true)} />
+        <ConfirmModal
+          onClose={() => setConfirmModal(false)}
+          confirmResult={() => setConfirmResult(true)}
+          h3={'이 모임에 가입하시겠어요?'}
+          p1={'모임장에게 가입신청 메시지가 전송됩니다'}
+          p2={'가입신청은 취소할 수 없습니다'}
+        />
       )}
       {registerSuccessModal && (
         <AlarmModal
