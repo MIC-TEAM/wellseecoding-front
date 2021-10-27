@@ -1,5 +1,8 @@
 import axios from 'axios'
 import {
+  DELETE_ALL_NOTIS_FAILURE,
+  DELETE_ALL_NOTIS_REQUEST,
+  DELETE_ALL_NOTIS_SUCCESS,
   FETCHING_NOTIS_FAILURE,
   FETCHING_NOTIS_REQUEST,
   FETCHING_NOTIS_SUCCESS,
@@ -97,6 +100,32 @@ function* readAllNotis() {
   }
 }
 
+async function deleteAllNotisAPI() {
+  try {
+    const response = await axios.delete('/api/v1/users/notifications', myConfig)
+    return response.status
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+function* deleteAllNotis() {
+  try {
+    const result: number = yield call(deleteAllNotisAPI)
+    if (result === 200) {
+      yield put({
+        type: DELETE_ALL_NOTIS_SUCCESS,
+      })
+    }
+  } catch (err) {
+    console.error(err)
+    yield put({
+      type: DELETE_ALL_NOTIS_FAILURE,
+      data: err,
+    })
+  }
+}
+
 function* watchFetchNotis() {
   yield takeLatest(FETCHING_NOTIS_REQUEST, fetchNotis)
 }
@@ -109,6 +138,10 @@ function* watchReadAllNotis() {
   yield takeLatest(READ_ALL_NOTIS_REQUEST, readAllNotis)
 }
 
+function* watchDeleteAllNotis() {
+  yield takeLatest(DELETE_ALL_NOTIS_REQUEST, deleteAllNotis)
+}
+
 export default function* NotificationSaga() {
-  yield all([fork(watchFetchNotis), fork(watchUpdateNoti), fork(watchReadAllNotis)])
+  yield all([fork(watchFetchNotis), fork(watchUpdateNoti), fork(watchReadAllNotis), fork(watchDeleteAllNotis)])
 }

@@ -1,30 +1,44 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
-import MoreModal from 'components/Modal'
-import ReadModal from 'components/RegisterModal'
 import { useDispatch } from 'react-redux'
-import { READ_ALL_NOTIS_REQUEST } from 'reducers/notifications'
+import { DELETE_ALL_NOTIS_REQUEST, READ_ALL_NOTIS_REQUEST } from 'reducers/notifications'
+import ConfirmModal from 'components/ConfirmModal'
 
 type Props = {
   num: number
 }
 const AlarmTitle = ({ num }: Props) => {
-  /*삭제 모달*/
+  /* 전체 삭제 모달 */
   const [deleteModalShowing, setDeleteModalShowing] = useState(false)
+  /* 전체 삭제 모달 결과값 - delete modal confirm */
+  const [dmConfirmResult, setDmConfirmResult] = useState(false)
+  /* 전체 읽기 모달 */
   const [readModalShowing, setReadModalShowing] = useState(false)
-  /* 가입 여부 파악 결과값 */
-  const [confirmResult, setConfirmResult] = useState(false)
+  /* 전체 읽기 모달 결과값 = read modal confirm */
+  const [rmConfirmResult, setRmConfirmResult] = useState(false)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (confirmResult) {
+    console.log('dmConfirmResult', dmConfirmResult)
+  }, [dmConfirmResult])
+
+  useEffect(() => {
+    if (dmConfirmResult) {
+      setDeleteModalShowing(false)
+      setDmConfirmResult(false)
+      deleteAll()
+    }
+  }, [dmConfirmResult])
+
+  useEffect(() => {
+    if (rmConfirmResult) {
       setReadModalShowing(false)
-      setConfirmResult(false)
+      setRmConfirmResult(false)
       readAll()
     }
-  }, [confirmResult])
+  }, [rmConfirmResult])
 
   useEffect(() => {
     if (deleteModalShowing) document.body.style.overflow = 'hidden'
@@ -34,6 +48,12 @@ const AlarmTitle = ({ num }: Props) => {
   const readAll = useCallback(() => {
     dispatch({
       type: READ_ALL_NOTIS_REQUEST,
+    })
+  }, [dispatch])
+
+  const deleteAll = useCallback(() => {
+    dispatch({
+      type: DELETE_ALL_NOTIS_REQUEST,
     })
   }, [dispatch])
 
@@ -65,9 +85,11 @@ const AlarmTitle = ({ num }: Props) => {
       </div>
 
       {readModalShowing && (
-        <ReadModal onClose={() => setReadModalShowing(false)} confirmResult={() => setConfirmResult(true)} />
+        <ConfirmModal onClose={() => setReadModalShowing(false)} confirmResult={() => setRmConfirmResult(true)} />
       )}
-      {deleteModalShowing && <MoreModal onClose={toggleDeleteModal} />}
+      {deleteModalShowing && (
+        <ConfirmModal onClose={toggleDeleteModal} confirmResult={() => setDmConfirmResult(true)} />
+      )}
     </section>
   )
 }

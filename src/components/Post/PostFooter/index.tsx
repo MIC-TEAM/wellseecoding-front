@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { myConfig } from 'sagas'
 import AlarmModal from 'components/AlarmModal'
-import RegisterModal from 'components/RegisterModal'
+import ConfirmModal from 'components/ConfirmModal'
 
 export type props = {
   commentCount: number
@@ -152,7 +152,7 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
         </div>
       </nav>
       {confirmModal && (
-        <RegisterModal onClose={() => setConfirmModal(false)} confirmResult={() => setConfirmResult(true)} />
+        <ConfirmModal onClose={() => setConfirmModal(false)} confirmResult={() => setConfirmResult(true)} />
       )}
       {registerSuccessModal && (
         <AlarmModal

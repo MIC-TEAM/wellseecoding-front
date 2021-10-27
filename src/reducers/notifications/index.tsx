@@ -28,6 +28,10 @@ interface notiInitialState {
   readAllNotisLoading: boolean
   readAllNotisSuccess: boolean
   readAllNotisFailure: null | Error
+
+  deleteAllNotisLoading: boolean
+  deleteAllNotisSuccess: boolean
+  deleteAllNotisFailure: null | Error
 }
 
 const initialState: notiInitialState = {
@@ -44,6 +48,10 @@ const initialState: notiInitialState = {
   readAllNotisLoading: false,
   readAllNotisSuccess: false,
   readAllNotisFailure: null,
+
+  deleteAllNotisLoading: false,
+  deleteAllNotisSuccess: false,
+  deleteAllNotisFailure: null,
 }
 
 // 액션 정의
@@ -58,6 +66,10 @@ export const UPDATE_NOTI_FAILURE = 'UPDATE_NOTI_FAILURE' as const
 export const READ_ALL_NOTIS_REQUEST = 'READ_ALL_NOTIS_REQUEST' as const
 export const READ_ALL_NOTIS_SUCCESS = 'READ_ALL_NOTIS_SUCCESS' as const
 export const READ_ALL_NOTIS_FAILURE = 'READ_ALL_NOTIS_FAILURE' as const
+
+export const DELETE_ALL_NOTIS_REQUEST = 'DELETE_ALL_NOTIS_REQUEST' as const
+export const DELETE_ALL_NOTIS_SUCCESS = 'DELETE_ALL_NOTIS_SUCCESS' as const
+export const DELETE_ALL_NOTIS_FAILURE = 'DELETE_ALL_NOTIS_FAILURE' as const
 
 // 액션에 대한 타입에 대한 인터페이스 정의
 export interface FetchingNotisRequest {
@@ -102,6 +114,20 @@ export interface ReadAllNotisSuccess {
 
 export interface ReadAllNotisFailure {
   type: typeof READ_ALL_NOTIS_FAILURE
+  error: Error
+}
+
+export interface DeleteAllNotisRequest {
+  type: typeof DELETE_ALL_NOTIS_REQUEST
+}
+
+export interface DeleteAllNotisSuccess {
+  type: typeof DELETE_ALL_NOTIS_SUCCESS
+  notifications: notificationType
+}
+
+export interface DeleteAllNotisFailure {
+  type: typeof DELETE_ALL_NOTIS_FAILURE
   error: Error
 }
 
@@ -152,6 +178,20 @@ export const readAllNotisFailure = (error: Error): ReadAllNotisFailure => ({
   error,
 })
 
+export const deleteAllNotisRequest = (): DeleteAllNotisRequest => ({
+  type: DELETE_ALL_NOTIS_REQUEST,
+})
+
+export const deleteAllNotisSuccess = (notifications: notificationType): DeleteAllNotisSuccess => ({
+  type: DELETE_ALL_NOTIS_SUCCESS,
+  notifications,
+})
+
+export const deleteAllNotisFailure = (error: Error): DeleteAllNotisFailure => ({
+  type: DELETE_ALL_NOTIS_FAILURE,
+  error,
+})
+
 export type NotificationActions =
   | ReturnType<typeof fetchingNotisRequest>
   | ReturnType<typeof fetchingNotisSuccess>
@@ -162,6 +202,9 @@ export type NotificationActions =
   | ReturnType<typeof readAllNotisRequest>
   | ReturnType<typeof readAllNotisSuccess>
   | ReturnType<typeof readAllNotisFailure>
+  | ReturnType<typeof deleteAllNotisRequest>
+  | ReturnType<typeof deleteAllNotisSuccess>
+  | ReturnType<typeof deleteAllNotisFailure>
 
 const notifications = (state: notiInitialState = initialState, action: NotificationActions) =>
   produce(state, (draft) => {
@@ -214,6 +257,22 @@ const notifications = (state: notiInitialState = initialState, action: Notificat
       case READ_ALL_NOTIS_FAILURE: {
         draft.readAllNotisSuccess = false
         draft.readAllNotisFailure = action.error
+        break
+      }
+      case DELETE_ALL_NOTIS_REQUEST: {
+        draft.deleteAllNotisLoading = true
+        draft.deleteAllNotisSuccess = false
+        draft.notifications = []
+        break
+      }
+      case DELETE_ALL_NOTIS_SUCCESS: {
+        draft.deleteAllNotisLoading = false
+        draft.deleteAllNotisSuccess = true
+        break
+      }
+      case DELETE_ALL_NOTIS_FAILURE: {
+        draft.deleteAllNotisSuccess = false
+        draft.deleteAllNotisFailure = action.error
         break
       }
       default:
