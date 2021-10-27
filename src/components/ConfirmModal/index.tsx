@@ -5,18 +5,22 @@ import { Modal } from './styles'
 interface Props {
   onClose: (event: React.MouseEvent<HTMLButtonElement>) => void
   confirmResult: () => void
+  h3: string
+  p1: string
+  p2?: string
 }
 
-const RegisterModal = ({ onClose, confirmResult }: Props) => {
+const ConfirmModal = ({ onClose, confirmResult, h3, p1, p2 }: Props) => {
   return (
     <div className="modal" css={Modal}>
       <div className="modal__wrap">
         <img src="/images/common/modalDog.svg" alt="안내견" />
         <div className="modal__box">
-          <h3>이 모임에 가입하시겠어요?</h3>
+          <h3>{h3}</h3>
           <p>
-            모임장에게 가입신청 메시지가 전송됩니다. <br />
-            가입신청은 취소할 수 없습니다.
+            {p1}
+            <br />
+            {p2}
           </p>
           <div className="modal__btn">
             <button className="subBtn" onClick={onClose}>
@@ -32,4 +36,4 @@ const RegisterModal = ({ onClose, confirmResult }: Props) => {
   )
 }
 
-export default RegisterModal
+export default ConfirmModal

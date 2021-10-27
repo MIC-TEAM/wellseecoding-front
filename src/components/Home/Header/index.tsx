@@ -1,13 +1,23 @@
 import Link from 'next/link'
 import { css } from '@emotion/react'
 
-function HomeHeader() {
+type Props = {
+  notis: boolean
+}
+
+function HomeHeader({ notis }: Props) {
   return (
     <header css={HomeHeaderWrap}>
       <Link href="/alarm">
-        <a>
-          <img src="/images/header/alarm.svg" alt="알림페이지" />
-        </a>
+        {notis ? (
+          <a>
+            <img src="/images/header/alarm.svg" alt="알림페이지" />
+          </a>
+        ) : (
+          <a>
+            <img src="/images/header/nonAlarm.svg" alt="알림페이지" />
+          </a>
+        )}
       </Link>
     </header>
   )

@@ -7,6 +7,7 @@ import Alert from '@material-ui/lab/Alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { WRITE_POST_REQUEST } from 'reducers/posts'
 import { RootState } from 'reducers'
+import Head from 'next/head'
 
 /* 함께해요 글 작성 페이지 */
 
@@ -143,6 +144,10 @@ const TogetherWrite = () => {
 
   return (
     <>
+      <Head>
+        <title>글쓰가 | wellseecoding</title>
+        <meta name="description" content="함께해요 페이지에서 연동되는 글쓰기 페이지입니다." />
+      </Head>
       <TogetherBack text="모임 글쓰기" />
       <main css={writeWrap}>
         <form css={writeForm} onSubmit={onSubmit}>

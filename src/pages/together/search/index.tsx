@@ -63,6 +63,7 @@ const Search = () => {
     <>
       <Head>
         <title>검색하기 | wellseecoding</title>
+        <meta name="description" content="검색 페이지입니다." />
       </Head>
 
       <div css={searchWrap}>

@@ -66,14 +66,11 @@ function Post() {
     },
     [dispatch]
   )
-
-  // url로 접근했을 때 데이터를 패칭하지 않은 상태에서 렌더링하여 오류가 생김
-  // 동기적으로 끊어줬다가 success 시에 해당 정보를 렌더링하도록 설정해야 할 듯
-
   return (
     <>
       <Head>
         <title>게시글 | wellseecoding</title>
+        <meta name="description" content="게시글을 동적으로 불러오는 페이지입니다." />
       </Head>
       {post?.length ? (
         post.map((d) => (

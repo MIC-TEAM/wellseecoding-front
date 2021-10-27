@@ -52,6 +52,7 @@ const ClassJoinList = () => {
     <div>
       <Head>
         <title>가입 현황 | wellseecoding</title>
+        <meta name="description" content="가입 현황을 볼 수 있는 페이지입니다." />
       </Head>
       <JoinHeader text="가입신청 목록" />
 

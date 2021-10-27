@@ -119,6 +119,7 @@ function Comment() {
     <>
       <Head>
         <title>댓글 | wellseecoding</title>
+        <meta name="description" content="댓글 페이지입니다." />
       </Head>
       <BackOptional title="댓글" optional={false} />
       <div css={CommentMain}>

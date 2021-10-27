@@ -1,27 +1,68 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
-import MoreModal from 'components/Modal'
+import { useDispatch } from 'react-redux'
+import { DELETE_ALL_NOTIS_REQUEST, READ_ALL_NOTIS_REQUEST } from 'reducers/notifications'
+import ConfirmModal from 'components/ConfirmModal'
 
 type Props = {
   num: number
 }
 const AlarmTitle = ({ num }: Props) => {
-  const [isShowing, setIsShowing] = useState(false)
+  /* 전체 삭제 모달 */
+  const [deleteModalShowing, setDeleteModalShowing] = useState(false)
+  /* 전체 삭제 모달 결과값 - delete modal confirm */
+  const [dmConfirmResult, setDmConfirmResult] = useState(false)
+  /* 전체 읽기 모달 */
+  const [readModalShowing, setReadModalShowing] = useState(false)
+  /* 전체 읽기 모달 결과값 = read modal confirm */
+  const [rmConfirmResult, setRmConfirmResult] = useState(false)
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    if (isShowing) document.body.style.overflow = 'hidden'
+    console.log('dmConfirmResult', dmConfirmResult)
+  }, [dmConfirmResult])
+
+  useEffect(() => {
+    if (dmConfirmResult) {
+      setDeleteModalShowing(false)
+      setDmConfirmResult(false)
+      deleteAll()
+    }
+  }, [dmConfirmResult])
+
+  useEffect(() => {
+    if (rmConfirmResult) {
+      setReadModalShowing(false)
+      setRmConfirmResult(false)
+      readAll()
+    }
+  }, [rmConfirmResult])
+
+  useEffect(() => {
+    if (deleteModalShowing) document.body.style.overflow = 'hidden'
     else document.body.style.overflow = 'auto'
-  }, [isShowing])
+  }, [deleteModalShowing])
 
   const readAll = useCallback(() => {
-    const result = window.confirm('전체 읽기를 실행하시겠습니까?')
-    if (result) alert('알림 전체 읽기')
-    else return
+    dispatch({
+      type: READ_ALL_NOTIS_REQUEST,
+    })
+  }, [dispatch])
+
+  const deleteAll = useCallback(() => {
+    dispatch({
+      type: DELETE_ALL_NOTIS_REQUEST,
+    })
+  }, [dispatch])
+
+  const toggleReadModal = useCallback(() => {
+    setReadModalShowing(true)
   }, [])
 
-  const toggleModal = useCallback(() => {
-    setIsShowing((prevState) => !prevState)
+  const toggleDeleteModal = useCallback(() => {
+    setDeleteModalShowing((prevState) => !prevState)
     document.body.style.overflow = 'hidden'
   }, [])
 
@@ -30,20 +71,43 @@ const AlarmTitle = ({ num }: Props) => {
       <h1>알림</h1>
       <div className="desc">
         <p>
-          <strong>{num}</strong>개의 읽지 않은 알림이 있습니다.
+          {num !== 0 ? (
+            <span>
+              <strong>{num}</strong>개의 읽지 않은 알림이 있습니다.
+            </span>
+          ) : (
+            <span>읽지 않은 알림이 없습니다</span>
+          )}
         </p>
 
         <div>
-          <button type="button" onClick={readAll}>
+          <button type="button" onClick={toggleReadModal}>
             전체 읽음
           </button>
-          <button type="button" onClick={toggleModal} className="allDelete">
+          <button type="button" onClick={toggleDeleteModal} className="allDelete">
             전체 삭제
           </button>
         </div>
       </div>
 
-      {isShowing && <MoreModal onClose={toggleModal} />}
+      {readModalShowing && (
+        <ConfirmModal
+          onClose={() => setReadModalShowing(false)}
+          confirmResult={() => setRmConfirmResult(true)}
+          h3={'알림을 전체 읽음 표시 하시겠어요?'}
+          p1={'내 서랍의 모든 알림이 읽음 표시로 처리됩니다'}
+          p2={'읽음 표시한 알림은 이전 상태로 되돌릴 수 없습니다'}
+        />
+      )}
+      {deleteModalShowing && (
+        <ConfirmModal
+          onClose={toggleDeleteModal}
+          confirmResult={() => setDmConfirmResult(true)}
+          h3={'알림을 모두 삭제 하시겠어요?'}
+          p1={'내 서랍의 모든 알림이 삭제됩니다'}
+          p2={'삭제된 알림은 다시 복구할 수 없습니다'}
+        />
+      )}
     </section>
   )
 }

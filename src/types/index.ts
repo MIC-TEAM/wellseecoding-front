@@ -24,6 +24,21 @@ export type PostData = {
   posts: PostType[]
 }
 
+/* 서버로부터 받아오는 알림 배열에 대한 타입 정의 */
+
+export type notificationType = {
+  id: number
+  senderUserId: number
+  senderUserName: string
+  receiverUserId: number
+  receiverUserName: string
+  postId: number
+  postTitle: string
+  eventCategory: string
+  timestamp: number
+  read: boolean
+}
+
 /* 서버로부터 받아오는 Posts 배열의 한 객체당 타입 */
 export type PostType = {
   id: number

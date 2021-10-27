@@ -1,180 +1,102 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { css } from '@emotion/react'
+import { useRouter } from 'next/router'
+import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { UPDATE_NOTI_REQUEST } from 'reducers/notifications'
 import { Common } from 'styles/common'
+import { notificationType } from 'types'
 
 type Props = {
-  classRoom: string
-  user: string
+  data: notificationType[]
 }
-const AlarmList = ({ user, classRoom }: Props) => {
+const AlarmList = ({ data }: Props) => {
+  const router = useRouter()
+  const dispatch = useDispatch()
+
+  const locationTo = useCallback(
+    (id, query) => {
+      router.push(`posts/${query}`).then(() => {
+        dispatch({
+          type: UPDATE_NOTI_REQUEST,
+          data: Number(id),
+        })
+      })
+    },
+    [router, dispatch]
+  )
+
   return (
     <div css={alarmListBox}>
-      <div className="on">
-        {/* 가입 승인 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입승인
-          </h4>
+      {data.map((v) => (
+        <div key={v.id}>
+          {v.read ? (
+            <div onClick={() => locationTo(`${v.id}`, `${v.postId}`)}>
+              <div className="header">
+                <h4>
+                  {v.eventCategory === 'COMMENT_ADDED' && '댓글알림 '}
+                  {v.eventCategory === 'MEMBER_APPLIED' && '가입요청 '}
+                  {v.eventCategory === 'MEMBER_APPROVED' && '가입승인 '}
+                  <img src="/images/common/alarm.svg" alt="" />
+                </h4>
+                {Math.floor((Date.now() / 1000 - v.timestamp) / 24 / 60 / 60) >= 1 ? (
+                  <span> {Math.floor((Date.now() / 1000 - v.timestamp) / 24 / 60 / 60)} 일전 </span>
+                ) : (
+                  <span>오늘</span>
+                )}
+              </div>
 
-          <span>3시간전</span>
+              <p>
+                {v.eventCategory === 'COMMENT_ADDED' && `${v.senderUserName}님이 '${v.postTitle}' 글에 댓글을 달았어요`}
+                {v.eventCategory === 'MEMBER_APPLIED' &&
+                  `${v.senderUserName}님이 ${v.receiverUserName}님의 '${v.postTitle}' 글에 가입신청했어요`}
+                {v.eventCategory === 'MEMBER_APPROVED' &&
+                  `${v.receiverUserName}님이 요청하신 '${v.postTitle}' 글에 가입이 완료됐어요`}
+              </p>
+            </div>
+          ) : (
+            <div className="on" onClick={() => locationTo(`${v.id}`, `${v.postId}`)}>
+              <div className="header">
+                <h4>
+                  {v.eventCategory === 'COMMENT_ADDED' && '댓글알림 '}
+                  {v.eventCategory === 'MEMBER_APPLIED' && '가입요청 '}
+                  {v.eventCategory === 'MEMBER_APPROVED' && '가입승인 '}
+                  <img src="/images/common/alarm.svg" alt="" />
+                </h4>
+                {Math.floor((Date.now() / 1000 - v.timestamp) / 24 / 60 / 60) >= 1 ? (
+                  <span> {Math.floor((Date.now() / 1000 - v.timestamp) / 24 / 60 / 60)} 일전 </span>
+                ) : (
+                  <span>오늘</span>
+                )}
+              </div>
+
+              <p>
+                {v.eventCategory === 'COMMENT_ADDED' && `${v.senderUserName}님이 '${v.postTitle}' 글에 댓글을 달았어요`}
+                {v.eventCategory === 'MEMBER_APPLIED' &&
+                  `${v.senderUserName}님이 ${v.receiverUserName}님의 '${v.postTitle}' 글에 가입신청했어요`}
+                {v.eventCategory === 'MEMBER_APPROVED' &&
+                  `${v.receiverUserName}님이 요청하신 '${v.postTitle}' 글에 가입이 완료됐어요`}
+              </p>
+            </div>
+          )}
         </div>
-
-        <p>[서울]오프라인 IOS 개발 스터디 합정이나 홍대 근처 스터디룸 가입이 승인되었어요!</p>
-      </div>
-
-      <div className="on">
-        {/* 가입 요청 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입요청
-          </h4>
-
-          <span>3시간전</span>
-        </div>
-
-        <p>
-          {user}님이 {classRoom}에 가입 요청했어요!
-        </p>
-      </div>
-      <div>
-        {/* 가입 승인 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입승인
-          </h4>
-
-          <span>3시간전</span>
-        </div>
-
-        <p>[서울]오프라인 IOS 개발 스터디 합정이나 홍대 근처 스터디룸 가입이 승인되었어요!</p>
-      </div>
-
-      <div>
-        {/* 가입 요청 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입요청
-          </h4>
-
-          <span>3시간전</span>
-        </div>
-
-        <p>
-          {user}님이 {classRoom}에 가입 요청했어요!
-        </p>
-      </div>
-      <div>
-        {/* 가입 승인 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입승인
-          </h4>
-
-          <span>3시간전</span>
-        </div>
-
-        <p>[서울]오프라인 IOS 개발 스터디 합정이나 홍대 근처 스터디룸 가입이 승인되었어요!</p>
-      </div>
-
-      <div>
-        {/* 가입 요청 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입요청
-          </h4>
-
-          <span>3시간전</span>
-        </div>
-
-        <p>
-          {user}님이 {classRoom}에 가입 요청했어요!
-        </p>
-      </div>
-      <div>
-        {/* 가입 승인 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입승인
-          </h4>
-
-          <span>3시간전</span>
-        </div>
-
-        <p>[서울]오프라인 IOS 개발 스터디 합정이나 홍대 근처 스터디룸 가입이 승인되었어요!</p>
-      </div>
-
-      <div>
-        {/* 가입 요청 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입요청
-          </h4>
-
-          <span>3시간전</span>
-        </div>
-
-        <p>
-          {user}님이 {classRoom}에 가입 요청했어요!
-        </p>
-      </div>
-
-      <div>
-        {/* 가입 요청 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입요청
-          </h4>
-
-          <span>3시간전</span>
-        </div>
-
-        <p>
-          {user}님이 {classRoom}에 가입 요청했어요!
-        </p>
-      </div>
-
-      <div>
-        {/* 가입 요청 */}
-        <div className="header">
-          <h4>
-            <img src="/images/common/alarm.svg" alt="" />
-            가입요청
-          </h4>
-
-          <span>3시간전</span>
-        </div>
-
-        <p>
-          {user}님이 {classRoom}에 가입 요청했어요!
-        </p>
-      </div>
+      ))}
     </div>
   )
 }
 
 export default AlarmList
 
-AlarmList.defaultProps = {
-  user: '이름없음',
-  classRoom: '취미코딩',
-}
-
 const alarmListBox = css`
+  cursor: pointer;
   img {
     margin-right: 10px;
   }
   .on {
     background: #ffeee7;
   }
-  & > div {
+  & > div > div {
     &:nth-of-type(1) {
       border-top: 1px solid #efebe8;
     }
