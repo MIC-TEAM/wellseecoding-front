@@ -8,7 +8,7 @@ import { css } from '@emotion/react'
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import { REGISTER_ABOUT_ME_URL, REGISTER_WORK_URL } from 'apis'
+import { REGISTER_ABOUT_ME_URL } from 'apis'
 import { myConfig } from 'sagas'
 
 const SelfIntroduction = () => {
@@ -188,23 +188,18 @@ const SelfIntroduction = () => {
       e.preventDefault()
       alert(`자기소개: ${aboutMe}, 기술스택: ${skill}, 현재직무: ${job}`)
       try {
-        await axios.put(REGISTER_ABOUT_ME_URL, {
-          aboutMe: aboutMe,
-        })
-        axios
+        await axios
           .put(
-            REGISTER_WORK_URL,
+            REGISTER_ABOUT_ME_URL,
             {
-              works: [
-                {
-                  technology: skill,
-                },
-              ],
+              aboutMe: aboutMe,
+              skill: skill,
+              job: job,
             },
             myConfig
           )
           .then((res) => {
-            console.log(res.data)
+            console.log(res)
             if (res.status === 200) {
               router.push('/sign_up/school')
             }

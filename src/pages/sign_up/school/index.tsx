@@ -8,18 +8,32 @@ import { useState, useCallback } from 'react'
 import axios from 'axios'
 import { REGISTER_EDUCATION_URL } from 'apis'
 import { myConfig } from 'sagas'
+import { useEffect } from 'react'
 
 const SelfIntroduction = () => {
   // 학위, 전공, 재학 및 졸업여부
   const [degree, setDegree] = useState<string>('')
   const [major, setMajor] = useState<string>('')
   const [isChecked, setIsChecked] = useState<string>('')
+  const [graduated, setGraduated] = useState<boolean>(false)
 
   // 유효성 검사
   const [isDegree, setIsDegree] = useState<boolean>(false)
   const [isMajor, setIsMajor] = useState<boolean>(false)
 
   const router = useRouter()
+
+  useEffect(() => {
+    console.log(`graduated---> ${graduated}`)
+  }, [graduated])
+
+  useEffect(() => {
+    if (isChecked === '졸업') {
+      setGraduated(true)
+    } else {
+      setGraduated(false)
+    }
+  }, [isChecked])
 
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,7 +47,7 @@ const SelfIntroduction = () => {
                 {
                   degree: degree,
                   major: major,
-                  graduated: isChecked,
+                  graduated: graduated,
                 },
               ],
             },
@@ -49,7 +63,7 @@ const SelfIntroduction = () => {
         console.error(err)
       }
     },
-    [degree, major, isChecked, router]
+    [degree, major, router, graduated]
   )
 
   // 학교를 입력해주세요

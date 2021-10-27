@@ -9,6 +9,7 @@ import axios from 'axios'
 import { HiX } from 'react-icons/Hi'
 import { REGISTER_WORK_URL } from 'apis'
 import { myConfig } from 'sagas'
+import { useEffect } from 'react'
 
 const Experience = () => {
   const router = useRouter()
@@ -28,6 +29,10 @@ const Experience = () => {
 
   // 경력 컴포넌트가 4개 이상일 경우 회사추가 버튼 안보이도록
   const [btnShow, setBtnShow] = useState<any>(true)
+
+  useEffect(() => {
+    console.log('inputList------>', inputList)
+  }, [inputList])
 
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -91,6 +96,7 @@ const Experience = () => {
 
       // works 배열에 넣어줄 객체
       const newExperence = {
+        id: Date.now(),
         name: role,
         link: technology,
         desc: years,
@@ -100,6 +106,9 @@ const Experience = () => {
 
       if (inputList.length === 2) {
         setBtnShow(false)
+        setRole('')
+        setTechnology('')
+        setYears(0)
       }
     },
     [role, technology, years, inputList]
@@ -135,7 +144,7 @@ const Experience = () => {
 
           {inputList &&
             inputList.map((item, index) => (
-              <div css={info} id="experienceInputBox" className="newForm" key={item.length}>
+              <div css={info} id="experienceInputBox" className="newForm" key={index}>
                 <button type="button" className="delete" onClick={() => onDeleteBtnClick(index)}>
                   <HiX />
                 </button>

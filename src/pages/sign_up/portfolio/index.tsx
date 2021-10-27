@@ -45,7 +45,7 @@ const Portfolio = () => {
           .then((res) => {
             console.log('response:', res)
             if (res.status === 200) {
-              router.push('/sign_up/profile_upload')
+              router.push('/sign_up/completion')
             }
           })
       } catch (err) {
