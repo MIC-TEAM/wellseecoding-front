@@ -146,7 +146,7 @@ const Experience = () => {
 
           {inputList &&
             inputList.map((item, index) => (
-              <div css={info} id="experienceInputBox" className="newForm" key={index}>
+              <div css={info} id="experienceInputBox" className="newForm" key={item.id}>
                 <button type="button" className="delete" onClick={() => onDeleteBtnClick(index)}>
                   <HiX />
                 </button>
