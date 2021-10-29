@@ -36,6 +36,11 @@ const EditForm = (props: PostType) => {
     updatePostSuccess && location.replace('/home')
   }, [updatePostSuccess])
 
+  /* 렌더링 이후에  preventEnterEvent 함수 호출 */
+  useEffect(() => {
+    preventEnterEvent()
+  }, [])
+
   useEffect(() => {
     checkDataLength()
   }, [dataArr])
@@ -92,9 +97,25 @@ const EditForm = (props: PostType) => {
     setHashtag(replaceStr)
   }, [])
 
+  /* input 태그에 대하여 enter key 입력시 form 태그를 전송하는 event를 막는다 */
+  const preventEnterEvent = () => {
+    if (process.browser) {
+      const inputs = document.querySelectorAll('input')
+      inputs.forEach((input) =>
+        input.addEventListener('keydown', (e: KeyboardEvent) => {
+          if (e.key === 'Enter') {
+            e.preventDefault()
+            return false
+          }
+        })
+      )
+    }
+  }
+
   const onSubmit = useCallback(
     async (e) => {
       e.preventDefault()
+
       dispatch({
         type: UPDATE_POST_REQUEST,
         data: {
@@ -210,11 +231,7 @@ ex) 프론트 n명, 백 n명
             </Alert>
           )}
           <div css={footButtonWrapper}>
-            <FootButton
-              type="submit"
-              footButtonType={ready ? FootButtonType.ACTIVATION : FootButtonType.DISABLE}
-              onClick={onSubmit}
-            >
+            <FootButton type="submit" footButtonType={ready ? FootButtonType.ACTIVATION : FootButtonType.DISABLE}>
               수정하기
             </FootButton>
           </div>

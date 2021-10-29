@@ -11,6 +11,7 @@ import { FETCHING_HOME_POSTS_REQUEST } from 'reducers/home'
 import Loading from 'components/Loading'
 import StudySectionOpt from 'components/Together/StudySectionOption'
 import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
+import { notificationType } from 'types'
 
 const Home = () => {
   const { post, deletePostSuccess, writePostSuccess } = useSelector((state: RootState) => state.posts)
@@ -24,12 +25,16 @@ const Home = () => {
   /* 알림 유무를 판단할 state */
   const [notis, setNotis] = useState<boolean>(false)
 
+  /* 알림 배열이 빈 배열일 경우 서버에 요청하여 알림 배열을 불러온다 */
   useEffect(() => {
     if (!notifications.length) fetchNotifications()
   }, [])
 
+  /* 알림을 받아와서, 알림 배열에 존재할 경우, 알림 내부에 읽지 않은 알림이 있는지 확인한다 */
   useEffect(() => {
-    if (notifications.length) setNotis(true)
+    if (notifications.length) {
+      checkNotificationss(notifications)
+    }
   }, [notifications])
 
   // deletePostSuccess를 false로 초기화
@@ -55,6 +60,7 @@ const Home = () => {
     !homePosts.length && loadHomePosts()
   }, [])
 
+  // 브라우저가 온전히 받아와지면 로컬스토리지에 저장된 id라는 이름을 가진 아이템을 불러와 저장한다
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.getItem('id') && getLocalInfo()
@@ -88,6 +94,12 @@ const Home = () => {
       type: FETCHING_NOTIS_REQUEST,
     })
   }, [dispatch])
+
+  const checkNotificationss = useCallback((arr: notificationType[]) => {
+    arr.forEach((v) => {
+      if (v.read === false) setNotis(true)
+    })
+  }, [])
 
   return (
     <>

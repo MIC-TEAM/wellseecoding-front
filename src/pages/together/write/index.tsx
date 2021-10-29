@@ -90,22 +90,6 @@ const TogetherWrite = () => {
           tags: hashArr,
         },
       })
-
-      setTitle('')
-      setPeriod('')
-      setSchedule('')
-      setQualification('')
-      setSummary('')
-      setPeopleNum('')
-      setHashArr([])
-      setHashtag('')
-
-      if (process.browser) {
-        const $HashWrapOuter = document.querySelector('.HashWrapOuter')
-        // HashWrap 노드의 자식 노드를 모두 삭제한다
-        $HashWrapOuter?.remove()
-      }
-      setReady(false)
     },
     [title, period, schedule, qualification, summary, peopleNum, hashArr, dispatch]
   )

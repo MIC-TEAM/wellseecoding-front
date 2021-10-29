@@ -30,7 +30,6 @@ async function fetchNotisAPI() {
 function* fetchNotis() {
   try {
     const result: notificationType[] = yield call(fetchNotisAPI)
-    console.log('fetchNotis result:', result)
     if (result.length) {
       yield put({
         type: FETCHING_NOTIS_SUCCESS,
@@ -58,8 +57,8 @@ async function updateNotiAPI(data: number) {
 function* updateNoti(action: UpdateNotiRequest) {
   try {
     const result: number = yield call(updateNotiAPI, action.data)
-    console.log('fetchNotis result:', result)
-    {
+
+    if (result === 200) {
       yield put({
         type: UPDATE_NOTI_SUCCESS,
         data: action.data,
