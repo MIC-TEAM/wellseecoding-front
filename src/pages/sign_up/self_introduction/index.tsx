@@ -186,7 +186,6 @@ const SelfIntroduction = () => {
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      alert(`자기소개: ${aboutMe}, 기술스택: ${skill}, 현재직무: ${job}`)
       try {
         await axios
           .put(
@@ -291,7 +290,7 @@ export default SelfIntroduction
 
 const footButtonWrapper = css`
   position: fixed;
-  bottom: 0;
+  bottom: 4rem;
   left: 0;
   right: 0;
   padding: 0 20px;
@@ -306,6 +305,7 @@ const footButtonWrapper = css`
 `
 
 const jobList = css`
+  padding-bottom: 4rem;
   div {
     margin-top: 3em;
     display: flex;

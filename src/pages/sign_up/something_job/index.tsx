@@ -114,8 +114,8 @@ const SomethingJob = () => {
 export default SomethingJob
 
 const footButtonWrapper = css`
-  position: absolute;
-  bottom: 4.4em;
+  position: fixed;
+  bottom: 4rem;
   left: 0;
   right: 0;
   padding: 0 20px;

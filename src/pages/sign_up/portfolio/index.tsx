@@ -88,9 +88,9 @@ const Portfolio = () => {
     }
   }, [])
 
-  // 나중에 쓸게요 버튼 ---> 프로필 업로드 페이지로 이동
+  // 나중에 쓸게요 버튼 ---> 완료 페이지로 이동
   const NextPage = useCallback(() => {
-    router.push('/sign_up/profile_upload')
+    router.push('/sign_up/completion')
   }, [router])
 
   // 포트폴리오 추가 버튼
@@ -196,8 +196,8 @@ const Portfolio = () => {
 export default Portfolio
 
 const footButtonWrapper = css`
-  position: absolute;
-  bottom: 0;
+  position: fixed;
+  bottom: 4rem;
   left: 0;
   right: 0;
   padding: 0 20px;
@@ -210,9 +210,6 @@ const footButtonWrapper = css`
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
     margin-top: 20px;
-  }
-  & > button:nth-of-type(2) {
-    margin-bottom: 4.4em;
   }
 `
 
@@ -230,7 +227,7 @@ const info = css`
 `
 
 const infoWrap = css`
-  padding: 0 20px;
+  padding: 0 20px 1rem 20px;
   .formBox {
     margin-bottom: 250px;
   }

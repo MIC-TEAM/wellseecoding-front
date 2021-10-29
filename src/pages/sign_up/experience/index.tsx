@@ -1,18 +1,64 @@
-import Back from 'components/Common/Header/Back'
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import Title from 'components/Common/Title'
+import { useState, useEffect, useCallback } from 'react'
+import SignupDeleteForm from 'components/SignupDeleteForm'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
-import { css } from '@emotion/react'
-import { useCallback, useState } from 'react'
+import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import { useRouter } from 'next/router'
-import axios from 'axios'
-import { HiX } from 'react-icons/Hi'
+import { css } from '@emotion/react'
+import Title from 'components/Common/Title'
 import { REGISTER_WORK_URL } from 'apis'
 import { myConfig } from 'sagas'
-import { useEffect } from 'react'
+import axios from 'axios'
 
-const Experience = () => {
+// 타입을 인터페이스로 선언
+interface IInput {
+  role: string
+  technology: string
+  years: number
+}
+
+// todo item
+interface ITodoItem {
+  idx: number
+  role: string
+  technology: string
+  years: number
+  isDelete: boolean
+  onDelete?: any
+}
+
+// todo list
+interface ITodoList {
+  todoList: ITodoItem[] // ITodoItem 배열
+}
+function TodoList() {
   const router = useRouter()
+
+  const [iInput, setInput] = useState<IInput>({
+    role: '',
+    technology: '',
+    years: 0,
+  })
+
+  const [iTodoItem, setTodoItem] = useState<ITodoItem>({
+    idx: 0,
+    role: '',
+    technology: '',
+    years: 0,
+    isDelete: false,
+  })
+
+  const [iTodoList, setTodoList] = useState<ITodoList>({
+    todoList: [iTodoItem],
+  })
+
+  useEffect(() => {
+    setTodoList({
+      todoList: iTodoList.todoList.concat(iTodoItem),
+    })
+    console.log('iTodoItem=====> ', iTodoItem)
+  }, [iTodoItem])
+
+  //배열을 명시하면 업데이트 될 때마다 보여주겠다는 뜻이다.
 
   // 프로젝트명, 링크, 설명
   const [role, setRole] = useState<string>('')
@@ -24,43 +70,17 @@ const Experience = () => {
   const [isTechnology, setIsTechnology] = useState<boolean>(false)
   const [isYears, setIsYears] = useState<boolean>(false)
 
-  // 회사 추가 버튼 클릭 시 컴포넌트 추가
-  const [inputList, setInputList] = useState<any[]>([])
-
-  // 경력 컴포넌트가 4개 이상일 경우 회사추가 버튼 안보이도록
-  const [btnShow, setBtnShow] = useState<any>(true)
-
-  useEffect(() => {
-    console.log('inputList------>', inputList)
-  }, [inputList])
-
-  const onSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      try {
-        await axios
-          .put(
-            REGISTER_WORK_URL,
-            {
-              works: inputList,
-            },
-            myConfig
-          )
-          .then((res) => {
-            console.log(res.data)
-            if (res.status === 200) {
-              router.push('/sign_up/profile_upload')
-            }
-          })
-      } catch (err) {
-        console.error(err)
-      }
-    },
-    [inputList, router]
-  )
-
+  // 역할
   const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setRole(e.target.value)
+
+    const { name, value } = e.target
+    console.log('iInput, name, value----->', iInput, name, value)
+    setInput({
+      role: value,
+      technology: value,
+      years: 0,
+    })
 
     if (e.target.value.length) {
       setIsRole(true)
@@ -69,8 +89,17 @@ const Experience = () => {
     }
   }, [])
 
+  // 기술스택
   const onChangeTechnology = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTechnology(e.target.value)
+
+    const { name, value } = e.target
+    console.log(iInput, name, value)
+    setInput({
+      role: value,
+      technology: value,
+      years: 0,
+    })
 
     if (e.target.value.length) {
       setIsTechnology(true)
@@ -79,8 +108,17 @@ const Experience = () => {
     }
   }, [])
 
+  // 경력
   const onChangeYears = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setYears(e.target.valueAsNumber)
+
+    const { name, value } = e.target
+    console.log(iInput, name, value)
+    setInput({
+      role: value,
+      technology: value,
+      years: 0,
+    })
 
     if (e.target.value.length) {
       setIsYears(true)
@@ -89,39 +127,78 @@ const Experience = () => {
     }
   }, [])
 
-  // 회사 추가 버튼 클릭시
-  const onAddBtnClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
+  // 다음버튼 클릭시
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
 
-      // works 배열에 넣어줄 객체
-      const newExperence = {
-        id: Date.now(),
-        name: role,
-        link: technology,
-        desc: years,
-      }
-
-      setInputList([...inputList, newExperence])
-
-      if (inputList.length === 2) {
-        setBtnShow(false)
-        setRole('')
-        setTechnology('')
-        setYears(0)
+      try {
+        await axios
+          .put(
+            REGISTER_WORK_URL,
+            {
+              works: [
+                {
+                  role: role,
+                  technology: technology,
+                  years: years,
+                },
+              ],
+            },
+            myConfig
+          )
+          .then((res) => {
+            console.log(res.data)
+            if (res.status === 200) {
+              router.push('/sign_up/portfolio')
+            }
+          })
+      } catch (err) {
+        console.error(err)
       }
     },
-    [role, technology, years, inputList]
+    [router, role, technology, years]
   )
 
-  // 삭제 버튼 클릭시
-  const onDeleteBtnClick = (index: any) => {
-    setInputList([...inputList.slice(0, index), ...inputList.slice(index + 1, inputList.length)])
-
-    if (inputList.length > 1) {
-      setBtnShow(true)
+  // 회사 추가 버튼 클릭시
+  const onAddBtnClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault() // 페이지 전환 막기
+    if (iInput.role.length > 0) {
+      setTodoItem({
+        idx: iTodoItem.idx + 1,
+        role: iInput.role,
+        technology: iInput.technology,
+        years: iInput.years,
+        isDelete: false,
+      })
     }
+
+    setInput({
+      // input 창 초기화
+      role: '',
+      technology: '',
+      years: 0,
+    })
   }
+
+  const onDelete = (idx: number) => {
+    const newTodo: ITodoItem[] = iTodoList.todoList.filter((item) => item.idx !== idx)
+    setTodoList({
+      todoList: newTodo,
+    })
+  }
+
+  const TodoList = iTodoList.todoList.map((data, idx) => (
+    <SignupDeleteForm
+      key={idx}
+      idx={data.idx}
+      role={data.role}
+      technology={data.technology}
+      years={data.years}
+      isDelete={data.isDelete}
+      onDelete={onDelete}
+    />
+  ))
 
   // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
   const NextPage = useCallback(() => {
@@ -129,83 +206,83 @@ const Experience = () => {
   }, [router])
 
   return (
-    <>
-      <Back />
-
-      <Title title="경력 정보를 적어주세요! (최대 4개)" className="loginMt" />
-
-      <form css={infoWrap} onSubmit={onSubmit}>
-        <div className="formBox">
-          {inputList ? (
-            <div css={info} id="experienceInputBox">
-              <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
-              <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
-              <TextFieldProfile type="number" text="경력을 입력해주세요 (숫자로만 기재)" onChange={onChangeYears} />
-            </div>
-          ) : null}
-
-          {inputList &&
-            inputList.map((item, index) => (
-              <div css={info} id="experienceInputBox" className="newForm" key={item.id}>
-                <button type="button" className="delete" onClick={() => onDeleteBtnClick(index)}>
-                  <HiX />
-                </button>
-
-                <TextFieldProfile type="text" text="역할을 입력해주세요" onChange={onChangeRole} />
-                <TextFieldProfile type="text" text="기술스택을 입력해주세요" onChange={onChangeTechnology} />
-                <TextFieldProfile type="number" text="경력을 입력해주세요 (숫자로만 기재)" onChange={onChangeYears} />
+    <div>
+      <Title title="경력 정보를 적어주세요!" className="loginMt" />
+      <div>
+        <form onSubmit={onSubmit} css={infoWrap}>
+          <section>
+            <div className="formBox">
+              <div css={info} id="experienceInputBox">
+                <TextFieldProfile
+                  type="text"
+                  value={iInput.role}
+                  name="role"
+                  text="역할을 입력해주세요"
+                  onChange={onChangeRole}
+                />
+                <TextFieldProfile
+                  type="text"
+                  value={iInput.technology}
+                  name="technology"
+                  text="기술스택을 입력해주세요"
+                  onChange={onChangeTechnology}
+                />
+                <TextFieldProfile
+                  type="text"
+                  value={iInput.years}
+                  name="years"
+                  text="경력을 입력해주세요 (숫자로만 기재)"
+                  onChange={onChangeYears}
+                />
               </div>
-            ))}
 
-          <div css={companyAddWrap}>
-            {btnShow ? (
-              <button
-                css={companyAdd}
-                onClick={onAddBtnClick}
-                type="button"
+              <div css={companyAddWrap}>
+                <button
+                  css={companyAdd}
+                  onClick={onAddBtnClick}
+                  type="submit"
+                  disabled={!(isRole && isTechnology && isYears)}
+                >
+                  <span>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
+                      <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
+                    </svg>
+                  </span>
+                  <span>회사 추가</span>
+                </button>
+              </div>
+            </div>
+
+            <div>{TodoList}</div>
+          </section>
+
+          <div css={footButtonWrapper}>
+            <div className="wrap">
+              <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
+                나중에 쓸게요~
+              </FootButton>
+              <FootButton
+                type="submit"
+                footButtonType={FootButtonType.ACTIVATION}
                 disabled={!(isRole && isTechnology && isYears)}
               >
-                <span>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
-                    <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
-                  </svg>
-                </span>
-                <span>회사 추가</span>
-              </button>
-            ) : (
-              setBtnShow
-            )}
+                다음
+              </FootButton>
+            </div>
           </div>
-        </div>
-
-        <div css={footButtonWrapper}>
-          <div className="wrap">
-            <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
-              나중에 쓸게요~
-            </FootButton>
-            <FootButton
-              type="submit"
-              footButtonType={FootButtonType.ACTIVATION}
-              disabled={!(isRole && isTechnology && isYears)}
-            >
-              다음
-            </FootButton>
-          </div>
-        </div>
-      </form>
-    </>
+        </form>
+      </div>
+    </div>
   )
 }
 
-export default Experience
-
 const footButtonWrapper = css`
   position: fixed;
-  bottom: 0;
+  bottom: 4rem;
   left: 0;
   right: 0;
-  padding: 0 20px 20px;
+  padding: 0 20px;
   background-color: #fff;
   button:disabled,
   button[disabled] {
@@ -234,13 +311,12 @@ const info = css`
   padding: 26px;
 
   &:nth-of-type(1) {
-    margin-top: 40px;
+    margin-top: 10px;
   }
 `
 const infoWrap = css`
-  padding: 0 20px;
-  padding-bottom: 1rem;
-  .formBox {
+  padding: 0 20px 1rem 20px;
+  section {
     margin-bottom: 250px;
   }
   .delete {
@@ -283,3 +359,5 @@ const companyAdd = css`
     margin-left: 8px;
   }
 `
+
+export default TodoList
