@@ -13,17 +13,13 @@ const ClassJoinList = () => {
   const { id } = router.query
   const dispatch = useDispatch()
 
-  const { members, acceptMemberSuccess } = useSelector((state: RootState) => state.posts)
+  const { members } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
     if (id && !members.length) {
       getLists()
     }
   }, [id])
-
-  useEffect(() => {
-    if (acceptMemberSuccess) router.reload()
-  }, [router, acceptMemberSuccess])
 
   const getLists = useCallback(async () => {
     dispatch({

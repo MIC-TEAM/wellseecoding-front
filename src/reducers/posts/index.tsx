@@ -11,7 +11,7 @@ export interface PostsIntialState {
   posts: PostData[]
   post: PostType[]
   searchPosts: PostType[]
-  members: MemberData[]
+  members: any[]
 
   fetchPostsLoading: boolean
   fetchPostsSuccess: boolean
@@ -592,7 +592,7 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
       case ACCEPT_MEMBER_SUCCESS: {
         draft.acceptMemberRequest = false
         draft.acceptMemberSuccess = true
-        // draft.members.find((v) => v.userId === action.data.userId).authorized
+        draft.members.find((v) => v.userId === action.data.userId).authorized = true
         break
       }
       case ACCEPT_MEMBER_FAILURE: {
@@ -606,3 +606,5 @@ const posts = (state: PostsIntialState = initialState, action: FetchingPosts) =>
   })
 
 export default posts
+
+// 564, 671, 794, 1552
