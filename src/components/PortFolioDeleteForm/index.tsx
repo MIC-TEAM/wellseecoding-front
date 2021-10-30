@@ -3,14 +3,14 @@ import { HiX } from 'react-icons/Hi'
 
 interface IList {
   idx: number
-  project: string
+  name: string
   link: string
   desc: number
   isDelete: boolean
   onDelete: any
 }
 
-function SignupDeleteForm(props: IList) {
+function PortFolioDeleteForm(props: IList) {
   const handleDelete = () => {
     props.onDelete(props.idx)
   }
@@ -18,13 +18,13 @@ function SignupDeleteForm(props: IList) {
   return (
     <div css={infoWrap}>
       {props.idx !== 0 && !props.isDelete && (
-        <div css={info} id="experienceInputBox" className="newForm">
+        <div css={info} id="InputBox" className="newForm">
           <button type="button" className="delete" onClick={handleDelete}>
             <HiX />
           </button>
 
           <p>
-            <b>프로젝트 이름</b> {props.project}
+            <b>프로젝트 이름</b> {props.name}
           </p>
           <p>
             <b>링크</b> {props.link}
@@ -38,7 +38,7 @@ function SignupDeleteForm(props: IList) {
   )
 }
 
-export default SignupDeleteForm
+export default PortFolioDeleteForm
 
 const info = css`
   background: #ffffff;

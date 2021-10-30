@@ -200,7 +200,6 @@ const footButtonWrapper = css`
   left: 0;
   right: 0;
   padding: 0 20px;
-  background-color: #fff;
   button:disabled,
   button[disabled] {
     background-color: #d3cfcc;
@@ -209,7 +208,7 @@ const footButtonWrapper = css`
 
   .wrap {
     width: 100%;
-    max-width: 600px;
+    max-width: 550px;
     margin: 0 auto;
     & > button:nth-of-type(1) {
       margin-bottom: 11px;

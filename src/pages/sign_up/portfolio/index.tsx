@@ -14,7 +14,7 @@ const Portfolio = () => {
   const router = useRouter()
 
   // 프로젝트명, 링크, 설명
-  const [project, setProject] = useState<string>('')
+  const [name, setName] = useState<string>('')
   const [link, setLink] = useState<string>('')
   const [desc, setDesc] = useState<string>('')
 
@@ -54,7 +54,7 @@ const Portfolio = () => {
 
   // 프로젝트 이름
   const onChangeProject = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setProject(e.target.value)
+    setName(e.target.value)
 
     if (e.target.value.length) {
       setIsProject(true)
@@ -95,17 +95,17 @@ const Portfolio = () => {
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
 
-      // links 배열에 넣어줄 객체
-      const newProtfolio = {
-        name: project,
+      const newExperence = {
+        idx: Date.now(),
+        name: name,
         link: link,
         desc: desc,
+        isDelete: false,
       }
 
-      setInputList([...inputList, newProtfolio])
-      console.log('추가됐습니다.', newProtfolio)
+      setInputList(inputList.concat(newExperence))
     },
-    [inputList, link, project, desc]
+    [inputList, link, name, desc]
   )
 
   // 삭제 버튼 클릭시
@@ -114,11 +114,11 @@ const Portfolio = () => {
     setInputList(newInput)
   }
 
-  const ExperienceList = inputList.map((data, idx) => (
+  const PortFolioList = inputList.map((data, idx) => (
     <PortFolioDeleteForm
       key={idx}
       idx={data.idx}
-      project={data.project}
+      name={data.name}
       link={data.link}
       desc={data.desc}
       isDelete={data.isDelete}
@@ -130,27 +130,21 @@ const Portfolio = () => {
     <>
       <Back />
 
-      <Title title="포트폴리오를 올려주세요! (최대 4개)" className="loginMt" />
+      <Title title="포트폴리오를 올려주세요!" />
 
       <form css={infoWrap} onSubmit={onSubmit}>
         <section>
           <div className="formBox">
             <div css={info} className="portfolioInfo">
-              <TextFieldProfile
-                type="text"
-                name="role"
-                value={project}
-                text="프로젝트 이름"
-                onChange={onChangeProject}
-              />
+              <TextFieldProfile type="text" name="name" value={name} text="프로젝트 이름" onChange={onChangeProject} />
               <TextFieldProfile
                 type="text"
                 value={link}
-                name="technology"
+                name="link"
                 text="링크 (깃허브 또는 결과물 URL)"
                 onChange={onChangeLink}
               />
-              <TextFieldProfile type="text" name="years" value={desc} text="설명" onChange={onChangeDesc} />
+              <TextFieldProfile type="text" name="desc" value={desc} text="설명" onChange={onChangeDesc} />
             </div>
 
             <div css={companyAddWrap}>
@@ -171,19 +165,21 @@ const Portfolio = () => {
             </div>
           </div>
 
-          <div>{ExperienceList}</div>
+          <div>{PortFolioList}</div>
         </section>
         <div css={footButtonWrapper}>
-          <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
-            나중에 쓸게요~
-          </FootButton>
-          <FootButton
-            type="submit"
-            footButtonType={FootButtonType.ACTIVATION}
-            disabled={!(isProject && isLink && isDesc)}
-          >
-            다음
-          </FootButton>
+          <div className="wrap">
+            <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
+              나중에 쓸게요~
+            </FootButton>
+            <FootButton
+              type="submit"
+              footButtonType={FootButtonType.ACTIVATION}
+              disabled={!(isProject && isLink && isDesc)}
+            >
+              다음
+            </FootButton>
+          </div>
         </div>
       </form>
     </>
@@ -198,7 +194,6 @@ const footButtonWrapper = css`
   left: 0;
   right: 0;
   padding: 0 20px;
-  background-color: #fff;
   button:disabled,
   button[disabled] {
     background-color: #d3cfcc;
@@ -207,6 +202,16 @@ const footButtonWrapper = css`
   & > button:nth-of-type(1) {
     margin-bottom: 11px;
     margin-top: 20px;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+    & > button:nth-of-type(1) {
+      margin-bottom: 11px;
+      margin-top: 20px;
+    }
   }
 `
 

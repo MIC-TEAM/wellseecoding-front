@@ -3,7 +3,7 @@ import { Common } from 'styles/common'
 
 type Props = {
   title: string
-  className: string
+  className?: string
 }
 
 export default function Title({ title, className }: Props) {
