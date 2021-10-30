@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import SignupDeleteForm from 'components/SignupDeleteForm'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
@@ -10,38 +10,16 @@ import { REGISTER_WORK_URL } from 'apis'
 import { myConfig } from 'sagas'
 import axios from 'axios'
 
-interface ITodoItem {
-  idx: number
-  role: string
-  technology: string
-  years: number
-  isDelete: boolean
-  onDelete?: any
-}
-
-interface ITodoList {
-  todoList: ITodoItem[] // ITodoItem 배열
-}
-
-function TodoList() {
+function Experience() {
   const router = useRouter()
 
-  const [iTodoItem, setTodoItem] = useState<ITodoItem>({
-    idx: 0,
-    role: '',
-    technology: '',
-    years: NaN,
-    isDelete: false,
-  })
-
-  const [iTodoList, setTodoList] = useState<ITodoList>({
-    todoList: [iTodoItem],
-  })
+  // 회사추가 할 때마다 생성되는 컴포넌트에 대한 배열
+  const [inputList, setInputList] = useState<any[]>([])
 
   // 프로젝트명, 링크, 설명
   const [role, setRole] = useState<string>('')
   const [technology, setTechnology] = useState<string>('')
-  const [years, setYears] = useState<number>(NaN)
+  const [years, setYears] = useState<number | string>('')
 
   // 유효성 검사
   const [isRole, setIsRole] = useState<boolean>(false)
@@ -88,13 +66,7 @@ function TodoList() {
           .put(
             REGISTER_WORK_URL,
             {
-              works: [
-                {
-                  role: role,
-                  technology: technology,
-                  years: years,
-                },
-              ],
+              works: inputList,
             },
             myConfig
           )
@@ -108,38 +80,30 @@ function TodoList() {
         console.error(err)
       }
     },
-    [router, role, technology, years, iTodoItem.idx]
+    [router, inputList]
   )
 
   // 회사 추가 버튼 클릭시
   const onAddBtnClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault() // 페이지 전환 막기
 
-    setTodoItem({
-      idx: iTodoItem.idx + 1,
+    const newExperence = {
+      idx: Date.now(),
       role: role,
       technology: technology,
       years: years,
       isDelete: false,
-    })
+    }
 
-    setTodoList({
-      todoList: iTodoList.todoList.concat(iTodoItem),
-    })
-
-    // setRole('')
-    // setTechnology('')
-    // setYears(NaN)
+    setInputList(inputList.concat(newExperence))
   }
 
   const onDelete = (idx: number) => {
-    const newTodo: ITodoItem[] = iTodoList.todoList.filter((item) => item.idx !== idx)
-    setTodoList({
-      todoList: newTodo,
-    })
+    const newTodo = inputList.filter((item) => item.idx !== idx)
+    setInputList(newTodo)
   }
 
-  const TodoList = iTodoList.todoList.map((data, idx) => (
+  const ExperienceList = inputList.map((data, idx) => (
     <SignupDeleteForm
       key={idx}
       idx={data.idx}
@@ -183,6 +147,7 @@ function TodoList() {
                 <TextFieldProfile
                   type="number"
                   name="years"
+                  value={years}
                   text="경력을 입력해주세요 (숫자로만 기재)"
                   onChange={onChangeYears}
                 />
@@ -206,7 +171,7 @@ function TodoList() {
               </div>
             </div>
 
-            <div>{TodoList}</div>
+            <div>{ExperienceList}</div>
           </section>
 
           <div css={footButtonWrapper}>
@@ -312,4 +277,4 @@ const companyAdd = css`
   }
 `
 
-export default TodoList
+export default Experience

@@ -10,7 +10,7 @@ interface IList {
   onDelete: any
 }
 
-function TodoItem(props: IList) {
+function SignupDeleteForm(props: IList) {
   const handleDelete = () => {
     props.onDelete(props.idx)
   }
@@ -38,7 +38,7 @@ function TodoItem(props: IList) {
   )
 }
 
-export default TodoItem
+export default SignupDeleteForm
 
 const info = css`
   background: #ffffff;
