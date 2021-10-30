@@ -15,12 +15,10 @@ const SelfIntroduction = () => {
   // 간단한 자기소개, 기술스택
   const [aboutMe, setAboutMe] = useState<string>('')
   const [skill, setSkill] = useState<string>('')
+  const [job, setJob] = useState<string>('')
 
   // 직무 선택시 다음으로 넘어갈 수 있도록
   const [isChecked, setIsChecked] = useState<boolean>(false)
-
-  // 현재 직무
-  const [job, setJob] = useState('')
 
   // 유효성 검사
   const [isAboutMe, setIsAboutMe] = useState<boolean>(false)
@@ -28,7 +26,7 @@ const SelfIntroduction = () => {
 
   const router = useRouter()
 
-  // 직무선택
+  // ----직무선택----
   // 서버/백엔드
   const onChangeBackEnd = useCallback(() => {
     const jobBackEnd = document.getElementsByClassName('jobBackEnd')
@@ -192,7 +190,7 @@ const SelfIntroduction = () => {
             REGISTER_ABOUT_ME_URL,
             {
               aboutMe: aboutMe,
-              skill: skill,
+              tags: skill,
               job: job,
             },
             myConfig

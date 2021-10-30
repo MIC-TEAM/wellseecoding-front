@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import SignupDeleteForm from 'components/SignupDeleteForm'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
+import Back from 'components/Common/Header/Back'
 import { useRouter } from 'next/router'
 import { css } from '@emotion/react'
 import Title from 'components/Common/Title'
@@ -9,14 +10,6 @@ import { REGISTER_WORK_URL } from 'apis'
 import { myConfig } from 'sagas'
 import axios from 'axios'
 
-// 타입을 인터페이스로 선언
-interface IInput {
-  role: string
-  technology: string
-  years: number
-}
-
-// todo item
 interface ITodoItem {
   idx: number
   role: string
@@ -26,24 +19,18 @@ interface ITodoItem {
   onDelete?: any
 }
 
-// todo list
 interface ITodoList {
   todoList: ITodoItem[] // ITodoItem 배열
 }
+
 function TodoList() {
   const router = useRouter()
-
-  const [iInput, setInput] = useState<IInput>({
-    role: '',
-    technology: '',
-    years: 0,
-  })
 
   const [iTodoItem, setTodoItem] = useState<ITodoItem>({
     idx: 0,
     role: '',
     technology: '',
-    years: 0,
+    years: NaN,
     isDelete: false,
   })
 
@@ -51,19 +38,10 @@ function TodoList() {
     todoList: [iTodoItem],
   })
 
-  useEffect(() => {
-    setTodoList({
-      todoList: iTodoList.todoList.concat(iTodoItem),
-    })
-    console.log('iTodoItem=====> ', iTodoItem)
-  }, [iTodoItem])
-
-  //배열을 명시하면 업데이트 될 때마다 보여주겠다는 뜻이다.
-
   // 프로젝트명, 링크, 설명
   const [role, setRole] = useState<string>('')
   const [technology, setTechnology] = useState<string>('')
-  const [years, setYears] = useState<number>(0)
+  const [years, setYears] = useState<number>(NaN)
 
   // 유효성 검사
   const [isRole, setIsRole] = useState<boolean>(false)
@@ -73,15 +51,6 @@ function TodoList() {
   // 역할
   const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setRole(e.target.value)
-
-    const { name, value } = e.target
-    console.log('iInput, name, value----->', iInput, name, value)
-    setInput({
-      role: value,
-      technology: value,
-      years: 0,
-    })
-
     if (e.target.value.length) {
       setIsRole(true)
     } else {
@@ -92,15 +61,6 @@ function TodoList() {
   // 기술스택
   const onChangeTechnology = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTechnology(e.target.value)
-
-    const { name, value } = e.target
-    console.log(iInput, name, value)
-    setInput({
-      role: value,
-      technology: value,
-      years: 0,
-    })
-
     if (e.target.value.length) {
       setIsTechnology(true)
     } else {
@@ -110,16 +70,7 @@ function TodoList() {
 
   // 경력
   const onChangeYears = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setYears(e.target.valueAsNumber)
-
-    const { name, value } = e.target
-    console.log(iInput, name, value)
-    setInput({
-      role: value,
-      technology: value,
-      years: 0,
-    })
-
+    setYears(parseInt(e.target.value))
     if (e.target.value.length) {
       setIsYears(true)
     } else {
@@ -157,28 +108,28 @@ function TodoList() {
         console.error(err)
       }
     },
-    [router, role, technology, years]
+    [router, role, technology, years, iTodoItem.idx]
   )
 
   // 회사 추가 버튼 클릭시
   const onAddBtnClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault() // 페이지 전환 막기
-    if (iInput.role.length > 0) {
-      setTodoItem({
-        idx: iTodoItem.idx + 1,
-        role: iInput.role,
-        technology: iInput.technology,
-        years: iInput.years,
-        isDelete: false,
-      })
-    }
 
-    setInput({
-      // input 창 초기화
-      role: '',
-      technology: '',
-      years: 0,
+    setTodoItem({
+      idx: iTodoItem.idx + 1,
+      role: role,
+      technology: technology,
+      years: years,
+      isDelete: false,
     })
+
+    setTodoList({
+      todoList: iTodoList.todoList.concat(iTodoItem),
+    })
+
+    // setRole('')
+    // setTechnology('')
+    // setYears(NaN)
   }
 
   const onDelete = (idx: number) => {
@@ -207,6 +158,8 @@ function TodoList() {
 
   return (
     <div>
+      <Back />
+
       <Title title="경력 정보를 적어주세요!" className="loginMt" />
       <div>
         <form onSubmit={onSubmit} css={infoWrap}>
@@ -215,21 +168,20 @@ function TodoList() {
               <div css={info} id="experienceInputBox">
                 <TextFieldProfile
                   type="text"
-                  value={iInput.role}
                   name="role"
+                  value={role}
                   text="역할을 입력해주세요"
                   onChange={onChangeRole}
                 />
                 <TextFieldProfile
                   type="text"
-                  value={iInput.technology}
+                  value={technology}
                   name="technology"
                   text="기술스택을 입력해주세요"
                   onChange={onChangeTechnology}
                 />
                 <TextFieldProfile
-                  type="text"
-                  value={iInput.years}
+                  type="number"
                   name="years"
                   text="경력을 입력해주세요 (숫자로만 기재)"
                   onChange={onChangeYears}
