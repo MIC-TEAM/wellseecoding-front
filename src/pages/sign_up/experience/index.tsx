@@ -99,8 +99,8 @@ function Experience() {
   }
 
   const onDelete = (idx: number) => {
-    const newTodo = inputList.filter((item) => item.idx !== idx)
-    setInputList(newTodo)
+    const newInput = inputList.filter((item) => item.idx !== idx)
+    setInputList(newInput)
   }
 
   const ExperienceList = inputList.map((data, idx) => (
@@ -228,7 +228,7 @@ const info = css`
   padding: 26px;
 
   &:nth-of-type(1) {
-    margin-top: 10px;
+    margin-top: 3rem;
   }
 `
 const infoWrap = css`
@@ -267,6 +267,7 @@ const companyAdd = css`
   border-radius: 10px;
   width: 100%;
   padding: 15px 0;
+  margin-bottom: 3rem;
   span {
     font-weight: 500;
     font-size: 18px;

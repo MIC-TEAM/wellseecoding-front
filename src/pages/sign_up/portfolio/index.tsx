@@ -4,9 +4,9 @@ import Title from 'components/Common/Title'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
 import { useCallback, useState } from 'react'
+import PortFolioDeleteForm from 'components/PortFolioDeleteForm'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import { HiX } from 'react-icons/Hi'
 import { REGISTER_LINK_URL } from 'apis'
 import { myConfig } from 'sagas'
 
@@ -25,9 +25,6 @@ const Portfolio = () => {
 
   // 포트폴리오 추가 버튼 클릭 시 컴포넌트 추가
   const [inputList, setInputList] = useState<any[]>([])
-
-  // 포트폴리오 컴포넌트가 4개 이상일 경우 회사추가 버튼 안보이도록
-  const [btnShow, setBtnShow] = useState<any>(true)
 
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -107,25 +104,27 @@ const Portfolio = () => {
 
       setInputList([...inputList, newProtfolio])
       console.log('추가됐습니다.', newProtfolio)
-
-      // 포트폴리오 입력란이 최대 3개가 되면 포트폴리오 추가 버튼 안보이도록
-      if (inputList.length === 2) {
-        setBtnShow(false)
-      }
     },
     [inputList, link, project, desc]
   )
 
   // 삭제 버튼 클릭시
-  const onDeleteBtnClick = (index: any) => {
-    console.log('삭제되었습니다.', inputList)
-    setInputList([...inputList.slice(0, index), ...inputList.slice(index + 1, inputList.length)])
-
-    // 3개 미만이면 포트폴리오 추가 버튼 보이도록
-    if (inputList.length > 1) {
-      setBtnShow(true)
-    }
+  const onDelete = (idx: number) => {
+    const newInput = inputList.filter((item) => item.idx !== idx)
+    setInputList(newInput)
   }
+
+  const ExperienceList = inputList.map((data, idx) => (
+    <PortFolioDeleteForm
+      key={idx}
+      idx={data.idx}
+      project={data.project}
+      link={data.link}
+      desc={data.desc}
+      isDelete={data.isDelete}
+      onDelete={onDelete}
+    />
+  ))
 
   return (
     <>
@@ -134,32 +133,31 @@ const Portfolio = () => {
       <Title title="포트폴리오를 올려주세요! (최대 4개)" className="loginMt" />
 
       <form css={infoWrap} onSubmit={onSubmit}>
-        <div className="formBox">
-          <div css={info} className="portfolioInfo">
-            <TextFieldProfile type="text" text="프로젝트 이름" onChange={onChangeProject} />
-            <TextFieldProfile type="text" text="링크 (깃허브 또는 결과물 URL)" onChange={onChangeLink} />
-            <TextFieldProfile type="text" text="설명" onChange={onChangeDesc} />
-          </div>
+        <section>
+          <div className="formBox">
+            <div css={info} className="portfolioInfo">
+              <TextFieldProfile
+                type="text"
+                name="role"
+                value={project}
+                text="프로젝트 이름"
+                onChange={onChangeProject}
+              />
+              <TextFieldProfile
+                type="text"
+                value={link}
+                name="technology"
+                text="링크 (깃허브 또는 결과물 URL)"
+                onChange={onChangeLink}
+              />
+              <TextFieldProfile type="text" name="years" value={desc} text="설명" onChange={onChangeDesc} />
+            </div>
 
-          {inputList &&
-            inputList.map((item, index) => (
-              <div css={info} id="experienceInputBox" className="newForm" key={item.length}>
-                <button type="button" className="delete" onClick={() => onDeleteBtnClick(index)}>
-                  <HiX />
-                </button>
-
-                <TextFieldProfile type="text" text="프로젝트 이름" onChange={onChangeProject} />
-                <TextFieldProfile type="text" text="링크 (깃허브 또는 결과물 URL)" onChange={onChangeLink} />
-                <TextFieldProfile type="text" text="설명" onChange={onChangeDesc} />
-              </div>
-            ))}
-
-          <div css={companyAddWrap}>
-            {btnShow ? (
+            <div css={companyAddWrap}>
               <button
                 css={companyAdd}
-                type="button"
                 onClick={onAddBtnClick}
+                type="submit"
                 disabled={!(isProject && isLink && isDesc)}
               >
                 <span>
@@ -170,12 +168,11 @@ const Portfolio = () => {
                 </span>
                 <span>포트폴리오 링크 추가</span>
               </button>
-            ) : (
-              setBtnShow
-            )}
+            </div>
           </div>
-        </div>
 
+          <div>{ExperienceList}</div>
+        </section>
         <div css={footButtonWrapper}>
           <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
             나중에 쓸게요~
@@ -221,14 +218,16 @@ const info = css`
   border-radius: 10px;
   margin-bottom: 18px;
   padding: 26px;
+
   &:nth-of-type(1) {
-    margin-top: 40px;
+    margin-top: 3rem;
   }
 `
 
 const infoWrap = css`
   padding: 0 20px 1rem 20px;
-  .formBox {
+
+  section {
     margin-bottom: 250px;
   }
   .delete {
@@ -262,7 +261,7 @@ const companyAdd = css`
   border-radius: 10px;
   width: 100%;
   padding: 15px 0;
-
+  margin-bottom: 3rem;
   span {
     font-weight: 500;
     font-size: 18px;
