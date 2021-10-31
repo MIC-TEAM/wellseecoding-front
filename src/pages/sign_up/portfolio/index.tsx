@@ -10,6 +10,14 @@ import axios from 'axios'
 import { REGISTER_LINK_URL } from 'apis'
 import { myConfig } from 'sagas'
 
+interface IinputList {
+  idx: number
+  name: string
+  link: string
+  desc: string
+  isDelete: boolean
+}
+
 const Portfolio = () => {
   const router = useRouter()
 
@@ -24,7 +32,7 @@ const Portfolio = () => {
   const [isDesc, setIsDesc] = useState<boolean>(false)
 
   // 포트폴리오 추가 버튼 클릭 시 컴포넌트 추가
-  const [inputList, setInputList] = useState<any[]>([])
+  const [inputList, setInputList] = useState<IinputList[]>([])
 
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +48,6 @@ const Portfolio = () => {
             myConfig
           )
           .then((res) => {
-            console.log('response:', res)
             if (res.status === 200) {
               router.push('/sign_up/completion')
             }
@@ -94,6 +101,9 @@ const Portfolio = () => {
   const onAddBtnClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault()
+      setName('')
+      setLink('')
+      setDesc('')
 
       const newExperence = {
         idx: Date.now(),
@@ -172,11 +182,7 @@ const Portfolio = () => {
             <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
               나중에 쓸게요~
             </FootButton>
-            <FootButton
-              type="submit"
-              footButtonType={FootButtonType.ACTIVATION}
-              disabled={!(isProject && isLink && isDesc)}
-            >
+            <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!inputList.length}>
               다음
             </FootButton>
           </div>

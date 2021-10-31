@@ -5,9 +5,9 @@ interface IList {
   idx: number
   role: string
   technology: string
-  years: number
+  years: number | string
   isDelete: boolean
-  onDelete: any
+  onDelete: (idx: number) => void
 }
 
 function SignupDeleteForm(props: IList) {

@@ -10,11 +10,19 @@ import { REGISTER_WORK_URL } from 'apis'
 import { myConfig } from 'sagas'
 import axios from 'axios'
 
+interface IinputList {
+  idx: number
+  role: string
+  technology: string
+  years: number | string
+  isDelete: boolean
+}
+
 function Experience() {
   const router = useRouter()
 
   // 회사추가 할 때마다 생성되는 컴포넌트에 대한 배열
-  const [inputList, setInputList] = useState<any[]>([])
+  const [inputList, setInputList] = useState<IinputList[]>([])
 
   // 프로젝트명, 링크, 설명
   const [role, setRole] = useState<string>('')
@@ -86,6 +94,9 @@ function Experience() {
   // 회사 추가 버튼 클릭시
   const onAddBtnClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault() // 페이지 전환 막기
+    setRole('')
+    setTechnology('')
+    setYears('')
 
     const newExperence = {
       idx: Date.now(),
@@ -179,11 +190,7 @@ function Experience() {
               <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
                 나중에 쓸게요~
               </FootButton>
-              <FootButton
-                type="submit"
-                footButtonType={FootButtonType.ACTIVATION}
-                disabled={!(isRole && isTechnology && isYears)}
-              >
+              <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!inputList.length}>
                 다음
               </FootButton>
             </div>

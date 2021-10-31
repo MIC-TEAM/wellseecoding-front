@@ -5,9 +5,9 @@ interface IList {
   idx: number
   name: string
   link: string
-  desc: number
+  desc: string
   isDelete: boolean
-  onDelete: any
+  onDelete: (idx: number) => void
 }
 
 function PortFolioDeleteForm(props: IList) {
