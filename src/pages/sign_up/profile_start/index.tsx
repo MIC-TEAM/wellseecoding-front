@@ -41,13 +41,16 @@ export default SignUpProfileStart
 
 const profileStart = css`
   text-align: center;
-  margin-top: 16vh;
+  height: 100vh;
+  justify-content: center;
+  align-content: center;
+  display: grid;
+  text-align: center;
+  place-items: center;
   h2 {
     font-size: ${Common.fontSize.title};
     line-height: 31px;
-  }
-  img {
-    margin-top: 4.2em;
+    margin-bottom: 1rem;
   }
 `
 
