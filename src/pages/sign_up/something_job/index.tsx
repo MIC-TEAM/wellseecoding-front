@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useState, useCallback } from 'react'
 import axios from 'axios'
 import { REGISTER_STATUS_URL } from 'apis'
+import { myConfig } from 'sagas'
 
 const SomethingJob = () => {
   const router = useRouter()
@@ -52,12 +53,15 @@ const SomethingJob = () => {
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      alert(`직업: ${value}`)
       try {
         await axios
-          .put(REGISTER_STATUS_URL, {
-            status: value,
-          })
+          .put(
+            REGISTER_STATUS_URL,
+            {
+              status: value,
+            },
+            myConfig
+          )
           .then((res) => {
             console.log(res.data)
             if (res.status === 200) {
@@ -110,8 +114,8 @@ const SomethingJob = () => {
 export default SomethingJob
 
 const footButtonWrapper = css`
-  position: absolute;
-  bottom: 4.4em;
+  position: fixed;
+  bottom: 4rem;
   left: 0;
   right: 0;
   padding: 0 20px;

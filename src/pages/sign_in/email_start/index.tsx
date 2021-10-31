@@ -8,8 +8,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
-// import { REGISTER_USERS_URL } from 'apis'
-// import axios from 'axios'
+import { REGISTER_USERS_LOGIN } from 'apis'
+import axios from 'axios'
 
 const EmailLogin = () => {
   const router = useRouter()
@@ -30,20 +30,20 @@ const EmailLogin = () => {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       router.push('/home')
-      // try {
-      //   await axios
-      //     .post(REGISTER_USERS_URL, {
-      //       password: password,
-      //       email: email,
-      //     })
-      //     .then((res) => {
-      //       console.log(res.data)
-      //     })
-      // } catch (err) {
-      //   console.error(err)
-      // }
+      try {
+        await axios
+          .post(REGISTER_USERS_LOGIN, {
+            password: password,
+            email: email,
+          })
+          .then((res: any) => {
+            console.log(res.data)
+          })
+      } catch (err) {
+        console.error(err)
+      }
     },
-    [router]
+    [password, email]
   )
 
   // 이메일
@@ -81,40 +81,42 @@ const EmailLogin = () => {
     <>
       <Back />
 
-      <div css={loginTitleWrap}>
-        <BigTitle title="이메일로 로그인" />
-      </div>
-
-      <form css={loginFrom} onSubmit={onSubmit}>
-        <div className="formbox">
-          <TextField text="이메일" type="email" typeName="email" onChange={onChangeEmail} />
-          {email.length > 0 && <span className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>}
+      <main css={loginAlign}>
+        <div css={loginTitleWrap}>
+          <BigTitle title="이메일로 로그인" />
         </div>
 
-        <div className="formbox">
-          <PasswordField
-            onChange={onChangePassword}
-            passwordText="비밀번호 (숫자+영문자+특수문자 조합으로 8자리 이상)"
-            title="비밀번호"
-            typeTitle="password"
-          />
-          {password.length > 0 && (
-            <span className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>
-          )}
-        </div>
-        <div css={footButtonWrapper}>
-          <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!(isEmail && isPassword)}>
-            다음
-          </FootButton>
-        </div>
-      </form>
+        <form css={loginFrom} onSubmit={onSubmit}>
+          <div className="formbox">
+            <TextField text="이메일" type="email" typeName="email" onChange={onChangeEmail} />
+            {email.length > 0 && <span className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>}
+          </div>
 
-      <p css={passwordFind}>
-        기억이 안나세요?
-        <Link href="/login/password_email">
-          <a>비밀번호 찾기</a>
-        </Link>
-      </p>
+          <div className="formbox">
+            <PasswordField
+              onChange={onChangePassword}
+              passwordText="비밀번호 (숫자+영문자+특수문자 조합으로 8자리 이상)"
+              title="비밀번호"
+              typeTitle="password"
+            />
+            {password.length > 0 && (
+              <span className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>
+            )}
+          </div>
+          <div css={footButtonWrapper}>
+            <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!(isEmail && isPassword)}>
+              다음
+            </FootButton>
+          </div>
+        </form>
+
+        <p css={passwordFind}>
+          기억이 안나세요?
+          <Link href="/login/password_email">
+            <a>비밀번호 찾기</a>
+          </Link>
+        </p>
+      </main>
     </>
   )
 }
@@ -146,8 +148,15 @@ const loginFrom = css`
 `
 
 const loginTitleWrap = css`
-  margin-top: 3.7em;
   padding: 0 20px;
+`
+
+const loginAlign = css`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  height: 100%;
 `
 
 const footButtonWrapper = css`

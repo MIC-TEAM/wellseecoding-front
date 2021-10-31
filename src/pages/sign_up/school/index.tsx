@@ -7,12 +7,15 @@ import { useRouter } from 'next/router'
 import { useState, useCallback } from 'react'
 import axios from 'axios'
 import { REGISTER_EDUCATION_URL } from 'apis'
+import { myConfig } from 'sagas'
+import { useEffect } from 'react'
 
 const SelfIntroduction = () => {
   // 학위, 전공, 재학 및 졸업여부
   const [degree, setDegree] = useState<string>('')
   const [major, setMajor] = useState<string>('')
   const [isChecked, setIsChecked] = useState<string>('')
+  const [graduated, setGraduated] = useState<boolean>(false)
 
   // 유효성 검사
   const [isDegree, setIsDegree] = useState<boolean>(false)
@@ -20,21 +23,36 @@ const SelfIntroduction = () => {
 
   const router = useRouter()
 
+  useEffect(() => {
+    console.log(`graduated---> ${graduated}`)
+  }, [graduated])
+
+  useEffect(() => {
+    if (isChecked === '졸업') {
+      setGraduated(true)
+    } else {
+      setGraduated(false)
+    }
+  }, [isChecked])
+
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      alert(`어느대학: ${degree}, 전공: ${major}, 졸업여부: ${isChecked}`)
       try {
         await axios
-          .put(REGISTER_EDUCATION_URL, {
-            educations: [
-              {
-                degree: degree,
-                major: major,
-                graduated: isChecked,
-              },
-            ],
-          })
+          .put(
+            REGISTER_EDUCATION_URL,
+            {
+              educations: [
+                {
+                  degree: degree,
+                  major: major,
+                  graduated: graduated,
+                },
+              ],
+            },
+            myConfig
+          )
           .then((res) => {
             console.log(res.data)
             if (res.status === 200) {
@@ -45,7 +63,7 @@ const SelfIntroduction = () => {
         console.error(err)
       }
     },
-    [degree, major, isChecked, router]
+    [degree, major, router, graduated]
   )
 
   // 학교를 입력해주세요
@@ -72,7 +90,6 @@ const SelfIntroduction = () => {
 
   // 졸업 체크박스
   const onChangeValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`🥳 ${e.target.value}`)
     setIsChecked(e.target.value)
   }, [])
 
@@ -123,8 +140,8 @@ const SelfIntroduction = () => {
 export default SelfIntroduction
 
 const footButtonWrapper = css`
-  position: absolute;
-  bottom: 4.4em;
+  position: fixed;
+  bottom: 4rem;
   left: 0;
   right: 0;
   padding: 0 20px;

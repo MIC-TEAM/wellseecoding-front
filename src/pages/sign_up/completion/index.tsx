@@ -8,7 +8,7 @@ const SignUpCompletion = () => {
   const router = useRouter()
 
   const NextHome = () => {
-    router.push('/sign_up/self_introduction')
+    router.push('/home')
   }
 
   return (
@@ -34,7 +34,7 @@ export default SignUpCompletion
 
 const profileCompletion = css`
   text-align: center;
-  margin-top: 16vh;
+  padding-top: 16vh;
   h2 {
     font-size: ${Common.fontSize.title};
     line-height: 31px;
