@@ -214,7 +214,7 @@ const footButtonWrapper = css`
 
 const writeForm = css`
   width: 100%;
-  margin-bottom: 50px;
+  margin: 50px 0;
   input {
     width: 100%;
     font-weight: 500;
