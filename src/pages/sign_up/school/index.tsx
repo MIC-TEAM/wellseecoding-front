@@ -105,8 +105,8 @@ const SelfIntroduction = () => {
       <Title title="학교 정보를 적어주세요!" className="loginMt" />
 
       <form css={selfWrap} onSubmit={onSubmit}>
-        <TextFieldProfile text="학교를 입력해주세요" type="text" onChange={onChangeDegree} />
-        <TextFieldProfile text="전공을 입력해주세요" type="text" onChange={onChangeMajor} />
+        <TextFieldProfile text="학교를 입력해주세요 (4글자 이상)" type="text" onChange={onChangeDegree} />
+        <TextFieldProfile text="전공을 입력해주세요 (3글자 이상)" type="text" onChange={onChangeMajor} />
 
         <div className="ingOrEnd" onChange={onChangeValue}>
           <label htmlFor="school-ing">
@@ -121,16 +121,18 @@ const SelfIntroduction = () => {
         </div>
 
         <div css={footButtonWrapper}>
-          <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
-            나중에 쓸게요~
-          </FootButton>
-          <FootButton
-            type="submit"
-            footButtonType={FootButtonType.ACTIVATION}
-            disabled={!(isDegree && isMajor && isChecked)}
-          >
-            다음
-          </FootButton>
+          <div className="wrap">
+            <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
+              나중에 쓸게요~
+            </FootButton>
+            <FootButton
+              type="submit"
+              footButtonType={FootButtonType.ACTIVATION}
+              disabled={!(isDegree && isMajor && isChecked)}
+            >
+              다음
+            </FootButton>
+          </div>
         </div>
       </form>
     </>
@@ -150,8 +152,14 @@ const footButtonWrapper = css`
     background-color: #d3cfcc;
     color: #ffffff;
   }
-  & > button:nth-of-type(1) {
-    margin-bottom: 11px;
+  .wrap {
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+    & > button:nth-of-type(1) {
+      margin-bottom: 11px;
+      margin-top: 20px;
+    }
   }
 `
 

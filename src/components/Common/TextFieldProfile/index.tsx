@@ -4,6 +4,7 @@ type Props = {
   text: string
   type: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyUp?: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
   value?: string | number
   name?: string

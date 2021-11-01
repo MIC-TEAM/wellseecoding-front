@@ -170,7 +170,7 @@ const Portfolio = () => {
                     <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
                   </svg>
                 </span>
-                <span>포트폴리오 링크 추가</span>
+                <span>등록 하기</span>
               </button>
             </div>
           </div>
