@@ -3,8 +3,12 @@ import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 
 export default function AuthLogin() {
+  /* 배포용 */
   const kakaoLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/kakao')
   const naverLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/naver')
+
+  // const kakaoLogin = () => (location.href = 'https://api-local.wellseecoding.com/oauth2/authorization/kakao')
+  // const naverLogin = () => (location.href = 'https://api-local.wellseecoding.com/oauth2/authorization/naver')
 
   return (
     <div css={authLoginButton}>
@@ -59,7 +63,7 @@ const kakaoStyle = css`
 
 const naverStyle = css`
   color: #ffffff;
-  background: #a5ada9;
+  background: #03c75a;
 `
 
 const email = css`

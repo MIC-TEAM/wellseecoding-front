@@ -8,9 +8,11 @@ import { RESET_DELETE_STATE, RESET_POSTS_STATE, RESET_POST_LIST } from 'reducers
 import { RootState } from 'reducers'
 import Head from 'next/head'
 import { FETCHING_HOME_POSTS_REQUEST } from 'reducers/home'
-import Loading from 'components/Loading'
+// import Loading from 'components/Loading'
 import StudySectionOpt from 'components/Together/StudySectionOption'
 import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
+import { homeData, notificationType } from 'types'
+import WellseeError from 'components/Common/wellseeError'
 
 const Home = () => {
   const { post, deletePostSuccess, writePostSuccess } = useSelector((state: RootState) => state.posts)
@@ -18,18 +20,25 @@ const Home = () => {
   const { notifications } = useSelector((state: RootState) => state.notifications)
   const dispatch = useDispatch()
 
+  /* 아무것도 없는 경우, 글 보러가기 이미지 띄우는 state */
+  const [homePostsState, setHomePostsState] = useState<boolean>(false)
+
   /* 로컬 스토리지에 저장된 이름과 고유 id */
   const [name, setName] = useState<string | null>(null)
 
   /* 알림 유무를 판단할 state */
   const [notis, setNotis] = useState<boolean>(false)
 
+  /* 알림 배열이 빈 배열일 경우 서버에 요청하여 알림 배열을 불러온다 */
   useEffect(() => {
     if (!notifications.length) fetchNotifications()
   }, [])
 
+  /* 알림을 받아와서, 알림 배열에 존재할 경우, 알림 내부에 읽지 않은 알림이 있는지 확인한다 */
   useEffect(() => {
-    if (notifications.length) setNotis(true)
+    if (notifications.length) {
+      checkNotificationss(notifications)
+    }
   }, [notifications])
 
   // deletePostSuccess를 false로 초기화
@@ -55,6 +64,11 @@ const Home = () => {
     !homePosts.length && loadHomePosts()
   }, [])
 
+  useEffect(() => {
+    homePosts.length && compareHomePosts(homePosts)
+  }, [homePosts])
+
+  // 브라우저가 온전히 받아와지면 로컬스토리지에 저장된 id라는 이름을 가진 아이템을 불러와 저장한다
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.getItem('id') && getLocalInfo()
@@ -89,6 +103,38 @@ const Home = () => {
     })
   }, [dispatch])
 
+  const checkNotificationss = useCallback((arr: notificationType[]) => {
+    arr.forEach((v) => {
+      if (v.read === false) setNotis(true)
+    })
+  }, [])
+
+  const compareHomePosts = useCallback((arr: homeData[]) => {
+    arr.forEach((eachPost) => {
+      if (
+        !eachPost.appliedGroups.length &&
+        !eachPost.createdGroups.length &&
+        !eachPost.likedGroups.length &&
+        !eachPost.registeredGroups.length
+      ) {
+        setHomePostsState(true)
+        console.log('다 없음')
+      } else {
+        console.log('있음')
+      }
+    })
+  }, [])
+
+  /*
+    const countNotReadedAlarm = useCallback(() => {
+    let cnt = 0
+    notifications.forEach((v) => {
+      if (v.read === false) cnt++
+    })
+    setAlarmCnt(cnt)
+  }, [notifications])
+  */
+
   return (
     <>
       <Head>
@@ -106,7 +152,7 @@ const Home = () => {
 
         <div className="listWrap">
           <main css={ClassListWrap}>
-            {homePosts.length ? (
+            {!homePostsState ? (
               homePosts.map((v, i) => (
                 <div key={i}>
                   {v.createdGroups.length ? (
@@ -132,7 +178,11 @@ const Home = () => {
                 </div>
               ))
             ) : (
-              <Loading />
+              <WellseeError
+                text={'아직 활동이 없어요..'}
+                textOpt={'모임을 좋아요하고 가입하면 여기서 확인할 수 있어요! 모임을 찾아볼까요?'}
+                buttonOpt={'모임 찾으러 가기'}
+              />
             )}
           </main>
         </div>

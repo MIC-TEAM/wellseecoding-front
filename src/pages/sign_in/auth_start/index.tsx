@@ -25,8 +25,11 @@ const AuthLoginStart = () => {
 export default AuthLoginStart
 
 const authLoginTitleWrap = css`
-  margin-top: 11em;
   padding: 0 20px;
+
+  img {
+    padding-top: 5em;
+  }
 `
 const bigTitle = css`
   font-size: ${Common.fontSize.bigTitle};

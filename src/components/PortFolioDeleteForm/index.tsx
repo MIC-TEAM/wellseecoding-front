@@ -1,5 +1,4 @@
 import { css } from '@emotion/react'
-import { HiX } from 'react-icons/Hi'
 
 interface IList {
   idx: number
@@ -20,7 +19,12 @@ function PortFolioDeleteForm(props: IList) {
       {props.idx !== 0 && !props.isDelete && (
         <div css={info} id="InputBox" className="newForm">
           <button type="button" className="delete" onClick={handleDelete}>
-            <HiX />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M23.6668 2.68325L21.3168 0.333252L12.0002 9.64992L2.6835 0.333252L0.333496 2.68325L9.65016 11.9999L0.333496 21.3166L2.6835 23.6666L12.0002 14.3499L21.3168 23.6666L23.6668 21.3166L14.3502 11.9999L23.6668 2.68325Z"
+                fill="#999999"
+              />
+            </svg>
           </button>
 
           <p>
