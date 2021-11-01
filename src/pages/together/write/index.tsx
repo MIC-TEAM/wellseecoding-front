@@ -129,7 +129,7 @@ const TogetherWrite = () => {
   return (
     <>
       <Head>
-        <title>글쓰가 | wellseecoding</title>
+        <title>함께해요 글쓰기 | wellseecoding</title>
         <meta name="description" content="함께해요 페이지에서 연동되는 글쓰기 페이지입니다." />
       </Head>
       <TogetherBack text="모임 글쓰기" />

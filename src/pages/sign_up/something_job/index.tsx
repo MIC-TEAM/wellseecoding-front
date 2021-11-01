@@ -102,9 +102,11 @@ const SomethingJob = () => {
         </div>
 
         <div css={footButtonWrapper}>
-          <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!isChecked}>
-            다음
-          </FootButton>
+          <div className="wrap">
+            <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!isChecked}>
+              다음
+            </FootButton>
+          </div>
         </div>
       </form>
     </>
@@ -124,8 +126,14 @@ const footButtonWrapper = css`
     background-color: #d3cfcc;
     color: #ffffff;
   }
-  & > button:nth-of-type(1) {
-    margin-bottom: 11px;
+  .wrap {
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+    & > button:nth-of-type(1) {
+      margin-bottom: 11px;
+      margin-top: 20px;
+    }
   }
 `
 

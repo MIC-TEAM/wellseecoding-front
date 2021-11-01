@@ -5,7 +5,7 @@ import TextFieldProfile from 'components/Common/TextFieldProfile'
 import JobButton from 'components/Common/JobButton'
 import { Common } from 'styles/common'
 import { css } from '@emotion/react'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { REGISTER_ABOUT_ME_URL } from 'apis'
@@ -14,17 +14,26 @@ import { myConfig } from 'sagas'
 const SelfIntroduction = () => {
   // 간단한 자기소개, 기술스택
   const [aboutMe, setAboutMe] = useState<string>('')
-  const [skill, setSkill] = useState<string>('')
+  const [hashtag, setHashtag] = useState<string | ''>('')
   const [job, setJob] = useState<string>('')
+  // 해시태그를 담을 배열
+  const [hashArr, setHashArr] = useState<string[] | []>([])
 
   // 직무 선택시 다음으로 넘어갈 수 있도록
   const [isChecked, setIsChecked] = useState<boolean>(false)
 
   // 유효성 검사
   const [isAboutMe, setIsAboutMe] = useState<boolean>(false)
-  const [isSkill, setIsSkill] = useState<boolean>(false)
 
   const router = useRouter()
+
+  useEffect(() => {
+    preventEnterEvent()
+  }, [])
+
+  useEffect(() => {
+    console.log('hashArr:', hashArr)
+  }, [hashArr])
 
   // ----직무선택----
   // 서버/백엔드
@@ -190,7 +199,7 @@ const SelfIntroduction = () => {
             REGISTER_ABOUT_ME_URL,
             {
               aboutMe: aboutMe,
-              tags: skill,
+              tags: hashArr,
               job: job,
             },
             myConfig
@@ -205,7 +214,7 @@ const SelfIntroduction = () => {
         console.error(err)
       }
     },
-    [aboutMe, skill, router, job]
+    [aboutMe, hashArr, router, job]
   )
 
   const onChangeAboutMe = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -218,15 +227,53 @@ const SelfIntroduction = () => {
     }
   }, [])
 
-  const onChangeSkill = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSkill(e.target.value)
+  const onChangeHashtag = useCallback((e) => {
+    // space 입력시 '' 빈문자열로 변환하여 Hashtage state에 저장한다
+    const replaceStr = e.target.value.replace(/(\s*)/g, '')
+    setHashtag(replaceStr)
 
-    if (e.target.value.length) {
-      setIsSkill(true)
-    } else {
-      setIsSkill(false)
-    }
+    // if (e.target.value.length) {
+    //   setIsHashtag(true)
+    // } else {
+    //   setIsHashtag(false)
+    // }
   }, [])
+
+  const onKeyUp = useCallback(
+    (e) => {
+      if (process.browser) {
+        const $HashWrapOuter = document.querySelector('.HashWrapOuter')
+        const $HashWrapInner = document.createElement('div')
+        $HashWrapInner.className = 'HashWrapInner'
+        $HashWrapInner.addEventListener('click', () => {
+          $HashWrapOuter?.removeChild($HashWrapInner)
+          setHashArr(hashArr.filter((hashtag) => hashtag))
+        })
+        if (e.keyCode === 13 && e.target.value.trim() !== '') {
+          const replaceStr = e.target.value.replace(/(\s*)/g, '')
+          $HashWrapInner.innerHTML = '#' + replaceStr
+          $HashWrapOuter?.appendChild($HashWrapInner)
+          setHashArr((hashArr) => [...hashArr, hashtag])
+          setHashtag('')
+        }
+      }
+    },
+    [hashtag, hashArr]
+  )
+
+  const preventEnterEvent = () => {
+    if (process.browser) {
+      const inputs = document.querySelectorAll('input')
+      inputs.forEach((input) => {
+        input.addEventListener('keydown', (e: KeyboardEvent) => {
+          if (e.key === 'Enter') {
+            e.preventDefault()
+            return false
+          }
+        })
+      })
+    }
+  }
 
   return (
     <>
@@ -241,12 +288,11 @@ const SelfIntroduction = () => {
           type="text"
           onChange={onChangeAboutMe}
         />
-        <TextFieldProfile
-          text="기술스택"
-          placeholder="기술스택을 해시태그로 작성해주세요!"
-          type="text"
-          onChange={onChangeSkill}
-        />
+        <h2 className="skillTitle">기술스택</h2>
+        <div className="HashWrap" css={hashDivrap}>
+          <div className="HashWrapOuter"></div>
+          <input placeholder="입력후 Enter" type="text" value={hashtag} onChange={onChangeHashtag} onKeyUp={onKeyUp} />
+        </div>
 
         <div css={jobList}>
           <div>
@@ -271,13 +317,15 @@ const SelfIntroduction = () => {
         </div>
 
         <div css={footButtonWrapper}>
-          <FootButton
-            type="submit"
-            footButtonType={FootButtonType.ACTIVATION}
-            disabled={!(isAboutMe && isSkill && isChecked)}
-          >
-            다음
-          </FootButton>
+          <div className="wrap">
+            <FootButton
+              type="submit"
+              footButtonType={FootButtonType.ACTIVATION}
+              disabled={!(isAboutMe && hashArr.length && isChecked)}
+            >
+              다음
+            </FootButton>
+          </div>
         </div>
       </form>
     </>
@@ -287,6 +335,9 @@ const SelfIntroduction = () => {
 export default SelfIntroduction
 
 const footButtonWrapper = css`
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
   position: fixed;
   bottom: 4rem;
   left: 0;
@@ -297,13 +348,24 @@ const footButtonWrapper = css`
     background-color: #d3cfcc;
     color: #ffffff;
   }
-  & > button:nth-of-type(1) {
-    margin-bottom: 11px;
+
+  .wrap {
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+    & > button:nth-of-type(1) {
+      margin-bottom: 11px;
+      margin-top: 20px;
+    }
   }
 `
 
 const jobList = css`
   padding-bottom: 4rem;
+  h2 {
+    font-size: ${Common.fontSize.fs20};
+  }
+
   div {
     margin-top: 3em;
     display: flex;
@@ -312,9 +374,6 @@ const jobList = css`
     font-weight: 500;
     line-height: 24px;
     letter-spacing: -1px;
-    h2 {
-      font-size: ${Common.fontSize.fs20};
-    }
     p {
       font-size: ${Common.fontSize.fs16};
       color: #ff6e35;
@@ -326,4 +385,58 @@ const selfWrap = css`
   margin-top: 1.7em;
   margin-bottom: 20vh;
   padding: 0 20px;
+  .skillTitle {
+    margin-top: 1em;
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -1px;
+  }
+`
+
+const hashDivrap = css`
+  margin-top: 14px;
+  font-size: 1.125rem;
+  display: flex;
+  flex-wrap: wrap;
+  letter-spacing: -0.6px;
+  border-bottom: 1.6px solid ${Common.colors.gray04};
+  padding: 2px 2px 8px 2px;
+  input {
+    font-size: 2rem;
+    &::placeholder {
+      color: #d3cfcc !important;
+    }
+  }
+  .HashWrapOuter {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .HashWrapInner {
+    margin-top: 5px;
+    background: #ffeee7;
+    border-radius: 56px;
+    padding: 8px 12px;
+    color: #ff6e35;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.4rem;
+    line-height: 20px;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+
+  .HashInput {
+    width: auto;
+    margin: 10px;
+    display: inline-flex;
+    outline: none;
+    cursor: text;
+    line-height: 2rem;
+    margin-bottom: 0.75rem;
+    min-width: 8rem;
+    border: none;
+  }
 `
