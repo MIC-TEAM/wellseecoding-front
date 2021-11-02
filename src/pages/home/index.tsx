@@ -117,22 +117,9 @@ const Home = () => {
         !eachPost.registeredGroups.length
       ) {
         setHomePostsState(true)
-        console.log('다 없음')
-      } else {
-        console.log('있음')
       }
     })
   }, [])
-
-  /*
-    const countNotReadedAlarm = useCallback(() => {
-    let cnt = 0
-    notifications.forEach((v) => {
-      if (v.read === false) cnt++
-    })
-    setAlarmCnt(cnt)
-  }, [notifications])
-  */
 
   return (
     <>

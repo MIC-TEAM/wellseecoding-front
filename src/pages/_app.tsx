@@ -28,9 +28,8 @@ function App({ Component, pageProps }: AppProps) {
 export default wrapper.withRedux(App)
 
 const mainWrap = css`
-  height: 100vh;
   width: 100%;
-  -ms-overflow-style: none;
+  overflow-y: auto;
   &::-webkit-scrollbar {
     display: none;
   }

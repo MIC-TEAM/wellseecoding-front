@@ -83,4 +83,5 @@ const searchWord = css`
 
 const searchWrap = css`
   height: 97vh;
+  overflow-y: auto;
 `

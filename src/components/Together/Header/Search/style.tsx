@@ -4,8 +4,7 @@ export const TogetherHeaderSearch = css`
   width: 100%;
   display: flex;
   justify-content: space-around;
-  height: 40px;
-  margin-top: 20px;
+  padding-top: 20px;
 
   form {
     width: 100%;

@@ -6,7 +6,7 @@ import { PostData } from 'types'
 
 function StudySection({ theme, posts }: PostData) {
   return (
-    <section style={{ paddingTop: '16px' }}>
+    <section>
       <h2 css={titleStyle} className="together__title">
         # {theme} 모임이에요!
       </h2>

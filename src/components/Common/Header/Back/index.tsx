@@ -28,7 +28,6 @@ Back.defaultProps = {
 const backHeader = css`
   width: 100%;
   text-align: left;
-  position: absolute;
   background: #fff;
   top: 0;
   padding: 0 20px;

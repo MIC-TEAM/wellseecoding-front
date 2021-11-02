@@ -75,8 +75,8 @@ const Write = () => {
         <div className="wrap">
           {posts ? posts.map((p, i) => <StudySection key={i} theme={p.theme} posts={p.posts} />) : <Loading />}
         </div>
+        <WriteButton />
       </main>
-      <WriteButton />
       <FooterMenu />
     </>
   )
@@ -90,11 +90,12 @@ const togetherBoard = css`
   height: 85vh;
 
   @media (max-width: 420px) {
-    height: 80vh;
-    overflow: scroll;
+    height: 95vh;
+    /* overflow-y: auto; */
   }
 
   .wrap {
     height: 100%;
+    padding-top: 8px;
   }
 `

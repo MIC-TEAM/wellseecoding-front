@@ -22,7 +22,12 @@ export const WriteButton = css`
   bottom: 0;
   z-index: 10;
   position: absolute;
-  bottom: 90px;
+  bottom: 53px;
+
+  @media (max-width: 420px) {
+    bottom: -30px;
+  }
+
   .writeWrap {
     height: 95%;
     display: grid;
