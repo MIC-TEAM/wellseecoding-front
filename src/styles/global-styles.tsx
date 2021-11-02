@@ -52,10 +52,12 @@ export const GlobalStyles = (
         position: relative;
       }
       html,
-      body,
+      body {
+        height: 100vh;
+        width: 100%;
+      }
       #__next {
         height: 100%;
-        width: 100%;
       }
       a {
         color: inherit;

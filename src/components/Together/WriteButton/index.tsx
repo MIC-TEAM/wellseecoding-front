@@ -22,10 +22,10 @@ export const WriteButton = css`
   bottom: 0;
   z-index: 10;
   position: absolute;
-  bottom: 53px;
+  bottom: 100px;
 
   @media (max-width: 420px) {
-    bottom: -30px;
+    bottom: 100px;
   }
 
   .writeWrap {

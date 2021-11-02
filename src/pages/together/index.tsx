@@ -65,20 +65,22 @@ const Write = () => {
   }, [])
 
   return (
-    <>
+    <div style={{ background: '#ffeee7', height: '100%' }}>
       <Head>
         <title>함께해요 | wellseecoding</title>
         <meta name="description" content="랜덤 키워드를 바탕으로 게시물을 불러오는 함께해요 페이지입니다." />
       </Head>
       <TogetherHeader notis={notis} />
+
       <main css={togetherBoard}>
         <div className="wrap">
           {posts ? posts.map((p, i) => <StudySection key={i} theme={p.theme} posts={p.posts} />) : <Loading />}
         </div>
-        <WriteButton />
       </main>
+      <WriteButton />
+
       <FooterMenu />
-    </>
+    </div>
   )
 }
 
@@ -88,14 +90,23 @@ const togetherBoard = css`
   background: #ffeee7;
   width: 100%;
   height: 85vh;
+  padding-bottom: 100px;
 
   @media (max-width: 420px) {
-    height: 95vh;
-    /* overflow-y: auto; */
+    height: 90vh;
+    background: #ffeee7;
   }
 
   .wrap {
     height: 100%;
     padding-top: 8px;
+    background: #ffeee7;
+  }
+
+  .wrap section:last-child {
+    background: #ffeee7;
+    @media (max-width: 420px) {
+      padding-bottom: 100px;
+    }
   }
 `

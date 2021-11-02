@@ -136,41 +136,39 @@ const Home = () => {
           <HomeMain user={name} num={4} />
         )}
 
-        <div className="listWrap">
-          <main css={ClassListWrap}>
-            {!homePostsState ? (
-              homePosts.map((v, i) => (
-                <div key={i}>
-                  {v.createdGroups.length ? (
-                    <StudySectionOpt key={i + 1} theme={'만든 '} posts={v.createdGroups} />
-                  ) : (
-                    <StudySectionOpt key={i + 1} theme={'만든 '} />
-                  )}
-                  {v.registeredGroups.length ? (
-                    <StudySectionOpt key={i + 3} theme={'가입한 '} posts={v.registeredGroups} />
-                  ) : (
-                    <StudySectionOpt key={i + 3} theme={'가입한 '} />
-                  )}
-                  {v.appliedGroups.length ? (
-                    <StudySectionOpt key={i + 4} theme={'가입 신청한 '} posts={v.appliedGroups} />
-                  ) : (
-                    <StudySectionOpt key={i + 4} theme={'가입 신청한 '} />
-                  )}
-                  {v.likedGroups.length ? (
-                    <StudySectionOpt key={i + 2} theme={'좋아요 한 '} posts={v.likedGroups} />
-                  ) : (
-                    <StudySectionOpt key={i + 2} theme={'좋아요 한 '} />
-                  )}
-                </div>
-              ))
-            ) : (
-              <WellseeError
-                text={'아직 활동이 없어요..'}
-                textOpt={'모임을 좋아요하고 가입하면 여기서 확인할 수 있어요! 모임을 찾아볼까요?'}
-                buttonOpt={'모임 찾으러 가기'}
-              />
-            )}
-          </main>
+        <div css={ClassListWrap}>
+          {!homePostsState ? (
+            homePosts.map((v, i) => (
+              <div key={i}>
+                {v.createdGroups.length ? (
+                  <StudySectionOpt key={i + 1} theme={'만든 '} posts={v.createdGroups} />
+                ) : (
+                  <StudySectionOpt key={i + 1} theme={'만든 '} />
+                )}
+                {v.registeredGroups.length ? (
+                  <StudySectionOpt key={i + 3} theme={'가입한 '} posts={v.registeredGroups} />
+                ) : (
+                  <StudySectionOpt key={i + 3} theme={'가입한 '} />
+                )}
+                {v.appliedGroups.length ? (
+                  <StudySectionOpt key={i + 4} theme={'가입 신청한 '} posts={v.appliedGroups} />
+                ) : (
+                  <StudySectionOpt key={i + 4} theme={'가입 신청한 '} />
+                )}
+                {v.likedGroups.length ? (
+                  <StudySectionOpt key={i + 2} theme={'좋아요 한 '} posts={v.likedGroups} />
+                ) : (
+                  <StudySectionOpt key={i + 2} theme={'좋아요 한 '} />
+                )}
+              </div>
+            ))
+          ) : (
+            <WellseeError
+              text={'아직 활동이 없어요..'}
+              textOpt={'모임을 좋아요하고 가입하면 여기서 확인할 수 있어요! 모임을 찾아볼까요?'}
+              buttonOpt={'모임 찾으러 가기'}
+            />
+          )}
         </div>
       </div>
 
@@ -182,17 +180,14 @@ const Home = () => {
 export default Home
 
 const wrap = css`
-  height: auto;
-  .listWrap {
-    background: #ffeee7;
-    height: 90%;
-  }
+  height: 90%;
+  /* overflow-y: auto; */
+  background: #ffeee7;
 `
 
 export const ClassListWrap = css`
   width: 100%;
-  background: #ffeee7;
-  height: 100%;
-  margin-top: -45px;
   z-index: 100;
+  padding-bottom: 100px;
+  background: #ffeee7;
 `

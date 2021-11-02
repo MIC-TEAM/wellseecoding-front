@@ -154,7 +154,13 @@ const flatBox = css`
 // 게시글
 const togetherBoard = css`
   width: 100%;
+  height: 100%;
   background-color: #fff8f5;
+
+  .wrap {
+    background-color: #fff8f5;
+    padding-bottom: 100px;
+  }
 
   .mainContents {
     padding-bottom: 20px;

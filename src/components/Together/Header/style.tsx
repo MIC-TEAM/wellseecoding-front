@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 
 export const TogetherHeaderInput = css`
+  background: white;
   display: flex;
   justify-content: space-around;
   padding: 20px 5px !important;

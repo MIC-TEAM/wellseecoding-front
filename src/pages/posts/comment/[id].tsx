@@ -262,14 +262,16 @@ function Comment() {
 export default Comment
 
 const CommentMain = css`
-  height: 70vh;
-  overflow-y: auto;
+  /* height: 77vh; */
+  height: 84%;
   border: 1px solid rgb(243, 243, 243);
-  margin-bottom: 60px;
   background: #f5f5f5;
   width: 100%;
   & > div {
     background: #fff;
+  }
+  & > div:last-child {
+    padding-bottom: 100px;
   }
 `
 
@@ -334,9 +336,9 @@ const MainWrapBottom = css`
 
 const commentFooter = css`
   border: 1px solid rgb(243, 243, 243);
-  position: relative;
+  position: absolute;
   width: 100%;
-  bottom: -1px;
+  bottom: 0px;
   left: 0;
   padding: 20px;
   display: flex;

@@ -129,7 +129,7 @@ const FooterMenu = () => {
 export default FooterMenu
 
 const footerNav = css`
-  position: sticky;
+  position: absolute;
   width: 100%;
   left: 0;
   bottom: 0px;
@@ -138,10 +138,6 @@ const footerNav = css`
   box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.04);
   border-radius: 24px 24px 0px 0px;
   padding: 1em 0;
-
-  @media (max-width: 420px) {
-    bottom: 10px;
-  }
 `
 const footerNavWrap = css`
   max-width: 600px;

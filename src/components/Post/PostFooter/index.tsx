@@ -183,7 +183,7 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
 export default PostFooter
 
 const footerNav = css`
-  position: sticky;
+  position: absolute;
   width: 100%;
   left: 0;
   bottom: 0px;
