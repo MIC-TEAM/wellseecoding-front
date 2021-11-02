@@ -29,21 +29,25 @@ const EmailLogin = () => {
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      router.push('/home')
+
       try {
         await axios
           .post(REGISTER_USERS_LOGIN, {
-            password: password,
             email: email,
+            password: password,
           })
-          .then((res: any) => {
-            console.log(res.data)
+          .then((res) => {
+            if (res.status === 200) {
+              router.push('/token')
+            } else {
+              alert('다시 입력해주세요')
+            }
           })
       } catch (err) {
         console.error(err)
       }
     },
-    [password, email]
+    [password, email, router]
   )
 
   // 이메일
@@ -152,6 +156,7 @@ const loginTitleWrap = css`
 `
 
 const loginAlign = css`
+  padding-top: 60px;
   display: flex;
   justify-content: center;
   align-content: center;

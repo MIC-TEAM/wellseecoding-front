@@ -20,7 +20,7 @@ export default function AuthLogin() {
         <img src="/images/login/naver.svg" alt="네이버 로그인" />
         네이버로 시작하기
       </button>
-      <button type="button" css={email}>
+      <button type="button" css={email} onClick={() => (location.href = '/sign_in/email_start')}>
         <img src="/images/login/email.svg" alt="이메일로 로그인" />
         이메일로 시작하기
       </button>
