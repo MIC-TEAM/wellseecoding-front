@@ -97,7 +97,6 @@ const Home = () => {
   }, [])
 
   const fetchNotifications = useCallback(() => {
-    console.log('FETCHING_NOTIS_REQUEST !')
     dispatch({
       type: FETCHING_NOTIS_REQUEST,
     })
