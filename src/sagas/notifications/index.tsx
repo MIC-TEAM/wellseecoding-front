@@ -48,7 +48,7 @@ function* fetchNotis() {
 async function updateNotiAPI(data: number) {
   try {
     const response = await axios.put(`/api/v1/users/notifications/${data}/read`, {}, myConfig)
-    console.log(response)
+    return response.status
   } catch (err) {
     console.error(err)
   }
@@ -57,7 +57,6 @@ async function updateNotiAPI(data: number) {
 function* updateNoti(action: UpdateNotiRequest) {
   try {
     const result: number = yield call(updateNotiAPI, action.data)
-
     if (result === 200) {
       yield put({
         type: UPDATE_NOTI_SUCCESS,
