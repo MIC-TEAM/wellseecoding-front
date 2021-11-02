@@ -129,7 +129,9 @@ function Comment() {
             <div key={v.commentId}>
               <div style={{ padding: '20px' }}>
                 <div css={CommentMainWrap}>
-                  <div css={MainWrapHead}>{/* 이미지 */}</div>
+                  <div css={MainWrapHead}>
+                    <img src={`https://www.gravatar.com/avatar/${v.userId}?d=identicon&f=y`} alt="gravatar" />
+                  </div>
                   <h3>{v.userName}</h3>
                   {/* <span>{v.userName}</span> */}
                   {v.userId === Number(localUid) && !v.deleted && (
@@ -190,7 +192,9 @@ function Comment() {
                       <div style={{ position: 'relative', marginRight: '20px' }}>
                         <img src="/images/post/recoment.svg" alt="" />
                       </div>
-                      <div css={MainWrapHead}>{/* 이미지 */}</div>
+                      <div css={MainWrapHead}>
+                        <img src={`https://www.gravatar.com/avatar/${v.userId}?d=identicon&f=y`} alt="gravatar" />
+                      </div>
                       <h3>{v.userName}</h3>
                       {/* <span>{v.userName}</span> */}
                       <div>
@@ -258,7 +262,8 @@ function Comment() {
 export default Comment
 
 const CommentMain = css`
-  height: auto;
+  height: 70vh;
+  overflow-y: auto;
   border: 1px solid rgb(243, 243, 243);
   margin-bottom: 60px;
   background: #f5f5f5;
@@ -296,7 +301,11 @@ const MainWrapHead = css`
   margin-right: 6px;
 
   img {
-    height: 18px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #c4c4c4;
+    margin-right: 6px;
   }
 `
 
