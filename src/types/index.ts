@@ -97,9 +97,30 @@ export type UpdateCommentType = {
 }
 
 //----------------------------------------
-// 회원가입 단계
+// 마이페이지
+export type myPage = {
+  status: string
+  aboutMe: string
+  tags: []
+  educations: myPageEducations[]
+  works: myPageWorks[]
+  links: myPageLinks[]
+}
 
-// 경력
-export type Experience = {
-  role: string | ''
+export type myPageEducations = {
+  role: string
+  technology: string
+  years: number
+}
+
+export type myPageWorks = {
+  role: string
+  technology: string
+  years: number
+}
+
+export type myPageLinks = {
+  name: string
+  link: string
+  description: string
 }

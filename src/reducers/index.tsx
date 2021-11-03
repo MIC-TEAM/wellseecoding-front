@@ -5,6 +5,7 @@ import comments from './comments'
 import common from './common'
 import home from './home'
 import notifications from './notifications'
+import mypage from './mypage'
 
 const rootReducer = combineReducers({
   todos,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   comments,
   home,
   notifications,
+  mypage,
 })
 
 export default rootReducer
