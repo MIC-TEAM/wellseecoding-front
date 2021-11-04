@@ -24,10 +24,6 @@ const Token = () => {
   const router = useRouter()
 
   useEffect(() => {
-    console.log('info:', decodedUserId, decodedUserName)
-  }, [decodedUserId, decodedUserName])
-
-  useEffect(() => {
     console.log('likes:', likes)
   }, [likes])
 
@@ -44,11 +40,7 @@ const Token = () => {
 
   /* ② access_token의 value가 정상적으로 response state안에 저장되었을 경우, 해당 토큰을 복호화한다 */
   useEffect(() => {
-    if (response.length) {
-      parseJwt(response)
-      // 로컬 스토리지 안에 토큰을 저장한다
-      localStorage.setItem('token', response)
-    }
+    if (response.length) parseJwt(response)
   }, [response])
 
   /* ③ 토큰 id가 정상적으로 생성되었다면 payload에서 사용자 정보를 추출한다 */
@@ -68,7 +60,7 @@ const Token = () => {
   useEffect(() => {
     if (typeof window !== 'undefined' && response.length) {
       axios.defaults.headers.common = {
-        Authorization: `Bearer ${response}`,
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
       Promise.allSettled([getLikesGroup(), getRegisteredGroup()]).then((res) => {
         console.log('res:', res)
@@ -97,8 +89,10 @@ const Token = () => {
 
   /* 토큰을 분해해서 response state에 저장하는 함수 */
   const splitToken = (token: string) => {
-    if (token) setResponse(token.replace('access_token=', ''))
-    else {
+    if (token) {
+      setResponse(token.replace('access_token=', ''))
+      localStorage.setItem('access_token', token.replace('access_token=', ''))
+    } else {
       alert('쿠키에 저장된 토큰이 없습니다')
       return false
     }
@@ -117,7 +111,6 @@ const Token = () => {
   /* 복호화된 토큰 중 userId 정보를 분리한다. */
   const checkId = (tokenId: any) => {
     // 객체를 순회할 때는 for in문을 사용한다.
-    console.log('tokenId:', tokenId)
     for (const key in tokenId) {
       if (key === 'sub') {
         setDecodedUserId(tokenId[key])

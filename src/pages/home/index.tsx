@@ -13,6 +13,7 @@ import StudySectionOpt from 'components/Together/StudySectionOption'
 import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
 import { homeData, notificationType } from 'types'
 import WellseeError from 'components/Common/wellseeError'
+import axios from 'axios'
 
 const Home = () => {
   const { post, deletePostSuccess, writePostSuccess } = useSelector((state: RootState) => state.posts)
@@ -29,9 +30,20 @@ const Home = () => {
   /* 알림 유무를 판단할 state */
   const [notis, setNotis] = useState<boolean>(false)
 
+  const [tokenState, setTokenState] = useState<boolean>(false)
+
   /* 알림 배열이 빈 배열일 경우 서버에 요청하여 알림 배열을 불러온다 */
   useEffect(() => {
     if (!notifications.length) fetchNotifications()
+  }, [])
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+    setTokenState(true)
   }, [])
 
   /* 알림을 받아와서, 알림 배열에 존재할 경우, 알림 내부에 읽지 않은 알림이 있는지 확인한다 */
@@ -61,12 +73,12 @@ const Home = () => {
 
   // homePosts 데이터가 없다면 loadHomePosts 호출
   useEffect(() => {
-    !homePosts.length && loadHomePosts()
-  }, [])
+    !homePosts.length && tokenState && loadHomePosts()
+  }, [tokenState])
 
   useEffect(() => {
-    homePosts.length && compareHomePosts(homePosts)
-  }, [homePosts])
+    homePosts.length && tokenState && compareHomePosts(homePosts)
+  }, [homePosts, tokenState])
 
   // 브라우저가 온전히 받아와지면 로컬스토리지에 저장된 id라는 이름을 가진 아이템을 불러와 저장한다
   useEffect(() => {
@@ -76,8 +88,8 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    post.length && resetPost()
-  }, [post])
+    post.length && tokenState && resetPost()
+  }, [post, tokenState])
 
   const loadHomePosts = useCallback(() => {
     dispatch({
