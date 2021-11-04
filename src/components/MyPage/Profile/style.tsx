@@ -8,6 +8,9 @@ export const box = css`
   border-radius: 10px;
   margin-bottom: 18px;
   padding: 26px;
+  .skill {
+    margin-bottom: 2rem;
+  }
   .profile {
     display: grid;
     grid-template-columns: 1fr 6fr auto;

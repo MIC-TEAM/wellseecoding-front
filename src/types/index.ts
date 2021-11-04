@@ -101,16 +101,17 @@ export type UpdateCommentType = {
 export type myPage = {
   status: string
   aboutMe: string
-  tags: []
+  job: string
+  tags: string[]
   educations: myPageEducations[]
   works: myPageWorks[]
   links: myPageLinks[]
 }
 
 export type myPageEducations = {
-  role: string
-  technology: string
-  years: number
+  major: string
+  degree: string
+  graduated: boolean
 }
 
 export type myPageWorks = {

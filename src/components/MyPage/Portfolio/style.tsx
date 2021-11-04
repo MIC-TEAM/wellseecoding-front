@@ -32,7 +32,13 @@ export const box = css`
       margin-right: 6px;
     }
   }
-
+  .desc {
+    font-size: 1.6rem;
+    line-height: 22px;
+    letter-spacing: -0.6px;
+    color: rgba(131, 131, 131, 0.87);
+    margin-top: 3px;
+  }
   a {
     font-size: 1.4rem;
     line-height: 18px;

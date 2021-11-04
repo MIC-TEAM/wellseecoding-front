@@ -4,8 +4,8 @@ interface ProfileProps {
   name: string
   job: string
   nowJob: string
-  nowCareer: string
   skill: string[]
+  aboutme: string
 }
 
 const Profile = (props: ProfileProps) => {
@@ -26,15 +26,20 @@ const Profile = (props: ProfileProps) => {
 
       <div className="moreme career">
         <h3>김혜원님은 현재?</h3>
-        <p>
-          현재 {props.nowJob} | 경력 {props.nowCareer}
-        </p>
+        <p>{props.nowJob}이에요! </p>
       </div>
 
       <div className="moreme skill">
         <h3>김혜원님의 기술스택은?</h3>
         <ul>
-          <li>{props.skill}</li>
+          <li>#{props.skill}</li>
+        </ul>
+      </div>
+
+      <div className="moreme">
+        <h3>김혜원님의 자기소개</h3>
+        <ul>
+          <li>{props.aboutme}</li>
         </ul>
       </div>
     </section>

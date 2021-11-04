@@ -15,14 +15,25 @@ export const box = css`
     line-height: 22px;
     letter-spacing: 0.15px;
     color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 18px;
   }
 
   p {
-    margin-top: 18px;
     font-weight: 500;
+    font-size: 1.8rem;
+    line-height: 26px;
+    display: flex;
+    letter-spacing: -0.6px;
+    color: #444241;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .desc {
     font-size: 1.6rem;
     line-height: 22px;
     letter-spacing: -0.6px;
-    color: #444241;
+    color: rgba(131, 131, 131, 0.87);
+    margin-top: 3px;
   }
 `

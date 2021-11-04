@@ -4,7 +4,7 @@ interface CareerProps {
   totalYear: string
   company: string
   job: string
-  year: string
+  year: number
 }
 
 const Career = (props: CareerProps) => {
@@ -18,7 +18,7 @@ const Career = (props: CareerProps) => {
       <p className="company">{props.company}</p>
       {/* 직업군 | 기술스택 년도 */}
       <p className="desc">
-        {props.job} | 기술스택 | {props.year}
+        기술스택 | {props.job} | 경력 | {props.year}년차
       </p>
     </section>
   )

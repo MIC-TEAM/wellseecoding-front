@@ -4,7 +4,7 @@ interface IList {
   idx: number
   name: string
   link: string
-  desc: string
+  description: string
   isDelete: boolean
   onDelete: (idx: number) => void
 }
@@ -34,7 +34,7 @@ function PortFolioDeleteForm(props: IList) {
             <b>링크</b> {props.link}
           </p>
           <p>
-            <b>설명</b> {props.desc}
+            <b>설명</b> {props.description}
           </p>
         </div>
       )}
