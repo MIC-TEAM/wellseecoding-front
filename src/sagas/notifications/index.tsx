@@ -20,7 +20,8 @@ import { notificationType } from 'types'
 
 async function fetchNotisAPI() {
   try {
-    const response = await axios.get('https://api.wellseecoding.com/api/v1/users/notifications', myConfig)
+    const response = await axios.get('https://api.wellseecoding.com/api/v1/users/notifications')
+    console.log('fetch notios Response: response', response)
     return response.data.notifications
   } catch (err) {
     console.error(err)

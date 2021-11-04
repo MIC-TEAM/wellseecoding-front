@@ -4,6 +4,7 @@ import FooterMenu from 'components/Common/FooterMenu'
 import SplashScreen from 'components/SplashScreen'
 import { useCallback, useEffect, useState } from 'react'
 import { myConfig } from 'sagas'
+import jwt_decode from 'jwt-decode'
 import Head from 'next/head'
 
 function Home() {
@@ -17,7 +18,9 @@ function Home() {
   // 1차적으로 복호화했을 때 아직 이름이 없어서, 해당 정보를 어떻게 저장할 지는 협의해봐야 할 것 같네요
   // ① 환경 변수에 등록한 토큰을 디코딩
   useEffect(() => {
-    parseJwt(process.env.NEXT_PUBLIC_TOKEN)
+    if (typeof window !== undefined) {
+      parseJwt(process.env.NEXT_PUBLIC_TOKEN)
+    }
   }, [])
 
   // ② 객체에 담긴 복호화된 token 정보 중 userId를 추출
@@ -63,7 +66,7 @@ function Home() {
   /* JWT 토큰을 디코딩(복호화)한다. */
   const parseJwt = (token: any) => {
     try {
-      return setTokenId(JSON.parse(atob(token.split('.')[1])))
+      return setTokenId(jwt_decode(token))
     } catch (e) {
       return null
     }

@@ -3,8 +3,6 @@ import React, { useCallback, useState } from 'react'
 import PasswordField from 'components/Common/PasswordField'
 import BigTitle from 'components/Common/BigTitle'
 import { css } from '@emotion/react'
-import { Common } from 'styles/common'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
@@ -37,11 +35,12 @@ const EmailLogin = () => {
             password: password,
           })
           .then((res) => {
-            if (res.status === 200) {
-              router.push('/token')
-            } else {
-              alert('다시 입력해주세요')
-            }
+            console.log(res)
+            // if (res.status === 200) {
+            //   router.push('/token')
+            // } else {
+            //   alert('다시 입력해주세요')
+            // }
           })
       } catch (err) {
         console.error(err)
@@ -113,13 +112,6 @@ const EmailLogin = () => {
             </FootButton>
           </div>
         </form>
-
-        <p css={passwordFind}>
-          기억이 안나세요?
-          <Link href="/login/password_email">
-            <a>비밀번호 찾기</a>
-          </Link>
-        </p>
       </main>
     </>
   )
@@ -161,7 +153,7 @@ const loginAlign = css`
   justify-content: center;
   align-content: center;
   flex-direction: column;
-  height: 100%;
+  height: 90%;
 `
 
 const footButtonWrapper = css`
@@ -170,18 +162,5 @@ const footButtonWrapper = css`
   button[disabled] {
     background-color: #d3cfcc;
     color: #ffffff;
-  }
-`
-
-const passwordFind = css`
-  text-align: center;
-  font-size: ${Common.fontSize.fs16};
-  margin-top: 26px;
-  color: #8f8c8b;
-  a {
-    font-weight: 500;
-    margin-left: 4px;
-    color: #ff6e35;
-    text-decoration-line: underline;
   }
 `

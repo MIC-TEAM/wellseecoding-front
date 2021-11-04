@@ -147,16 +147,20 @@ async function deletePostAPI(data: number) {
 
 function* deletePost(action: DeletePostRequest) {
   try {
-    yield call(deletePostAPI, action.data)
-    yield put({
-      type: DELETE_POST_SUCCESS,
-      data: action.data,
-    })
+    const result: number = yield call(deletePostAPI, action.data)
+    if (result === 200) {
+      yield put({
+        type: DELETE_POST_SUCCESS,
+        data: action.data,
+      })
+    } else {
+      throw 'Interner Server Error!'
+    }
   } catch (err) {
     console.error(err)
     yield put({
       type: DELETE_POST_FAILURE,
-      data: err,
+      error: err,
     })
   }
 }
