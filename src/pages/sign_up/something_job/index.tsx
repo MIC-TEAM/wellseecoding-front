@@ -4,10 +4,9 @@ import Title from 'components/Common/Title'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
 import { useRouter } from 'next/router'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import axios from 'axios'
 import { REGISTER_STATUS_URL } from 'apis'
-import { myConfig } from 'sagas'
 
 const SomethingJob = () => {
   const router = useRouter()
@@ -16,6 +15,14 @@ const SomethingJob = () => {
 
   // 현재 직업
   const [value, setValue] = useState('')
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
 
   // 학생
   const onChangeStudent = useCallback(() => {
@@ -55,15 +62,10 @@ const SomethingJob = () => {
       e.preventDefault()
       try {
         await axios
-          .put(
-            REGISTER_STATUS_URL,
-            {
-              status: value,
-            },
-            myConfig
-          )
+          .put(REGISTER_STATUS_URL, {
+            status: value,
+          })
           .then((res) => {
-            console.log(res.data)
             if (res.status === 200) {
               router.push('/sign_up/self_introduction')
             }

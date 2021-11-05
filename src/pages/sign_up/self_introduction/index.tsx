@@ -9,7 +9,6 @@ import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { REGISTER_ABOUT_ME_URL } from 'apis'
-import { myConfig } from 'sagas'
 
 const SelfIntroduction = () => {
   // 간단한 자기소개, 기술스택
@@ -30,10 +29,6 @@ const SelfIntroduction = () => {
   useEffect(() => {
     preventEnterEvent()
   }, [])
-
-  useEffect(() => {
-    console.log('hashArr:', hashArr)
-  }, [hashArr])
 
   // ----직무선택----
   // 서버/백엔드
@@ -195,17 +190,12 @@ const SelfIntroduction = () => {
       e.preventDefault()
       try {
         await axios
-          .put(
-            REGISTER_ABOUT_ME_URL,
-            {
-              aboutMe: aboutMe,
-              tags: hashArr,
-              job: job,
-            },
-            myConfig
-          )
+          .put(REGISTER_ABOUT_ME_URL, {
+            aboutMe: aboutMe,
+            tags: hashArr,
+            job: job,
+          })
           .then((res) => {
-            console.log(res)
             if (res.status === 200) {
               router.push('/sign_up/school')
             }
