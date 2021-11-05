@@ -23,6 +23,7 @@
     "emotion-reset": "^3.0.1",
     "faker": "^5.5.3",
     "immer": "^9.0.5",
+    "jwt-decode": "^3.1.2",
     "next": "^11.0.1",
     "next-cookies": "^2.0.3",
     "next-redux-wrapper": "^7.0.2",

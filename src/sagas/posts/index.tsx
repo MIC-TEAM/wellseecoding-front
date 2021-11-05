@@ -33,12 +33,11 @@ import {
   WRITE_POST_REQUEST,
   WRITE_POST_SUCCESS,
 } from 'reducers/posts'
-import { myConfig } from 'sagas'
 import { MemberData, PostType, WritePostType } from 'types'
 
 async function fetchPostsAPI() {
   try {
-    const result = await axios.get('/api/v1/posts', myConfig)
+    const result = await axios.get('/api/v1/posts')
 
     return result.data
   } catch (err) {
@@ -64,7 +63,7 @@ function* fetchPosts() {
 
 async function fetchPostAPI(data: number) {
   try {
-    const result = await axios.get(`/api/v1/posts/${data}`, myConfig)
+    const result = await axios.get(`/api/v1/posts/${data}`)
 
     return result.data
   } catch (err) {
@@ -90,7 +89,7 @@ function* fetchPost(action: FetchingPostRequest) {
 
 async function writePostAPI(data: WritePostType) {
   try {
-    const response = await axios.post('/api/v1/posts', data, myConfig)
+    const response = await axios.post('/api/v1/posts', data)
     return response.status
   } catch (err) {
     console.error(err)
@@ -114,7 +113,7 @@ function* writePost(action: WritePostRequest) {
 
 async function updatePostAPI(data: WritePostType) {
   try {
-    const response = await axios.put(`/api/v1/posts/${data.id}`, data, myConfig)
+    const response = await axios.put(`/api/v1/posts/${data.id}`, data)
     return response.status
   } catch (err) {
     console.error(err)
@@ -138,7 +137,7 @@ function* updatePost(action: UpdatePostRequest) {
 
 async function deletePostAPI(data: number) {
   try {
-    const response = await axios.delete(`/api/v1/posts/${data}`, myConfig)
+    const response = await axios.delete(`/api/v1/posts/${data}`)
     return response.status
   } catch (err) {
     console.error(err)
@@ -147,23 +146,27 @@ async function deletePostAPI(data: number) {
 
 function* deletePost(action: DeletePostRequest) {
   try {
-    yield call(deletePostAPI, action.data)
-    yield put({
-      type: DELETE_POST_SUCCESS,
-      data: action.data,
-    })
+    const result: number = yield call(deletePostAPI, action.data)
+    if (result === 200) {
+      yield put({
+        type: DELETE_POST_SUCCESS,
+        data: action.data,
+      })
+    } else {
+      throw 'Interner Server Error!'
+    }
   } catch (err) {
     console.error(err)
     yield put({
       type: DELETE_POST_FAILURE,
-      data: err,
+      error: err,
     })
   }
 }
 
 async function searchPostsAPI(data: string) {
   try {
-    const result = await axios.get(`/api/v1/posts?keyword=${data}`, myConfig)
+    const result = await axios.get(`/api/v1/posts?keyword=${data}`)
     return result.data
   } catch (err) {
     console.error(err)
@@ -188,7 +191,7 @@ function* searchPosts(action: SearchPostsRequest) {
 
 async function fetchMembersAPI(data: number) {
   try {
-    const result = await axios.get(`/api/v1/posts/${data}/members`, myConfig)
+    const result = await axios.get(`/api/v1/posts/${data}/members`)
     return result.data.members
   } catch (err) {
     console.error(err)
@@ -213,7 +216,7 @@ function* fetchMembers(action: FetchMembersRequest) {
 
 async function acceptMemberAPI(data: { id: number; userId: number }) {
   try {
-    await axios.put(`api/v1/posts/${data.id}/members/${data.userId}`, {}, myConfig)
+    await axios.put(`api/v1/posts/${data.id}/members/${data.userId}`, {})
   } catch (err) {
     console.error(err)
   }

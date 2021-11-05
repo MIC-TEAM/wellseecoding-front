@@ -15,6 +15,7 @@ import HashWrap from 'components/Common/HashWrap'
 import Loading from 'components/Loading'
 import { RESET_COMMENTS_LIST } from 'reducers/comments'
 import Head from 'next/head'
+import axios from 'axios'
 
 function Post() {
   const router = useRouter()
@@ -26,6 +27,17 @@ function Post() {
   const [localInfo, setLocalInfo] = useState<number | null>(null)
 
   const dispatch = useDispatch()
+
+  const [tokenState, setTokenState] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+    setTokenState(true)
+  }, [])
 
   useEffect(() => {
     if (updatePostSuccess) dispatch({ type: RESET_POSTS_STATE })
@@ -49,8 +61,8 @@ function Post() {
   }, [])
 
   useEffect(() => {
-    !post.length && id && loadPost(id)
-  }, [post, id])
+    !post.length && id && tokenState && loadPost(id)
+  }, [post, id, tokenState])
 
   const saveLocalInfo = () => {
     const result = Number(localStorage.getItem('id'))
@@ -87,10 +99,12 @@ function Post() {
               <div key={d.id}>
                 <h1>{d.name}</h1>
                 <div className="myInfo">
-                  <div></div>
+                  <div>
+                    <img src={`https://www.gravatar.com/avatar/${d.userId}?d=identicon&f=y`} alt="gravatar" />
+                  </div>
                   <div>
                     {/* user에 대한 정보가 들어가야 함 */}
-                    <h3>{d.userId && '칼국수'}</h3>
+                    <h3>{d.userId}번 님</h3>
                     <p>{d.userId}</p>
                   </div>
                 </div>
@@ -103,7 +117,7 @@ function Post() {
                     </select>
                   </div>
 
-                  <FlatBox name="작업기간" contents={d.schedule} />
+                  <FlatBox name="작업기간" contents={d.deadline} />
                   <FlatBox name="일정/위치" contents={d.schedule} />
                   <FlatBox name="자격요건" contents={d.qualification} />
                   <FlatBox name="스터디 설명" contents={d.summary} />
@@ -152,7 +166,13 @@ const flatBox = css`
 // 게시글
 const togetherBoard = css`
   width: 100%;
+  height: 100%;
   background-color: #fff8f5;
+
+  .wrap {
+    background-color: #fff8f5;
+    padding-bottom: 100px;
+  }
 
   .mainContents {
     padding-bottom: 20px;
@@ -172,7 +192,7 @@ const togetherBoard = css`
     display: flex;
     align-items: center;
     background: #fff;
-    div:first-of-type {
+    div:first-of-type img {
       margin-right: 13px;
       background-color: ${Common.colors.gray03};
       width: 50px;

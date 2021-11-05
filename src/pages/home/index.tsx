@@ -13,6 +13,7 @@ import StudySectionOpt from 'components/Together/StudySectionOption'
 import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
 import { homeData, notificationType } from 'types'
 import WellseeError from 'components/Common/wellseeError'
+import axios from 'axios'
 
 const Home = () => {
   const { post, deletePostSuccess, writePostSuccess } = useSelector((state: RootState) => state.posts)
@@ -29,9 +30,20 @@ const Home = () => {
   /* 알림 유무를 판단할 state */
   const [notis, setNotis] = useState<boolean>(false)
 
+  const [tokenState, setTokenState] = useState<boolean>(false)
+
   /* 알림 배열이 빈 배열일 경우 서버에 요청하여 알림 배열을 불러온다 */
   useEffect(() => {
-    if (!notifications.length) fetchNotifications()
+    if (!notifications.length && tokenState) fetchNotifications()
+  }, [tokenState])
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+    setTokenState(true)
   }, [])
 
   /* 알림을 받아와서, 알림 배열에 존재할 경우, 알림 내부에 읽지 않은 알림이 있는지 확인한다 */
@@ -61,12 +73,12 @@ const Home = () => {
 
   // homePosts 데이터가 없다면 loadHomePosts 호출
   useEffect(() => {
-    !homePosts.length && loadHomePosts()
-  }, [])
+    !homePosts.length && tokenState && loadHomePosts()
+  }, [tokenState])
 
   useEffect(() => {
-    homePosts.length && compareHomePosts(homePosts)
-  }, [homePosts])
+    homePosts.length && tokenState && compareHomePosts(homePosts)
+  }, [homePosts, tokenState])
 
   // 브라우저가 온전히 받아와지면 로컬스토리지에 저장된 id라는 이름을 가진 아이템을 불러와 저장한다
   useEffect(() => {
@@ -76,8 +88,8 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    post.length && resetPost()
-  }, [post])
+    post.length && tokenState && resetPost()
+  }, [post, tokenState])
 
   const loadHomePosts = useCallback(() => {
     dispatch({
@@ -97,7 +109,7 @@ const Home = () => {
   }, [])
 
   const fetchNotifications = useCallback(() => {
-    console.log('FETCHING_NOTIS_REQUEST !')
+    console.log('fetch notis start!')
     dispatch({
       type: FETCHING_NOTIS_REQUEST,
     })
@@ -118,22 +130,9 @@ const Home = () => {
         !eachPost.registeredGroups.length
       ) {
         setHomePostsState(true)
-        console.log('다 없음')
-      } else {
-        console.log('있음')
       }
     })
   }, [])
-
-  /*
-    const countNotReadedAlarm = useCallback(() => {
-    let cnt = 0
-    notifications.forEach((v) => {
-      if (v.read === false) cnt++
-    })
-    setAlarmCnt(cnt)
-  }, [notifications])
-  */
 
   return (
     <>
@@ -147,44 +146,42 @@ const Home = () => {
         {homePosts.length ? (
           homePosts.map((v, i) => <HomeMain user={name} num={v.registeredGroups.length} key={i} />)
         ) : (
-          <HomeMain user={name} num={4} />
+          <div />
         )}
 
-        <div className="listWrap">
-          <main css={ClassListWrap}>
-            {!homePostsState ? (
-              homePosts.map((v, i) => (
-                <div key={i}>
-                  {v.createdGroups.length ? (
-                    <StudySectionOpt key={i + 1} theme={'만든 '} posts={v.createdGroups} />
-                  ) : (
-                    <StudySectionOpt key={i + 1} theme={'만든 '} />
-                  )}
-                  {v.registeredGroups.length ? (
-                    <StudySectionOpt key={i + 3} theme={'가입한 '} posts={v.registeredGroups} />
-                  ) : (
-                    <StudySectionOpt key={i + 3} theme={'가입한 '} />
-                  )}
-                  {v.appliedGroups.length ? (
-                    <StudySectionOpt key={i + 4} theme={'가입 신청한 '} posts={v.appliedGroups} />
-                  ) : (
-                    <StudySectionOpt key={i + 4} theme={'가입 신청한 '} />
-                  )}
-                  {v.likedGroups.length ? (
-                    <StudySectionOpt key={i + 2} theme={'좋아요 한 '} posts={v.likedGroups} />
-                  ) : (
-                    <StudySectionOpt key={i + 2} theme={'좋아요 한 '} />
-                  )}
-                </div>
-              ))
-            ) : (
-              <WellseeError
-                text={'아직 활동이 없어요..'}
-                textOpt={'모임을 좋아요하고 가입하면 여기서 확인할 수 있어요! 모임을 찾아볼까요?'}
-                buttonOpt={'모임 찾으러 가기'}
-              />
-            )}
-          </main>
+        <div css={ClassListWrap}>
+          {!homePostsState ? (
+            homePosts.map((v, i) => (
+              <div key={i}>
+                {v.createdGroups.length ? (
+                  <StudySectionOpt key={i + 1} theme={'만든 '} posts={v.createdGroups} />
+                ) : (
+                  <StudySectionOpt key={i + 1} theme={'만든 '} />
+                )}
+                {v.registeredGroups.length ? (
+                  <StudySectionOpt key={i + 3} theme={'가입한 '} posts={v.registeredGroups} />
+                ) : (
+                  <StudySectionOpt key={i + 3} theme={'가입한 '} />
+                )}
+                {v.appliedGroups.length ? (
+                  <StudySectionOpt key={i + 4} theme={'가입 신청한 '} posts={v.appliedGroups} />
+                ) : (
+                  <StudySectionOpt key={i + 4} theme={'가입 신청한 '} />
+                )}
+                {v.likedGroups.length ? (
+                  <StudySectionOpt key={i + 2} theme={'좋아요 한 '} posts={v.likedGroups} />
+                ) : (
+                  <StudySectionOpt key={i + 2} theme={'좋아요 한 '} />
+                )}
+              </div>
+            ))
+          ) : (
+            <WellseeError
+              text={'아직 활동이 없어요..'}
+              textOpt={'모임을 좋아요하고 가입하면 여기서 확인할 수 있어요! 모임을 찾아볼까요?'}
+              buttonOpt={'모임 찾으러 가기'}
+            />
+          )}
         </div>
       </div>
 
@@ -196,17 +193,14 @@ const Home = () => {
 export default Home
 
 const wrap = css`
-  height: auto;
-  .listWrap {
-    background: #ffeee7;
-    height: 90%;
-  }
+  height: 90%;
+  /* overflow-y: auto; */
+  background: #ffeee7;
 `
 
 export const ClassListWrap = css`
   width: 100%;
-  background: #ffeee7;
-  height: 100%;
-  margin-top: -45px;
   z-index: 100;
+  padding-bottom: 100px;
+  background: #ffeee7;
 `

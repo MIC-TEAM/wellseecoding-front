@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_ISMODAL } from 'reducers/common'
-import { myConfig } from 'sagas'
 import { Common } from 'styles/common'
 
 type Props = {
@@ -28,6 +27,14 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   const [heartState, setHeartState] = useState(false)
 
   const [likePost, setLikePost] = useState<number[]>([])
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
 
   // ① 로컬 스토리지에 담긴 좋아요한 게시물을 state인 likePost에 저장한다
   useEffect(() => {
@@ -82,13 +89,9 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   const onLike = useCallback(async () => {
     try {
       await axios
-        .post(
-          '/api/v1/users/likes',
-          {
-            postId: Number(uniqId),
-          },
-          myConfig
-        )
+        .post('/api/v1/users/likes', {
+          postId: Number(uniqId),
+        })
         .then((res) => (res.status === 200 ? concatPost(Number(uniqId)) : alert('잘못된 요청입니다!')))
     } catch (err) {
       console.log(err)
@@ -111,17 +114,11 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
     try {
       await axios
         .delete('/api/v1/users/likes', {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-            'Cache-Control': 'no-cache',
-            Pragma: 'no-cache',
-            Expires: '0',
-          },
           data: {
             postId: Number(uniqId),
           },
         })
-        .then((res) => (res.status === 200 ? handleLikePost(Number(uniqId)) : console.log('fail')))
+        .then((res) => (res.status === 200 ? handleLikePost(Number(uniqId)) : console.error('fail')))
     } catch (err) {
       console.log(err)
     }

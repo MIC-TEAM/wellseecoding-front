@@ -11,13 +11,13 @@ type Props = {
 
 function StudySectionOpt({ theme, posts }: Props) {
   return (
-    <section style={{ paddingTop: '16px' }}>
+    <div style={{ paddingTop: '16px' }}>
       <h2 css={titleStyle} className="together__title">
         {theme}모임
       </h2>
 
       {posts ? <StudySlider data={posts} /> : <StudySlider theme={theme} />}
-    </section>
+    </div>
   )
 }
 

@@ -7,9 +7,10 @@ import { TogetherHeaderInput } from './style'
 
 export type Props = {
   optional?: boolean
+  notis?: boolean
 }
 
-function TogetherHeader({ optional }: Props) {
+function TogetherHeader({ optional, notis }: Props) {
   const router = useRouter()
 
   return (
@@ -24,9 +25,15 @@ function TogetherHeader({ optional }: Props) {
         <span>모임 이름 / 소개 / 태그 검색</span>
       </div>
       <Link href="/alarm">
-        <a>
-          <img src="/images/header/alarm.svg" alt="알림페이지" />
-        </a>
+        {notis ? (
+          <a>
+            <img src="/images/header/alarm.svg" alt="알림페이지" />
+          </a>
+        ) : (
+          <a>
+            <img src="/images/header/nonAlarm.svg" alt="알림페이지" />
+          </a>
+        )}
       </Link>
     </header>
   )

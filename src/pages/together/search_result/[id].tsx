@@ -5,8 +5,9 @@ import { useRouter } from 'next/router'
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
-import { SEARCH_POSTS_REQUEST } from 'reducers/posts'
+import { RESET_POST_LIST, SEARCH_POSTS_REQUEST } from 'reducers/posts'
 import Head from 'next/head'
+import axios from 'axios'
 
 const SearchResult = () => {
   const router = useRouter()
@@ -14,7 +15,23 @@ const SearchResult = () => {
 
   const dispatch = useDispatch()
 
-  const { searchPosts } = useSelector((state: RootState) => state.posts)
+  const { searchPosts, post } = useSelector((state: RootState) => state.posts)
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (post.length) {
+      dispatch({
+        type: RESET_POST_LIST,
+      })
+    }
+  }, [post, dispatch])
 
   useEffect(() => {
     // 검색 데이터 잘못 보내고 있는 부분 수정함
@@ -83,4 +100,5 @@ const searchWord = css`
 
 const searchWrap = css`
   height: 97vh;
+  overflow-y: auto;
 `
