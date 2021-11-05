@@ -20,7 +20,6 @@ import { notificationType } from 'types'
 async function fetchNotisAPI() {
   try {
     const response = await axios.get('/api/v1/users/notifications')
-    console.log('notis response:', response)
     return response.data.notifications
   } catch (err) {
     console.error(err)

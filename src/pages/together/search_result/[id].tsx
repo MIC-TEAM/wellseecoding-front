@@ -18,7 +18,7 @@ const SearchResult = () => {
   const { searchPosts, post } = useSelector((state: RootState) => state.posts)
 
   useEffect(() => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       axios.defaults.headers.common = {
         Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }

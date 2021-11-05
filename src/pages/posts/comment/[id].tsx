@@ -39,7 +39,7 @@ function Comment() {
   const { id } = router.query
 
   useEffect(() => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       axios.defaults.headers.common = {
         Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
@@ -51,7 +51,7 @@ function Comment() {
   }, [isModal])
 
   useEffect(() => {
-    if (typeof window.localStorage !== 'undefined') {
+    if (typeof window !== 'undefined') {
       setLocalUid(localStorage.getItem('id') || '')
     }
   }, [])

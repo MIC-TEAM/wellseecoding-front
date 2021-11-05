@@ -14,6 +14,7 @@ import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
 import { homeData, notificationType } from 'types'
 import WellseeError from 'components/Common/wellseeError'
 import axios from 'axios'
+import Loading from 'components/Loading'
 
 const Home = () => {
   const { post, deletePostSuccess, writePostSuccess } = useSelector((state: RootState) => state.posts)
@@ -38,7 +39,7 @@ const Home = () => {
   }, [tokenState])
 
   useEffect(() => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       axios.defaults.headers.common = {
         Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
@@ -109,7 +110,6 @@ const Home = () => {
   }, [])
 
   const fetchNotifications = useCallback(() => {
-    console.log('fetch notis start!')
     dispatch({
       type: FETCHING_NOTIS_REQUEST,
     })
@@ -146,7 +146,7 @@ const Home = () => {
         {homePosts.length ? (
           homePosts.map((v, i) => <HomeMain user={name} num={v.registeredGroups.length} key={i} />)
         ) : (
-          <div />
+          <Loading />
         )}
 
         <div css={ClassListWrap}>

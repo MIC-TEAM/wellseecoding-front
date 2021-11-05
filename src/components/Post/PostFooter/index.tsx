@@ -36,7 +36,7 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
   const [alreadyRegisteredModal, setAlreadyRegisteredModal] = useState(false)
 
   useEffect(() => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       axios.defaults.headers.common = {
         Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
@@ -103,7 +103,7 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
     try {
       await axios
         .post(`/api/v1/posts/${Number(uniqId)}/members`, {})
-        .then((res) => (res.status === 200 ? toggleModal() : alert('다시 시도해보세요!')))
+        .then((res) => (res.status === 200 ? toggleModal() : console.error('다시 시도해보세요!')))
         .catch((err) =>
           err.response.status === 400 ? setAlreadyRegisteredModal(true) : console.error('err!', err.response)
         )

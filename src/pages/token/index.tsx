@@ -83,7 +83,7 @@ const Token = () => {
       setResponse(token.replace('access_token=', ''))
       localStorage.setItem('access_token', token.replace('access_token=', ''))
     } else {
-      alert('쿠키에 저장된 토큰이 없습니다')
+      console.error('쿠키에 저장된 토큰이 없습니다')
       return false
     }
   }

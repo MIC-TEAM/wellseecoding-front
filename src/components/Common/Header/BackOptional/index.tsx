@@ -29,7 +29,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
   const [likePost, setLikePost] = useState<number[]>([])
 
   useEffect(() => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       axios.defaults.headers.common = {
         Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
@@ -92,7 +92,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
         .post('/api/v1/users/likes', {
           postId: Number(uniqId),
         })
-        .then((res) => (res.status === 200 ? concatPost(Number(uniqId)) : alert('잘못된 요청입니다!')))
+        .then((res) => (res.status === 200 ? concatPost(Number(uniqId)) : console.error('잘못된 요청입니다!')))
     } catch (err) {
       console.log(err)
     }

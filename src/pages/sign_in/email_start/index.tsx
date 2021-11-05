@@ -39,7 +39,7 @@ const EmailLogin = () => {
             // if (res.status === 200) {
             //   router.push('/token')
             // } else {
-            //   alert('다시 입력해주세요')
+            //   console.error('다시 입력해주세요')
             // }
           })
       } catch (err) {

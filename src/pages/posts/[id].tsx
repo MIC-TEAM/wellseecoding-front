@@ -31,7 +31,7 @@ function Post() {
   const [tokenState, setTokenState] = useState<boolean>(false)
 
   useEffect(() => {
-    if (typeof window !== undefined) {
+    if (typeof window !== 'undefined') {
       axios.defaults.headers.common = {
         Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
