@@ -9,30 +9,38 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { useEffect, useState } from 'react'
 import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
+import axios from 'axios'
 
 const MyPage = () => {
   const { myPages } = useSelector((state: RootState) => state.mypage)
-  const dispatch = useDispatch()
+  /* 로컬 스토리지에서 가져온 사용자 이름 */
   const [name, setName] = useState<string | null>('')
+  /* 로컬 스토리지에서 토큰을 꺼낸뒤 실행하기 위한 블로킹 처리 */
+  const [tokenState, setTokenState] = useState<boolean>(false)
 
-  useEffect(() => {
-    console.log('myPages----->', myPages)
-  }, [myPages])
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const lsName = localStorage.getItem('userName')
-      setName(lsName)
+      /* 토큰 꺼내기 */
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+      /* 이름 설정하기 */
+      setName(localStorage.getItem('userName'))
+      /* 정상처리 된다면 token 상태 true로 바꾸기 */
+      setTokenState(true)
     }
   }, [])
 
   useEffect(() => {
-    if (!myPages.length) {
+    /* myPage가 빈 배열이고, 토큰상태가 충족될 때 request 보내기 */
+    if (!myPages.length && tokenState) {
       dispatch({
         type: FETCHING_MYPAGE_REQUEST,
       })
     }
-  }, [dispatch])
+  }, [dispatch, tokenState])
 
   return (
     <>

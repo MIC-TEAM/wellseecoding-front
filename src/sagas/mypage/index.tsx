@@ -1,12 +1,11 @@
 import { all, call, fork, put, takeLatest } from '@redux-saga/core/effects'
 import axios from 'axios'
 import { FETCHING_MYPAGE_FAILURE, FETCHING_MYPAGE_REQUEST, FETCHING_MYPAGE_SUCCESS } from 'reducers/mypage'
-import { myConfig } from 'sagas'
 import { myPage } from 'types'
 
 async function fetchMyPageAPI() {
   try {
-    const response = await axios.get('api/v1/users/profile', myConfig)
+    const response = await axios.get('api/v1/users/profile')
     return response.data
   } catch (err) {
     console.error(err)
