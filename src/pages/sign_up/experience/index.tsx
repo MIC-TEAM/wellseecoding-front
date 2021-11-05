@@ -79,7 +79,6 @@ function Experience() {
             myConfig
           )
           .then((res) => {
-            console.log(res.data)
             if (res.status === 200) {
               router.push('/sign_up/portfolio')
             }

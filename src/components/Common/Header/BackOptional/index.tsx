@@ -94,7 +94,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
         })
         .then((res) => (res.status === 200 ? concatPost(Number(uniqId)) : console.error('잘못된 요청입니다!')))
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }, [localId, uniqId])
 
@@ -120,7 +120,7 @@ function BackOptional({ title, optional, localId, userId, uniqId }: Props) {
         })
         .then((res) => (res.status === 200 ? handleLikePost(Number(uniqId)) : console.error('fail')))
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }, [likePost, uniqId])
 

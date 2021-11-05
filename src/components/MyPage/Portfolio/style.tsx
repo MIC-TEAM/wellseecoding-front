@@ -8,7 +8,12 @@ export const box = css`
   border-radius: 10px;
   margin-bottom: 18px;
   padding: 26px;
-
+  position: relative;
+  button {
+    position: absolute;
+    right: 26px;
+    top: 26px;
+  }
   h2 {
     font-weight: bold;
     font-size: 2rem;
@@ -32,7 +37,13 @@ export const box = css`
       margin-right: 6px;
     }
   }
-
+  .desc {
+    font-size: 1.6rem;
+    line-height: 22px;
+    letter-spacing: -0.6px;
+    color: rgba(131, 131, 131, 0.87);
+    margin-top: 14px;
+  }
   a {
     font-size: 1.4rem;
     line-height: 18px;

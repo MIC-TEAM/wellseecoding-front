@@ -46,7 +46,6 @@ const SingUp = () => {
             email: email,
           })
           .then((res) => {
-            console.log('response:', res)
             if (res.status === 200) {
               router.push('/sign_up/profile_start')
             }

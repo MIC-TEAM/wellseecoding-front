@@ -24,10 +24,6 @@ const SelfIntroduction = () => {
   const router = useRouter()
 
   useEffect(() => {
-    console.log(`graduated---> ${graduated}`)
-  }, [graduated])
-
-  useEffect(() => {
     if (isChecked === '졸업') {
       setGraduated(true)
     } else {
@@ -54,7 +50,6 @@ const SelfIntroduction = () => {
             myConfig
           )
           .then((res) => {
-            console.log(res.data)
             if (res.status === 200) {
               router.push('/sign_up/experience')
             }

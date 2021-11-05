@@ -14,7 +14,7 @@ interface IinputList {
   idx: number
   name: string
   link: string
-  desc: string
+  description: string
   isDelete: boolean
 }
 
@@ -109,7 +109,7 @@ const Portfolio = () => {
         idx: Date.now(),
         name: name,
         link: link,
-        desc: desc,
+        description: desc,
         isDelete: false,
       }
 
@@ -130,7 +130,7 @@ const Portfolio = () => {
       idx={data.idx}
       name={data.name}
       link={data.link}
-      desc={data.desc}
+      description={data.description}
       isDelete={data.isDelete}
       onDelete={onDelete}
     />

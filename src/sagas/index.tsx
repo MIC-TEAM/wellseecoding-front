@@ -4,6 +4,8 @@ import postSaga from './posts'
 import commentSaga from './comments'
 import homeSaga from './home'
 import NotificationSaga from './notifications'
+import MyPageSaga from './mypage'
+
 const myToken = process.env.NEXT_PUBLIC_TOKEN
 
 // config에 들어갈 프로퍼티를 default 값으로도 설정할 수 있습니다
@@ -29,5 +31,5 @@ export const myConfig = {
   },
 }
 export default function* rootSaga() {
-  yield all([fork(postSaga), fork(commentSaga), fork(homeSaga), fork(NotificationSaga)])
+  yield all([fork(postSaga), fork(commentSaga), fork(homeSaga), fork(NotificationSaga), fork(MyPageSaga)])
 }

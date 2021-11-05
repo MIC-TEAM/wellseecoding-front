@@ -8,10 +8,11 @@ export const box = css`
   border-radius: 10px;
   margin-bottom: 18px;
   padding: 26px;
-  .top {
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
+  position: relative;
+  button {
+    position: absolute;
+    right: 26px;
+    top: 26px;
   }
   h2 {
     font-weight: bold;
@@ -19,21 +20,25 @@ export const box = css`
     line-height: 22px;
     letter-spacing: 0.15px;
     color: rgba(0, 0, 0, 0.87);
+    margin-bottom: 18px;
   }
 
-  a {
+  p {
     font-weight: 500;
-    font-size: 1.6rem;
-    line-height: 24px;
-    letter-spacing: -1px;
-    color: #b6b2b0;
-  }
-  li {
-    font-weight: 500;
-    font-size: 1.6rem;
-    line-height: 24px;
-    letter-spacing: -1px;
+    font-size: 1.8rem;
+    line-height: 26px;
+    display: flex;
+    letter-spacing: -0.6px;
     color: #444241;
-    padding: 18px 0 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .desc {
+    font-size: 1.6rem;
+    line-height: 22px;
+    letter-spacing: -0.6px;
+    color: rgba(131, 131, 131, 0.87);
+    margin-top: 3px;
   }
 `
