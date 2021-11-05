@@ -9,6 +9,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { REGISTER_ABOUT_ME_URL } from 'apis'
+import Head from 'next/head'
 
 const SelfIntroduction = () => {
   // 간단한 자기소개, 기술스택
@@ -267,6 +268,10 @@ const SelfIntroduction = () => {
 
   return (
     <>
+      <Head>
+        <title>자기소개 해주세요! </title>
+        <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
+      </Head>
       <Back />
 
       <Title title="자기소개 해주세요!" className="loginMt" />

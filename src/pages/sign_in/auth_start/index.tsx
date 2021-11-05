@@ -2,10 +2,15 @@ import AuthLogin from 'components/AuthLogin'
 import Back from 'components/Common/Header/Back'
 import { css } from '@emotion/react'
 import { Common } from 'styles/common'
+import Head from 'next/head'
 
 const AuthLoginStart = () => {
   return (
     <>
+      <Head>
+        <title>로그인 | wellseecoding</title>
+        <meta name="description" content="로그인 페이지입니다." />
+      </Head>
       <Back />
 
       <div css={authLoginTitleWrap}>

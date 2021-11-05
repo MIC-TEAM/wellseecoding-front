@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { useState, useCallback, useEffect } from 'react'
 import axios from 'axios'
 import { REGISTER_STATUS_URL } from 'apis'
+import Head from 'next/head'
 
 const SomethingJob = () => {
   const router = useRouter()
@@ -79,6 +80,10 @@ const SomethingJob = () => {
 
   return (
     <>
+      <Head>
+        <title>어떤 일을 하고 계세요? </title>
+        <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
+      </Head>
       <Back />
 
       <Title title="어떤 일을 하고 계세요?" className="loginMt" />

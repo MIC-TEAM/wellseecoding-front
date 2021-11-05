@@ -1,6 +1,7 @@
 import { box } from './style'
 
 interface ProfileProps {
+  id: string | null
   name: string | null
   job: string
   nowJob: string
@@ -12,7 +13,9 @@ const Profile = (props: ProfileProps) => {
   return (
     <section css={box}>
       <div className="profile">
-        <p>{/* 이미지 */}</p>
+        <p>
+          <img src={`https://www.gravatar.com/avatar/${props.id}}?d=identicon&f=y`} alt="gravatar" />
+        </p>
 
         <div className="me">
           <h2>{props.name}</h2>

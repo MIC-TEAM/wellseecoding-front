@@ -58,4 +58,9 @@ const backHeader = css`
     color: #262626;
     margin-left: -30px;
   }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `

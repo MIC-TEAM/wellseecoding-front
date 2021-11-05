@@ -3,12 +3,12 @@ import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Title from 'components/Common/Title'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import PortFolioDeleteForm from 'components/PortFolioDeleteForm'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { REGISTER_LINK_URL } from 'apis'
-import { myConfig } from 'sagas'
+import Head from 'next/head'
 
 interface IinputList {
   idx: number
@@ -34,19 +34,23 @@ const Portfolio = () => {
   // 포트폴리오 추가 버튼 클릭 시 컴포넌트 추가
   const [inputList, setInputList] = useState<IinputList[]>([])
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
+
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
 
       try {
         await axios
-          .put(
-            REGISTER_LINK_URL,
-            {
-              links: inputList,
-            },
-            myConfig
-          )
+          .put(REGISTER_LINK_URL, {
+            links: inputList,
+          })
           .then((res) => {
             if (res.status === 200) {
               router.push('/sign_up/completion')
@@ -138,6 +142,10 @@ const Portfolio = () => {
 
   return (
     <>
+      <Head>
+        <title>포트폴리오를 올려주세요 </title>
+        <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
+      </Head>
       <Back />
 
       <Title title="포트폴리오를 올려주세요!" />

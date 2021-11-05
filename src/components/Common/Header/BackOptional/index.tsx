@@ -178,6 +178,13 @@ const backHeader = css`
   align-items: center;
   z-index: 9999;
   border-bottom: 1px solid #d3cfcc;
+
+  > button {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
   .back {
     padding-left: 20px;
   }

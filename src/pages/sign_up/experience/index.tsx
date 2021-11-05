@@ -7,8 +7,8 @@ import { useRouter } from 'next/router'
 import { css } from '@emotion/react'
 import Title from 'components/Common/Title'
 import { REGISTER_WORK_URL } from 'apis'
-import { myConfig } from 'sagas'
 import axios from 'axios'
+import Head from 'next/head'
 
 interface IinputList {
   idx: number
@@ -71,13 +71,9 @@ function Experience() {
 
       try {
         await axios
-          .put(
-            REGISTER_WORK_URL,
-            {
-              works: inputList,
-            },
-            myConfig
-          )
+          .put(REGISTER_WORK_URL, {
+            works: inputList,
+          })
           .then((res) => {
             if (res.status === 200) {
               router.push('/sign_up/portfolio')
@@ -132,6 +128,10 @@ function Experience() {
 
   return (
     <div>
+      <Head>
+        <title>경력 정보를 적어주세요 </title>
+        <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
+      </Head>
       <Back />
 
       <Title title="경력 정보를 적어주세요!" className="loginMt" />

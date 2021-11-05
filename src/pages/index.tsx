@@ -19,7 +19,7 @@ function Home() {
       } else {
         setTimeout(() => {
           checkDecode()
-        }, 1000)
+        })
       }
     }
   }, [])

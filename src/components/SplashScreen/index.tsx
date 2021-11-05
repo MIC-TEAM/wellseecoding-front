@@ -5,14 +5,14 @@ function SplashScreen() {
     <main css={screen}>
       <section>
         <div className="top">
-          <img src="/images/splashScreen/logo01.svg" alt="" />
+          <img src="/images/splashScreen/logo01.svg" alt="이모티콘" />
           <h1>
             웰시와 함께 <br /> 쉬운 코딩
           </h1>
         </div>
 
         <div className="dog">
-          <img src="/images/splashScreen/dog.svg" alt="" />
+          <img src="/images/splashScreen/dog.svg" alt="강아지 아이콘" />
         </div>
       </section>
     </main>
@@ -28,8 +28,10 @@ const screen = css`
   }
   .top {
     position: absolute;
-    top: 10vh;
-    left: 5vw;
+    width: 100%;
+    height: 100%;
+    top: 9rem;
+    left: 4rem;
   }
   h1 {
     font-weight: 500;

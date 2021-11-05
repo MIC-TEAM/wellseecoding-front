@@ -9,6 +9,7 @@ import axios from 'axios'
 import { REGISTER_EDUCATION_URL } from 'apis'
 import { myConfig } from 'sagas'
 import { useEffect } from 'react'
+import Head from 'next/head'
 
 const SelfIntroduction = () => {
   // 학위, 전공, 재학 및 졸업여부
@@ -95,6 +96,10 @@ const SelfIntroduction = () => {
 
   return (
     <>
+      <Head>
+        <title>학교 정보를 적어주세요 </title>
+        <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
+      </Head>
       <Back />
 
       <Title title="학교 정보를 적어주세요!" className="loginMt" />

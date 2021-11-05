@@ -22,6 +22,7 @@ export const box = css`
         margin-bottom: 6px;
       }
     }
+
     p {
       width: 56px;
       height: 56px;
@@ -29,6 +30,13 @@ export const box = css`
       box-sizing: border-box;
       object-fit: cover;
       background-color: #d3cfcc;
+      img {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        box-sizing: border-box;
+        object-fit: cover;
+      }
     }
     strong {
       font-size: 1.6rem;
