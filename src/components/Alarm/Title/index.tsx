@@ -21,10 +21,6 @@ const AlarmTitle = ({ num }: Props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('dmConfirmResult', dmConfirmResult)
-  }, [dmConfirmResult])
-
-  useEffect(() => {
     if (dmConfirmResult) {
       setDeleteModalShowing(false)
       setDmConfirmResult(false)

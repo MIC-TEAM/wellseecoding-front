@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import { myConfig } from 'sagas'
+
 import AlarmModal from 'components/AlarmModal'
 import ConfirmModal from 'components/ConfirmModal'
 
@@ -34,6 +34,14 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
   const [registerDone, setRegisterDone] = useState<boolean>(false)
   /* 이미 가입 완료된 상태에 대한 모달 관리 */
   const [alreadyRegisteredModal, setAlreadyRegisteredModal] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
 
   /* 로컬스토리지에서 'registered'라는 이름을 가진 아이템을 가져온다 (registered는 이미 가입된 그룹) */
   useEffect(() => {
@@ -94,10 +102,10 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
     setConfirmModal(false)
     try {
       await axios
-        .post(`/api/v1/posts/${Number(uniqId)}/members`, {}, myConfig)
+        .post(`/api/v1/posts/${Number(uniqId)}/members`, {})
         .then((res) => (res.status === 200 ? toggleModal() : alert('다시 시도해보세요!')))
         .catch((err) =>
-          err.response.status === 400 ? setAlreadyRegisteredModal(true) : console.log('err!', err.response)
+          err.response.status === 400 ? setAlreadyRegisteredModal(true) : console.error('err!', err.response)
         )
     } catch (err) {
       console.error(err)

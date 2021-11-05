@@ -13,6 +13,7 @@ import EditComment from 'components/Post/EditComment'
 import { OPEN_ISMODAL } from 'reducers/common'
 import usehandleOverFlow from 'hooks/useHandleOverflow'
 import WellseeError from 'components/Common/wellseeError'
+import axios from 'axios'
 
 function Comment() {
   const router = useRouter()
@@ -36,6 +37,14 @@ function Comment() {
   const { hidden } = usehandleOverFlow()
 
   const { id } = router.query
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (isModal) setEditNum(Number(isModal.uniqId))

@@ -23,14 +23,6 @@ const Token = () => {
 
   const router = useRouter()
 
-  useEffect(() => {
-    console.log('likes:', likes)
-  }, [likes])
-
-  useEffect(() => {
-    console.log('response:', response)
-  }, [response])
-
   /* ① document.cookie 스토리지에서 전달 받은 access_token을 분해한다 */
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -63,11 +55,10 @@ const Token = () => {
         Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
       Promise.allSettled([getLikesGroup(), getRegisteredGroup()]).then((res) => {
-        console.log('res:', res)
         if (res[0].status === 'fulfilled' && res[1].status === 'fulfilled') {
           router.push('/home')
         } else {
-          console.log('error')
+          console.error('error')
         }
       })
     }
@@ -101,7 +92,6 @@ const Token = () => {
   /* JWT 토큰을 디코딩(복호화)한다. */
   const parseJwt = (token: any) => {
     try {
-      console.log('jwt_decoded:', jwt_decode(token))
       return setTokenId(jwt_decode(token))
     } catch (e) {
       return null
@@ -127,7 +117,7 @@ const Token = () => {
         setLikes(res.data.likes)
       })
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }, [])
 
@@ -135,7 +125,7 @@ const Token = () => {
     try {
       await axios.get('/api/v1/users/groups/registered').then((res) => setRegisteredGroup(res.data.groups))
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }, [])
 

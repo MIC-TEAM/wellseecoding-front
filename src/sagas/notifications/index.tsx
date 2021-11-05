@@ -15,13 +15,12 @@ import {
   UPDATE_NOTI_SUCCESS,
 } from 'reducers/notifications'
 import { all, call, fork, takeLatest, put } from 'redux-saga/effects'
-import { myConfig } from 'sagas'
 import { notificationType } from 'types'
 
 async function fetchNotisAPI() {
   try {
-    const response = await axios.get('https://api.wellseecoding.com/api/v1/users/notifications')
-    console.log('fetch notios Response: response', response)
+    const response = await axios.get('/api/v1/users/notifications')
+    console.log('notis response:', response)
     return response.data.notifications
   } catch (err) {
     console.error(err)
@@ -48,7 +47,7 @@ function* fetchNotis() {
 
 async function updateNotiAPI(data: number) {
   try {
-    const response = await axios.put(`/api/v1/users/notifications/${data}/read`, {}, myConfig)
+    const response = await axios.put(`/api/v1/users/notifications/${data}/read`, {})
     return response.status
   } catch (err) {
     console.error(err)
@@ -75,7 +74,7 @@ function* updateNoti(action: UpdateNotiRequest) {
 
 async function readAllNotisAPI() {
   try {
-    const response = await axios.put('/api/v1/users/notifications/read', {}, myConfig)
+    const response = await axios.put('/api/v1/users/notifications/read', {})
     return response.status
   } catch (err) {
     console.error(err)
@@ -101,7 +100,7 @@ function* readAllNotis() {
 
 async function deleteAllNotisAPI() {
   try {
-    const response = await axios.delete('/api/v1/users/notifications', myConfig)
+    const response = await axios.delete('/api/v1/users/notifications')
     return response.status
   } catch (err) {
     console.error(err)

@@ -11,6 +11,7 @@ import Loading from 'components/Loading'
 import Head from 'next/head'
 import { notificationType } from 'types'
 import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
+import axios from 'axios'
 
 const Write = () => {
   const { posts, post } = useSelector((state: RootState) => state.posts)
@@ -19,6 +20,14 @@ const Write = () => {
 
   /* 알림 유무를 판단할 state */
   const [notis, setNotis] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
 
   /* 알림 배열이 빈 배열일 경우 서버에 요청하여 알림 배열을 불러온다 */
   useEffect(() => {

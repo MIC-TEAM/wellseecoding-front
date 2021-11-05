@@ -34,8 +34,8 @@ const Home = () => {
 
   /* 알림 배열이 빈 배열일 경우 서버에 요청하여 알림 배열을 불러온다 */
   useEffect(() => {
-    if (!notifications.length) fetchNotifications()
-  }, [])
+    if (!notifications.length && tokenState) fetchNotifications()
+  }, [tokenState])
 
   useEffect(() => {
     if (typeof window !== undefined) {
@@ -109,6 +109,7 @@ const Home = () => {
   }, [])
 
   const fetchNotifications = useCallback(() => {
+    console.log('fetch notis start!')
     dispatch({
       type: FETCHING_NOTIS_REQUEST,
     })
@@ -145,7 +146,7 @@ const Home = () => {
         {homePosts.length ? (
           homePosts.map((v, i) => <HomeMain user={name} num={v.registeredGroups.length} key={i} />)
         ) : (
-          <HomeMain user={name} num={4} />
+          <div />
         )}
 
         <div css={ClassListWrap}>

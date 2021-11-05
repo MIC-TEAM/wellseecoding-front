@@ -15,6 +15,7 @@ import HashWrap from 'components/Common/HashWrap'
 import Loading from 'components/Loading'
 import { RESET_COMMENTS_LIST } from 'reducers/comments'
 import Head from 'next/head'
+import axios from 'axios'
 
 function Post() {
   const router = useRouter()
@@ -26,6 +27,17 @@ function Post() {
   const [localInfo, setLocalInfo] = useState<number | null>(null)
 
   const dispatch = useDispatch()
+
+  const [tokenState, setTokenState] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+    setTokenState(true)
+  }, [])
 
   useEffect(() => {
     if (updatePostSuccess) dispatch({ type: RESET_POSTS_STATE })
@@ -49,8 +61,8 @@ function Post() {
   }, [])
 
   useEffect(() => {
-    !post.length && id && loadPost(id)
-  }, [post, id])
+    !post.length && id && tokenState && loadPost(id)
+  }, [post, id, tokenState])
 
   const saveLocalInfo = () => {
     const result = Number(localStorage.getItem('id'))
