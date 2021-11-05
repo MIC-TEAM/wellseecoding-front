@@ -4,7 +4,6 @@ import School from 'components/MyPage/School'
 import { css } from '@emotion/react'
 import Portfolio from 'components/MyPage/Portfolio'
 import Career from 'components/MyPage/Career'
-import LikePost from 'components/MyPage/LikePost'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
@@ -57,8 +56,6 @@ const MyPage = () => {
                     <Career totalYear="5년" company={v.role} job={v.technology} year={v.years} />
                   </div>
                 ))}
-
-                <LikePost likepost="[서울] 취업용 프로젝트 같이하실 분  모집합니다." />
               </div>
             </div>
           ))
