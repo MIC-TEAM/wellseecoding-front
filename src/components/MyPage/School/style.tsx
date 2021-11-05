@@ -8,7 +8,12 @@ export const box = css`
   border-radius: 10px;
   margin-bottom: 18px;
   padding: 26px;
-
+  position: relative;
+  button {
+    position: absolute;
+    right: 26px;
+    top: 26px;
+  }
   h2 {
     font-weight: bold;
     font-size: 2rem;

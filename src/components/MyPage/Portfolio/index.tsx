@@ -21,6 +21,10 @@ const Portfolio = (props: PortfolioProps) => {
         </a>
       </Link>
       <p className="desc">{props.description}</p>
+
+      <button type="button">
+        <img src="/images/common/update.svg" alt="수정버튼" />
+      </button>
     </section>
   )
 }

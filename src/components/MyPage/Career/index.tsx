@@ -20,6 +20,10 @@ const Career = (props: CareerProps) => {
       <p className="desc">
         기술스택 | {props.job} | 경력 | {props.year}년차
       </p>
+
+      <button type="button">
+        <img src="/images/common/update.svg" alt="수정버튼" />
+      </button>
     </section>
   )
 }
