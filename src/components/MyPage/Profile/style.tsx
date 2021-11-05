@@ -53,7 +53,7 @@ export const box = css`
       margin-bottom: 2rem;
     }
     h3 {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       line-height: 20px;
       letter-spacing: -0.4px;
       color: #8f8c8b;

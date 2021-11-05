@@ -37,7 +37,7 @@ export const box = css`
     line-height: 22px;
     letter-spacing: -0.6px;
     color: rgba(131, 131, 131, 0.87);
-    margin-top: 3px;
+    margin-top: 14px;
   }
   a {
     font-size: 1.4rem;
