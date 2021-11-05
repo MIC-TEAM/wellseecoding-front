@@ -7,16 +7,24 @@ import Career from 'components/MyPage/Career'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
 
 const MyPage = () => {
   const { myPages } = useSelector((state: RootState) => state.mypage)
   const dispatch = useDispatch()
+  const [name, setName] = useState<string | null>('')
 
   useEffect(() => {
     console.log('myPages----->', myPages)
   }, [myPages])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const lsName = localStorage.getItem('userName')
+      setName(lsName)
+    }
+  }, [])
 
   useEffect(() => {
     if (!myPages.length) {
@@ -37,7 +45,7 @@ const MyPage = () => {
           myPages.map((v, i) => (
             <div key={i} css={profilePadding}>
               <div css={moreWrap}>
-                <Profile name="칼국수" job={v.job} nowJob={v.status} skill={v.tags} aboutme={v.aboutMe} />
+                <Profile name={name} job={v.job} nowJob={v.status} skill={v.tags} aboutme={v.aboutMe} />
 
                 {v.educations.map((v, i) => (
                   <div key={i}>
