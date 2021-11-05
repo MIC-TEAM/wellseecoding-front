@@ -20,11 +20,10 @@ import {
   WRITE_COMMENT_REQUEST,
   WRITE_COMMENT_SUCCESS,
 } from 'reducers/comments'
-import { myConfig } from 'sagas'
 
 async function fetchCommentsAPI(id: number) {
   try {
-    const response = await axios.get(`/api/v1/posts/${id}/comments`, myConfig)
+    const response = await axios.get(`/api/v1/posts/${id}/comments`)
     return response.data
   } catch (err) {
     console.error(err)
@@ -49,7 +48,7 @@ function* fetchComments(action: FetchCommentsRequest) {
 
 async function writeCommentAPI(data: WriteCommentType) {
   try {
-    const response = await axios.post(`/api/v1/posts/${data.id}/comments`, data, myConfig)
+    const response = await axios.post(`/api/v1/posts/${data.id}/comments`, data)
     return response.status
   } catch (err) {
     console.error(err)
@@ -76,7 +75,7 @@ function* writeComment(action: WriteCommentRequest) {
 async function deleteCommentAPI(data: { postId: number; commentId: number }) {
   try {
     // http://api.wellseecoding/api/v1/posts/73/comments/23
-    const response = await axios.delete(`/api/v1/posts/${data.postId}/comments/${data.commentId}`, myConfig)
+    const response = await axios.delete(`/api/v1/posts/${data.postId}/comments/${data.commentId}`)
     return response.status
   } catch (err) {
     console.error(err)
@@ -103,7 +102,7 @@ function* deleteComment(action: DeleteCommentRequest) {
 async function updateCommentAPI(data: { postId: number; commentId: number; text: string }) {
   try {
     // https://api.wellseecoding.com/api/v1/posts/370/comments/446
-    const response = await axios.put(`/api/v1/posts/${data.postId}/comments/${data.commentId}`, data, myConfig)
+    const response = await axios.put(`/api/v1/posts/${data.postId}/comments/${data.commentId}`, data)
     return response.status
   } catch (err) {
     console.error(err)

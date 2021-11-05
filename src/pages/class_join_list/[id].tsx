@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import axios from 'axios'
 import JoinHeader from 'components/Common/Header/Back'
 import WellseeError from 'components/Common/wellseeError'
 import Head from 'next/head'
@@ -14,6 +15,14 @@ const ClassJoinList = () => {
   const dispatch = useDispatch()
 
   const { members } = useSelector((state: RootState) => state.posts)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (id && !members.length) {

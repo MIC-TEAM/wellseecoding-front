@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'reducers'
 import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
 import { RESET_POST_LIST } from 'reducers/posts'
+import axios from 'axios'
 
 const Alarm = () => {
-  const [myId, setMyId] = useState<number>(0)
   const { notifications } = useSelector((state: RootState) => state.notifications)
   const { post } = useSelector((state: RootState) => state.posts)
 
@@ -17,6 +17,14 @@ const Alarm = () => {
   const [alarmCnt, setAlarmCnt] = useState<number>(0)
 
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (post.length)
@@ -32,17 +40,6 @@ const Alarm = () => {
   useEffect(() => {
     if (!notifications.length) fetchNotifications()
   }, [])
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const userId = localStorage.getItem('id')
-      setMyId(Number(userId))
-    }
-  }, [])
-
-  useEffect(() => {
-    if (myId !== 0) console.log('myId', myId)
-  }, [myId])
 
   const fetchNotifications = useCallback(() => {
     dispatch({

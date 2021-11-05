@@ -21,10 +21,6 @@ const AlarmTitle = ({ num }: Props) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('dmConfirmResult', dmConfirmResult)
-  }, [dmConfirmResult])
-
-  useEffect(() => {
     if (dmConfirmResult) {
       setDeleteModalShowing(false)
       setDmConfirmResult(false)
@@ -68,7 +64,6 @@ const AlarmTitle = ({ num }: Props) => {
 
   return (
     <section css={alarmTitWrap}>
-      <h1>알림</h1>
       <div className="desc">
         <p>
           {num !== 0 ? (
@@ -116,7 +111,6 @@ export default AlarmTitle
 
 const alarmTitWrap = css`
   padding: 0 20px 22px;
-  margin-top: 1.2em;
   h1 {
     font-weight: 500;
     font-size: ${Common.fontSize.title};

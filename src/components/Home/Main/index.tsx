@@ -7,7 +7,7 @@ interface Props {
 }
 function HomeMain({ user, num }: Props) {
   return (
-    <section css={homeMainWrap}>
+    <div css={homeMainWrap}>
       <img src="/images/home/dog.svg" alt="웰시코딩 캐릭터" />
 
       <div>
@@ -25,18 +25,19 @@ function HomeMain({ user, num }: Props) {
           )}
         </p>
       </div>
-    </section>
+    </div>
   )
 }
 
 export default HomeMain
 
 export const homeMainWrap = css`
+  background-color: white;
   display: flex;
   justify-content: center;
-  margin-top: 1em;
+
   img {
-    z-index: -100;
+    z-index: 100;
   }
   div {
     margin-top: 1em;

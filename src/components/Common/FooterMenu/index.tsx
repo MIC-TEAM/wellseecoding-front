@@ -129,7 +129,7 @@ const FooterMenu = () => {
 export default FooterMenu
 
 const footerNav = css`
-  position: sticky;
+  position: absolute;
   width: 100%;
   left: 0;
   bottom: 0px;

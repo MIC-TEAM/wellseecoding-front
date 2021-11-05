@@ -1,21 +1,25 @@
 import { css } from '@emotion/react'
 
 export const TogetherHeaderInput = css`
+  background: white;
   display: flex;
   justify-content: space-around;
-  height: 40px;
-  margin: 20px 0;
+  padding: 20px 5px !important;
+
   div {
     cursor: pointer;
     display: flex;
-    align-items: center;
     width: 80%;
     border-bottom: 1.6px solid #ff6e35;
-    height: 100%;
+    align-items: center;
     font-weight: 500;
     font-size: 18px;
     background: url('/images/header/search.svg') no-repeat left center;
     padding-left: 23px;
+
+    @media (max-width: 420px) {
+      margin-left: 12px;
+    }
 
     span {
       font-weight: 500;
