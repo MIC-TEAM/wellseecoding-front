@@ -46,11 +46,6 @@ export const UPDATE_PORTFOLIO_REQUEST = 'UPDATE_PORTFOLIO_REQUEST' as const
 export const UPDATE_PORTFOLIO_SUCCESS = 'UPDATE_PORTFOLIO_SUCCESS' as const
 export const UPDATE_PORTFOLIO_FAILURE = 'UPDATE_PORTFOLIO_FAILURE' as const
 
-// 좋아요 게시글 불러오기
-export const FETCHING_LIKE_POST_REQUEST = 'FETCHING_LIKE_POST_REQUEST' as const
-export const FETCHING_LIKE_POST_SUCCESS = 'FETCHING_LIKE_POST_SUCCESS' as const
-export const FETCHING_LIKE_POST_FAILURE = 'FETCHING_LIKE_POST_FAILURE' as const
-
 // 액션에 대한 타입 정의;
 export interface FetchingMyPageRequest {
   type: typeof FETCHING_MYPAGE_REQUEST
