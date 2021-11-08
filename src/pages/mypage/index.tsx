@@ -19,7 +19,6 @@ const MyPage = () => {
   const [id, setId] = useState<string | null>('')
   /* 로컬 스토리지에서 토큰을 꺼낸뒤 실행하기 위한 블로킹 처리 */
   const [tokenState, setTokenState] = useState<boolean>(false)
-
   const dispatch = useDispatch()
 
   useEffect(() => {

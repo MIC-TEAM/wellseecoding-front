@@ -8,6 +8,7 @@ interface CareerProps {
 }
 
 const Career = (props: CareerProps) => {
+  const myInfo = JSON.stringify(localStorage.getItem('access_token'))
   return (
     <section css={box}>
       <h2>
@@ -21,9 +22,13 @@ const Career = (props: CareerProps) => {
         기술스택 | {props.job} | 경력 | {props.year}년차
       </p>
 
-      <button type="button">
-        <img src="/images/common/update.svg" alt="수정버튼" />
-      </button>
+      {myInfo ? (
+        <button type="button">
+          <img src="/images/common/update.svg" alt="수정버튼" />
+        </button>
+      ) : (
+        <div></div>
+      )}
     </section>
   )
 }

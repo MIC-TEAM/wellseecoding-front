@@ -8,6 +8,7 @@ interface PortfolioProps {
 }
 
 const Portfolio = (props: PortfolioProps) => {
+  const myInfo = JSON.stringify(localStorage.getItem('access_token'))
   return (
     <section css={box}>
       <h2>포트폴리오</h2>
@@ -22,9 +23,13 @@ const Portfolio = (props: PortfolioProps) => {
       </Link>
       <p className="desc">{props.description}</p>
 
-      <button type="button">
-        <img src="/images/common/update.svg" alt="수정버튼" />
-      </button>
+      {myInfo ? (
+        <button type="button">
+          <img src="/images/common/update.svg" alt="수정버튼" />
+        </button>
+      ) : (
+        <div></div>
+      )}
     </section>
   )
 }

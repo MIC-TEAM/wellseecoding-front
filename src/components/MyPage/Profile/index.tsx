@@ -10,6 +10,7 @@ interface ProfileProps {
 }
 
 const Profile = (props: ProfileProps) => {
+  const myInfo = JSON.stringify(localStorage.getItem('access_token'))
   return (
     <section css={box}>
       <div className="profile">
@@ -22,9 +23,13 @@ const Profile = (props: ProfileProps) => {
           <strong>{props.job}</strong>
         </div>
 
-        <button type="button">
-          <img src="/images/common/update.svg" alt="수정버튼" />
-        </button>
+        {myInfo ? (
+          <button type="button">
+            <img src="/images/common/update.svg" alt="수정버튼" />
+          </button>
+        ) : (
+          <div></div>
+        )}
       </div>
 
       <div className="moreme career">
