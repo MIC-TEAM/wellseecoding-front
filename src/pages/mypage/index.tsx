@@ -71,7 +71,7 @@ const MyPage = () => {
 
                 {v.works.map((v, i) => (
                   <div key={i}>
-                    <Career totalYear="5년" company={v.role} job={v.technology} year={v.years} />
+                    <Career company={v.role} job={v.technology} year={v.years} />
                   </div>
                 ))}
               </div>

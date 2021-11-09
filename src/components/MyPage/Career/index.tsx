@@ -1,7 +1,6 @@
 import { box } from './style'
 
 interface CareerProps {
-  totalYear: string
   company: string
   job: string
   year: number
@@ -9,10 +8,14 @@ interface CareerProps {
 
 const Career = (props: CareerProps) => {
   const myInfo = JSON.stringify(localStorage.getItem('access_token'))
+  const year = [props.year]
+  const totalYear = year.concat(props.year)
+  const sumYear = totalYear.reduce((a, b) => a + b)
+
   return (
     <section css={box}>
       <h2>
-        경력 <strong>{props.totalYear}</strong>
+        경력 <strong>총 {sumYear}년차</strong>
       </h2>
 
       {/* 회사이름 */}
