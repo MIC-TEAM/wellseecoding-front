@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { myPage } from 'types'
+import { myPage, myPageSelfIntro } from 'types'
 
 export interface MyPageInitialState {
   myPages: myPage[]
@@ -34,6 +34,7 @@ export const initialState: MyPageInitialState = {
 
   fetchMyPageLoading: false,
   fetchMyPageSuccess: false,
+
   fetchMyPageFailure: null,
 
   //자기소개 업데이트
@@ -102,6 +103,7 @@ export interface FetchingMyPageFailure {
 // 자기소개 업데이트
 export interface UpdateSelfIntroRequest {
   type: typeof UPDATE_SELF_INTRO_REQUEST
+  data: myPageSelfIntro
 }
 
 export interface UpdateSelfIntroSuccess {
@@ -172,8 +174,9 @@ export const fetchingMyPageFailure = (error: Error): FetchingMyPageFailure => ({
 })
 
 //자기소개 업데이트
-export const updateSelfIntroRequest = (): UpdateSelfIntroRequest => ({
+export const updateSelfIntroRequest = (data: myPageSelfIntro): UpdateSelfIntroRequest => ({
   type: UPDATE_SELF_INTRO_REQUEST,
+  data,
 })
 
 export const updateSelfIntroSuccess = (): UpdateSelfIntroSuccess => ({

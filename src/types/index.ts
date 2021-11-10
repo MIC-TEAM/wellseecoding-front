@@ -125,3 +125,10 @@ export type myPageLinks = {
   link: string
   description: string
 }
+
+// 자기소개 업데이트
+export type myPageSelfIntro = {
+  aboutMe: string
+  tags: string[]
+  job: string
+}
