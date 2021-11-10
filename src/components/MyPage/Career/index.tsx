@@ -1,4 +1,6 @@
 import { box } from './style'
+import React, { useCallback } from 'react'
+import router from 'next/router'
 
 interface CareerProps {
   company: string
@@ -11,6 +13,10 @@ const Career = (props: CareerProps) => {
   const year = [props.year]
   const totalYear = year.concat(props.year)
   const sumYear = totalYear.reduce((a, b) => a + b)
+
+  const UpdatePage = useCallback(() => {
+    router.push('/sign_up/experience/update')
+  }, [router])
 
   return (
     <section css={box}>
@@ -26,7 +32,7 @@ const Career = (props: CareerProps) => {
       </p>
 
       {myInfo ? (
-        <button type="button">
+        <button type="button" onClick={UpdatePage}>
           <img src="/images/common/update.svg" alt="수정버튼" />
         </button>
       ) : (

@@ -1,4 +1,6 @@
 import { box } from './style'
+import React, { useCallback } from 'react'
+import router from 'next/router'
 
 interface ProfileProps {
   id: string | null
@@ -11,6 +13,11 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const myInfo = JSON.stringify(localStorage.getItem('access_token'))
+
+  const UpdatePage = useCallback(() => {
+    router.push('/sign_up/self_introduction/update')
+  }, [router])
+
   return (
     <section css={box}>
       <div className="profile">
@@ -24,7 +31,7 @@ const Profile = (props: ProfileProps) => {
         </div>
 
         {myInfo ? (
-          <button type="button">
+          <button type="button" onClick={UpdatePage}>
             <img src="/images/common/update.svg" alt="수정버튼" />
           </button>
         ) : (
