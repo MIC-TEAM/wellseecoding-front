@@ -6,7 +6,6 @@ import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
-import { REGISTER_USERS_LOGIN } from 'apis'
 import axios from 'axios'
 
 const EmailLogin = () => {
@@ -30,12 +29,18 @@ const EmailLogin = () => {
 
       try {
         await axios
-          .post(REGISTER_USERS_LOGIN, {
+          .post('/api/v1/users/token', {
             email: email,
             password: password,
           })
           .then((res) => {
+            console.log(document.cookie)
             console.log(res)
+            console.log(res.headers)
+            console.log(res.headers['set-cookie'])
+            /*
+            response.headers['set-cookie']
+            */
             // if (res.status === 200) {
             //   router.push('/token')
             // } else {
