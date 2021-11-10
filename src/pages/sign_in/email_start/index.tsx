@@ -34,18 +34,9 @@ const EmailLogin = () => {
             password: password,
           })
           .then((res) => {
-            console.log(document.cookie)
-            console.log(res)
-            console.log(res.headers)
-            console.log(res.headers['set-cookie'])
-            /*
-            response.headers['set-cookie']
-            */
-            // if (res.status === 200) {
-            //   router.push('/token')
-            // } else {
-            //   console.error('다시 입력해주세요')
-            // }
+            if (res.status === 200) {
+              router.push('/token')
+            }
           })
       } catch (err) {
         console.error(err)
