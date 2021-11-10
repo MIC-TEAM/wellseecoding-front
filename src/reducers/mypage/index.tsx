@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { myPage, myPageSelfIntro } from 'types'
+import { myPage, myPageSelfIntro, myPageEducations, myPageLinks, myPageWorks } from 'types'
 
 export interface MyPageInitialState {
   myPages: myPage[]
@@ -118,6 +118,7 @@ export interface UpdateSelfIntroFailure {
 // 학교정보 업데이트
 export interface UpdateSchoolRequest {
   type: typeof UPDATE_SCHOOL_REQUEST
+  data: myPageEducations
 }
 
 export interface UpdateSchoolSuccess {
@@ -132,6 +133,7 @@ export interface UpdateSchoolFailure {
 // 경력 업데이트
 export interface UpdateYearsRequest {
   type: typeof UPDATE_YEARS_REQUEST
+  data: myPageWorks
 }
 
 export interface UpdateYearsSuccess {
@@ -146,6 +148,7 @@ export interface UpdateYearsFailure {
 // 포트폴리오 업데이트
 export interface UpdatePortfolioRequest {
   type: typeof UPDATE_PORTFOLIO_REQUEST
+  data: myPageLinks
 }
 
 export interface UpdatePortfolioSuccess {
@@ -189,8 +192,9 @@ export const updateSelfIntroFailure = (error: Error): UpdateSelfIntroFailure => 
 })
 
 //학교정보 업데이트
-export const updateSchoolRequest = (): UpdateSchoolRequest => ({
+export const updateSchoolRequest = (data: myPageEducations): UpdateSchoolRequest => ({
   type: UPDATE_SCHOOL_REQUEST,
+  data,
 })
 
 export const updateSchoolSuccess = (): UpdateSchoolSuccess => ({
@@ -203,8 +207,9 @@ export const updateSchoolFailure = (error: Error): UpdateSchoolFailure => ({
 })
 
 //경력정보 업데이트
-export const updateYearsRequest = (): UpdateYearsRequest => ({
+export const updateYearsRequest = (data: myPageWorks): UpdateYearsRequest => ({
   type: UPDATE_YEARS_REQUEST,
+  data,
 })
 
 export const updateYearsSuccess = (): UpdateYearsSuccess => ({
@@ -217,8 +222,9 @@ export const updateYearsFailure = (error: Error): UpdateYearsFailure => ({
 })
 
 //포트폴리오 업데이트
-export const updatePortfolioRequest = (): UpdatePortfolioRequest => ({
+export const updatePortfolioRequest = (data: myPageLinks): UpdatePortfolioRequest => ({
   type: UPDATE_PORTFOLIO_REQUEST,
+  data,
 })
 
 export const updatePortfolioSuccess = (): UpdatePortfolioSuccess => ({

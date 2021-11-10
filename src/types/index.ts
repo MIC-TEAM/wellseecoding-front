@@ -108,18 +108,21 @@ export type myPage = {
   links: myPageLinks[]
 }
 
+// 학교 업데이트
 export type myPageEducations = {
   major: string
   degree: string
   graduated: boolean
 }
 
+// 경력 업데이트
 export type myPageWorks = {
   role: string
   technology: string
   years: number
 }
 
+// 포트폴리오 업데이트
 export type myPageLinks = {
   name: string
   link: string

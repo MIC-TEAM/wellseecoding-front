@@ -8,17 +8,20 @@ import {
   UPDATE_SELF_INTRO_REQUEST,
   UPDATE_SELF_INTRO_SUCCESS,
   UPDATE_SELF_INTRO_FAILURE,
+  UpdateSchoolRequest,
   UPDATE_SCHOOL_REQUEST,
   UPDATE_SCHOOL_SUCCESS,
   UPDATE_SCHOOL_FAILURE,
+  UpdateYearsRequest,
   UPDATE_YEARS_REQUEST,
   UPDATE_YEARS_SUCCESS,
   UPDATE_YEARS_FAILURE,
+  UpdatePortfolioRequest,
   UPDATE_PORTFOLIO_REQUEST,
   UPDATE_PORTFOLIO_SUCCESS,
   UPDATE_PORTFOLIO_FAILURE,
 } from 'reducers/mypage'
-import { myPage, myPageSelfIntro } from 'types'
+import { myPage, myPageSelfIntro, myPageEducations, myPageLinks, myPageWorks } from 'types'
 
 async function fetchMyPageAPI() {
   try {
@@ -71,7 +74,7 @@ function* updateSelfIntro(action: UpdateSelfIntroRequest) {
 }
 
 // 학교정보 업데이트
-async function updateSchoolAPI(data: myPageSelfIntro) {
+async function updateSchoolAPI(data: myPageEducations) {
   try {
     const response = await axios.put(`/api/v1/users/profile/education`, data)
     return response.status
@@ -80,7 +83,7 @@ async function updateSchoolAPI(data: myPageSelfIntro) {
   }
 }
 
-function* updateSchool(action: UpdateSelfIntroRequest) {
+function* updateSchool(action: UpdateSchoolRequest) {
   try {
     yield call(updateSchoolAPI, action.data)
     yield put({
@@ -96,7 +99,7 @@ function* updateSchool(action: UpdateSelfIntroRequest) {
 }
 
 //경력정보 업데이트
-async function updateYearsAPI(data: myPageSelfIntro) {
+async function updateYearsAPI(data: myPageWorks) {
   try {
     const response = await axios.put(`/api/v1/users/profile/works`, data)
     return response.status
@@ -105,7 +108,7 @@ async function updateYearsAPI(data: myPageSelfIntro) {
   }
 }
 
-function* updateYears(action: UpdateSelfIntroRequest) {
+function* updateYears(action: UpdateYearsRequest) {
   try {
     yield call(updateYearsAPI, action.data)
     yield put({
@@ -121,7 +124,7 @@ function* updateYears(action: UpdateSelfIntroRequest) {
 }
 
 //포트폴리오 업데이트
-async function updatePortfolioAPI(data: myPageSelfIntro) {
+async function updatePortfolioAPI(data: myPageLinks) {
   try {
     const response = await axios.put(`/api/v1/users/profile/links`, data)
     return response.status
@@ -130,7 +133,7 @@ async function updatePortfolioAPI(data: myPageSelfIntro) {
   }
 }
 
-function* updatePortfolio(action: UpdateSelfIntroRequest) {
+function* updatePortfolio(action: UpdatePortfolioRequest) {
   try {
     yield call(updatePortfolioAPI, action.data)
     yield put({
