@@ -8,12 +8,12 @@ export type Props = {
   buttonOpt?: string
 }
 
-const WellseeError = ({ text, textOpt, buttonOpt }: Props) => {
+const WellseeErrorHome = ({ text, textOpt, buttonOpt }: Props) => {
   return (
-    <div css={errorWrap}>
+    <div css={ErrorOpt}>
       <img src="/images/common/404.svg" alt="뒤로가기" />
       <div style={{ marginTop: '20px', fontSize: '20px', textAlign: 'center' }}>
-        <p style={{ width: 240 }}>
+        <p style={{ width: 210 }}>
           <span>{text}</span>
         </p>
         <br />
@@ -35,16 +35,21 @@ const WellseeError = ({ text, textOpt, buttonOpt }: Props) => {
   )
 }
 
-export default WellseeError
+export default WellseeErrorHome
 
-const errorWrap = css`
+const ErrorOpt = css`
+  padding-top: 10em;
   display: flex;
   width: 100%;
   justify-content: center;
-  height: 95vh;
+  height: 100%;
   align-items: center;
   flex-direction: column;
   background: #ffeee7;
+
+  @media (max-width: 420px) {
+    padding-top: 3em;
+  }
 `
 
 const footButtonWrapper = css`

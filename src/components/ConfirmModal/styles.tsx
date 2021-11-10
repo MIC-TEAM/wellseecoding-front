@@ -40,6 +40,10 @@ export const Modal = css`
         letter-spacing: -1px;
         color: #262626;
         padding-top: 33px;
+
+        @media (max-width: 420px) {
+          font-size: 1.6rem;
+        }
       }
       p {
         font-size: 1.6rem;
@@ -48,6 +52,10 @@ export const Modal = css`
         letter-spacing: -0.6px;
         color: #696766;
         padding: 10px 0 20px 0;
+
+        @media (max-width: 420px) {
+          font-size: 1.2rem;
+        }
       }
     }
     &__btn {
@@ -61,6 +69,10 @@ export const Modal = css`
         font-size: 2rem;
         width: 50%;
         box-sizing: border-box;
+
+        @media (max-width: 420px) {
+          font-size: 1.5rem;
+        }
         &.delete {
           color: #ff6e35;
           border-left: 1px solid #efebe8;

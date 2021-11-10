@@ -20,9 +20,9 @@ axios.defaults.baseURL = 'https://api.wellseecoding.com/'
 axios.defaults.withCredentials = true
 axios.defaults.headers = {
   ...axios.defaults.headers,
-  'Cache-Control': 'no-cache',
-  Pragma: 'no-cache',
-  Expires: '0',
+  // 'Cache-Control': 'no-cache',
+  // Pragma: 'no-cache',
+  // Expires: '0',
 }
 
 export const myConfig = {

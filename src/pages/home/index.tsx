@@ -12,9 +12,9 @@ import { FETCHING_HOME_POSTS_REQUEST } from 'reducers/home'
 import StudySectionOpt from 'components/Together/StudySectionOption'
 import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
 import { homeData, notificationType } from 'types'
-import WellseeError from 'components/Common/wellseeError'
 import axios from 'axios'
 import Loading from 'components/Loading'
+import WellseeErrorHome from 'components/Common/wellseeErrorHome'
 
 const Home = () => {
   const { post, deletePostSuccess, writePostSuccess } = useSelector((state: RootState) => state.posts)
@@ -176,7 +176,7 @@ const Home = () => {
               </div>
             ))
           ) : (
-            <WellseeError
+            <WellseeErrorHome
               text={'아직 활동이 없어요..'}
               textOpt={'모임을 좋아요하고 가입하면 여기서 확인할 수 있어요! 모임을 찾아볼까요?'}
               buttonOpt={'모임 찾으러 가기'}

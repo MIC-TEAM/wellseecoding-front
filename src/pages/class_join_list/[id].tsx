@@ -14,8 +14,8 @@ const ClassJoinList = () => {
   const router = useRouter()
   const { id } = router.query
 
-  const [makeLinkModal, setMakeLinkModal] = useState(false)
-  const [link, setLink] = useState('')
+  const [makeLinkModal, setMakeLinkModal] = useState<boolean>(false)
+  const [link, setLink] = useState<string>('')
 
   const { members } = useSelector((state: RootState) => state.posts)
   const dispatch = useDispatch()
@@ -63,9 +63,10 @@ const ClassJoinList = () => {
   }, [])
 
   const onSubmit = useCallback(
-    (e) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       console.log(link)
+      setLink('')
       setMakeLinkModal(false)
     },
     [link]
@@ -100,7 +101,7 @@ const ClassJoinList = () => {
             </li>
           ))
         ) : (
-          <WellseeError text={'아직 가입신청한 인원이 없어요...'} />
+          <WellseeError text={'가입신청한 인원이 없어요...'} />
         )}
       </ul>
       <div style={{ padding: '10px 20px' }}>
