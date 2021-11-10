@@ -23,8 +23,8 @@ const Token = () => {
   /* ① document.cookie 스토리지에서 전달 받은 access_token을 분해한다 */
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // splitToken(process.env.NEXT_PUBLIC_TOKEN)
-      splitToken(document.cookie)
+      splitToken(process.env.NEXT_PUBLIC_TOKEN)
+      // splitToken(document.cookie)
     }
   }, [])
 

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { studyContentBox } from './style'
 
 type Props = {
@@ -8,13 +9,21 @@ type Props = {
   tags: []
 }
 function StudyBox({ uniq, listTitle, tags }: Props) {
+  const [maxtags, setMaxtags] = useState<string[]>(tags)
+
+  useEffect(() => {
+    if (tags.length >= 3) {
+      setMaxtags(tags.slice(0, 4))
+    }
+  }, [tags])
+
   return (
     <li css={studyContentBox}>
       <Link href={`/posts/${uniq}`}>
         <a>
           <article>
             <h3>{listTitle}</h3>
-            {tags?.map((v, i) => (
+            {maxtags?.map((v, i) => (
               <p key={i}>#{v}</p>
             ))}
           </article>
