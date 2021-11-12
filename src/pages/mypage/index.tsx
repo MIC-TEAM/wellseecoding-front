@@ -10,8 +10,13 @@ import { RootState } from 'reducers'
 import { useEffect, useState } from 'react'
 import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
 import axios from 'axios'
+import LogOutModal from 'components/LogOutModal'
 
-const MyPage = () => {
+interface onCloseProps {
+  onClose: (event: React.MouseEvent) => void
+}
+
+const MyPage = ({ onClose }: onCloseProps) => {
   const { myPages } = useSelector((state: RootState) => state.mypage)
   /* 로컬 스토리지에서 가져온 사용자 이름 */
   const [name, setName] = useState<string | null>('')
@@ -80,6 +85,12 @@ const MyPage = () => {
         ) : (
           <div></div>
         )}
+
+        <section className="logout">
+          <button type="button">로그아웃</button>
+        </section>
+
+        <LogOutModal onClose={onClose} />
       </main>
 
       <FooterMenu />
@@ -91,6 +102,19 @@ export default MyPage
 
 const mypageWrap = css`
   margin-bottom: 100px;
+  .logout {
+    width: 100%;
+    text-align: center;
+    padding-top: 16px;
+    button {
+      display: inline-flex;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 26px;
+      letter-spacing: -0.6px;
+      color: #d3cfcc;
+    }
+  }
 `
 
 const profilePadding = css`
