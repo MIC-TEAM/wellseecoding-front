@@ -89,11 +89,6 @@ const SelfIntroduction = () => {
     setIsChecked(e.target.value)
   }, [])
 
-  // 나중에 쓸게요 버튼 -> 경력정보 입력 페이지로 이동
-  const NextPage = useCallback(() => {
-    router.push('/sign_up/experience')
-  }, [router])
-
   return (
     <>
       <Head>
@@ -122,9 +117,6 @@ const SelfIntroduction = () => {
 
         <div css={footButtonWrapper}>
           <div className="wrap">
-            <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
-              나중에 쓸게요~
-            </FootButton>
             <FootButton
               type="submit"
               footButtonType={FootButtonType.ACTIVATION}

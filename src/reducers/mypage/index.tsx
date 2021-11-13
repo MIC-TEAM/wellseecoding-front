@@ -2,7 +2,7 @@ import produce from 'immer'
 import { myPage, myPageSelfIntro, myPageEducations, myPageLinks, myPageWorks } from 'types'
 
 export interface MyPageInitialState {
-  myPages: myPage[]
+  myPages: myPage[] | any
 
   fetchMyPageLoading: boolean
   fetchMyPageSuccess: boolean
@@ -20,7 +20,7 @@ export interface MyPageInitialState {
 
   // 경력 업데이트
   updateYearsLoading: boolean
-  updateYearsSuccess: boolean
+  updateYearsSuccess: boolean | string | number | any
   updateYearsFailure: null | Error
 
   // 포트폴리오 업데이트

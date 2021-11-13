@@ -12,11 +12,7 @@ import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
 import axios from 'axios'
 import LogOutModal from 'components/LogOutModal'
 
-interface onCloseProps {
-  onClose: (event: React.MouseEvent) => void
-}
-
-const MyPage = ({ onClose }: onCloseProps) => {
+const MyPage = () => {
   const { myPages } = useSelector((state: RootState) => state.mypage)
   /* 로컬 스토리지에서 가져온 사용자 이름 */
   const [name, setName] = useState<string | null>('')

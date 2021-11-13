@@ -96,11 +96,6 @@ const PortfolioUpdate = () => {
     }
   }, [])
 
-  // 나중에 쓸게요 버튼 ---> 완료 페이지로 이동
-  const NextPage = useCallback(() => {
-    router.push('/sign_up/completion')
-  }, [router])
-
   // 포트폴리오 추가 버튼
   const onAddBtnClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -187,9 +182,6 @@ const PortfolioUpdate = () => {
         </section>
         <div css={footButtonWrapper}>
           <div className="wrap">
-            <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
-              나중에 쓸게요~
-            </FootButton>
             <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!inputList.length}>
               다음
             </FootButton>
