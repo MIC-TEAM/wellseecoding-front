@@ -24,6 +24,7 @@ const MyPage = ({ onClose }: onCloseProps) => {
   const [id, setId] = useState<string | null>('')
   /* 로컬 스토리지에서 토큰을 꺼낸뒤 실행하기 위한 블로킹 처리 */
   const [tokenState, setTokenState] = useState<boolean>(false)
+  const [isShow, setIsShow] = useState<boolean>(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -48,6 +49,14 @@ const MyPage = ({ onClose }: onCloseProps) => {
       })
     }
   }, [dispatch, tokenState])
+
+  const logOutModal = () => {
+    setIsShow(true)
+  }
+
+  const logOutModalClose = () => {
+    setIsShow(false)
+  }
 
   return (
     <>
@@ -87,10 +96,12 @@ const MyPage = ({ onClose }: onCloseProps) => {
         )}
 
         <section className="logout">
-          <button type="button">로그아웃</button>
+          <button type="button" onClick={logOutModal}>
+            로그아웃
+          </button>
         </section>
 
-        <LogOutModal onClose={onClose} />
+        {isShow ? <LogOutModal onClose={logOutModalClose} /> : null}
       </main>
 
       <FooterMenu />
