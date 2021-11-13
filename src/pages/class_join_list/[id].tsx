@@ -65,7 +65,6 @@ const ClassJoinList = () => {
   const onSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      console.log(link)
       setLink('')
       setMakeLinkModal(false)
     },
