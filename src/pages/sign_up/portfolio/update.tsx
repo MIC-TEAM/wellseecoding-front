@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
 import NeedUpdated from './need_update'
+import Title from 'components/Common/Title'
+import Back from 'components/Common/Header/Back'
 import Loading from 'components/Loading'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
@@ -58,6 +60,11 @@ const PortfolioUpdate = () => {
         <title>포트폴리오를 올려주세요 </title>
         <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
       </Head>
+
+      <Back />
+
+      <Title title="포트폴리오를 올려주세요!" />
+
       <div>
         {/* 
         ⑦ myPages에 데이터가 존재할 경우, 이를 매핑하여 준다 
@@ -68,9 +75,7 @@ const PortfolioUpdate = () => {
           myPages.map((v, i) => (
             <div key={i}>
               {v.links.map((v, i) => (
-                <div key={i}>
-                  <NeedUpdated key={i} PropDesc={v.description} PropLink={v.link} PropName={v.name} />
-                </div>
+                <NeedUpdated key={i} PropDesc={v.description} PropLink={v.link} PropName={v.name} />
               ))}
             </div>
           ))

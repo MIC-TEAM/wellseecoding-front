@@ -1,11 +1,8 @@
-import Back from 'components/Common/Header/Back'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import Title from 'components/Common/Title'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
 import { useCallback, useEffect, useState } from 'react'
 import PortFolioDeleteForm from 'components/PortFolioDeleteForm'
-import { useRouter } from 'next/router'
 import axios from 'axios'
 import { REGISTER_LINK_URL } from 'apis'
 import Head from 'next/head'
@@ -25,12 +22,15 @@ type Props = {
 }
 
 const PortfolioUpdate = ({ PropDesc, PropLink, PropName }: Props) => {
-  const router = useRouter()
-
   // 프로젝트명, 링크, 설명
   const [name, setName] = useState<string>(PropName)
   const [link, setLink] = useState<string>(PropLink)
   const [desc, setDesc] = useState<string>(PropDesc)
+
+  // 프로젝트명, 링크, 설명
+  const [editName, setEditName] = useState<string>(PropName)
+  const [editLink, setEditLink] = useState<string>(PropLink)
+  const [editDesc, setEditDesc] = useState<string>(PropDesc)
 
   // 유효성 검사
   const [isProject, setIsProject] = useState<boolean>(false)
@@ -147,9 +147,6 @@ const PortfolioUpdate = ({ PropDesc, PropLink, PropName }: Props) => {
         <title>포트폴리오를 올려주세요 </title>
         <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
       </Head>
-      <Back />
-
-      <Title title="포트폴리오를 올려주세요!" />
 
       <form css={infoWrap} onSubmit={onSubmit}>
         <section>
@@ -158,8 +155,8 @@ const PortfolioUpdate = ({ PropDesc, PropLink, PropName }: Props) => {
               <TextFieldProfile type="text" name="name" value={name} text="프로젝트 이름" onChange={onChangeProject} />
               <TextFieldProfile
                 type="text"
-                value={link}
                 name="link"
+                value={link}
                 text="링크 (깃허브 또는 결과물 URL)"
                 onChange={onChangeLink}
               />
@@ -183,8 +180,15 @@ const PortfolioUpdate = ({ PropDesc, PropLink, PropName }: Props) => {
               </button>
             </div>
           </div>
-
           <div>{PortFolioList}</div>
+          <PortFolioDeleteForm
+            key={1}
+            idx={1}
+            name={editName}
+            link={editLink}
+            description={editDesc}
+            onDelete={onDelete}
+          />
         </section>
         <div css={footButtonWrapper}>
           <div className="wrap">
@@ -244,9 +248,6 @@ const info = css`
 const infoWrap = css`
   padding: 0 20px 1rem 20px;
 
-  section {
-    margin-bottom: 250px;
-  }
   .delete {
     font-size: 30px;
     float: right;

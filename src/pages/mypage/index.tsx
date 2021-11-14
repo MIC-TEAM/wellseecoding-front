@@ -69,11 +69,13 @@ const MyPage = () => {
                     <School degree={v.degree} major={v.major} graduated={v.graduated} />
                   </div>
                 ))}
+
                 {v.links.map((link, i) => (
                   <div key={i}>
                     <Portfolio name={link.name} link={link.link} description={link.description} />
                   </div>
                 ))}
+
                 {v.works.map((v, i) => (
                   <div key={i}>
                     <Career company={v.role} job={v.technology} year={v.years} />
