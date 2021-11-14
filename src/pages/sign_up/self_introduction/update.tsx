@@ -1,256 +1,57 @@
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
 import Title from 'components/Common/Title'
-import TextFieldProfile from 'components/Common/TextFieldProfile'
-import JobButton from 'components/Common/JobButton'
-import { Common } from 'styles/common'
-import { css } from '@emotion/react'
-import { useState, useCallback, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import axios from 'axios'
-import { REGISTER_ABOUT_ME_URL } from 'apis'
+import { useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'reducers'
+import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
+import NeedUpdated from './need_update'
+import axios from 'axios'
+import Loading from 'components/Loading'
 
 const SelfIntroductionUpdate = () => {
-  // 간단한 자기소개, 기술스택
-  const [aboutMe, setAboutMe] = useState<string>('')
-  const [hashtag, setHashtag] = useState<string | ''>('')
-  const [job, setJob] = useState<string>('')
-  // 해시태그를 담을 배열
-  const [hashArr, setHashArr] = useState<string[] | []>([])
+  /* ① 초기 initialState로 설정된 객체 myPages를 불러온다 */
+  const { myPages } = useSelector((state: RootState) => state.mypage)
 
-  // 직무 선택시 다음으로 넘어갈 수 있도록
-  const [isChecked, setIsChecked] = useState<boolean>(false)
+  const dispatch = useDispatch()
 
-  // 유효성 검사
-  const [isAboutMe, setIsAboutMe] = useState<boolean>(false)
+  /* 로컬 스토리지에서 토큰을 꺼낸뒤 실행하기 위한 블로킹 처리 */
+  const [tokenState, setTokenState] = useState<boolean>(false)
 
-  const router = useRouter()
+  /* 
+  ② 로컬에 저장된 토큰을 꺼내서 default header로 설정한다 
+  왜냐하면 env.local 에 저장된 토큰이 없다고 가정하고 진행하기 때문에
+  로컬스토리지에 저장한 엑세스 토큰을 꺼내서 초기 헤더 값으로 설정해주는 것이다
+  */
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      /* 토큰 꺼내기 */
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+      /* 정상처리 된다면 token 상태 true로 바꾸기 */
+      setTokenState(true)
+    }
+  }, [])
+
+  /* ③ myPages가 없고, tokenState이 준비가 되었다면 정보를 불러온다 */
+  useEffect(() => {
+    if (!myPages.length && tokenState) {
+      /* ④ 액션 디스패치 */
+      fetchInfo()
+    }
+  }, [tokenState])
 
   useEffect(() => {
     preventEnterEvent()
   }, [])
 
-  // ----직무선택----
-  // 서버/백엔드
-  const onChangeBackEnd = useCallback(() => {
-    const jobBackEnd = document.getElementsByClassName('jobBackEnd')
-    const jobArr = jobBackEnd
-
-    if (jobArr) {
-      setJob('서버/백엔드')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // 프론트엔드
-  const onChangeFrontEnd = useCallback(() => {
-    const jobFrontEnd = document.getElementsByClassName('jobFrontEnd')
-    const jobArr = jobFrontEnd
-
-    if (jobArr) {
-      setJob('프론트엔드')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // 웹 풀스택
-  const onChangeFull = useCallback(() => {
-    const jobFull = document.getElementsByClassName('jobFull')
-    const jobArr = jobFull
-
-    if (jobArr) {
-      setJob('웹 풀스택')
-      setIsChecked(true)
-    }
-  }, [])
-
-  //모바일 앱
-  const onChangeMobile = useCallback(() => {
-    const jobMobile = document.getElementsByClassName('jobMobile')
-    const jobArr = jobMobile
-
-    if (jobArr) {
-      setJob('모바일 앱')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // 게임 서버
-  const onChangeGame = useCallback(() => {
-    const jobGame = document.getElementsByClassName('jobGame')
-    const jobArr = jobGame
-
-    if (jobArr) {
-      setJob('게임 서버')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // 게임 클라이언트
-  const onChangeGameClient = useCallback(() => {
-    const jobGameClient = document.getElementsByClassName('jobGameClient')
-    const jobArr = jobGameClient
-
-    if (jobArr) {
-      setJob('게임 클라이언트')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // 데이터 엔지니어
-  const onChangeDBA = useCallback(() => {
-    const jobDBA = document.getElementsByClassName('jobDBA')
-    const jobArr = jobDBA
-
-    if (jobArr) {
-      setJob('데이터 엔지니어(DBA)')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // 개발 매니저
-  const onChangePM = useCallback(() => {
-    const jobPM = document.getElementsByClassName('jobPM')
-    const jobArr = jobPM
-
-    if (jobArr) {
-      setJob('개발 매니저(PM)')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // devops/시스템 엔지니어
-  const onChangeDevops = useCallback(() => {
-    const jobDevops = document.getElementsByClassName('jobDevops')
-    const jobArr = jobDevops
-
-    if (jobArr) {
-      setJob('devops/시스템 엔지니어')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // 보안
-  const onChangeSecurity = useCallback(() => {
-    const jobSecurity = document.getElementsByClassName('jobSecurity')
-    const jobArr = jobSecurity
-
-    if (jobArr) {
-      setJob('보안')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // QA
-  const onChangeQA = useCallback(() => {
-    const jobQA = document.getElementsByClassName('jobQA')
-    const jobArr = jobQA
-
-    if (jobArr) {
-      setJob('QA')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // 인공지능/머신러닝
-  const onChangeAi = useCallback(() => {
-    const jobAi = document.getElementsByClassName('jobAi')
-    const jobArr = jobAi
-
-    if (jobArr) {
-      setJob('인공지능/머신러닝')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // HW/임베디드
-  const onChangeHW = useCallback(() => {
-    const jobHW = document.getElementsByClassName('jobHW')
-    const jobArr = jobHW
-
-    if (jobArr) {
-      setJob('HW/임베디드')
-      setIsChecked(true)
-    }
-  }, [])
-
-  // SW/솔루션
-  const onChangeSW = useCallback(() => {
-    const jobSW = document.getElementsByClassName('jobSW')
-    const jobArr = jobSW
-
-    if (jobArr) {
-      setJob('SW/솔루션')
-      setIsChecked(true)
-    }
-  }, [])
-
-  const onSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      try {
-        await axios
-          .put(REGISTER_ABOUT_ME_URL, {
-            aboutMe: aboutMe,
-            tags: hashArr,
-            job: job,
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              router.push('/sign_up/school')
-            }
-          })
-      } catch (err) {
-        console.error(err)
-      }
-    },
-    [aboutMe, hashArr, router, job]
-  )
-
-  const onChangeAboutMe = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setAboutMe(e.target.value)
-
-    if (e.target.value.length) {
-      setIsAboutMe(true)
-    } else {
-      setIsAboutMe(false)
-    }
-  }, [])
-
-  const onChangeHashtag = useCallback((e) => {
-    // space 입력시 '' 빈문자열로 변환하여 Hashtage state에 저장한다
-    const replaceStr = e.target.value.replace(/(\s*)/g, '')
-    setHashtag(replaceStr)
-
-    // if (e.target.value.length) {
-    //   setIsHashtag(true)
-    // } else {
-    //   setIsHashtag(false)
-    // }
-  }, [])
-
-  const onKeyUp = useCallback(
-    (e) => {
-      if (process.browser) {
-        const $HashWrapOuter = document.querySelector('.HashWrapOuter')
-        const $HashWrapInner = document.createElement('div')
-        $HashWrapInner.className = 'HashWrapInner'
-        $HashWrapInner.addEventListener('click', () => {
-          $HashWrapOuter?.removeChild($HashWrapInner)
-          setHashArr(hashArr.filter((hashtag) => hashtag))
-        })
-        if (e.keyCode === 13 && e.target.value.trim() !== '') {
-          const replaceStr = e.target.value.replace(/(\s*)/g, '')
-          $HashWrapInner.innerHTML = '#' + replaceStr
-          $HashWrapOuter?.appendChild($HashWrapInner)
-          setHashArr((hashArr) => [...hashArr, hashtag])
-          setHashtag('')
-        }
-      }
-    },
-    [hashtag, hashArr]
-  )
+  /* ⑤ 이 액션을 통해 myPages 내부의 데이터가 들어온다 */
+  const fetchInfo = useCallback(() => {
+    dispatch({
+      type: FETCHING_MYPAGE_REQUEST,
+    })
+  }, [dispatch])
 
   const preventEnterEvent = () => {
     if (process.browser) {
@@ -274,164 +75,25 @@ const SelfIntroductionUpdate = () => {
       </Head>
       <Back />
 
-      <Title title="자기소개 해주세요!" className="loginMt" />
-
-      <form css={selfWrap} onSubmit={onSubmit}>
-        <TextFieldProfile
-          text="자기소개"
-          placeholder="간단하게 자기소개해주세요!"
-          type="text"
-          onChange={onChangeAboutMe}
-        />
-        <h2 className="skillTitle">기술스택</h2>
-        <div className="HashWrap" css={hashDivrap}>
-          <div className="HashWrapOuter"></div>
-          <input placeholder="입력후 Enter" type="text" value={hashtag} onChange={onChangeHashtag} onKeyUp={onKeyUp} />
-        </div>
-
-        <div css={jobList}>
-          <div>
-            <h2>직무</h2>
-            <p>1가지만 선택*</p>
-          </div>
-
-          <JobButton onClick={onChangeBackEnd} job_text="서버/백엔드" className="jobBackEnd" />
-          <JobButton onClick={onChangeFrontEnd} job_text="프론트엔드" className="jobFrontEnd" />
-          <JobButton onClick={onChangeFull} job_text="웹 풀스택" className="jobFull" />
-          <JobButton onClick={onChangeMobile} job_text="모바일 앱" className="jobMobile" />
-          <JobButton onClick={onChangeGame} job_text="게임 서버" className="jobGame" />
-          <JobButton onClick={onChangeGameClient} job_text="게임 클라이언트" className="jobGameClient" />
-          <JobButton onClick={onChangeDBA} job_text="데이터 엔지니어(DBA)" className="jobDBA" />
-          <JobButton onClick={onChangePM} job_text="개발 매니저(PM)" className="jobPM" />
-          <JobButton onClick={onChangeDevops} job_text="devops/시스템 엔지니어" className="jobDevops" />
-          <JobButton onClick={onChangeSecurity} job_text="보안" className="jobSecurity" />
-          <JobButton onClick={onChangeQA} job_text="QA" className="jobQA" />
-          <JobButton onClick={onChangeAi} job_text="인공지능/머신러닝" className="jobAi" />
-          <JobButton onClick={onChangeHW} job_text="HW/임베디드" className="jobHW" />
-          <JobButton onClick={onChangeSW} job_text="SW/솔루션" className="jobSW" />
-        </div>
-
-        <div css={footButtonWrapper}>
-          <div className="wrap">
-            <FootButton
-              type="submit"
-              footButtonType={FootButtonType.ACTIVATION}
-              disabled={!(isAboutMe && hashArr.length && isChecked)}
-            >
-              다음
-            </FootButton>
-          </div>
-        </div>
-      </form>
+      <div>
+        {/* 
+        ⑦ myPages에 데이터가 존재할 경우, 이를 매핑하여 준다 
+        intialState의 값을 바로 하위 컴포넌트 <NeedUpdated/>에 props로 전달한다
+        map 한 데이터는 readOnly 값으로 현 단계에서 수정할 수 없기 때문이다
+        */}
+        {myPages.length ? (
+          myPages.map((v, i) => (
+            <div key={i}>
+              <Title title="자기소개 해주세요!" className="loginMt" />
+              <NeedUpdated key={i} PropAboutMe={v.aboutMe} PropJob={v.job} PropHashtag={v.tags} />
+            </div>
+          ))
+        ) : (
+          <Loading />
+        )}
+      </div>
     </>
   )
 }
 
 export default SelfIntroductionUpdate
-
-const footButtonWrapper = css`
-  max-width: 600px;
-  margin: 0 auto;
-  width: 100%;
-  position: fixed;
-  bottom: 4rem;
-  left: 0;
-  right: 0;
-  padding: 0 20px;
-  button:disabled,
-  button[disabled] {
-    background-color: #d3cfcc;
-    color: #ffffff;
-  }
-
-  .wrap {
-    width: 100%;
-    max-width: 550px;
-    margin: 0 auto;
-    & > button:nth-of-type(1) {
-      margin-bottom: 11px;
-      margin-top: 20px;
-    }
-  }
-`
-
-const jobList = css`
-  padding-bottom: 4rem;
-  h2 {
-    font-size: ${Common.fontSize.fs20};
-  }
-
-  div {
-    margin-top: 3em;
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
-    font-weight: 500;
-    line-height: 24px;
-    letter-spacing: -1px;
-    p {
-      font-size: ${Common.fontSize.fs16};
-      color: #ff6e35;
-    }
-  }
-`
-
-const selfWrap = css`
-  margin-top: 1.7em;
-  margin-bottom: 20vh;
-  padding: 0 20px;
-  .skillTitle {
-    margin-top: 1em;
-    font-size: 2rem;
-    font-weight: 500;
-    letter-spacing: -1px;
-  }
-`
-
-const hashDivrap = css`
-  margin-top: 14px;
-  font-size: 1.125rem;
-  display: flex;
-  flex-wrap: wrap;
-  letter-spacing: -0.6px;
-  border-bottom: 1.6px solid ${Common.colors.gray04};
-  padding: 2px 2px 8px 2px;
-  input {
-    font-size: 2rem;
-    &::placeholder {
-      color: #d3cfcc !important;
-    }
-  }
-  .HashWrapOuter {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .HashWrapInner {
-    margin-top: 5px;
-    background: #ffeee7;
-    border-radius: 56px;
-    padding: 8px 12px;
-    color: #ff6e35;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 1.4rem;
-    line-height: 20px;
-    margin-right: 5px;
-    cursor: pointer;
-  }
-
-  .HashInput {
-    width: auto;
-    margin: 10px;
-    display: inline-flex;
-    outline: none;
-    cursor: text;
-    line-height: 2rem;
-    margin-bottom: 0.75rem;
-    min-width: 8rem;
-    border: none;
-  }
-`

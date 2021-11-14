@@ -47,7 +47,9 @@ const Profile = (props: ProfileProps) => {
       <div className="moreme skill">
         <h3>{props.name}님의 기술스택은?</h3>
         <ul>
-          <li>#{props.skill}</li>
+          {props.skill.map((v, i) => (
+            <li key={i}>#{v}</li>
+          ))}
         </ul>
       </div>
 

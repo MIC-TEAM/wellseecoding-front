@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
 import axios from 'axios'
 import LogOutModal from 'components/LogOutModal'
+import Loading from 'components/Loading'
 
 const MyPage = () => {
   const { myPages } = useSelector((state: RootState) => state.mypage)
@@ -22,6 +23,7 @@ const MyPage = () => {
   const [tokenState, setTokenState] = useState<boolean>(false)
   const [isShow, setIsShow] = useState<boolean>(false)
   const dispatch = useDispatch()
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       /* 토큰 꺼내기 */
@@ -35,6 +37,7 @@ const MyPage = () => {
       setTokenState(true)
     }
   }, [])
+
   useEffect(() => {
     /* myPage가 빈 배열이고, 토큰상태가 충족될 때 request 보내기 */
     if (!myPages.length && tokenState) {
@@ -77,16 +80,17 @@ const MyPage = () => {
                   </div>
                 ))}
               </div>
+              <section className="logout">
+                <button type="button" onClick={logOutModal}>
+                  로그아웃
+                </button>
+              </section>
             </div>
           ))
         ) : (
-          <div></div>
+          <Loading />
         )}
-        <section className="logout">
-          <button type="button" onClick={logOutModal}>
-            로그아웃
-          </button>
-        </section>
+
         {isShow ? <LogOutModal onClose={logOutModalClose} /> : null}
       </main>
       <FooterMenu />
