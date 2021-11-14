@@ -17,6 +17,8 @@ const ClassJoinList = () => {
   const [makeLinkModal, setMakeLinkModal] = useState<boolean>(false)
   const [link, setLink] = useState<string>('')
 
+  const [prevLink, setPrevLink] = useState<string>('')
+
   const { members } = useSelector((state: RootState) => state.posts)
   const dispatch = useDispatch()
 
@@ -31,8 +33,17 @@ const ClassJoinList = () => {
   useEffect(() => {
     if (id && !members.length) {
       getLists()
+      getLink(id)
     }
   }, [id])
+
+  const getLink = useCallback(async (id) => {
+    try {
+      await axios.get(`api/v1/posts/${id}/link`).then((res) => setPrevLink(res.data.link))
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
 
   const getLists = useCallback(async () => {
     dispatch({
@@ -63,12 +74,22 @@ const ClassJoinList = () => {
   }, [])
 
   const onSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      setLink('')
-      setMakeLinkModal(false)
+      await axios
+        .put(`api/v1/posts/${id}/link`, {
+          link: prevLink,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setLink('')
+            setMakeLinkModal(false)
+          } else {
+            console.error('에러 발생')
+          }
+        })
     },
-    [link]
+    [prevLink, id]
   )
 
   return (
@@ -111,6 +132,8 @@ const ClassJoinList = () => {
 
       {makeLinkModal && (
         <SubmitModal
+          prevLink={prevLink}
+          setPrevLink={setPrevLink}
           onClose={onClose}
           onSubmit={onSubmit}
           setLink={setLink}

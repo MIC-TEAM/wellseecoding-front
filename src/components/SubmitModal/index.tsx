@@ -1,6 +1,8 @@
 import { Modal } from './styles'
 
 interface Props {
+  prevLink: string
+  setPrevLink: (e: any) => void
   onClose: () => void
   onSubmit: (e: any) => void
   setLink: (e: any) => void
@@ -10,7 +12,7 @@ interface Props {
   p2?: string
 }
 
-const SubmitModal = ({ onClose, onSubmit, setLink, link, h3, p1, p2 }: Props) => {
+const SubmitModal = ({ prevLink, setPrevLink, onClose, onSubmit, h3, p1, p2 }: Props) => {
   return (
     <div className="modal" css={Modal}>
       <div className="modal__wrap">
@@ -24,7 +26,7 @@ const SubmitModal = ({ onClose, onSubmit, setLink, link, h3, p1, p2 }: Props) =>
           </p>
           <form className="modal__submit" onSubmit={onSubmit}>
             <div>
-              <input value={link} placeholder="링크 입력하기" onChange={(e) => setLink(e.target.value)} />
+              <input value={prevLink} placeholder="링크 입력하기" onChange={(e) => setPrevLink(e.target.value)} />
             </div>
           </form>
           <div className="modal__btn">
