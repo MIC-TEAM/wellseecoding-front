@@ -1,38 +1,41 @@
-import Back from 'components/Common/Header/Back'
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import Title from 'components/Common/Title'
-import TextFieldProfile from 'components/Common/TextFieldProfile'
-import { css } from '@emotion/react'
 import { useCallback, useEffect, useState } from 'react'
-import PortFolioDeleteForm from 'components/PortFolioDeleteForm'
-import { useRouter } from 'next/router'
+import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
+import NeedUpdated from './need_update'
+import Loading from 'components/Loading'
 import axios from 'axios'
-import { REGISTER_LINK_URL } from 'apis'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'reducers'
 import Head from 'next/head'
 
-interface IinputList {
-  idx: number
-  name: string
-  link: string
-  description: string
-  isDelete: boolean
-}
-
 const PortfolioUpdate = () => {
-  const router = useRouter()
+  const { myPages } = useSelector((state: RootState) => state.mypage)
 
-  // 프로젝트명, 링크, 설명
-  const [name, setName] = useState<string>('')
-  const [link, setLink] = useState<string>('')
-  const [desc, setDesc] = useState<string>('')
+  const dispatch = useDispatch()
+  const [tokenState, setTokenState] = useState<boolean>(false)
 
-  // 유효성 검사
-  const [isProject, setIsProject] = useState<boolean>(false)
-  const [isLink, setIsLink] = useState<boolean>(false)
-  const [isDesc, setIsDesc] = useState<boolean>(false)
+  /* 
+  ② 로컬에 저장된 토큰을 꺼내서 default header로 설정한다 
+  왜냐하면 env.local 에 저장된 토큰이 없다고 가정하고 진행하기 때문에
+  로컬스토리지에 저장한 엑세스 토큰을 꺼내서 초기 헤더 값으로 설정해주는 것이다
+  */
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      /* 토큰 꺼내기 */
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+      /* 정상처리 된다면 token 상태 true로 바꾸기 */
+      setTokenState(true)
+    }
+  }, [])
 
-  // 포트폴리오 추가 버튼 클릭 시 컴포넌트 추가
-  const [inputList, setInputList] = useState<IinputList[]>([])
+  /* ③ myPages가 없고, tokenState이 준비가 되었다면 정보를 불러온다 */
+  useEffect(() => {
+    if (!myPages.length && tokenState) {
+      /* ④ 액션 디스패치 */
+      fetchInfo()
+    }
+  }, [tokenState])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -42,98 +45,12 @@ const PortfolioUpdate = () => {
     }
   }, [])
 
-  const onSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-
-      try {
-        await axios
-          .put(REGISTER_LINK_URL, {
-            links: inputList,
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              router.push('/sign_up/completion')
-            }
-          })
-      } catch (err) {
-        console.error(err)
-      }
-    },
-    [router, inputList]
-  )
-
-  // 프로젝트 이름
-  const onChangeProject = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-
-    if (e.target.value.length) {
-      setIsProject(true)
-    } else {
-      setIsProject(false)
-    }
-  }, [])
-
-  // 링크 (깃허브 또는 결과물 URL)
-  const onChangeLink = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setLink(e.target.value)
-
-    if (e.target.value.length) {
-      setIsLink(true)
-    } else {
-      setIsLink(false)
-    }
-  }, [])
-
-  // 설명
-  const onChangeDesc = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setDesc(e.target.value)
-
-    if (e.target.value.length) {
-      setIsDesc(true)
-    } else {
-      setIsDesc(false)
-    }
-  }, [])
-
-  // 포트폴리오 추가 버튼
-  const onAddBtnClick = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault()
-      setName('')
-      setLink('')
-      setDesc('')
-
-      const newExperence = {
-        idx: Date.now(),
-        name: name,
-        link: link,
-        description: desc,
-        isDelete: false,
-      }
-
-      setInputList(inputList.concat(newExperence))
-    },
-    [inputList, link, name, desc]
-  )
-
-  // 삭제 버튼 클릭시
-  const onDelete = (idx: number) => {
-    const newInput = inputList.filter((item) => item.idx !== idx)
-    setInputList(newInput)
-  }
-
-  const PortFolioList = inputList.map((data, idx) => (
-    <PortFolioDeleteForm
-      key={idx}
-      idx={data.idx}
-      name={data.name}
-      link={data.link}
-      description={data.description}
-      isDelete={data.isDelete}
-      onDelete={onDelete}
-    />
-  ))
+  /* ⑤ 이 액션을 통해 myPages 내부의 데이터가 들어온다 */
+  const fetchInfo = useCallback(() => {
+    dispatch({
+      type: FETCHING_MYPAGE_REQUEST,
+    })
+  }, [dispatch])
 
   return (
     <>
@@ -141,144 +58,28 @@ const PortfolioUpdate = () => {
         <title>포트폴리오를 올려주세요 </title>
         <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
       </Head>
-      <Back />
-
-      <Title title="포트폴리오를 올려주세요!" />
-
-      <form css={infoWrap} onSubmit={onSubmit}>
-        <section>
-          <div className="formBox">
-            <div css={info} className="portfolioInfo">
-              <TextFieldProfile type="text" name="name" value={name} text="프로젝트 이름" onChange={onChangeProject} />
-              <TextFieldProfile
-                type="text"
-                value={link}
-                name="link"
-                text="링크 (깃허브 또는 결과물 URL)"
-                onChange={onChangeLink}
-              />
-              <TextFieldProfile type="text" name="desc" value={desc} text="설명" onChange={onChangeDesc} />
+      <div>
+        {/* 
+        ⑦ myPages에 데이터가 존재할 경우, 이를 매핑하여 준다 
+        intialState의 값을 바로 하위 컴포넌트 <NeedUpdated/>에 props로 전달한다
+        map 한 데이터는 readOnly 값으로 현 단계에서 수정할 수 없기 때문이다
+        */}
+        {myPages.length ? (
+          myPages.map((v, i) => (
+            <div key={i}>
+              {v.links.map((v, i) => (
+                <div key={i}>
+                  <NeedUpdated key={i} PropDesc={v.description} PropLink={v.link} PropName={v.name} />
+                </div>
+              ))}
             </div>
-
-            <div css={companyAddWrap}>
-              <button
-                css={companyAdd}
-                onClick={onAddBtnClick}
-                type="submit"
-                disabled={!(isProject && isLink && isDesc)}
-              >
-                <span>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
-                    <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
-                  </svg>
-                </span>
-                <span>등록 하기</span>
-              </button>
-            </div>
-          </div>
-
-          <div>{PortFolioList}</div>
-        </section>
-        <div css={footButtonWrapper}>
-          <div className="wrap">
-            <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!inputList.length}>
-              다음
-            </FootButton>
-          </div>
-        </div>
-      </form>
+          ))
+        ) : (
+          <Loading />
+        )}
+      </div>
     </>
   )
 }
 
 export default PortfolioUpdate
-
-const footButtonWrapper = css`
-  position: fixed;
-  bottom: 4rem;
-  left: 0;
-  right: 0;
-  padding: 0 20px;
-  button:disabled,
-  button[disabled] {
-    background-color: #d3cfcc;
-    color: #ffffff;
-  }
-  & > button:nth-of-type(1) {
-    margin-bottom: 11px;
-    margin-top: 20px;
-  }
-
-  .wrap {
-    width: 100%;
-    max-width: 550px;
-    margin: 0 auto;
-    & > button:nth-of-type(1) {
-      margin-bottom: 11px;
-      margin-top: 20px;
-    }
-  }
-`
-
-const info = css`
-  background: #ffffff;
-  border: 1px solid #ffeee7;
-  box-sizing: border-box;
-  box-shadow: 0px 7px 24px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  margin-bottom: 18px;
-  padding: 26px;
-
-  &:nth-of-type(1) {
-    margin-top: 3rem;
-  }
-`
-
-const infoWrap = css`
-  padding: 0 20px 1rem 20px;
-
-  section {
-    margin-bottom: 250px;
-  }
-  .delete {
-    font-size: 30px;
-    float: right;
-  }
-`
-
-const companyAddWrap = css`
-  button:disabled,
-  button[disabled] {
-    background-color: #fff;
-    box-shadow: none;
-    border: 1px solid #eee;
-    span {
-      color: #d3cfcc;
-      svg {
-        rect {
-          fill: #d3cfcc;
-        }
-      }
-    }
-  }
-`
-
-const companyAdd = css`
-  background: #ffffff;
-  border: 1px solid #ffeee7;
-  box-sizing: border-box;
-  box-shadow: 0px 7px 24px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  width: 100%;
-  padding: 15px 0;
-  margin-bottom: 3rem;
-  span {
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 26px;
-    letter-spacing: -0.6px;
-    color: #ff6e35;
-    margin-left: 8px;
-  }
-`
