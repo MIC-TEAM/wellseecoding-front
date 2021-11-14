@@ -1,274 +1,82 @@
-import { useState, useCallback } from 'react'
-import SignupDeleteForm from 'components/SignupDeleteForm'
-import TextFieldProfile from 'components/Common/TextFieldProfile'
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import Back from 'components/Common/Header/Back'
-import { useRouter } from 'next/router'
-import { css } from '@emotion/react'
-import Title from 'components/Common/Title'
-import { REGISTER_WORK_URL } from 'apis'
+import { useState, useCallback, useEffect } from 'react'
+import NeedUpdated from './need_update'
+import { useDispatch, useSelector } from 'react-redux'
+import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
+import { RootState } from 'reducers'
 import axios from 'axios'
+import Loading from 'components/Loading'
 import Head from 'next/head'
 
-interface IinputList {
-  idx: number
-  role: string
-  technology: string
-  years: number | string
-  isDelete: boolean
-}
-
 function ExperienceUpdate() {
-  const router = useRouter()
-  // 회사추가 할 때마다 생성되는 컴포넌트에 대한 배열
-  const [inputList, setInputList] = useState<IinputList[]>([])
+  const { myPages } = useSelector((state: RootState) => state.mypage)
 
-  // 프로젝트명, 링크, 설명
-  const [role, setRole] = useState<string>('')
-  const [technology, setTechnology] = useState<string>('')
-  const [years, setYears] = useState<number | string>('')
-
-  // 유효성 검사
-  const [isRole, setIsRole] = useState<boolean>(false)
-  const [isTechnology, setIsTechnology] = useState<boolean>(false)
-  const [isYears, setIsYears] = useState<boolean>(false)
-
-  // 역할
-  const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setRole(e.target.value)
-    if (e.target.value.length) {
-      setIsRole(true)
-    } else {
-      setIsRole(false)
-    }
-  }, [])
-
-  // 기술스택
-  const onChangeTechnology = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setTechnology(e.target.value)
-    if (e.target.value.length) {
-      setIsTechnology(true)
-    } else {
-      setIsTechnology(false)
-    }
-  }, [])
-
-  // 경력
-  const onChangeYears = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setYears(parseInt(e.target.value))
-    if (e.target.value.length) {
-      setIsYears(true)
-    } else {
-      setIsYears(false)
-    }
-  }, [])
-
-  // 다음버튼 클릭시
-  const onSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-
-      try {
-        await axios
-          .put(REGISTER_WORK_URL, {
-            works: inputList,
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              router.push('/sign_up/portfolio')
-            }
-          })
-      } catch (err) {
-        console.error(err)
+  const dispatch = useDispatch()
+  const [tokenState, setTokenState] = useState<boolean>(false)
+  /* 
+  ② 로컬에 저장된 토큰을 꺼내서 default header로 설정한다 
+  왜냐하면 env.local 에 저장된 토큰이 없다고 가정하고 진행하기 때문에
+  로컬스토리지에 저장한 엑세스 토큰을 꺼내서 초기 헤더 값으로 설정해주는 것이다
+  */
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      /* 토큰 꺼내기 */
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
-    },
-    [router, inputList]
-  )
-
-  // 회사 추가 버튼 클릭시
-  const onAddBtnClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
-    e.preventDefault() // 페이지 전환 막기
-    setRole('')
-    setTechnology('')
-    setYears('')
-
-    const newExperence = {
-      idx: Date.now(),
-      role: role,
-      technology: technology,
-      years: years,
-      isDelete: false,
+      /* 정상처리 된다면 token 상태 true로 바꾸기 */
+      setTokenState(true)
     }
+  }, [])
 
-    setInputList(inputList.concat(newExperence))
-  }
-  const onDelete = (idx: number) => {
-    const newInput = inputList.filter((item) => item.idx !== idx)
-    setInputList(newInput)
-  }
-  const ExperienceList = inputList.map((data, idx) => (
-    <SignupDeleteForm
-      key={idx}
-      idx={data.idx}
-      role={data.role}
-      technology={data.technology}
-      years={data.years}
-      isDelete={data.isDelete}
-      onDelete={onDelete}
-    />
-  ))
+  /* ③ myPages가 없고, tokenState이 준비가 되었다면 정보를 불러온다 */
+  useEffect(() => {
+    if (!myPages.length && tokenState) {
+      /* ④ 액션 디스패치 */
+      fetchInfo()
+    }
+  }, [tokenState])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
+      }
+    }
+  }, [])
+
+  /* ⑤ 이 액션을 통해 myPages 내부의 데이터가 들어온다 */
+  const fetchInfo = useCallback(() => {
+    dispatch({
+      type: FETCHING_MYPAGE_REQUEST,
+    })
+  }, [dispatch])
+
   return (
     <div>
       <Head>
         <title>경력 정보를 적어주세요 </title>
         <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
       </Head>
-      <Back />
-
-      <Title title="경력 정보를 적어주세요!" className="loginMt" />
       <div>
-        <form onSubmit={onSubmit} css={infoWrap}>
-          <section>
-            <div className="formBox">
-              <div css={info} id="experienceInputBox">
-                <TextFieldProfile
-                  type="text"
-                  name="role"
-                  value={role}
-                  text="역할을 입력해주세요"
-                  onChange={onChangeRole}
-                />
-                <TextFieldProfile
-                  type="text"
-                  value={technology}
-                  name="technology"
-                  text="기술스택을 입력해주세요"
-                  onChange={onChangeTechnology}
-                />
-                <TextFieldProfile
-                  type="number"
-                  name="years"
-                  value={years}
-                  text="경력을 입력해주세요 (숫자로만 기재)"
-                  onChange={onChangeYears}
-                />
-              </div>
-
-              <div css={companyAddWrap}>
-                <button
-                  css={companyAdd}
-                  onClick={onAddBtnClick}
-                  type="submit"
-                  disabled={!(isRole && isTechnology && isYears)}
-                >
-                  <span>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />
-                      <rect x="14" y="6.125" width="1.75" height="14" transform="rotate(90 14 6.125)" fill="#FF6E35" />
-                    </svg>
-                  </span>
-                  <span>등록 하기</span>
-                </button>
-              </div>
+        {/* 
+        ⑦ myPages에 데이터가 존재할 경우, 이를 매핑하여 준다 
+        intialState의 값을 바로 하위 컴포넌트 <NeedUpdated/>에 props로 전달한다
+        map 한 데이터는 readOnly 값으로 현 단계에서 수정할 수 없기 때문이다
+        */}
+        {myPages.length ? (
+          myPages.map((v, i) => (
+            <div key={i}>
+              {v.works.map((v, i) => (
+                <NeedUpdated key={i} PropRole={v.role} PropTech={v.technology} PropYears={v.years} />
+              ))}
             </div>
-
-            <div>{ExperienceList}</div>
-          </section>
-
-          <div css={footButtonWrapper}>
-            <div className="wrap">
-              <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!inputList.length}>
-                다음
-              </FootButton>
-            </div>
-          </div>
-        </form>
+          ))
+        ) : (
+          <Loading />
+        )}
       </div>
     </div>
   )
 }
-
-const footButtonWrapper = css`
-  position: fixed;
-  bottom: 4rem;
-  left: 0;
-  right: 0;
-  padding: 0 20px;
-  button:disabled,
-  button[disabled] {
-    background-color: #d3cfcc;
-    color: #ffffff;
-  }
-
-  .wrap {
-    width: 100%;
-    max-width: 550px;
-    margin: 0 auto;
-    & > button:nth-of-type(1) {
-      margin-bottom: 11px;
-      margin-top: 20px;
-    }
-  }
-`
-
-const info = css`
-  background: #ffffff;
-  border: 1px solid #ffeee7;
-  box-sizing: border-box;
-  box-shadow: 0px 7px 24px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  margin-bottom: 18px;
-  padding: 26px;
-
-  &:nth-of-type(1) {
-    margin-top: 3rem;
-  }
-`
-const infoWrap = css`
-  padding: 0 20px 1rem 20px;
-  section {
-    margin-bottom: 250px;
-  }
-  .delete {
-    font-size: 30px;
-    float: right;
-  }
-`
-
-const companyAddWrap = css`
-  button:disabled,
-  button[disabled] {
-    background-color: #fff;
-    box-shadow: none;
-    border: 1px solid #eee;
-    span {
-      color: #d3cfcc;
-      svg {
-        rect {
-          fill: #d3cfcc;
-        }
-      }
-    }
-  }
-`
-
-const companyAdd = css`
-  background: #ffffff;
-  border: 1px solid #ffeee7;
-  box-sizing: border-box;
-  box-shadow: 0px 7px 24px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  width: 100%;
-  padding: 15px 0;
-  margin-bottom: 3rem;
-  span {
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 26px;
-    letter-spacing: -0.6px;
-    color: #ff6e35;
-    margin-left: 8px;
-  }
-`
 
 export default ExperienceUpdate

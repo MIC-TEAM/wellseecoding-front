@@ -28,9 +28,9 @@ const PortfolioUpdate = ({ PropDesc, PropLink, PropName }: Props) => {
   const [desc, setDesc] = useState<string>(PropDesc)
 
   // 프로젝트명, 링크, 설명
-  const [editName, setEditName] = useState<string>(PropName)
-  const [editLink, setEditLink] = useState<string>(PropLink)
-  const [editDesc, setEditDesc] = useState<string>(PropDesc)
+  const [editName] = useState<string>(PropName)
+  const [editLink] = useState<string>(PropLink)
+  const [editDesc] = useState<string>(PropDesc)
 
   // 유효성 검사
   const [isProject, setIsProject] = useState<boolean>(false)
