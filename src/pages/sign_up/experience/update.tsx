@@ -1,15 +1,14 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import SignupDeleteForm from 'components/SignupDeleteForm'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
+import { useRouter } from 'next/router'
 import { css } from '@emotion/react'
 import Title from 'components/Common/Title'
-import { useDispatch, useSelector } from 'react-redux'
-import { UPDATE_YEARS_REQUEST, updateYearsRequest } from 'reducers/mypage'
+import { REGISTER_WORK_URL } from 'apis'
+import axios from 'axios'
 import Head from 'next/head'
-import { RootState } from 'reducers'
-import useInputs from 'hooks/useInput'
 
 interface IinputList {
   idx: number
@@ -19,52 +18,94 @@ interface IinputList {
   isDelete: boolean
 }
 
-function ExperienceUpdate({ match }: any) {
-  const dispatch = useDispatch()
-  const { updateYearsSuccess, myPages } = useSelector((state: RootState) => state.mypage)
-  const [state, onChangeInput] = useInputs({
-    editRole: myPages.editRole,
-  })
-  const { editRole, editTechnology, editYears } = state
-  const getPostData = () => dispatch(updateYearsSuccess(match.params.id))
-
-  useEffect(() => {
-    getPostData()
-  }, [dispatch])
-
+function ExperienceUpdate() {
+  const router = useRouter()
   // 회사추가 할 때마다 생성되는 컴포넌트에 대한 배열
   const [inputList, setInputList] = useState<IinputList[]>([])
+
+  // 프로젝트명, 링크, 설명
+  const [role, setRole] = useState<string>('')
+  const [technology, setTechnology] = useState<string>('')
+  const [years, setYears] = useState<number | string>('')
+
+  // 유효성 검사
+  const [isRole, setIsRole] = useState<boolean>(false)
+  const [isTechnology, setIsTechnology] = useState<boolean>(false)
+  const [isYears, setIsYears] = useState<boolean>(false)
+
+  // 역할
+  const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setRole(e.target.value)
+    if (e.target.value.length) {
+      setIsRole(true)
+    } else {
+      setIsRole(false)
+    }
+  }, [])
+
+  // 기술스택
+  const onChangeTechnology = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setTechnology(e.target.value)
+    if (e.target.value.length) {
+      setIsTechnology(true)
+    } else {
+      setIsTechnology(false)
+    }
+  }, [])
+
+  // 경력
+  const onChangeYears = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setYears(parseInt(e.target.value))
+    if (e.target.value.length) {
+      setIsYears(true)
+    } else {
+      setIsYears(false)
+    }
+  }, [])
 
   // 다음버튼 클릭시
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
 
-      dispatch(updateYearsRequest())
+      try {
+        await axios
+          .put(REGISTER_WORK_URL, {
+            works: inputList,
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              router.push('/sign_up/portfolio')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
     },
-    [inputList, dispatch]
+    [router, inputList]
   )
 
   // 회사 추가 버튼 클릭시
   const onAddBtnClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault() // 페이지 전환 막기
+    setRole('')
+    setTechnology('')
+    setYears('')
 
     const newExperence = {
       idx: Date.now(),
-      role: editRole,
-      technology: editTechnology,
-      years: editYears,
+      role: role,
+      technology: technology,
+      years: years,
       isDelete: false,
     }
 
     setInputList(inputList.concat(newExperence))
   }
-
   const onDelete = (idx: number) => {
     const newInput = inputList.filter((item) => item.idx !== idx)
     setInputList(newInput)
   }
-
   const ExperienceList = inputList.map((data, idx) => (
     <SignupDeleteForm
       key={idx}
@@ -76,7 +117,6 @@ function ExperienceUpdate({ match }: any) {
       onDelete={onDelete}
     />
   ))
-
   return (
     <div>
       <Head>
@@ -94,28 +134,33 @@ function ExperienceUpdate({ match }: any) {
                 <TextFieldProfile
                   type="text"
                   name="role"
-                  value={editRole}
+                  value={role}
                   text="역할을 입력해주세요"
-                  onChange={onChangeInput}
+                  onChange={onChangeRole}
                 />
                 <TextFieldProfile
                   type="text"
-                  value={editTechnology}
+                  value={technology}
                   name="technology"
                   text="기술스택을 입력해주세요"
-                  onChange={onChangeInput}
+                  onChange={onChangeTechnology}
                 />
                 <TextFieldProfile
                   type="number"
                   name="years"
-                  value={editYears}
+                  value={years}
                   text="경력을 입력해주세요 (숫자로만 기재)"
-                  onChange={onChangeInput}
+                  onChange={onChangeYears}
                 />
               </div>
 
               <div css={companyAddWrap}>
-                <button css={companyAdd} onClick={onAddBtnClick} type="submit">
+                <button
+                  css={companyAdd}
+                  onClick={onAddBtnClick}
+                  type="submit"
+                  disabled={!(isRole && isTechnology && isYears)}
+                >
                   <span>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect x="6.125" width="1.75" height="14" fill="#FF6E35" />

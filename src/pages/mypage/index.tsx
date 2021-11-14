@@ -22,7 +22,6 @@ const MyPage = () => {
   const [tokenState, setTokenState] = useState<boolean>(false)
   const [isShow, setIsShow] = useState<boolean>(false)
   const dispatch = useDispatch()
-
   useEffect(() => {
     if (typeof window !== 'undefined') {
       /* 토큰 꺼내기 */
@@ -36,7 +35,6 @@ const MyPage = () => {
       setTokenState(true)
     }
   }, [])
-
   useEffect(() => {
     /* myPage가 빈 배열이고, 토큰상태가 충족될 때 request 보내기 */
     if (!myPages.length && tokenState) {
@@ -45,15 +43,12 @@ const MyPage = () => {
       })
     }
   }, [dispatch, tokenState])
-
   const logOutModal = () => {
     setIsShow(true)
   }
-
   const logOutModalClose = () => {
     setIsShow(false)
   }
-
   return (
     <>
       <Head>
@@ -66,19 +61,16 @@ const MyPage = () => {
             <div key={i} css={profilePadding}>
               <div css={moreWrap}>
                 <Profile id={id} name={name} job={v.job} nowJob={v.status} skill={v.tags} aboutme={v.aboutMe} />
-
                 {v.educations.map((v, i) => (
                   <div key={i}>
                     <School degree={v.degree} major={v.major} graduated={v.graduated} />
                   </div>
                 ))}
-
                 {v.links.map((link, i) => (
                   <div key={i}>
                     <Portfolio name={link.name} link={link.link} description={link.description} />
                   </div>
                 ))}
-
                 {v.works.map((v, i) => (
                   <div key={i}>
                     <Career company={v.role} job={v.technology} year={v.years} />
@@ -90,23 +82,18 @@ const MyPage = () => {
         ) : (
           <div></div>
         )}
-
         <section className="logout">
           <button type="button" onClick={logOutModal}>
             로그아웃
           </button>
         </section>
-
         {isShow ? <LogOutModal onClose={logOutModalClose} /> : null}
       </main>
-
       <FooterMenu />
     </>
   )
 }
-
 export default MyPage
-
 const mypageWrap = css`
   margin-bottom: 100px;
   .logout {
@@ -123,7 +110,6 @@ const mypageWrap = css`
     }
   }
 `
-
 const profilePadding = css`
   padding: 40px 20px 0;
   position: relative;
@@ -138,7 +124,6 @@ const profilePadding = css`
     top: 0;
   }
 `
-
 const moreWrap = css`
   padding: 0 20px;
 `
