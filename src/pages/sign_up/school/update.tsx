@@ -1,93 +1,43 @@
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import Back from 'components/Common/Header/Back'
-import Title from 'components/Common/Title'
-import TextFieldProfile from 'components/Common/TextFieldProfile'
-import { css } from '@emotion/react'
-import { useRouter } from 'next/router'
-import { useState, useCallback } from 'react'
-import axios from 'axios'
-import { REGISTER_EDUCATION_URL } from 'apis'
-import { myConfig } from 'sagas'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
+import NeedUpdated from './need_update'
+import { RootState } from 'reducers'
 import Head from 'next/head'
+import axios from 'axios'
+import Loading from 'components/Loading'
+import { useDispatch, useSelector } from 'react-redux'
 
-const SelfIntroduction = () => {
-  // 학위, 전공, 재학 및 졸업여부
-  const [degree, setDegree] = useState<string>('')
-  const [major, setMajor] = useState<string>('')
-  const [isChecked, setIsChecked] = useState<string>('')
-  const [graduated, setGraduated] = useState<boolean>(false)
+const SelfIntroductionUpdate = () => {
+  /* ① 초기 initialState로 설정된 객체 myPages를 불러온다 */
+  const { myPages } = useSelector((state: RootState) => state.mypage)
+  const dispatch = useDispatch()
 
-  // 유효성 검사
-  const [isDegree, setIsDegree] = useState<boolean>(false)
-  const [isMajor, setIsMajor] = useState<boolean>(false)
-
-  const router = useRouter()
+  /* 로컬 스토리지에서 토큰을 꺼낸뒤 실행하기 위한 블로킹 처리 */
+  const [tokenState, setTokenState] = useState<boolean>(false)
 
   useEffect(() => {
-    if (isChecked === '졸업') {
-      setGraduated(true)
-    } else {
-      setGraduated(false)
-    }
-  }, [isChecked])
-
-  const onSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      try {
-        await axios
-          .put(
-            REGISTER_EDUCATION_URL,
-            {
-              educations: [
-                {
-                  degree: degree,
-                  major: major,
-                  graduated: graduated,
-                },
-              ],
-            },
-            myConfig
-          )
-          .then((res) => {
-            if (res.status === 200) {
-              router.push('/sign_up/experience')
-            }
-          })
-      } catch (err) {
-        console.error(err)
+    if (typeof window !== 'undefined') {
+      /* 토큰 꺼내기 */
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
-    },
-    [degree, major, router, graduated]
-  )
-
-  // 학교를 입력해주세요
-  const onChangeDegree = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setDegree(e.target.value)
-
-    if (e.target.value.length > 3) {
-      setIsDegree(true)
-    } else {
-      setIsDegree(false)
+      setTokenState(true)
     }
   }, [])
 
-  // 전공을 입력해주세요
-  const onChangeMajor = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setMajor(e.target.value)
+  const fetchInfo = useCallback(() => {
+    dispatch({
+      type: FETCHING_MYPAGE_REQUEST,
+    })
+  }, [dispatch])
 
-    if (e.target.value.length > 2) {
-      setIsMajor(true)
-    } else {
-      setIsMajor(false)
+  /* ③ myPages가 없고, tokenState이 준비가 되었다면 정보를 불러온다 */
+  useEffect(() => {
+    if (!myPages.length && tokenState) {
+      /* ④ 액션 디스패치 */
+      fetchInfo()
     }
-  }, [])
-
-  // 졸업 체크박스
-  const onChangeValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.value)
-  }, [])
+  }, [tokenState])
 
   return (
     <>
@@ -95,97 +45,28 @@ const SelfIntroduction = () => {
         <title>학교 정보를 적어주세요 </title>
         <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
       </Head>
-      <Back />
-
-      <Title title="학교 정보를 적어주세요!" className="loginMt" />
-
-      <form css={selfWrap} onSubmit={onSubmit}>
-        <TextFieldProfile text="학교를 입력해주세요 (4글자 이상)" type="text" onChange={onChangeDegree} />
-        <TextFieldProfile text="전공을 입력해주세요 (3글자 이상)" type="text" onChange={onChangeMajor} />
-
-        <div className="ingOrEnd" onChange={onChangeValue}>
-          <label htmlFor="school-ing">
-            <input type="radio" value="재학중" name="school-ing" checked={isChecked === '재학중'} readOnly />
-            재학중
-          </label>
-
-          <label htmlFor="school-end">
-            <input type="radio" value="졸업" name="school-end" checked={isChecked === '졸업'} readOnly />
-            졸업
-          </label>
-        </div>
-
-        <div css={footButtonWrapper}>
-          <div className="wrap">
-            <FootButton
-              type="submit"
-              footButtonType={FootButtonType.ACTIVATION}
-              disabled={!(isDegree && isMajor && isChecked)}
-            >
-              다음
-            </FootButton>
-          </div>
-        </div>
-      </form>
+      <div>
+        {/* 
+        ⑦ myPages에 데이터가 존재할 경우, 이를 매핑하여 준다 
+        intialState의 값을 바로 하위 컴포넌트 <NeedUpdated/>에 props로 전달한다
+        map 한 데이터는 readOnly 값으로 현 단계에서 수정할 수 없기 때문이다
+        */}
+        {myPages.length ? (
+          myPages.map((v, i) => (
+            <div key={i}>
+              {v.educations.map((v, i) => (
+                <div key={i}>
+                  <NeedUpdated key={i} PropDegree={v.degree} PropMajor={v.major} PropGraduated={v.graduated} />
+                </div>
+              ))}
+            </div>
+          ))
+        ) : (
+          <Loading />
+        )}
+      </div>
     </>
   )
 }
 
-export default SelfIntroduction
-
-const footButtonWrapper = css`
-  position: fixed;
-  bottom: 4rem;
-  left: 0;
-  right: 0;
-  padding: 0 20px;
-  button:disabled,
-  button[disabled] {
-    background-color: #d3cfcc;
-    color: #ffffff;
-  }
-  .wrap {
-    width: 100%;
-    max-width: 550px;
-    margin: 0 auto;
-    & > button:nth-of-type(1) {
-      margin-bottom: 11px;
-      margin-top: 20px;
-    }
-  }
-`
-
-const selfWrap = css`
-  margin-top: 1.7em;
-  padding: 0 20px;
-  .ingOrEnd {
-    font-size: 20px;
-    letter-spacing: -0.6px;
-    color: #262626;
-    display: flex;
-    label {
-      display: flex;
-      align-items: center;
-      &:nth-of-type(1) {
-        margin-right: 45px;
-      }
-      input {
-        margin: 0 8px 0 0;
-        &:after {
-          content: '';
-          display: inline-block;
-          width: 26px;
-          height: 26px;
-          border: 1px solid #8b8b8b;
-          border-radius: 100%;
-          vertical-align: middle;
-          cursor: pointer;
-        }
-        :checked:after {
-          border: 1px solid #ff6e35;
-          background: #ff6e35;
-        }
-      }
-    }
-  }
-`
+export default SelfIntroductionUpdate
