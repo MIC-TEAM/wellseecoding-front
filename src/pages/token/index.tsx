@@ -25,7 +25,7 @@ const Token = () => {
   /* ① document.cookie 스토리지에서 전달 받은 access_token을 분해한다 */
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      splitToken(document.cookie)
+      splitToken(process.env.NEXT_PUBLIC_TOKEN)
     }
   }, [])
 
@@ -78,7 +78,7 @@ const Token = () => {
   }, [registeredGroup])
 
   /* 토큰을 분해해서 response state에 저장하는 함수 */
-  const splitToken = (token: string) => {
+  const splitToken = (token: any) => {
     if (token) {
       setResponse(token.replace('access_token=', ''))
       localStorage.setItem('access_token', token.replace('access_token=', ''))

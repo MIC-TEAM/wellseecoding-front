@@ -3,25 +3,32 @@ import Back from 'components/Common/Header/Back'
 import Title from 'components/Common/Title'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
-import { useRouter } from 'next/router'
 import { useState, useCallback } from 'react'
 import axios from 'axios'
 import { REGISTER_EDUCATION_URL } from 'apis'
 import { useEffect } from 'react'
 import Head from 'next/head'
 
-const SelfIntroduction = () => {
+type Props = {
+  PropDegree: string
+  PropMajor: string
+  PropGraduated: boolean
+}
+
+const SelfIntroduction = ({ PropDegree, PropMajor, PropGraduated }: Props) => {
   // 학위, 전공, 재학 및 졸업여부
-  const [degree, setDegree] = useState<string>('')
-  const [major, setMajor] = useState<string>('')
+  const [degree, setDegree] = useState<string>(PropDegree)
+  const [major, setMajor] = useState<string>(PropMajor)
+  const [graduated, setGraduated] = useState<boolean>(PropGraduated)
   const [isChecked, setIsChecked] = useState<string>('')
-  const [graduated, setGraduated] = useState<boolean>(false)
 
   // 유효성 검사
   const [isDegree, setIsDegree] = useState<boolean>(false)
   const [isMajor, setIsMajor] = useState<boolean>(false)
 
-  const router = useRouter()
+  useEffect(() => {
+    PropDegree.length && setIsDegree(true)
+  }, [degree])
 
   useEffect(() => {
     if (isChecked === '졸업') {
@@ -47,14 +54,14 @@ const SelfIntroduction = () => {
           })
           .then((res) => {
             if (res.status === 200) {
-              router.push('/sign_up/experience')
+              location.replace('/mypage')
             }
           })
       } catch (err) {
         console.error(err)
       }
     },
-    [degree, major, router, graduated]
+    [degree, major, graduated]
   )
 
   // 학교를 입력해주세요
@@ -84,11 +91,6 @@ const SelfIntroduction = () => {
     setIsChecked(e.target.value)
   }, [])
 
-  // 나중에 쓸게요 버튼 -> 경력정보 입력 페이지로 이동
-  const NextPage = useCallback(() => {
-    router.push('/sign_up/experience')
-  }, [router])
-
   return (
     <>
       <Head>
@@ -100,8 +102,13 @@ const SelfIntroduction = () => {
       <Title title="학교 정보를 적어주세요!" className="loginMt" />
 
       <form css={selfWrap} onSubmit={onSubmit}>
-        <TextFieldProfile text="학교를 입력해주세요 (4글자 이상)" type="text" onChange={onChangeDegree} />
-        <TextFieldProfile text="전공을 입력해주세요 (3글자 이상)" type="text" onChange={onChangeMajor} />
+        <TextFieldProfile
+          text="학교를 입력해주세요 (4글자 이상)"
+          type="text"
+          value={degree}
+          onChange={onChangeDegree}
+        />
+        <TextFieldProfile text="전공을 입력해주세요 (3글자 이상)" type="text" value={major} onChange={onChangeMajor} />
 
         <div className="ingOrEnd" onChange={onChangeValue}>
           <label htmlFor="school-ing">
@@ -117,9 +124,6 @@ const SelfIntroduction = () => {
 
         <div css={footButtonWrapper}>
           <div className="wrap">
-            <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
-              나중에 쓸게요~
-            </FootButton>
             <FootButton
               type="submit"
               footButtonType={FootButtonType.ACTIVATION}

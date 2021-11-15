@@ -10,6 +10,13 @@ export const box = css`
   padding: 26px;
   .skill {
     margin-bottom: 2rem;
+    ul {
+      display: flex;
+
+      li {
+        margin-right: 5px;
+      }
+    }
   }
   .profile {
     display: grid;
