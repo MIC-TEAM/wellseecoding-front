@@ -3,7 +3,7 @@ import Back from 'src/components/Common/Header/Back'
 import { css } from '@emotion/react'
 import { Common } from 'src/styles/common'
 import Head from 'next/head'
-import Logo from '/public/images/login/character_color.svg'
+// import Logo from '/public/images/login/character_color.svg'
 
 const AuthLoginStart = () => {
   return (
@@ -15,7 +15,7 @@ const AuthLoginStart = () => {
       <Back />
 
       <div css={authLoginTitleWrap}>
-        <Logo />
+        <img src="/images/login/character_color.svg" alt="로고" />
 
         <h1 css={bigTitle}>
           웰시와 함께

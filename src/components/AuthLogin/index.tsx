@@ -1,31 +1,31 @@
 import Link from 'next/link'
 import { css } from '@emotion/react'
 import { Common } from 'src/styles/common'
-import KaKao from 'public/images/login/kakao.svg'
-import Naver from 'public/images/login/naver.svg'
-import Email from 'public/images/login/email.svg'
+// import KaKao from 'public/images/login/kakao.svg'
+// import Naver from 'public/images/login/naver.svg'
+// import Email from 'public/images/login/email.svg'
 
 export default function AuthLogin() {
   /* 배포용 */
-  const kakaoLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/kakao')
-  const naverLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/naver')
+  // const kakaoLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/kakao')
+  // const naverLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/naver')
 
   /* 로컬용 */
-  // const kakaoLogin = () => (location.href = 'http://localhost:8080/oauth2/authorization/kakao')
-  // const naverLogin = () => (location.href = 'http://localhost:8080/oauth2/authorization/naver')
+  const kakaoLogin = () => (location.href = 'http://localhost:8080/oauth2/authorization/kakao')
+  const naverLogin = () => (location.href = 'http://localhost:8080/oauth2/authorization/naver')
 
   return (
     <div css={authLoginButton}>
       <button type="button" css={kakaoStyle} onClick={kakaoLogin}>
-        <KaKao alt="카카오" />
+        <img src="/images/login/kakao.svg" alt="카카오" />
         카카오톡으로 시작하기
       </button>
       <button type="button" css={naverStyle} onClick={naverLogin}>
-        <Naver alt="네이버 로그인" />
+        <img src="/images/login/naver.svg" alt="네이버 로그인" />
         네이버로 시작하기
       </button>
       <button type="button" css={email} onClick={() => (location.href = '/sign_in/email_start')}>
-        <Email alt="이메일로 로그인" />
+        <img src="/images/login/email.svg" alt="이메일로 로그인" />
         이메일로 시작하기
       </button>
       <p css={passwordFind}>

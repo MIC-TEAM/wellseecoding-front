@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { Common } from 'src/styles/common'
-import Logo from 'public/images/login/character_color.svg'
+// import Logo from 'public/images/login/character_color.svg'
 
 type Props = {
   title: string
@@ -9,7 +9,7 @@ type Props = {
 export default function BigTitle({ title }: Props) {
   return (
     <>
-      <Logo alt="웰시코딩 로고" />
+      <img src="/images/login/character_color.svg" alt="웰시코딩 로고" />
       <h1 css={bigTitleStyle}>{title}</h1>
     </>
   )
