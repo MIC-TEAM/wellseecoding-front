@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import SignupDeleteForm from 'components/SignupDeleteForm'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
@@ -40,6 +40,14 @@ function ExperienceUpdate({ PropRole, PropTech, PropYears }: Props) {
   const [isRole, setIsRole] = useState<boolean>(false)
   const [isTechnology, setIsTechnology] = useState<boolean>(false)
   const [isYears, setIsYears] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (PropRole && PropTech && PropYears) {
+      setIsRole(true)
+      setIsTechnology(true)
+      setIsYears(true)
+    }
+  }, [PropRole, PropTech, PropYears])
 
   // 역할
   const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

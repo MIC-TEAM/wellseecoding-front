@@ -1,6 +1,6 @@
 import { box } from './style'
-import React, { useCallback } from 'react'
-import router from 'next/router'
+import React, { useCallback, useState } from 'react'
+import AlarmModal from 'components/AlarmModal'
 
 interface CareerProps {
   company: string
@@ -10,10 +10,12 @@ interface CareerProps {
 
 const Career = (props: CareerProps) => {
   const myInfo = JSON.stringify(localStorage.getItem('access_token'))
-  const UpdatePage = useCallback(() => {
-    router.push('/sign_up/experience/update')
-  }, [router])
+  const [confirmModal, setConfirmModal] = useState(false)
 
+  // 이미 가입된 알림 모달 끄기
+  const closeModal = useCallback(() => {
+    setConfirmModal(false)
+  }, [])
   return (
     <section css={box}>
       <h2>
@@ -28,11 +30,18 @@ const Career = (props: CareerProps) => {
       </p>
 
       {myInfo ? (
-        <button type="button" onClick={UpdatePage}>
+        <button type="button" onClick={() => setConfirmModal(true)}>
           <img src="/images/common/update.svg" alt="수정버튼" />
         </button>
       ) : (
         <div></div>
+      )}
+      {confirmModal && (
+        <AlarmModal
+          onClose={closeModal}
+          text="아직 포트폴리오를 수정하지 못해요 ㅠㅠ"
+          path="/images/alarmModal/checked.svg"
+        />
       )}
     </section>
   )
