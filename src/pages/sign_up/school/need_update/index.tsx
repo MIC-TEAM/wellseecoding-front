@@ -6,7 +6,6 @@ import { css } from '@emotion/react'
 import { useState, useCallback } from 'react'
 import axios from 'axios'
 import { REGISTER_EDUCATION_URL } from 'apis'
-import { myConfig } from 'sagas'
 import { useEffect } from 'react'
 import Head from 'next/head'
 
@@ -44,19 +43,15 @@ const SelfIntroduction = ({ PropDegree, PropMajor, PropGraduated }: Props) => {
       e.preventDefault()
       try {
         await axios
-          .put(
-            REGISTER_EDUCATION_URL,
-            {
-              educations: [
-                {
-                  degree: degree,
-                  major: major,
-                  graduated: graduated,
-                },
-              ],
-            },
-            myConfig
-          )
+          .put(REGISTER_EDUCATION_URL, {
+            educations: [
+              {
+                degree: degree,
+                major: major,
+                graduated: graduated,
+              },
+            ],
+          })
           .then((res) => {
             if (res.status === 200) {
               location.replace('/mypage')

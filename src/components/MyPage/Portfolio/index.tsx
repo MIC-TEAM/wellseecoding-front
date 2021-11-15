@@ -1,5 +1,4 @@
 import { box } from './style'
-import Link from 'next/link'
 import React, { useCallback, useState } from 'react'
 import AlarmModal from 'components/AlarmModal'
 
@@ -25,11 +24,11 @@ const Portfolio = (props: PortfolioProps) => {
         <img src="/images/common/github.svg" alt="" />
         <span>{props.name}</span>
       </p>
-      <Link href={props.link}>
-        <a target="_blank" rel="noreferroer noopener">
-          {props.link}
-        </a>
-      </Link>
+
+      <a target="_blank" rel="noreferroer noopener noreferrer" href={props.link}>
+        {props.link}
+      </a>
+
       <p className="desc">{props.description}</p>
 
       {myInfo ? (

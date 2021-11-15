@@ -30,12 +30,8 @@ const NeedUpdated = ({ PropAboutMe, PropHashtag, PropJob }: Props) => {
 
   /* 초기값으로 전달 받은 props(문자열)의 길이가 있다면 다음으로 넘어갈 수 있도록 setIsAboutMe 를 true로 변경  */
   useEffect(() => {
-    PropAboutMe.length && setIsAboutMe(true)
-  }, [aboutMe])
-
-  useEffect(() => {
-    console.log(aboutMe, hashArr, job)
-  }, [aboutMe, hashArr, job])
+    PropAboutMe && setIsAboutMe(true)
+  }, [PropAboutMe])
 
   useEffect(() => {
     const $outer = document.querySelector('.HashWrapOuter')
@@ -212,7 +208,7 @@ const NeedUpdated = ({ PropAboutMe, PropHashtag, PropJob }: Props) => {
   const onChangeAboutMe = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setAboutMe(e.target.value)
 
-    if (e.target.value.length) {
+    if (e.target.value) {
       setIsAboutMe(true)
     } else {
       setIsAboutMe(false)
@@ -260,11 +256,6 @@ const NeedUpdated = ({ PropAboutMe, PropHashtag, PropJob }: Props) => {
           })
           .then((res) => {
             if (res.status === 200) {
-              /*
-               원래는 router.push를 통해 리 렌더링이 되지 않도록 조절해야 하지만, 
-               타입스크립트 적용으로 인해 리듀서 내부 수정 로직 짜기가 어려우므로,
-               replace를 해줘서 새로고침을 통해 마이페이지에서 다시 정보를 불러올 수 있도록 한다
-               */
               location.replace('/mypage')
             }
           })
@@ -288,12 +279,15 @@ const NeedUpdated = ({ PropAboutMe, PropHashtag, PropJob }: Props) => {
 
       <div className="HashWrap" css={hashDivrap}>
         <div className="HashWrapOuter">
-          {PropHashtag.length &&
+          {PropHashtag ? (
             PropHashtag.map((v, i) => (
               <div className="HashWrapInner" key={i}>
                 #{v}
               </div>
-            ))}
+            ))
+          ) : (
+            <div></div>
+          )}
         </div>
         <input placeholder="입력후 Enter" type="text" value={hashtag} onChange={onChangeHashtag} onKeyUp={onKeyUp} />
       </div>
@@ -325,7 +319,7 @@ const NeedUpdated = ({ PropAboutMe, PropHashtag, PropJob }: Props) => {
           <FootButton
             type="submit"
             footButtonType={FootButtonType.ACTIVATION}
-            disabled={!(isAboutMe && hashArr.length && isChecked)}
+            disabled={!(isAboutMe && hashArr && isChecked)}
           >
             다음
           </FootButton>
