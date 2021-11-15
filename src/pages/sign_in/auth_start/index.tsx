@@ -1,8 +1,9 @@
-import AuthLogin from 'components/AuthLogin'
-import Back from 'components/Common/Header/Back'
+import AuthLogin from 'src/components/AuthLogin'
+import Back from 'src/components/Common/Header/Back'
 import { css } from '@emotion/react'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
 import Head from 'next/head'
+import Logo from '/public/images/login/character_color.svg'
 
 const AuthLoginStart = () => {
   return (
@@ -14,7 +15,7 @@ const AuthLoginStart = () => {
       <Back />
 
       <div css={authLoginTitleWrap}>
-        <img src="/images/login/character_color.svg" alt="웰시코딩 로고" />
+        <Logo />
 
         <h1 css={bigTitle}>
           웰시와 함께
@@ -31,10 +32,7 @@ export default AuthLoginStart
 
 const authLoginTitleWrap = css`
   padding: 0 20px;
-
-  img {
-    padding-top: 5em;
-  }
+  padding-top: 5rem;
 `
 const bigTitle = css`
   font-size: ${Common.fontSize.bigTitle};

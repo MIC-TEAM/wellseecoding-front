@@ -1,8 +1,8 @@
 import { css } from '@emotion/react'
 import type { AppProps } from 'next/app'
-import wrapper from 'store'
+import wrapper from 'src/store'
 import Head from 'next/head'
-import { GlobalStyles } from 'styles/global-styles'
+import { GlobalStyles } from 'src/styles/global-styles'
 
 function App({ Component, pageProps }: AppProps) {
   return (

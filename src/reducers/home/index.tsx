@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { homeData } from 'types'
+import { homeData } from 'src/types'
 
 export interface HomeInitialState {
   homePosts: homeData[]

@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios'
-import WellseeError from 'components/Common/wellseeError'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import WellseeError from 'src/components/Common/wellseeError'
 
 const Token = () => {
   const [response, setResponse] = useState('')
@@ -23,7 +23,7 @@ const Token = () => {
   /* ① document.cookie 스토리지에서 전달 받은 access_token을 분해한다 */
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      splitToken(process.env.NEXT_PUBLIC_TOKEN)
+      splitToken(document.cookie)
     }
   }, [])
 
@@ -90,7 +90,7 @@ const Token = () => {
   }, [ready, needInfo, router])
 
   /* 토큰을 분해해서 response state에 저장하는 함수 */
-  const splitToken = (token: any) => {
+  const splitToken = (token: string) => {
     if (token) {
       // 흐름 ② 로 이동
       setResponse(token.replace('access_token=', ''))
@@ -102,7 +102,7 @@ const Token = () => {
   }
 
   /* JWT 토큰을 디코딩(복호화)한다. */
-  const parseJwt = (token: any) => {
+  const parseJwt = (token: string) => {
     try {
       const base64Url = token.split('.')[1]
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')

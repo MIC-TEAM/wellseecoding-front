@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import axios from 'axios'
-import FooterMenu from 'components/Common/FooterMenu'
-import SplashScreen from 'components/SplashScreen'
+import FooterMenu from 'src/components/Common/FooterMenu'
+import SplashScreen from 'src/components/SplashScreen'
 import { useEffect } from 'react'
 
 import Head from 'next/head'

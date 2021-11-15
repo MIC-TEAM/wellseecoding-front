@@ -1,4 +1,4 @@
-import useHeader from 'hooks/useHeader'
+import useHeader from 'src/hooks/useHeader'
 import { css } from '@emotion/react'
 
 function Header() {

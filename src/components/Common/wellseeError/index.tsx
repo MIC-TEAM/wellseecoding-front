@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import React from 'react'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
 
 export type Props = {
   text: string

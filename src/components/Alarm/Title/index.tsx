@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
 import { useDispatch } from 'react-redux'
-import { DELETE_ALL_NOTIS_REQUEST, READ_ALL_NOTIS_REQUEST } from 'reducers/notifications'
-import ConfirmModal from 'components/ConfirmModal'
+import { DELETE_ALL_NOTIS_REQUEST, READ_ALL_NOTIS_REQUEST } from 'src/reducers/notifications'
+import ConfirmModal from 'src/components/ConfirmModal'
 
 type Props = {
   num: number

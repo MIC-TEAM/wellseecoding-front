@@ -1,6 +1,6 @@
-import StudySlider from 'components/Together/StudySlider'
+import StudySlider from 'src/components/Together/StudySlider'
 import { css } from '@emotion/react'
-import { PostType } from 'types'
+import { PostType } from 'src/types'
 
 // data는 dataProps { } 객체 형식으로 이루어진 배열이다
 

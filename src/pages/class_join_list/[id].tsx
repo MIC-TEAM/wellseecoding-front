@@ -1,14 +1,14 @@
 import { css } from '@emotion/react'
 import axios from 'axios'
-import JoinHeader from 'components/Common/Header/Back'
-import WellseeError from 'components/Common/wellseeError'
-import SubmitModal from 'components/SubmitModal'
+import JoinHeader from 'src/components/Common/Header/Back'
+import WellseeError from 'src/components/Common/wellseeError'
+import SubmitModal from 'src/components/SubmitModal'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
-import { ACCEPT_MEMBER_REQUEST, FETCH_MEMBERS_REQUEST } from 'reducers/posts'
+import { RootState } from 'src/reducers'
+import { ACCEPT_MEMBER_REQUEST, FETCH_MEMBERS_REQUEST } from 'src/reducers/posts'
 
 const ClassJoinList = () => {
   const router = useRouter()

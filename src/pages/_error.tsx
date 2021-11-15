@@ -1,6 +1,6 @@
-import FooterMenu from 'components/Common/FooterMenu'
+import FooterMenu from 'src/components/Common/FooterMenu'
 import React from 'react'
-import TogetherBack from 'components/Common/Header/Back'
+import TogetherBack from 'src/components/Common/Header/Back'
 
 const Error = () => {
   return (

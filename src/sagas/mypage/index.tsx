@@ -20,8 +20,8 @@ import {
   UPDATE_PORTFOLIO_REQUEST,
   UPDATE_PORTFOLIO_SUCCESS,
   UPDATE_PORTFOLIO_FAILURE,
-} from 'reducers/mypage'
-import { myPage, myPageSelfIntro, myPageEducations, myPageLinks, myPageWorks } from 'types'
+} from 'src/reducers/mypage'
+import { myPage, myPageSelfIntro, myPageEducations, myPageLinks, myPageWorks } from 'src/types'
 
 async function fetchMyPageAPI() {
   try {

@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { TodoType } from 'types'
+import { TodoType } from 'src/types'
 
 // initialState 타입 정의
 export interface TodosIntialState {

@@ -1,10 +1,10 @@
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import TextFieldProfile from 'components/Common/TextFieldProfile'
+import FootButton, { FootButtonType } from 'src/components/Common/FootButton'
+import TextFieldProfile from 'src/components/Common/TextFieldProfile'
 import { css } from '@emotion/react'
 import { useCallback, useEffect, useState } from 'react'
-import PortFolioDeleteForm from 'components/PortFolioDeleteForm'
+import PortFolioDeleteForm from 'src/components/PortFolioDeleteForm'
 import axios from 'axios'
-import { REGISTER_LINK_URL } from 'apis'
+import { REGISTER_LINK_URL } from 'src/apis'
 import Head from 'next/head'
 
 interface IinputList {

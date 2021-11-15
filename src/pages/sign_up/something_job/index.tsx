@@ -1,12 +1,12 @@
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import Back from 'components/Common/Header/Back'
-import Title from 'components/Common/Title'
+import FootButton, { FootButtonType } from 'src/components/Common/FootButton'
+import Back from 'src/components/Common/Header/Back'
+import Title from 'src/components/Common/Title'
 import { css } from '@emotion/react'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
 import { useRouter } from 'next/router'
 import { useState, useCallback, useEffect } from 'react'
 import axios from 'axios'
-import { REGISTER_STATUS_URL } from 'apis'
+import { REGISTER_STATUS_URL } from 'src/apis'
 import Head from 'next/head'
 
 const SomethingJob = () => {

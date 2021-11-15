@@ -1,11 +1,11 @@
-import TextField from 'components/Common/TextField'
+import TextField from 'src/components/Common/TextField'
 import React, { useCallback, useState } from 'react'
-import PasswordField from 'components/Common/PasswordField'
-import BigTitle from 'components/Common/BigTitle'
+import PasswordField from 'src/components/Common/PasswordField'
+import BigTitle from 'src/components/Common/BigTitle'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import Back from 'components/Common/Header/Back'
+import FootButton, { FootButtonType } from 'src/components/Common/FootButton'
+import Back from 'src/components/Common/Header/Back'
 import axios from 'axios'
 
 const EmailLogin = () => {

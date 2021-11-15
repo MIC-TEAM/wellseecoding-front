@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { myPage, myPageSelfIntro, myPageEducations, myPageLinks, myPageWorks } from 'types'
+import { myPage, myPageSelfIntro, myPageEducations, myPageLinks, myPageWorks } from 'src/types'
 
 export interface MyPageInitialState {
   myPages: myPage[]

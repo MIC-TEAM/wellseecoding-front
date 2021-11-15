@@ -1,7 +1,7 @@
-import Back from 'components/Common/Header/Back'
+import Back from 'src/components/Common/Header/Back'
 import { TextField } from '@material-ui/core'
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import Title from 'components/Common/Title'
+import FootButton, { FootButtonType } from 'src/components/Common/FootButton'
+import Title from 'src/components/Common/Title'
 import { css } from '@emotion/react'
 
 const PasswordEmailSubmit = () => {

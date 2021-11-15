@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react'
-import DataForm from 'components/DataForm'
+import DataForm from 'src/components/DataForm'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
-import { FETCHING_TODOS_REQUEST } from 'reducers/todos'
+import { RootState } from 'src/reducers'
+import { FETCHING_TODOS_REQUEST } from 'src/reducers/todos'
 
 function Template() {
   const dispatch = useDispatch()

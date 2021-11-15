@@ -1,12 +1,12 @@
-import AlarmList from 'components/Alarm/List'
-import AlarmTitle from 'components/Alarm/Title'
-import Back from 'components/Common/Header/Back'
+import AlarmList from 'src/components/Alarm/List'
+import AlarmTitle from 'src/components/Alarm/Title'
+import Back from 'src/components/Common/Header/Back'
 import { useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
-import { FETCHING_NOTIS_REQUEST } from 'reducers/notifications'
-import { RESET_POST_LIST } from 'reducers/posts'
+import { RootState } from 'src/reducers'
+import { FETCHING_NOTIS_REQUEST } from 'src/reducers/notifications'
+import { RESET_POST_LIST } from 'src/reducers/posts'
 import axios from 'axios'
 
 const Alarm = () => {

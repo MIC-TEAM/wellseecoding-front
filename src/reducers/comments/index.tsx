@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { FetchCommentsType, WriteCommentType } from 'types'
+import { FetchCommentsType, WriteCommentType } from 'src/types'
 
 // initialState 타입 정의
 export interface PostsIntialState {

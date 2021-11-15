@@ -1,17 +1,17 @@
-import FooterMenu from 'components/Common/FooterMenu'
-import Profile from 'components/MyPage/Profile'
-import School from 'components/MyPage/School'
+import FooterMenu from 'src/components/Common/FooterMenu'
+import Profile from 'src/components/MyPage/Profile'
+import School from 'src/components/MyPage/School'
 import { css } from '@emotion/react'
-import Portfolio from 'components/MyPage/Portfolio'
-import Career from 'components/MyPage/Career'
+import Portfolio from 'src/components/MyPage/Portfolio'
+import Career from 'src/components/MyPage/Career'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
+import { RootState } from 'src/reducers'
 import { useEffect, useState } from 'react'
-import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
+import { FETCHING_MYPAGE_REQUEST } from 'src/reducers/mypage'
 import axios from 'axios'
-import LogOutModal from 'components/LogOutModal'
-import Loading from 'components/Loading'
+import LogOutModal from 'src/components/LogOutModal'
+import Loading from 'src/components/Loading'
 
 const MyPage = () => {
   const { myPages } = useSelector((state: RootState) => state.mypage)
@@ -46,6 +46,7 @@ const MyPage = () => {
       })
     }
   }, [dispatch, tokenState])
+
   const logOutModal = () => {
     setIsShow(true)
   }
@@ -64,19 +65,19 @@ const MyPage = () => {
             <div key={i} css={profilePadding}>
               <div css={moreWrap}>
                 <Profile id={id} name={name} job={v.job} nowJob={v.status} skill={v.tags} aboutme={v.aboutMe} />
-                {v.educations.map((v, i) => (
+                {v.educations.map((v: any, i: number) => (
                   <div key={i}>
                     <School degree={v.degree} major={v.major} graduated={v.graduated} />
                   </div>
                 ))}
 
-                {v.links.map((link, i) => (
+                {v.links.map((link: any, i: number) => (
                   <div key={i}>
                     <Portfolio name={link.name} link={link.link} description={link.description} />
                   </div>
                 ))}
 
-                {v.works.map((v, i) => (
+                {v.works.map((v: any, i: number) => (
                   <div key={i}>
                     <Career company={v.role} job={v.technology} year={v.years} />
                   </div>

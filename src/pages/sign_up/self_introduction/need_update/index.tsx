@@ -1,11 +1,11 @@
 import { css } from '@emotion/react'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Common } from 'styles/common'
-import TextFieldProfile from 'components/Common/TextFieldProfile'
-import JobButton from 'components/Common/JobButton'
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
+import { Common } from 'src/styles/common'
+import TextFieldProfile from 'src/components/Common/TextFieldProfile'
+import JobButton from 'src/components/Common/JobButton'
+import FootButton, { FootButtonType } from 'src/components/Common/FootButton'
 import axios from 'axios'
-import { REGISTER_ABOUT_ME_URL } from 'apis'
+import { REGISTER_ABOUT_ME_URL } from 'src/apis'
 
 type Props = {
   PropAboutMe: string

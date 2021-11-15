@@ -1,10 +1,10 @@
 import { useState, useCallback, useEffect } from 'react'
 import NeedUpdated from './need_update'
 import { useDispatch, useSelector } from 'react-redux'
-import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
-import { RootState } from 'reducers'
+import { FETCHING_MYPAGE_REQUEST } from 'src/reducers/mypage'
+import { RootState } from 'src/reducers'
 import axios from 'axios'
-import Loading from 'components/Loading'
+import Loading from 'src/components/Loading'
 import Head from 'next/head'
 
 function ExperienceUpdate() {
@@ -66,7 +66,7 @@ function ExperienceUpdate() {
         {myPages.length ? (
           myPages.map((v, i) => (
             <div key={i}>
-              {v.works.map((v, i) => (
+              {v.works.map((v: any, i: number) => (
                 <NeedUpdated key={i} PropRole={v.role} PropTech={v.technology} PropYears={v.years} />
               ))}
             </div>

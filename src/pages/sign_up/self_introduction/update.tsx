@@ -1,13 +1,13 @@
-import Back from 'components/Common/Header/Back'
-import Title from 'components/Common/Title'
+import Back from 'src/components/Common/Header/Back'
+import Title from 'src/components/Common/Title'
 import { useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
-import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
+import { RootState } from 'src/reducers'
+import { FETCHING_MYPAGE_REQUEST } from 'src/reducers/mypage'
 import NeedUpdated from './need_update'
 import axios from 'axios'
-import Loading from 'components/Loading'
+import Loading from 'src/components/Loading'
 
 const SelfIntroductionUpdate = () => {
   /* ① 초기 initialState로 설정된 객체 myPages를 불러온다 */
