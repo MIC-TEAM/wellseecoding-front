@@ -46,6 +46,7 @@ const MyPage = () => {
       })
     }
   }, [dispatch, tokenState])
+
   const logOutModal = () => {
     setIsShow(true)
   }

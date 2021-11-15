@@ -1,18 +1,20 @@
 import { css } from '@emotion/react'
+import Emo from 'public/images/splashScreen/logo01.svg'
+import Dog from 'public/images/splashScreen/dog.svg'
 
 function SplashScreen() {
   return (
     <main css={screen}>
       <section>
         <div className="top">
-          <img src="/images/splashScreen/logo01.svg" alt="이모티콘" />
+          <Emo alt="이모티콘" />
           <h1>
             웰시와 함께 <br /> 쉬운 코딩
           </h1>
         </div>
 
         <div className="dog">
-          <img src="/images/splashScreen/dog.svg" alt="강아지 아이콘" />
+          <Dog alt="강아지 아이콘" />
         </div>
       </section>
     </main>

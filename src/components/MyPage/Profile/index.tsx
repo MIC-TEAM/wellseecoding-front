@@ -1,6 +1,6 @@
 import { box } from './style'
 import React, { useCallback } from 'react'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 
 interface ProfileProps {
   id: string | null
@@ -13,6 +13,7 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const myInfo = JSON.stringify(localStorage.getItem('access_token'))
+  const router = useRouter()
 
   const UpdatePage = useCallback(() => {
     router.push('/sign_up/self_introduction/update')

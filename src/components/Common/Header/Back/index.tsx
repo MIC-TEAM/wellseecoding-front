@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { Common } from 'src/styles/common'
-// import BackSvg from '../../../../../public/images/header/back.svg'
+/* 웹팩 설정을 통해 pre-render 담당 */
 import BackSvg from '/public/images/header/back.svg'
 
 type Props = {
