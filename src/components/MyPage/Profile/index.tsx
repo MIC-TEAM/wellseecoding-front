@@ -1,4 +1,6 @@
 import { box } from './style'
+import React, { useCallback } from 'react'
+import router from 'next/router'
 
 interface ProfileProps {
   id: string | null
@@ -10,6 +12,12 @@ interface ProfileProps {
 }
 
 const Profile = (props: ProfileProps) => {
+  const myInfo = JSON.stringify(localStorage.getItem('access_token'))
+
+  const UpdatePage = useCallback(() => {
+    router.push('/sign_up/self_introduction/update')
+  }, [router])
+
   return (
     <section css={box}>
       <div className="profile">
@@ -22,9 +30,13 @@ const Profile = (props: ProfileProps) => {
           <strong>{props.job}</strong>
         </div>
 
-        <button type="button">
-          <img src="/images/common/update.svg" alt="수정버튼" />
-        </button>
+        {myInfo ? (
+          <button type="button" onClick={UpdatePage}>
+            <img src="/images/common/update.svg" alt="수정버튼" />
+          </button>
+        ) : (
+          <div></div>
+        )}
       </div>
 
       <div className="moreme career">
@@ -35,7 +47,9 @@ const Profile = (props: ProfileProps) => {
       <div className="moreme skill">
         <h3>{props.name}님의 기술스택은?</h3>
         <ul>
-          <li>#{props.skill}</li>
+          {props.skill.map((v, i) => (
+            <li key={i}>#{v}</li>
+          ))}
         </ul>
       </div>
 

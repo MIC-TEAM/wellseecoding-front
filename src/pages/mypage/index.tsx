@@ -10,6 +10,8 @@ import { RootState } from 'reducers'
 import { useEffect, useState } from 'react'
 import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
 import axios from 'axios'
+import LogOutModal from 'components/LogOutModal'
+import Loading from 'components/Loading'
 
 const MyPage = () => {
   const { myPages } = useSelector((state: RootState) => state.mypage)
@@ -19,7 +21,7 @@ const MyPage = () => {
   const [id, setId] = useState<string | null>('')
   /* 로컬 스토리지에서 토큰을 꺼낸뒤 실행하기 위한 블로킹 처리 */
   const [tokenState, setTokenState] = useState<boolean>(false)
-
+  const [isShow, setIsShow] = useState<boolean>(false)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -44,7 +46,12 @@ const MyPage = () => {
       })
     }
   }, [dispatch, tokenState])
-
+  const logOutModal = () => {
+    setIsShow(true)
+  }
+  const logOutModalClose = () => {
+    setIsShow(false)
+  }
   return (
     <>
       <Head>
@@ -57,7 +64,6 @@ const MyPage = () => {
             <div key={i} css={profilePadding}>
               <div css={moreWrap}>
                 <Profile id={id} name={name} job={v.job} nowJob={v.status} skill={v.tags} aboutme={v.aboutMe} />
-
                 {v.educations.map((v, i) => (
                   <div key={i}>
                     <School degree={v.degree} major={v.major} graduated={v.graduated} />
@@ -72,28 +78,44 @@ const MyPage = () => {
 
                 {v.works.map((v, i) => (
                   <div key={i}>
-                    <Career totalYear="5년" company={v.role} job={v.technology} year={v.years} />
+                    <Career company={v.role} job={v.technology} year={v.years} />
                   </div>
                 ))}
               </div>
+              <section className="logout">
+                <button type="button" onClick={logOutModal}>
+                  로그아웃
+                </button>
+              </section>
             </div>
           ))
         ) : (
-          <div></div>
+          <Loading />
         )}
-      </main>
 
+        {isShow ? <LogOutModal onClose={logOutModalClose} /> : null}
+      </main>
       <FooterMenu />
     </>
   )
 }
-
 export default MyPage
-
 const mypageWrap = css`
   margin-bottom: 100px;
+  .logout {
+    width: 100%;
+    text-align: center;
+    padding-top: 16px;
+    button {
+      display: inline-flex;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 26px;
+      letter-spacing: -0.6px;
+      color: #d3cfcc;
+    }
+  }
 `
-
 const profilePadding = css`
   padding: 40px 20px 0;
   position: relative;
@@ -108,7 +130,6 @@ const profilePadding = css`
     top: 0;
   }
 `
-
 const moreWrap = css`
   padding: 0 20px;
 `

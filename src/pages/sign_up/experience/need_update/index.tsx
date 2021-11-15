@@ -3,7 +3,6 @@ import SignupDeleteForm from 'components/SignupDeleteForm'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import Back from 'components/Common/Header/Back'
-import { useRouter } from 'next/router'
 import { css } from '@emotion/react'
 import Title from 'components/Common/Title'
 import { REGISTER_WORK_URL } from 'apis'
@@ -18,21 +17,37 @@ interface IinputList {
   isDelete: boolean
 }
 
-function Experience() {
-  const router = useRouter()
+type Props = {
+  PropRole: string
+  PropTech: string
+  PropYears: number
+}
 
+function ExperienceUpdate({ PropRole, PropTech, PropYears }: Props) {
   // 회사추가 할 때마다 생성되는 컴포넌트에 대한 배열
   const [inputList, setInputList] = useState<IinputList[]>([])
 
   // 프로젝트명, 링크, 설명
-  const [role, setRole] = useState<string>('')
-  const [technology, setTechnology] = useState<string>('')
-  const [years, setYears] = useState<number | string>('')
+  const [role, setRole] = useState<string>(PropRole)
+  const [technology, setTechnology] = useState<string>(PropTech)
+  const [years, setYears] = useState<number | string>(PropYears)
+
+  const [editRole] = useState<string>(PropRole)
+  const [editTech] = useState<string>(PropTech)
+  const [editYears] = useState<number>(PropYears)
 
   // 유효성 검사
   const [isRole, setIsRole] = useState<boolean>(false)
   const [isTechnology, setIsTechnology] = useState<boolean>(false)
   const [isYears, setIsYears] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (PropRole && PropTech && PropYears) {
+      setIsRole(true)
+      setIsTechnology(true)
+      setIsYears(true)
+    }
+  }, [PropRole, PropTech, PropYears])
 
   // 역할
   const onChangeRole = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,14 +79,6 @@ function Experience() {
     }
   }, [])
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      axios.defaults.headers.common = {
-        Authorization: `Bearer ` + localStorage.getItem('access_token'),
-      }
-    }
-  }, [])
-
   // 다음버튼 클릭시
   const onSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -84,14 +91,14 @@ function Experience() {
           })
           .then((res) => {
             if (res.status === 200) {
-              router.push('/sign_up/portfolio')
+              location.replace('/mypage')
             }
           })
       } catch (err) {
         console.error(err)
       }
     },
-    [router, inputList]
+    [inputList]
   )
 
   // 회사 추가 버튼 클릭시
@@ -111,12 +118,10 @@ function Experience() {
 
     setInputList(inputList.concat(newExperence))
   }
-
   const onDelete = (idx: number) => {
     const newInput = inputList.filter((item) => item.idx !== idx)
     setInputList(newInput)
   }
-
   const ExperienceList = inputList.map((data, idx) => (
     <SignupDeleteForm
       key={idx}
@@ -128,12 +133,6 @@ function Experience() {
       onDelete={onDelete}
     />
   ))
-
-  // 나중에 쓸게요 버튼 : 프로필 업로드 페이지로 이동
-  const NextPage = useCallback(() => {
-    router.push('/sign_up/portfolio')
-  }, [router])
-
   return (
     <div>
       <Head>
@@ -190,13 +189,19 @@ function Experience() {
             </div>
 
             <div>{ExperienceList}</div>
+            <SignupDeleteForm
+              key={1}
+              idx={1}
+              role={editRole}
+              technology={editTech}
+              years={editYears}
+              isDelete={true}
+              onDelete={onDelete}
+            />
           </section>
 
           <div css={footButtonWrapper}>
             <div className="wrap">
-              <FootButton type="button" footButtonType={FootButtonType.SKIP} onClick={NextPage}>
-                나중에 쓸게요~
-              </FootButton>
               <FootButton type="submit" footButtonType={FootButtonType.ACTIVATION} disabled={!inputList.length}>
                 다음
               </FootButton>
@@ -291,4 +296,4 @@ const companyAdd = css`
   }
 `
 
-export default Experience
+export default ExperienceUpdate

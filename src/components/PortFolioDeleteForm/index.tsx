@@ -4,8 +4,8 @@ interface IList {
   idx: number
   name: string
   link: string
-  description: string
-  isDelete: boolean
+  description?: string
+  isDelete?: boolean
   onDelete: (idx: number) => void
 }
 

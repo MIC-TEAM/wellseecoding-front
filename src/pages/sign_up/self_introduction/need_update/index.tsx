@@ -1,23 +1,26 @@
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import Back from 'components/Common/Header/Back'
-import Title from 'components/Common/Title'
+import { css } from '@emotion/react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Common } from 'styles/common'
 import TextFieldProfile from 'components/Common/TextFieldProfile'
 import JobButton from 'components/Common/JobButton'
-import { Common } from 'styles/common'
-import { css } from '@emotion/react'
-import { useState, useCallback, useEffect } from 'react'
-import { useRouter } from 'next/router'
+import FootButton, { FootButtonType } from 'components/Common/FootButton'
 import axios from 'axios'
 import { REGISTER_ABOUT_ME_URL } from 'apis'
-import Head from 'next/head'
 
-const SelfIntroduction = () => {
+type Props = {
+  PropAboutMe: string
+  PropHashtag: string[]
+  PropJob: string
+}
+
+/* 전달 받은 props를 필요한 Input에 초기값으로 설정해준다 */
+const NeedUpdated = ({ PropAboutMe, PropHashtag, PropJob }: Props) => {
   // 간단한 자기소개, 기술스택
-  const [aboutMe, setAboutMe] = useState<string>('')
+  const [aboutMe, setAboutMe] = useState<string>(PropAboutMe)
   const [hashtag, setHashtag] = useState<string | ''>('')
-  const [job, setJob] = useState<string>('')
+  const [job, setJob] = useState<string>(PropJob)
   // 해시태그를 담을 배열
-  const [hashArr, setHashArr] = useState<string[] | []>([])
+  const [hashArr, setHashArr] = useState<string[] | []>(PropHashtag)
 
   // 직무 선택시 다음으로 넘어갈 수 있도록
   const [isChecked, setIsChecked] = useState<boolean>(false)
@@ -25,11 +28,27 @@ const SelfIntroduction = () => {
   // 유효성 검사
   const [isAboutMe, setIsAboutMe] = useState<boolean>(false)
 
-  const router = useRouter()
+  /* 초기값으로 전달 받은 props(문자열)의 길이가 있다면 다음으로 넘어갈 수 있도록 setIsAboutMe 를 true로 변경  */
+  useEffect(() => {
+    PropAboutMe && setIsAboutMe(true)
+  }, [PropAboutMe])
 
   useEffect(() => {
-    preventEnterEvent()
-  }, [])
+    const $outer = document.querySelector('.HashWrapOuter')
+
+    const handleRemove = (e: any) => {
+      setHashArr(hashArr.filter((v) => v !== e.target.innerHTML.replace(/[#]/, '')))
+      $outer?.removeChild(e.target)
+    }
+
+    if ($outer) {
+      $outer.addEventListener('click', handleRemove)
+
+      return () => {
+        $outer.removeEventListener('click', handleRemove)
+      }
+    }
+  }, [hashArr])
 
   // ----직무선택----
   // 서버/백엔드
@@ -186,40 +205,10 @@ const SelfIntroduction = () => {
     }
   }, [])
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      axios.defaults.headers.common = {
-        Authorization: `Bearer ` + localStorage.getItem('access_token'),
-      }
-    }
-  }, [])
-
-  const onSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      try {
-        await axios
-          .put(REGISTER_ABOUT_ME_URL, {
-            aboutMe: aboutMe,
-            tags: hashArr,
-            job: job,
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              router.push('/sign_up/school')
-            }
-          })
-      } catch (err) {
-        console.error(err)
-      }
-    },
-    [aboutMe, hashArr, router, job]
-  )
-
   const onChangeAboutMe = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setAboutMe(e.target.value)
 
-    if (e.target.value.length) {
+    if (e.target.value) {
       setIsAboutMe(true)
     } else {
       setIsAboutMe(false)
@@ -230,12 +219,6 @@ const SelfIntroduction = () => {
     // space 입력시 '' 빈문자열로 변환하여 Hashtage state에 저장한다
     const replaceStr = e.target.value.replace(/(\s*)/g, '')
     setHashtag(replaceStr)
-
-    // if (e.target.value.length) {
-    //   setIsHashtag(true)
-    // } else {
-    //   setIsHashtag(false)
-    // }
   }, [])
 
   const onKeyUp = useCallback(
@@ -260,82 +243,93 @@ const SelfIntroduction = () => {
     [hashtag, hashArr]
   )
 
-  const preventEnterEvent = () => {
-    if (process.browser) {
-      const inputs = document.querySelectorAll('input')
-      inputs.forEach((input) => {
-        input.addEventListener('keydown', (e: KeyboardEvent) => {
-          if (e.key === 'Enter') {
-            e.preventDefault()
-            return false
-          }
-        })
-      })
-    }
-  }
+  /* 수정 로직도 하위 컴포넌트에서 진행한다 */
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      try {
+        await axios
+          .put(REGISTER_ABOUT_ME_URL, {
+            aboutMe: aboutMe,
+            tags: hashArr,
+            job: job,
+          })
+          .then((res) => {
+            if (res.status === 200) {
+              location.replace('/mypage')
+            }
+          })
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [aboutMe, hashArr, job]
+  )
 
   return (
-    <>
-      <Head>
-        <title>자기소개 해주세요! </title>
-        <meta name="description" content="회원가입 이후 정보 입력 페이지입니다." />
-      </Head>
-      <Back />
+    <form css={selfWrap} onSubmit={onSubmit}>
+      <TextFieldProfile
+        value={aboutMe}
+        text="자기소개"
+        placeholder="간단하게 자기소개해주세요!"
+        type="text"
+        onChange={onChangeAboutMe}
+      />
+      <h2 className="skillTitle">기술스택</h2>
 
-      <Title title="자기소개 해주세요!" className="loginMt" />
+      <div className="HashWrap" css={hashDivrap}>
+        <div className="HashWrapOuter">
+          {PropHashtag ? (
+            PropHashtag.map((v, i) => (
+              <div className="HashWrapInner" key={i}>
+                #{v}
+              </div>
+            ))
+          ) : (
+            <div></div>
+          )}
+        </div>
+        <input placeholder="입력후 Enter" type="text" value={hashtag} onChange={onChangeHashtag} onKeyUp={onKeyUp} />
+      </div>
 
-      <form css={selfWrap} onSubmit={onSubmit}>
-        <TextFieldProfile
-          text="자기소개"
-          placeholder="간단하게 자기소개해주세요!"
-          type="text"
-          onChange={onChangeAboutMe}
-        />
-        <h2 className="skillTitle">기술스택</h2>
-        <div className="HashWrap" css={hashDivrap}>
-          <div className="HashWrapOuter"></div>
-          <input placeholder="입력후 Enter" type="text" value={hashtag} onChange={onChangeHashtag} onKeyUp={onKeyUp} />
+      <div css={jobList}>
+        <div>
+          <h2>직무</h2>
+          <p>1가지만 선택*</p>
         </div>
 
-        <div css={jobList}>
-          <div>
-            <h2>직무</h2>
-            <p>1가지만 선택*</p>
-          </div>
+        <JobButton onClick={onChangeBackEnd} job_text="서버/백엔드" className="jobBackEnd" />
+        <JobButton onClick={onChangeFrontEnd} job_text="프론트엔드" className="jobFrontEnd" />
+        <JobButton onClick={onChangeFull} job_text="웹 풀스택" className="jobFull" />
+        <JobButton onClick={onChangeMobile} job_text="모바일 앱" className="jobMobile" />
+        <JobButton onClick={onChangeGame} job_text="게임 서버" className="jobGame" />
+        <JobButton onClick={onChangeGameClient} job_text="게임 클라이언트" className="jobGameClient" />
+        <JobButton onClick={onChangeDBA} job_text="데이터 엔지니어(DBA)" className="jobDBA" />
+        <JobButton onClick={onChangePM} job_text="개발 매니저(PM)" className="jobPM" />
+        <JobButton onClick={onChangeDevops} job_text="devops/시스템 엔지니어" className="jobDevops" />
+        <JobButton onClick={onChangeSecurity} job_text="보안" className="jobSecurity" />
+        <JobButton onClick={onChangeQA} job_text="QA" className="jobQA" />
+        <JobButton onClick={onChangeAi} job_text="인공지능/머신러닝" className="jobAi" />
+        <JobButton onClick={onChangeHW} job_text="HW/임베디드" className="jobHW" />
+        <JobButton onClick={onChangeSW} job_text="SW/솔루션" className="jobSW" />
+      </div>
 
-          <JobButton onClick={onChangeBackEnd} job_text="서버/백엔드" className="jobBackEnd" />
-          <JobButton onClick={onChangeFrontEnd} job_text="프론트엔드" className="jobFrontEnd" />
-          <JobButton onClick={onChangeFull} job_text="웹 풀스택" className="jobFull" />
-          <JobButton onClick={onChangeMobile} job_text="모바일 앱" className="jobMobile" />
-          <JobButton onClick={onChangeGame} job_text="게임 서버" className="jobGame" />
-          <JobButton onClick={onChangeGameClient} job_text="게임 클라이언트" className="jobGameClient" />
-          <JobButton onClick={onChangeDBA} job_text="데이터 엔지니어(DBA)" className="jobDBA" />
-          <JobButton onClick={onChangePM} job_text="개발 매니저(PM)" className="jobPM" />
-          <JobButton onClick={onChangeDevops} job_text="devops/시스템 엔지니어" className="jobDevops" />
-          <JobButton onClick={onChangeSecurity} job_text="보안" className="jobSecurity" />
-          <JobButton onClick={onChangeQA} job_text="QA" className="jobQA" />
-          <JobButton onClick={onChangeAi} job_text="인공지능/머신러닝" className="jobAi" />
-          <JobButton onClick={onChangeHW} job_text="HW/임베디드" className="jobHW" />
-          <JobButton onClick={onChangeSW} job_text="SW/솔루션" className="jobSW" />
+      <div css={footButtonWrapper}>
+        <div className="wrap">
+          <FootButton
+            type="submit"
+            footButtonType={FootButtonType.ACTIVATION}
+            disabled={!(isAboutMe && hashArr && isChecked)}
+          >
+            다음
+          </FootButton>
         </div>
-
-        <div css={footButtonWrapper}>
-          <div className="wrap">
-            <FootButton
-              type="submit"
-              footButtonType={FootButtonType.ACTIVATION}
-              disabled={!(isAboutMe && hashArr.length && isChecked)}
-            >
-              다음
-            </FootButton>
-          </div>
-        </div>
-      </form>
-    </>
+      </div>
+    </form>
   )
 }
 
-export default SelfIntroduction
+export default NeedUpdated
 
 const footButtonWrapper = css`
   max-width: 600px;
@@ -388,6 +382,7 @@ const selfWrap = css`
   margin-top: 1.7em;
   margin-bottom: 20vh;
   padding: 0 20px;
+  z-index: 10500;
   .skillTitle {
     margin-top: 1em;
     font-size: 2rem;
