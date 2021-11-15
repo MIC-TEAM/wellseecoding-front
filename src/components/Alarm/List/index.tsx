@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { UPDATE_NOTI_REQUEST } from 'src/reducers/notifications'
 import { Common } from 'src/styles/common'
 import { notificationType } from 'src/types'
-import Alarm from 'public/images/common/alarm.svg'
+// import Alarm from 'public/images/common/alarm.svg'
 
 type Props = {
   data: notificationType[]
@@ -39,7 +39,7 @@ const AlarmList = ({ data }: Props) => {
                   {v.eventCategory === 'COMMENT_ADDED' && '댓글알림 '}
                   {v.eventCategory === 'MEMBER_APPLIED' && '가입요청 '}
                   {v.eventCategory === 'MEMBER_APPROVED' && '가입승인 '}
-                  <Alarm alt="알림" />
+                  <img src="/images/common/alarm.svg" alt="알림" />
                 </h4>
                 {Math.floor((Date.now() / 1000 - v.timestamp) / 24 / 60 / 60) >= 1 ? (
                   <span> {Math.floor((Date.now() / 1000 - v.timestamp) / 24 / 60 / 60)} 일전 </span>
@@ -63,7 +63,7 @@ const AlarmList = ({ data }: Props) => {
                   {v.eventCategory === 'COMMENT_ADDED' && '댓글알림 '}
                   {v.eventCategory === 'MEMBER_APPLIED' && '가입요청 '}
                   {v.eventCategory === 'MEMBER_APPROVED' && '가입승인 '}
-                  <Alarm alt="알림" />
+                  <img src="/images/common/alarm.svg" alt="알림" />
                 </h4>
                 {Math.floor((Date.now() / 1000 - v.timestamp) / 24 / 60 / 60) >= 1 ? (
                   <span> {Math.floor((Date.now() / 1000 - v.timestamp) / 24 / 60 / 60)} 일전 </span>
