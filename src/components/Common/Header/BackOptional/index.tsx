@@ -5,8 +5,8 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_ISMODAL } from 'reducers/common'
-import { Common } from 'styles/common'
+import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_ISMODAL } from 'src/reducers/common'
+import { Common } from 'src/styles/common'
 
 type Props = {
   title: string | null

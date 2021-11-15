@@ -1,9 +1,9 @@
 import { css } from '@emotion/react'
-import usehandleOverFlow from 'hooks/useHandleOverflow'
+import usehandleOverFlow from 'src/hooks/useHandleOverflow'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { CLOSE_EDITMODE } from 'reducers/common'
-import { Common } from 'styles/common'
+import { CLOSE_EDITMODE } from 'src/reducers/common'
+import { Common } from 'src/styles/common'
 
 type Props = {
   text: string

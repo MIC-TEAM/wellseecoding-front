@@ -1,6 +1,8 @@
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
+// import BackSvg from '../../../../../public/images/header/back.svg'
+import BackSvg from '/public/images/header/back.svg'
 
 type Props = {
   text: string
@@ -12,7 +14,7 @@ function Back({ text }: Props) {
   return (
     <header css={backHeader}>
       <button type="button" onClick={() => router.back()}>
-        <img src="/images/header/back.svg" alt="뒤로가기" />
+        <BackSvg />
       </button>
       <h1>{text}</h1>
     </header>

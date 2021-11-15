@@ -32,8 +32,8 @@ import {
   WRITE_POST_FAILURE,
   WRITE_POST_REQUEST,
   WRITE_POST_SUCCESS,
-} from 'reducers/posts'
-import { MemberData, PostType, WritePostType } from 'types'
+} from 'src/reducers/posts'
+import { MemberData, PostType, WritePostType } from 'src/types'
 
 async function fetchPostsAPI() {
   try {

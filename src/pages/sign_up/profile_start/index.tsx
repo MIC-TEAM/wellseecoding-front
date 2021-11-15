@@ -1,7 +1,7 @@
-import Back from 'components/Common/Header/Back'
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
+import Back from 'src/components/Common/Header/Back'
+import FootButton, { FootButtonType } from 'src/components/Common/FootButton'
 import { css } from '@emotion/react'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
 import { useRouter } from 'next/router'
 
 const SignUpProfileStart = () => {

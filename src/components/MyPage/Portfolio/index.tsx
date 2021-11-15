@@ -1,6 +1,6 @@
 import { box } from './style'
 import React, { useCallback, useState } from 'react'
-import AlarmModal from 'components/AlarmModal'
+import AlarmModal from 'src/components/AlarmModal'
 
 interface PortfolioProps {
   link: string

@@ -1,7 +1,11 @@
 import { all, call, fork, put, takeLatest } from '@redux-saga/core/effects'
 import axios from 'axios'
-import { FETCHING_HOME_POSTS_FAILURE, FETCHING_HOME_POSTS_REQUEST, FETCHING_HOME_POSTS_SUCCESS } from 'reducers/home'
-import { homeData } from 'types'
+import {
+  FETCHING_HOME_POSTS_FAILURE,
+  FETCHING_HOME_POSTS_REQUEST,
+  FETCHING_HOME_POSTS_SUCCESS,
+} from 'src/reducers/home'
+import { homeData } from 'src/types'
 
 async function fetchHomePostsAPI() {
   try {

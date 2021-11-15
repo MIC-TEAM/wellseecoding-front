@@ -1,7 +1,7 @@
 import { put } from '@redux-saga/core/effects'
 import axios from 'axios'
 import { all, call, fork, takeLatest } from 'redux-saga/effects'
-import { FetchCommentsType, WriteCommentType } from 'types'
+import { FetchCommentsType, WriteCommentType } from 'src/types'
 import {
   DeleteCommentRequest,
   DELETE_COMMENT_FAILURE,
@@ -19,7 +19,7 @@ import {
   WRITE_COMMENT_FAILURE,
   WRITE_COMMENT_REQUEST,
   WRITE_COMMENT_SUCCESS,
-} from 'reducers/comments'
+} from 'src/reducers/comments'
 
 async function fetchCommentsAPI(id: number) {
   try {

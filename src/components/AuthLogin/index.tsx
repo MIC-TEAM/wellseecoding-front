@@ -1,15 +1,15 @@
 import Link from 'next/link'
 import { css } from '@emotion/react'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
 
 export default function AuthLogin() {
   /* 배포용 */
-  const kakaoLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/kakao')
-  const naverLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/naver')
+  // const kakaoLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/kakao')
+  // const naverLogin = () => (location.href = 'https://api.wellseecoding.com/oauth2/authorization/naver')
 
   /* 로컬용 */
-  // const kakaoLogin = () => (location.href = 'http://localhost:8080/oauth2/authorization/kakao')
-  // const naverLogin = () => (location.href = 'http://localhost:8080/oauth2/authorization/naver')
+  const kakaoLogin = () => (location.href = 'http://localhost:8080/oauth2/authorization/kakao')
+  const naverLogin = () => (location.href = 'http://localhost:8080/oauth2/authorization/naver')
 
   return (
     <div css={authLoginButton}>

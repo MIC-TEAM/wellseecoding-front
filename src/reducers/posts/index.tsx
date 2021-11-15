@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { MemberData, PostData, PostType, WritePostType } from 'types'
+import { MemberData, PostData, PostType, WritePostType } from 'src/types'
 
 export interface IPosttype {
   posts: PostData

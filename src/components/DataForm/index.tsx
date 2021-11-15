@@ -1,5 +1,5 @@
 import React from 'react'
-import { TodoType } from 'types'
+import { TodoType } from 'src/types'
 import { MainContent } from './style'
 
 type Props = {

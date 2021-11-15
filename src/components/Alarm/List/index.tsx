@@ -4,9 +4,9 @@ import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { UPDATE_NOTI_REQUEST } from 'reducers/notifications'
-import { Common } from 'styles/common'
-import { notificationType } from 'types'
+import { UPDATE_NOTI_REQUEST } from 'src/reducers/notifications'
+import { Common } from 'src/styles/common'
+import { notificationType } from 'src/types'
 
 type Props = {
   data: notificationType[]

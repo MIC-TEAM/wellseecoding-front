@@ -1,5 +1,5 @@
-import StudyBox from 'components/Together/StudyBox'
-import { PostType } from 'types'
+import StudyBox from 'src/components/Together/StudyBox'
+import { PostType } from 'src/types'
 import { studyContentBox } from '../StudyBox/style'
 import { studyContentList, studyContentListWrap } from './style'
 

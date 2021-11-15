@@ -1,11 +1,11 @@
-import TogetherSearchBar from 'components/Together/Header/Search'
+import TogetherSearchBar from 'src/components/Together/Header/Search'
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
-import { RESET_SEARCH_LIST } from 'reducers/posts'
+import { RootState } from 'src/reducers'
+import { RESET_SEARCH_LIST } from 'src/reducers/posts'
 
 interface keyInterface {
   id: number

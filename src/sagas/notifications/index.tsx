@@ -13,9 +13,9 @@ import {
   UPDATE_NOTI_FAILURE,
   UPDATE_NOTI_REQUEST,
   UPDATE_NOTI_SUCCESS,
-} from 'reducers/notifications'
+} from 'src/reducers/notifications'
 import { all, call, fork, takeLatest, put } from 'redux-saga/effects'
-import { notificationType } from 'types'
+import { notificationType } from 'src/types'
 
 async function fetchNotisAPI() {
   try {

@@ -2,11 +2,11 @@
 import React, { useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
-import { RootState } from 'reducers'
-import { DELETE_COMMENT_REQUEST } from 'reducers/comments'
+import { CLOSE_EDITMODE, CLOSE_ISMODAL, OPEN_EDITMODE } from 'src/reducers/common'
+import { RootState } from 'src/reducers'
+import { DELETE_COMMENT_REQUEST } from 'src/reducers/comments'
 import { useRouter } from 'next/router'
-import usehandleOverFlow from 'hooks/useHandleOverflow'
+import usehandleOverFlow from 'src/hooks/useHandleOverflow'
 
 function CommentModal() {
   const dispatch = useDispatch()

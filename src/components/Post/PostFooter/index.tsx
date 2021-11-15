@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 
-import AlarmModal from 'components/AlarmModal'
-import ConfirmModal from 'components/ConfirmModal'
+import AlarmModal from 'src/components/AlarmModal'
+import ConfirmModal from 'src/components/ConfirmModal'
 
 export type props = {
   commentCount: number

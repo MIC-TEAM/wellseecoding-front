@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
-import { UPDATE_COMMENT_REQUEST } from 'reducers/comments'
-import { CLOSE_EDITMODE, CLOSE_ISMODAL } from 'reducers/common'
+import { RootState } from 'src/reducers'
+import { UPDATE_COMMENT_REQUEST } from 'src/reducers/comments'
+import { CLOSE_EDITMODE, CLOSE_ISMODAL } from 'src/reducers/common'
 
 export type Props = {
   value: string

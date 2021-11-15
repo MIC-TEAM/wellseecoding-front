@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios'
-import WellseeError from 'components/Common/wellseeError'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import WellseeError from 'src/components/Common/wellseeError'
 
 const Token = () => {
   const [response, setResponse] = useState('')
@@ -23,7 +23,7 @@ const Token = () => {
   /* ① document.cookie 스토리지에서 전달 받은 access_token을 분해한다 */
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      splitToken(process.env.NEXT_PUBLIC_TOKEN)
+      splitToken(document.cookie)
     }
   }, [])
 

@@ -1,7 +1,7 @@
-import AuthLogin from 'components/AuthLogin'
-import Back from 'components/Common/Header/Back'
+import AuthLogin from 'src/components/AuthLogin'
+import Back from 'src/components/Common/Header/Back'
 import { css } from '@emotion/react'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
 import Head from 'next/head'
 
 const AuthLoginStart = () => {

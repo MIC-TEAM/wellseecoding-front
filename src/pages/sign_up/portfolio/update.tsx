@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
-import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
+import { FETCHING_MYPAGE_REQUEST } from 'src/reducers/mypage'
 import NeedUpdated from './need_update'
-import Title from 'components/Common/Title'
-import Back from 'components/Common/Header/Back'
-import Loading from 'components/Loading'
+import Title from 'src/components/Common/Title'
+import Back from 'src/components/Common/Header/Back'
+import Loading from 'src/components/Loading'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
+import { RootState } from 'src/reducers'
 import Head from 'next/head'
 
 const PortfolioUpdate = () => {
@@ -74,7 +74,7 @@ const PortfolioUpdate = () => {
         {myPages.length ? (
           myPages.map((v, i) => (
             <div key={i}>
-              {v.links.map((v, i) => (
+              {v.links.map((v: any, i: number) => (
                 <NeedUpdated key={i} PropDesc={v.description} PropLink={v.link} PropName={v.name} />
               ))}
             </div>

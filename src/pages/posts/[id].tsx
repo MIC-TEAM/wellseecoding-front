@@ -1,19 +1,19 @@
 import { css } from '@emotion/react'
-import FlatBox from 'components/Common/FlatBox'
-import BackOptional from 'components/Common/Header/BackOptional'
-import PostFooter from 'components/Post/PostFooter'
+import FlatBox from 'src/components/Common/FlatBox'
+import BackOptional from 'src/components/Common/Header/BackOptional'
+import PostFooter from 'src/components/Post/PostFooter'
 import { useRouter } from 'next/router'
 import React, { useCallback, useState } from 'react'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
-import IsModal from 'components/Common/IsModal'
-import { FETCHING_POST_REQUEST, RESET_MEMBERS_STATE, RESET_POSTS_STATE } from 'reducers/posts'
-import EditForm from 'components/EditForm'
-import HashWrap from 'components/Common/HashWrap'
-import Loading from 'components/Loading'
-import { RESET_COMMENTS_LIST } from 'reducers/comments'
+import { RootState } from 'src/reducers'
+import IsModal from 'src/components/Common/IsModal'
+import { FETCHING_POST_REQUEST, RESET_MEMBERS_STATE, RESET_POSTS_STATE } from 'src/reducers/posts'
+import EditForm from 'src/components/EditForm'
+import HashWrap from 'src/components/Common/HashWrap'
+import Loading from 'src/components/Loading'
+import { RESET_COMMENTS_LIST } from 'src/reducers/comments'
 import Head from 'next/head'
 import axios from 'axios'
 
@@ -124,7 +124,7 @@ function Post() {
                   <FlatBox name="모집인원" contents={d.size} />
                   <div className="flatBox">
                     <h3>해시태그</h3>
-                    {d.tags.map((h, i) => (
+                    {d.tags.map((h: any, i: number) => (
                       <HashWrap key={i} content={h}></HashWrap>
                     ))}
                   </div>

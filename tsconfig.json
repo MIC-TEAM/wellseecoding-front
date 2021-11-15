@@ -20,7 +20,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "types": ["@emotion/react/types/css-prop"],
-    "baseUrl": "./src"
+    "baseUrl": ".",
+    "paths":{
+      "components/*":["components/*"],
+      "config/*":["config/*"],
+      "pages/*":["pages/*"],
+      "styles/*":["styles/*"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]

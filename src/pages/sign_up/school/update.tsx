@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
-import { FETCHING_MYPAGE_REQUEST } from 'reducers/mypage'
+import { FETCHING_MYPAGE_REQUEST } from 'src/reducers/mypage'
 import NeedUpdated from './need_update'
-import { RootState } from 'reducers'
+import { RootState } from 'src/reducers'
 import Head from 'next/head'
 import axios from 'axios'
-import Loading from 'components/Loading'
+import Loading from 'src/components/Loading'
 import { useDispatch, useSelector } from 'react-redux'
 
 const SelfIntroductionUpdate = () => {
@@ -54,7 +54,7 @@ const SelfIntroductionUpdate = () => {
         {myPages.length ? (
           myPages.map((v, i) => (
             <div key={i}>
-              {v.educations.map((v, i) => (
+              {v.educations.map((v: any, i: number) => (
                 <div key={i}>
                   <NeedUpdated key={i} PropDegree={v.degree} PropMajor={v.major} PropGraduated={v.graduated} />
                 </div>

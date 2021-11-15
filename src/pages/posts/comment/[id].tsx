@@ -1,18 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import BackOptional from 'components/Common/Header/BackOptional'
+import BackOptional from 'src/components/Common/Header/BackOptional'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'reducers'
-import { Common } from 'styles/common'
+import { RootState } from 'src/reducers'
+import { Common } from 'src/styles/common'
 import { css } from '@emotion/react'
-import { FETCH_COMMENTS_REQUEST, WRITE_COMMENT_REQUEST } from 'reducers/comments'
+import { FETCH_COMMENTS_REQUEST, WRITE_COMMENT_REQUEST } from 'src/reducers/comments'
 import Head from 'next/head'
 
-import CommentModal from 'components/Common/CommentModal'
-import EditComment from 'components/Post/EditComment'
-import { OPEN_ISMODAL } from 'reducers/common'
-import usehandleOverFlow from 'hooks/useHandleOverflow'
-import WellseeError from 'components/Common/wellseeError'
+import CommentModal from 'src/components/Common/CommentModal'
+import EditComment from 'src/components/Post/EditComment'
+import { OPEN_ISMODAL } from 'src/reducers/common'
+import usehandleOverFlow from 'src/hooks/useHandleOverflow'
+import WellseeError from 'src/components/Common/wellseeError'
 import axios from 'axios'
 
 function Comment() {
@@ -195,7 +195,7 @@ function Comment() {
 
               {/* 자식 요소 댓글 달기 */}
               {v.children.length ? (
-                v.children.map((v) => (
+                v.children.map((v: any) => (
                   <div style={{ padding: '20px', background: '#efebe8' }} key={v.commentId}>
                     <div css={CommentMainWrap}>
                       <div style={{ position: 'relative', marginRight: '20px' }}>

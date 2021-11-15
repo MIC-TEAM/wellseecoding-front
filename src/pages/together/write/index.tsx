@@ -1,12 +1,12 @@
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import TogetherBack from 'components/Common/Header/Back'
+import FootButton, { FootButtonType } from 'src/components/Common/FootButton'
+import TogetherBack from 'src/components/Common/Header/Back'
 import { css } from '@emotion/react'
-import { Common } from 'styles/common'
+import { Common } from 'src/styles/common'
 import { useCallback, useEffect, useState } from 'react'
 import Alert from '@material-ui/lab/Alert'
 import { useDispatch, useSelector } from 'react-redux'
-import { WRITE_POST_REQUEST } from 'reducers/posts'
-import { RootState } from 'reducers'
+import { WRITE_POST_REQUEST } from 'src/reducers/posts'
+import { RootState } from 'src/reducers'
 import Head from 'next/head'
 
 /* 함께해요 글 작성 페이지 */

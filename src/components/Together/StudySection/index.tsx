@@ -1,6 +1,6 @@
-import StudySlider from 'components/Together/StudySlider'
+import StudySlider from 'src/components/Together/StudySlider'
 import { css } from '@emotion/react'
-import { PostData } from 'types'
+import { PostData } from 'src/types'
 
 function StudySection({ theme, posts }: PostData) {
   return (

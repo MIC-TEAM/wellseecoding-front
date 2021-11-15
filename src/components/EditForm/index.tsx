@@ -2,14 +2,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from '@emotion/react'
 import React, { useCallback, useEffect, useState } from 'react'
-import EditBackOptional from 'components/Common/Header/EditBackOptional'
+import EditBackOptional from 'src/components/Common/Header/EditBackOptional'
 import { Alert } from '@material-ui/lab'
-import FootButton, { FootButtonType } from 'components/Common/FootButton'
-import { Common } from 'styles/common'
-import { PostType } from 'types'
+import FootButton, { FootButtonType } from 'src/components/Common/FootButton'
+import { Common } from 'src/styles/common'
+import { PostType } from 'src/types'
 import { useDispatch, useSelector } from 'react-redux'
-import { UPDATE_POST_REQUEST } from 'reducers/posts'
-import { RootState } from 'reducers'
+import { UPDATE_POST_REQUEST } from 'src/reducers/posts'
+import { RootState } from 'src/reducers'
 
 const EditForm = (props: PostType) => {
   const { id, name, deadline, schedule, summary, qualification, size, tags } = props

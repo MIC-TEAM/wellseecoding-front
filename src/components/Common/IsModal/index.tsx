@@ -3,10 +3,10 @@
 import React, { useCallback, useEffect } from 'react'
 import { css } from '@emotion/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { CLOSE_ISMODAL, OPEN_EDITMODE } from 'reducers/common'
-import { RootState } from 'reducers'
-import { DELETE_POST_REQUEST } from 'reducers/posts'
-import usehandleOverFlow from 'hooks/useHandleOverflow'
+import { CLOSE_ISMODAL, OPEN_EDITMODE } from 'src/reducers/common'
+import { RootState } from 'src/reducers'
+import { DELETE_POST_REQUEST } from 'src/reducers/posts'
+import usehandleOverFlow from 'src/hooks/useHandleOverflow'
 
 const IsModal = () => {
   const { hidden, show } = usehandleOverFlow()
