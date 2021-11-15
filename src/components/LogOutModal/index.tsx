@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { Modal } from './styles'
 
 interface onCloseProps {
@@ -5,6 +6,18 @@ interface onCloseProps {
 }
 
 const MoreModal = (props: onCloseProps) => {
+  const logOut = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.clear()
+      eraseCookie('access_token')
+      props.onClose
+      location.replace('/sign_in/auth_start')
+    }
+  }, [])
+
+  function eraseCookie(name: string) {
+    document.cookie = name + '=; Max-Age=0'
+  }
   return (
     <div className="modal" css={Modal}>
       <div className="modal__wrap">
@@ -20,7 +33,9 @@ const MoreModal = (props: onCloseProps) => {
             <button className="subBtn" onClick={props.onClose}>
               취소
             </button>
-            <button className="subBtn delete">로그아웃</button>
+            <button className="subBtn delete" onClick={logOut}>
+              로그아웃
+            </button>
           </div>
         </div>
       </div>
