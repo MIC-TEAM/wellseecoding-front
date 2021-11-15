@@ -7,10 +7,10 @@ import NotificationSaga from './notifications'
 import MyPageSaga from './mypage'
 
 // config에 들어갈 프로퍼티를 default 값으로도 설정할 수 있습니다
-// axios.defaults.baseURL = 'https://api.wellseecoding.com/'
+axios.defaults.baseURL = 'https://api.wellseecoding.com/'
 
 /* 로컬 */
-axios.defaults.baseURL = 'http://localhost:8080/'
+// axios.defaults.baseURL = 'http://localhost:8080/'
 
 axios.defaults.withCredentials = true
 axios.defaults.headers = {
