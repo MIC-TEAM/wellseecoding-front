@@ -47,7 +47,7 @@ const SingUp = () => {
           })
           .then((res) => {
             if (res.status === 200) {
-              router.push('/sign_up/profile_start')
+              router.push('/token')
             }
           })
       } catch (err) {
