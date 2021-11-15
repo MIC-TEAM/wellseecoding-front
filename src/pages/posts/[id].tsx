@@ -104,7 +104,7 @@ function Post() {
                   </div>
                   <div>
                     {/* user에 대한 정보가 들어가야 함 */}
-                    <h3>{d.userId}번 님</h3>
+                    <h3>{d.userName}</h3>
                     <p>{d.userId}</p>
                   </div>
                 </div>
@@ -133,6 +133,7 @@ function Post() {
                   <EditForm
                     id={d.id}
                     userId={d.userId}
+                    userName={d.userName}
                     name={d.name}
                     deadline={d.deadline}
                     schedule={d.schedule}

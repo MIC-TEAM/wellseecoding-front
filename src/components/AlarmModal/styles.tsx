@@ -36,6 +36,10 @@ export const Modal = css`
         letter-spacing: -1px;
         color: #262626;
         padding-top: 33px;
+
+        @media (max-width: 420px) {
+          font-size: 1.7rem;
+        }
       }
       p {
         font-size: 1.6rem;
@@ -44,6 +48,10 @@ export const Modal = css`
         letter-spacing: -0.6px;
         color: #696766;
         padding: 10px 0 20px 0;
+
+        @media (max-width: 420px) {
+          font-size: 1.3rem;
+        }
       }
     }
   }

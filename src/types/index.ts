@@ -43,6 +43,7 @@ export type notificationType = {
 export type PostType = {
   id: number
   userId: number
+  userName: string
   name: string | ''
   deadline: string | ''
   schedule: string | ''

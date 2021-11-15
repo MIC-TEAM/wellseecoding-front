@@ -27,6 +27,10 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
   const [registerSuccess, setRegisterSuccess] = useState(false)
   /* 가입 성공 모달 상태 관리 */
   const [registerSuccessModal, setRegisterSuccessModal] = useState(false)
+  /* 링크가 없을 시 모달 상태 관리 */
+  const [noneLinkModal, setNoneLinkModal] = useState(false)
+  /* 가입 성공시 서버로부터 작성된 링크를 받음 */
+  const [link, setLink] = useState<string>('')
 
   /* 로컬 스토리지에 저장된 가입된 그룹에 대한 state */
   const [registeredGroup, setRegisteredGroup] = useState<number[]>([])
@@ -42,6 +46,12 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (registerDone) {
+      getLink(uniqId)
+    }
+  }, [registerDone])
 
   /* 로컬스토리지에서 'registered'라는 이름을 가진 아이템을 가져온다 (registered는 이미 가입된 그룹) */
   useEffect(() => {
@@ -123,8 +133,31 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
 
   // 이미 가입된 알림 모달 끄기
   const closeModal = useCallback(() => {
+    setNoneLinkModal(false)
     setAlreadyRegisteredModal(false)
   }, [])
+
+  const getLink = useCallback(async (uniqId) => {
+    try {
+      await axios.get(`api/v1/posts/${uniqId}/link`).then((res) => {
+        if (res.status === 200) {
+          setLink(res.data.link)
+        } else {
+          throw 'Error'
+        }
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
+
+  const moveTo = useCallback(() => {
+    if (link.length === 0) {
+      setNoneLinkModal(true)
+    } else {
+      location.href = `${link}`
+    }
+  }, [link])
 
   return (
     <>
@@ -147,12 +180,12 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
             // 여기서 추가적으로 가입된 모임이라면, 가입하기 대신 가입된 모임 등으로 보여질 수 있는 작업이 필요할듯
             <>
               {registerDone ? (
-                <button className="joinButton" onClick={() => setAlreadyRegisteredModal(true)}>
-                  가입하기
+                <button className="joinButton" onClick={moveTo}>
+                  링크 접속하기
                 </button>
               ) : (
                 <button className="joinButton" onClick={() => setConfirmModal(true)}>
-                  가입하기
+                  가입신청하기
                 </button>
               )}
             </>
@@ -181,6 +214,13 @@ function PostFooter({ commentCount, uniqId, localId, userId }: props) {
           onClose={closeModal}
           text="이미 가입 신청한 모임이에요"
           textOpt="2초 뒤에 자동으로 종료됩니다"
+          path="/images/alarmModal/checked.svg"
+        />
+      )}
+      {noneLinkModal && (
+        <AlarmModal
+          onClose={closeModal}
+          text="아직 게시자가 설정한 링크가 없어요"
           path="/images/alarmModal/checked.svg"
         />
       )}

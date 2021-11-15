@@ -98,10 +98,14 @@ async function writePostAPI(data: WritePostType) {
 
 function* writePost(action: WritePostRequest) {
   try {
-    yield call(writePostAPI, action.data)
-    yield put({
-      type: WRITE_POST_SUCCESS,
-    })
+    const result: number = yield call(writePostAPI, action.data)
+    if (result === 200) {
+      yield put({
+        type: WRITE_POST_SUCCESS,
+      })
+    } else {
+      throw 'Error'
+    }
   } catch (err) {
     console.error(err)
     yield put({
@@ -122,10 +126,17 @@ async function updatePostAPI(data: WritePostType) {
 
 function* updatePost(action: UpdatePostRequest) {
   try {
-    yield call(updatePostAPI, action.data)
-    yield put({
-      type: UPDATE_POST_SUCCESS,
-    })
+    const result: number = yield call(updatePostAPI, action.data)
+    if (result === 200) {
+      yield put({
+        type: UPDATE_POST_SUCCESS,
+      })
+    }
+    if (result === 401) {
+      throw '401 Unathorized '
+    } else {
+      throw ' Error'
+    }
   } catch (err) {
     console.error(err)
     yield put({
