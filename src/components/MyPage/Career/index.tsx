@@ -39,7 +39,7 @@ const Career = (props: CareerProps) => {
       {confirmModal && (
         <AlarmModal
           onClose={closeModal}
-          text="아직 포트폴리오를 수정하지 못해요 ㅠㅠ"
+          text="아직 경력을 수정하지 못해요 ㅠㅠ"
           path="/images/alarmModal/checked.svg"
         />
       )}
