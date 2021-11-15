@@ -12,6 +12,24 @@ export const Modal = css`
   background: rgba(0, 0, 0, 0.3);
   z-index: 9999;
   .modal {
+    &__submit {
+      width: 100%;
+      padding: 10px 20px;
+
+      input {
+        width: 80%;
+        border-bottom: 1px solid #696766;
+        padding: 10px 0;
+        font-size: 1.5rem;
+
+        @media (max-width: 420px) {
+          width: 100%;
+        }
+        :focus {
+          border-bottom: 1px solid #ff6e35;
+        }
+      }
+    }
     &__wrap {
       max-width: 600px;
       width: 100%;

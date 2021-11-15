@@ -4,12 +4,6 @@ import WellseeError from 'components/Common/wellseeError'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-/*
-1. 리다이렉트 받아서 토큰을 분해
-2. 분해한 데이터 (id, username)을 로컬 스토리지에 저장
-3. 성공적으로 동작할 경우 Home 또는 Together 페이지로 전환
-*/
-
 const Token = () => {
   const [response, setResponse] = useState('')
 
@@ -19,6 +13,10 @@ const Token = () => {
 
   const [likes, setLikes] = useState([])
   const [registeredGroup, setRegisteredGroup] = useState([])
+
+  const [needInfo, setNeedInfo] = useState<boolean>(false)
+
+  const [ready, setReady] = useState<boolean>(false)
 
   const router = useRouter()
 
@@ -53,33 +51,48 @@ const Token = () => {
       axios.defaults.headers.common = {
         Authorization: `Bearer ` + localStorage.getItem('access_token'),
       }
-      Promise.allSettled([getLikesGroup(), getRegisteredGroup()]).then((res) => {
-        if (res[0].status === 'fulfilled' && res[1].status === 'fulfilled') {
-          router.push('/home')
+      Promise.allSettled([getUserInfo(), getLikesGroup(), getRegisteredGroup()]).then((res) => {
+        if (res[0].status === 'fulfilled' && res[1].status === 'fulfilled' && res[2].status === 'fulfilled') {
+          // 흐름 ⓼ 로 이동
+          setReady(true)
         } else {
           console.error('error')
         }
       })
     }
-  }, [response, router])
+  }, [response, router, needInfo])
 
-  // ⑥ state에 저장한 좋아요 한 게시물 확인
+  // ⑥ API 요청을 통해 얻은 정보를 state에 저장한 후, 로컬 스토리지에 저장
   useEffect(() => {
     if (likes.length) {
       localStorage.setItem('myLikes', JSON.stringify(likes))
     }
   }, [likes])
 
-  // ⑦ state에 저장한 가입된 그룹 확인
+  // ⑦ API 요청을 통해 얻은 정보를 state에 저장한 후, 로컬 스토리지에 저장
   useEffect(() => {
     if (registeredGroup.length) {
       localStorage.setItem('registered', JSON.stringify(registeredGroup))
     }
   }, [registeredGroup])
 
+  // ⓼ 모든 HTTP request가 settled된 상태에서 유저 정보가 없다면 ① 회원가입 페이지 있다면 ② 메인페이지로 이동
+  useEffect(() => {
+    if (ready) {
+      if (needInfo) {
+        // ① 회원 가입 페이지
+        router.push('/sign_up/profile_start')
+      } else {
+        // ② 메인 페이지
+        router.push('/home')
+      }
+    }
+  }, [ready, needInfo, router])
+
   /* 토큰을 분해해서 response state에 저장하는 함수 */
   const splitToken = (token: any) => {
     if (token) {
+      // 흐름 ② 로 이동
       setResponse(token.replace('access_token=', ''))
       localStorage.setItem('access_token', token.replace('access_token=', ''))
     } else {
@@ -101,8 +114,8 @@ const Token = () => {
           })
           .join('')
       )
+      // ③ 흐름 3으로 이동
       return setTokenId(JSON.parse(jsonPayload))
-      // return setTokenId(jwt_decode(token))
     } catch (e) {
       return null
     }
@@ -113,14 +126,24 @@ const Token = () => {
     // 객체를 순회할 때는 for in문을 사용한다.
     for (const key in tokenId) {
       if (key === 'sub') {
+        // 흐름 ④ 로 이동
         setDecodedUserId(tokenId[key])
       }
       if (key === 'uname') {
+        // 흐름 ④ 로 이동
         setDecodedUserName(tokenId[key])
       }
     }
   }
-
+  /* 토큰을 바탕으로 유저 정보를 확인하는 함수 */
+  const getUserInfo = useCallback(async () => {
+    await axios.get('/api/v1/users/profile').then((res: any) => {
+      if (res.data.status === null) {
+        setNeedInfo(true)
+      }
+    })
+  }, [])
+  /* 토큰을 바탕으로 좋아요 한 게시글을 불러오는 함수 */
   const getLikesGroup = useCallback(async () => {
     try {
       await axios.get('/api/v1/users/likes').then((res) => {
@@ -130,7 +153,7 @@ const Token = () => {
       console.error(err)
     }
   }, [])
-
+  /* 토큰을 바탕으로 가입된 게시글을 불러오는 함수 */
   const getRegisteredGroup = useCallback(async () => {
     try {
       await axios.get('/api/v1/users/groups/registered').then((res) => setRegisteredGroup(res.data.groups))
