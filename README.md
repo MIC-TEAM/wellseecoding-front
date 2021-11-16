@@ -1,8 +1,8 @@
-# 🐶 wellseecoding-front
+# 🐶 wellseecoding (웰시코딩)
 
 ## 📎 [웰시코딩 URL 바로가기](https://wellseecoding.com/)
 
-## 🎨 [웰시코딩 figma 디자인 바로가기](https://www.figma.com/file/Usjrjva4mujv7OofFMzflD/side-project?node-id=531%3A5)
+## 🎨 [웰시코딩 figma 기획 & 디자인 바로가기](https://www.figma.com/file/Usjrjva4mujv7OofFMzflD/side-project?node-id=531%3A5)
 
 ![](https://images.velog.io/images/leemember/post/daa7d3ca-e291-4e9b-9bf4-deb8d042d36f/KakaoTalk_Photo_2021-11-16-06-28-23.png)
 
@@ -43,3 +43,23 @@
 | 작업 환경 세팅 | <img src="https://img.shields.io/badge/Prettier-F7B93E?style=flat-square&logo=Prettier&logoColor=white"/> <img src="https://img.shields.io/badge/Eslint-4B3263?style=flat-square&logo=Eslint&logoColor=white"/> |
 
 <br>
+
+## 🌟 `웰시코딩` 주요 기능 화면 소개
+
+<br>
+
+### 🔸 **회원가입**
+
+이름, 이메일, 비밀번호, 비밀번호 확인 까지 유효성 검사를 철저히 마친 후 회원가입이 성공적으로 완료되면 마이페이지에 소개 될 프로필을 입력합니다.
+
+![](<https://images.velog.io/images/leemember/post/42cf2882-beca-4f9b-a818-40f756be50af/%E1%84%92%E1%85%AC%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%80%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%B8(1).gif>)
+
+![](<https://images.velog.io/images/leemember/post/8ef391b5-b59a-41be-b9b4-fa5fd6fc1c0e/%E1%84%92%E1%85%AC%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%80%E1%85%A1%E1%84%8B%E1%85%B5%E1%86%B8(2).gif>)
+
+<br>
+
+### 🔸 **마이페이지**
+
+회원가입 절차에서 입력된 프로필 내용물들을 마이페이지에서 확인해 볼 수 있습니다 ! 🙆🏻‍♀️ 추후에 수정 작업도 가능합니다.
+
+![](https://images.velog.io/images/leemember/post/675043a0-e8d2-4a1b-9802-dd814c84cd8c/%E1%84%86%E1%85%A1%E1%84%8B%E1%85%B5%E1%84%91%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8C%E1%85%B5.gif)
