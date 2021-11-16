@@ -18,8 +18,6 @@
 
 <br>
 
-<br>
-
 ## ✨ 팀 소개
 
 | 팀명                  | MIC (May I clone?) |
@@ -41,6 +39,15 @@
 | 라이브러리     | <img src="https://img.shields.io/badge/Next-000000?style=flat-square&logo=Next.js&logoColor=white"/>                                                                                                            |
 | 기본 언어      | <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=TypeScript&logoColor=white"/>                                                                                                   |
 | 작업 환경 세팅 | <img src="https://img.shields.io/badge/Prettier-F7B93E?style=flat-square&logo=Prettier&logoColor=white"/> <img src="https://img.shields.io/badge/Eslint-4B3263?style=flat-square&logo=Eslint&logoColor=white"/> |
+
+<br>
+
+## 🧑🏻‍💻 역할분담
+
+| 작업자 | 작업 내용                                               |
+| ------ | ------------------------------------------------------- |
+| 이준희 | - JWT 토큰으로 로컬스토리지 <br> - 함께해요 게시판 작업 <br> - 서버사이드 렌더링|
+| 이현주 | - UI/UX 마크업 <br> - 회원가입 <br> - 마이페이지        |
 
 <br>
 
