@@ -32,16 +32,23 @@ function HomeMain({ user, num }: Props) {
 export default HomeMain
 
 export const homeMainWrap = css`
+  position: relative;
   background-color: white;
   display: flex;
   justify-content: center;
 
   img {
-    z-index: 100;
+    z-index: 10;
+    position: absolute;
+    left: 5%;
+    clip: rect(0px, 220px, 100px, 0px);
   }
   div {
     margin-top: 1em;
     margin-left: 1em;
+    @media (max-width: 420px) {
+      margin-left: 10em;
+    }
     h1 {
       font-weight: 500;
       font-size: ${Common.fontSize.fs18};
