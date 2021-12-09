@@ -10,11 +10,11 @@ function HomeHeader({ notis }: Props) {
     <header css={HomeHeaderWrap}>
       <Link href="/alarm">
         {notis ? (
-          <a>
+          <a title="알림 페이지로 이동">
             <img src="/images/header/alarm.svg" alt="알림페이지" />
           </a>
         ) : (
-          <a>
+          <a title="알림 페이지로 이동">
             <img src="/images/header/nonAlarm.svg" alt="알림페이지" />
           </a>
         )}

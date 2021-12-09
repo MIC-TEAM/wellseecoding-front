@@ -87,7 +87,7 @@ const Search = () => {
                 <li key={k.id}>
                   <p>
                     <Link href={`/together/search_result/${k.text}`}>
-                      <a>{k.text}</a>
+                      <a title="최근 검색어로 이동">{k.text}</a>
                     </Link>
                   </p>
                   <button className="removeBtn" type="button" onClick={() => handleRemoveKeyword(k.id)}>

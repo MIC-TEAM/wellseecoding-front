@@ -31,7 +31,7 @@ export default function AuthLogin() {
       <p css={passwordFind}>
         웰시가 처음이신가요?
         <Link href="/sign_up">
-          <a>회원가입</a>
+          <a title="회원가입">회원가입</a>
         </Link>
       </p>
     </div>

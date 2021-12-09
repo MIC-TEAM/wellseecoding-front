@@ -10,7 +10,7 @@ const FooterMenu = () => {
       <ul css={footerNavWrap}>
         <li className={router.asPath === '/home' ? 'active' : ''}>
           <Link href="/home">
-            <a>
+            <a title="홈으로">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"
@@ -27,7 +27,7 @@ const FooterMenu = () => {
 
         <li className={router.asPath === '/together' ? 'active' : ''}>
           <Link href="/together">
-            <a>
+            <a title="함께해요 페이지로">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"
@@ -107,7 +107,7 @@ const FooterMenu = () => {
 
         <li className={router.asPath === '/mypage' ? 'active' : ''}>
           <Link href="/mypage">
-            <a>
+            <a title="마이 페이지로">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"

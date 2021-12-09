@@ -10,7 +10,7 @@ function StudyBox({ id, listTitle, hashTag }: Props) {
   return (
     <li css={studyContentBox}>
       <Link href={`/posts/${id}`}>
-        <a>
+        <a title="개별 포스트로 이동">
           <article>
             <h3>{listTitle}</h3>
             {hashTag ? hashTag.map((v, i) => <p key={i}>#{v}</p>) : <span></span>}
