@@ -38,6 +38,8 @@ const WellseeErrorHome = ({ text, textOpt, buttonOpt }: Props) => {
 export default WellseeErrorHome
 
 const ErrorOpt = css`
+  background: #ffeee7;
+  margin-top: 3em;
   padding-top: 10em;
   display: flex;
   width: 100%;

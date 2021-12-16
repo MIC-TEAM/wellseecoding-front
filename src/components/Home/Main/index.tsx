@@ -21,7 +21,10 @@ function HomeMain({ user, num }: Props) {
               <br />총 {num}개에요~
             </span>
           ) : (
-            <span>아직 가입하신 스터디가 없어요.. 🥲</span>
+            <span>
+              아직 가입하신
+              <br /> 스터디가 없어요.. 🥲
+            </span>
           )}
         </p>
       </div>
@@ -47,7 +50,7 @@ export const homeMainWrap = css`
     margin-top: 1em;
     margin-left: 1em;
     @media (max-width: 420px) {
-      margin-left: 10em;
+      margin-left: 12em;
     }
     h1 {
       font-weight: 500;
@@ -55,6 +58,9 @@ export const homeMainWrap = css`
       line-height: 26px;
       color: #262626;
       letter-spacing: -0.6px;
+      @media (max-width: 420px) {
+        font-size: ${Common.fontSize.fs16};
+      }
     }
     p {
       font-weight: 500;
@@ -62,6 +68,9 @@ export const homeMainWrap = css`
       line-height: 32px;
       letter-spacing: -1px;
       color: #262626;
+      @media (max-width: 420px) {
+        font-size: ${Common.fontSize.fs16};
+      }
     }
   }
 `

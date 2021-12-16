@@ -38,10 +38,10 @@ import { MemberData, PostType, WritePostType } from 'src/types'
 async function fetchPostsAPI() {
   try {
     const result = await axios.get('/api/v1/posts')
-
     return result.data
   } catch (err) {
     console.error(err)
+    return []
   }
 }
 
@@ -64,10 +64,10 @@ function* fetchPosts() {
 async function fetchPostAPI(data: number) {
   try {
     const result = await axios.get(`/api/v1/posts/${data}`)
-
     return result.data
   } catch (err) {
     console.error(err)
+    return []
   }
 }
 
@@ -90,7 +90,11 @@ function* fetchPost(action: FetchingPostRequest) {
 async function writePostAPI(data: WritePostType) {
   try {
     const response = await axios.post('/api/v1/posts', data)
-    return response.status
+    if (response.status === 200) {
+      return response.status
+    } else {
+      throw 'Error '
+    }
   } catch (err) {
     console.error(err)
   }
@@ -103,8 +107,6 @@ function* writePost(action: WritePostRequest) {
       yield put({
         type: WRITE_POST_SUCCESS,
       })
-    } else {
-      throw 'Error'
     }
   } catch (err) {
     console.error(err)
